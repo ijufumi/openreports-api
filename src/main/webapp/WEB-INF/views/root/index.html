@@ -1,17 +1,33 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title layout:flagment="title">Test</title>
+    <script type="text/javascript" src="//code.jquery.com/jquery-2.2.4.min.js"></script>
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
 </head>
 <body>
 <div layout:decorator="../layouts/default">
+    <th:block layout:fragment="title">
+        <h3>Sign in/Sign up</h3>
+    </th:block>
     <th:block layout:fragment="content">
-        <h3>Hello World!</h3>
-        <hr/>
-        <p>
-            Your first Skinny app works!
-        </p>
+        <ul class="nav nav-tabs">
+            <li role="presentation" class="active sign-in"><a href="javascript:void(0)">Sign in</a></li>
+            <li role="presentation" class="sign-up"><a href="javascript:void(0)">Sign up</a></li>
+        </ul>
+        <div id="sign-in-context">
+            <label for="userName">ID:</label>
+            <input type="text" name="userName" id="userName"/>
+            <label for="password">Password:</label>
+            <input type="text" name="password" id="password"/>
+
+        </div>
+        <div id="sign-up-context" style="display: none">
+            Unser development now!!
+        </div>
     </th:block>
 </div>
+<script type="text/javascript" src="../../../assets/js/index.js"></script>
+<script type="text/javascript" src="//netdna.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="/assets/js/skinny-framework.js" th:src="@{/assets/js/skinny-framework.js}"></script>
 </body>
 </html>
