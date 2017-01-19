@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title layout:flagment="title">Test</title>
+</head>
+<body>
+<div layout:decorator="../layouts/default">
+    <th:block layout:fragment="content">
+        <h3>Hello World!</h3>
+        <hr/>
+        <p>
+            Your first Skinny app works!
+        </p>
+    </th:block>
+</div>
+</body>
+</html>

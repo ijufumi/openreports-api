@@ -42,6 +42,7 @@ lazy val baseSettings = servletSettings ++ Seq(
     "org.eclipse.jetty"       %  "jetty-plus"           % jettyVersion    % "container",
     "javax.servlet"           %  "javax.servlet-api"    % "3.1.0"         % "container;provided;test"
   ),
+  libraryDependencies += "org.skinny-framework" %% "skinny-thymeleaf" % skinnyVersion,
   // ------------------------------
   // for ./skinnny console
   initialCommands := """
