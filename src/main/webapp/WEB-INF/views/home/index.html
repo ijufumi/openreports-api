@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <script type="text/javascript" src="//code.jquery.com/jquery-2.2.4.min.js"></script>
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+</head>
+<body>
+<div layout:decorator="../layouts/default">
+    <div class="container span12">
+        <th:block layout:fragment="title">
+            <h3>Home</h3>
+        </th:block>
+        <th:block layout:fragment="content">
+            <ul class="nav nav-tabs">
+                <li role="presentation" class="active"><a href="#tab-1" aria-controls="tab-1" role="tab" data-toggle="tab">Tab 1</a></li>
+                <li role="presentation"><a href="#tab-2" aria-controls="tab-2" role="tab" data-toggle="tab">Tab 2</a></li>
+                <li role="presentation"><a href="#tab-3" aria-controls="tab-3" role="tab" data-toggle="tab">Tab 3</a></li>
+                <li role="presentation"><a href="#tab-4" aria-controls="tab-4" role="tab" data-toggle="tab">Tab 4</a></li>
+            </ul>
+            <div class="tab-content">
+                <div role="tabpanel" class="tab-pane active" id="tab-1">
+                    Unser development now 1!!
+                </div>
+                <div role="tabpanel" class="tab-pane" id="tab-2">
+                    Unser development now 2!!
+                </div>
+                <div role="tabpanel" class="tab-pane" id="tab-3">
+                    Unser development now 3!!
+                </div>
+                <div role="tabpanel" class="tab-pane" id="tab-4">
+                    Unser development now 4!!
+                </div>
+            </div>
+        </th:block>
+    </div>
+</div>
+<script type="text/javascript" src="../../../assets/js/home.js"></script>
+<script type="text/javascript" src="//netdna.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="/assets/js/skinny-framework.js" th:src="@{/assets/js/skinny-framework.js}"></script>
+</body>
+</html>
