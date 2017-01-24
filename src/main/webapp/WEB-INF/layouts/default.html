@@ -32,8 +32,15 @@
 <div class="container span12">
     <div layout:fragment="title"><h3>Skinny Application</h3></div>
     <hr/>
-    <p class="bg-danger" th:if="${#strings.isEmpty(errorMessages)} == false" th:text="${keyAndErrorMessages}">
-    </p>
+    <div class="panel panel-danger">
+        <div class="panel-heading">Error</div>
+        <div class="panel-body text-danger">
+            <th:block th:each="k : ${keyAndErrorMessages.keySet()}">
+                <div th:text="*{keyAndErrorMessages.getErrors(k).mkString()}">
+                </div>
+            </th:block>
+        </div>
+    </div>
     <div layout:fragment="content"></div>
     <hr/>
 </div>
