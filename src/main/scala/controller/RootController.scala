@@ -20,8 +20,9 @@ class RootController extends ApplicationController
 
   def login = {
     if (validateParams.validate) {
-      render("/home/index")
+      redirect("/home")
     } else {
+      set("userName", requestParams.getAs("userName").getOrElse(""))
       render("/root/index")
     }
   }

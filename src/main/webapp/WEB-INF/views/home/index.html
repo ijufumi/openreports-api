@@ -11,30 +11,54 @@
             <h3>Home</h3>
         </th:block>
         <th:block layout:fragment="content">
+            <div class="row">
+                <div class="col-md-offset-10 col-md-2">
+                    <button id="logoutButton" type="button" class="btn btn-primary">ログアウト</button>
+                </div>
+            </div>
             <ul class="nav nav-tabs">
-                <li role="presentation" class="active"><a href="#tab-1" aria-controls="tab-1" role="tab" data-toggle="tab">Tab 1</a></li>
-                <li role="presentation"><a href="#tab-2" aria-controls="tab-2" role="tab" data-toggle="tab">Tab 2</a></li>
-                <li role="presentation"><a href="#tab-3" aria-controls="tab-3" role="tab" data-toggle="tab">Tab 3</a></li>
-                <li role="presentation"><a href="#tab-4" aria-controls="tab-4" role="tab" data-toggle="tab">Tab 4</a></li>
+                <li role="presentation" class="active"><a href="#tab-1" aria-controls="tab-1" role="tab" data-toggle="tab">レポート</a></li>
+                <li role="presentation"><a href="#tab-2" aria-controls="tab-2" role="tab" data-toggle="tab">スケジュールレポート</a></li>
+                <li role="presentation"><a href="#tab-3" aria-controls="tab-3" role="tab" data-toggle="tab">管理機能</a></li>
             </ul>
             <div class="tab-content">
                 <div role="tabpanel" class="tab-pane active" id="tab-1">
-                    Unser development now 1!!
+                    <div class="panel panel-info">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Hey!!</h3>
+                        </div>
+                        <div class="panel-body">
+                            Under development now!!
+                        </div>
+                    </div>
                 </div>
                 <div role="tabpanel" class="tab-pane" id="tab-2">
-                    Unser development now 2!!
+                    <div class="panel panel-info">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Hey!!</h3>
+                        </div>
+                        <div class="panel-body">
+                            Under development now!!
+                        </div>
+                    </div>
                 </div>
                 <div role="tabpanel" class="tab-pane" id="tab-3">
-                    Unser development now 3!!
-                </div>
-                <div role="tabpanel" class="tab-pane" id="tab-4">
-                    Unser development now 4!!
+                    <div class="panel panel-info">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Hey!!</h3>
+                        </div>
+                        <div class="panel-body">
+                            Under development now!!
+                        </div>
+                    </div>
                 </div>
             </div>
         </th:block>
     </div>
 </div>
-<script type="text/javascript" src="../../../assets/js/home.js"></script>
+<th:block layout:fragment="page_scripts">
+<script type="text/javascript" src="../../../assets/js/home.js" th:src="@{/assets/js/home.js}"></script>
+</th:block>
 <script type="text/javascript" src="//netdna.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="/assets/js/skinny-framework.js" th:src="@{/assets/js/skinny-framework.js}"></script>
 </body>
