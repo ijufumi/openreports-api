@@ -32,7 +32,7 @@
 <div class="container span12">
     <div layout:fragment="title"><h3>Skinny Application</h3></div>
     <hr/>
-    <div class="panel panel-danger">
+    <div class="panel panel-danger" th:if="${keyAndErrorMessages.size()} != 0">
         <div class="panel-heading">Error</div>
         <div class="panel-body text-danger">
             <th:block th:each="k : ${keyAndErrorMessages.keySet()}">
