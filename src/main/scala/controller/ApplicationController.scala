@@ -10,7 +10,7 @@ import skinny.filter._
  */
 trait ApplicationController extends SkinnyController
     // with TxPerRequestFilter
-    // with SkinnySessionFilter
+    with SkinnySessionFilter
     with ErrorPageFilter {
 
   // override def defaultLocale = Some(new java.util.Locale("ja"))
