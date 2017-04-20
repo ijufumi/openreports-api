@@ -1,5 +1,6 @@
 import _root_.controller._
 import skinny._
+import skinny.controller.AssetsController
 import skinny.session.SkinnySessionInitializer
 
 class Bootstrap extends SkinnyLifeCycle {
@@ -22,7 +23,8 @@ class Bootstrap extends SkinnyLifeCycle {
     //skinnyWorkerService.everyFixedSeconds(sampleWorker, 3)
 
     ctx.mount(classOf[SkinnySessionInitializer], "/*")
-    Controllers.mount(ctx)
+    Controllers.root.mount(ctx)
+    AssetsController.mount(ctx);
   }
 
 }
