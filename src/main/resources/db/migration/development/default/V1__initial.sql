@@ -1,3 +1,4 @@
+-- create session
 -- H2 Database compatible
 create table skinny_sessions (
   id bigserial not null primary key,
@@ -19,3 +20,16 @@ create table skinny_session_attributes (
 alter table skinny_session_attributes add constraint
   skinny_session_attributes_unique_idx
   unique(skinny_session_id, attribute_name);
+
+
+-- create member
+create table member (
+  member_id bigint auto_increment not null PRIMARY key,
+  email_address VARCHAR(250) not null,
+  password varchar(100) not null,
+  created_at timestamp not null
+);
+
+create unique index member_IX1 on member(email_address);
+
+insert into member (email_address, password, created_at) values ('ijufumi@gmail.com', 'password', now());
