@@ -1,4 +1,4 @@
-package controller
+package jp.ijufumi.openreports.controller
 
 import skinny._
 import skinny.controller.AssetsController
