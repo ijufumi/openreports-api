@@ -1,4 +1,4 @@
-package controller
+package jp.ijufumi.openreports.controller
 
 import skinny._
 import skinny.controller.feature.ThymeleafTemplateEngineFeature
@@ -17,11 +17,11 @@ class RootController extends ApplicationController
 
   def index = {
     //render("/root/index")
-    val memberInfo: Option[Any] = skinnySession.getAttribute("memberInfo");
-    if (!memberInfo.isDefined) {
-      render("/root/index")
+    val memberInfo: Option[Any] = skinnySession.getAttribute("memberInfo")
+    if (memberInfo.isDefined) {
+      redirect("/home/")
     } else {
-      redirect("/home")
+      render("/root/index")
     }
   }
 
@@ -29,9 +29,9 @@ class RootController extends ApplicationController
     if (validateParams.validate) {
       val userName = requestParams.getAs("userName").getOrElse("")
       val password = requestParams.getAs("password").getOrElse("")
-      if ("admin".equals(userName) && "admin".equals(password)) {
-        //        session += "memberInfo" -> "aaaaa"
-        redirect("/home")
+      if ("ijufumi@gmail.com".equals(userName) && "admin".equals(password)) {
+        skinnySession.setAttribute("memberInfo", userName);
+        redirect("/home/")
       }
       set("userName", requestParams.getAs("userName").getOrElse(""))
       render("/root/index")

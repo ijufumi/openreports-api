@@ -1,4 +1,4 @@
-package controller
+package jp.ijufumi.openreports.controller
 
 import skinny._
 import skinny.controller.feature.ThymeleafTemplateEngineFeature
@@ -10,7 +10,7 @@ class HomeController extends ApplicationController
   def index = render("/home/index")
 
   def logout = {
-    // TODO: セッションクリア
+    skinnySession.removeAttribute("memberInfo");
     redirect("/")
   }
 }
