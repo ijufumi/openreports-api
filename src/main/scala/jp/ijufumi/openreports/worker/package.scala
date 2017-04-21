@@ -1,3 +1,5 @@
+package jp.ijufumi.openreports
+
 /**
  * Job Workers
  *

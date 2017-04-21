@@ -48,8 +48,8 @@ lazy val baseSettings = servletSettings ++ Seq(
   // for ./skinnny console
   initialCommands := """
 import _root_.skinny._
-import _root_.controller._
-import _root_.model._
+import _root_.jp.ijufumi.openreports.controller._
+import _root_.jp.ijufumi.openreports.controller.model._
 import _root_.org.joda.time._
 import _root_.scalikejdbc._
 import _root_.scalikejdbc.config._
@@ -75,10 +75,10 @@ lazy val scalatePrecompileSettings = scalateSettings ++ Seq(
   scalateTemplateConfig in Compile := {
     val base = (sourceDirectory in Compile).value
     Seq( TemplateConfig(file(".") / "src" / "main" / "webapp" / "WEB-INF",
-      // These imports should be same as src/main/scala/templates/ScalatePackage.scala
-      Seq("import controller._", "import model._"),
+      // These imports should be same as src/main/scala/jp.ijufumi.openreports.controller.templates/ScalatePackage.scala
+      Seq("import jp.ijufumi.openreports.controller._", "import jp.ijufumi.openreports.controller.model._"),
       Seq(Binding("context", "_root_.skinny.micro.contrib.scalate.SkinnyScalateRenderContext", importMembers = true, isImplicit = true)),
-      Some("templates")))
+      Some("jp/ijufumi/openreports/templates")))
   }
 )
 
@@ -88,7 +88,7 @@ lazy val scalatePrecompileSettings = scalateSettings ++ Seq(
 
 lazy val devBaseSettings = baseSettings ++ Seq(
   unmanagedClasspath in Test += Attributed.blank(baseDirectory.value / "src/main/webapp"),
-  // Integration tests become slower when multiple controller tests are loaded in the same time
+  // Integration tests become slower when multiple jp.ijufumi.openreports.controller tests are loaded in the same time
   parallelExecution in Test := false,
   port in container.Configuration := 8080
 )

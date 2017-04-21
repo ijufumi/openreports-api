@@ -1,12 +1,12 @@
-package controller
+package jp.ijufumi.openreports.controller
 
 import skinny._
 import skinny.filter._
 
 /**
- * The base controller for this Skinny application.
+ * The base jp.ijufumi.openreports.controller for this Skinny application.
  *
- * see also "http://skinny-framework.org/documentation/controller-and-routes.html"
+ * see also "http://skinny-framework.org/documentation/jp.ijufumi.openreports.controller-and-routes.html"
  */
 trait ApplicationController extends SkinnyController
     // with TxPerRequestFilter

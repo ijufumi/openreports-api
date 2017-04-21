@@ -1,4 +1,4 @@
-import _root_.controller._
+import jp.ijufumi.openreports.controller.Controllers
 import skinny._
 import skinny.controller.AssetsController
 import skinny.session.SkinnySessionInitializer
@@ -11,10 +11,10 @@ class Bootstrap extends SkinnyLifeCycle {
     singleLineMode = true
   )
 
-  // simple worker example
+  // simple jp.ijufumi.openreports.controller.worker example
   /*
-  val sampleWorker = new skinny.worker.SkinnyWorker with Logging {
-    def execute = logger.info("sample worker is called!")
+  val sampleWorker = new skinny.jp.ijufumi.openreports.controller.worker.SkinnyWorker with Logging {
+    def execute = logger.info("sample jp.ijufumi.openreports.controller.worker is called!")
   }
   */
 
@@ -23,8 +23,10 @@ class Bootstrap extends SkinnyLifeCycle {
     //skinnyWorkerService.everyFixedSeconds(sampleWorker, 3)
 
     ctx.mount(classOf[SkinnySessionInitializer], "/*")
+    AssetsController.mount(ctx)
+
     Controllers.root.mount(ctx)
-    AssetsController.mount(ctx);
+    Controllers.home.mount(ctx)
   }
 
 }

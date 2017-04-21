@@ -1,4 +1,4 @@
-package controller
+package jp.ijufumi.openreports.controller
 
 import org.scalatest._
 import skinny.test.MockController
