@@ -35,7 +35,7 @@ class RootController extends ApplicationController
       if (members.isEmpty) {
         logger.info("invalid id or password : [" + userName + "][" + password + "]")
         set("userName", requestParams.getAs("userName").getOrElse(""))
-        // TODO ログインエラーメッセージの設定
+        set("customErrorMessages", Seq(i18n.get("warning.loginFailure")))
         render("/root/index")
       } else {
         skinnySession.setAttribute("memberInfo", userName);
@@ -43,7 +43,7 @@ class RootController extends ApplicationController
       }
     } else {
       logger.info("invalid id or password : [" + userName + "][" + password + "]")
-      // TODO ログインエラーメッセージの設定
+      set("customErrorMessages", Seq(i18n.get("warning.loginFailure")))
       render("/root/index")
     }
   }

@@ -13,6 +13,8 @@ trait ApplicationController extends SkinnyController
     with SkinnySessionFilter
     with ErrorPageFilter {
 
+  def i18n: I18n = new I18n()
+
   // override def defaultLocale = Some(new java.util.Locale("ja"))
 
 }
