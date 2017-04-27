@@ -7,7 +7,14 @@ import skinny.validator.{ required, _ }
 class HomeController extends ApplicationController
     with ThymeleafTemplateEngineFeature {
 
-  def index = render("/home/index")
+  def index = {
+    val memberInfo: Option[Any] = skinnySession.getAttribute("memberInfo")
+    if (memberInfo.isDefined) {
+      render("/home/index")
+    } else {
+      redirect("/")
+    }
+  }
 
   def logout = {
     skinnySession.removeAttribute("memberInfo");
