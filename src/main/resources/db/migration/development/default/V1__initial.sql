@@ -32,4 +32,22 @@ create table member (
 
 create unique index member_IX1 on member(email_address);
 
+-- create report
+create table report (
+  report_id biging auto_increment not null PRIMARY KEY,
+  report_name VARCHAR(250) not null,
+  template_path VARCHAR(250) not null,
+  created_at timestamp not null,
+  updated_at timestamp not null
+);
+
+-- create scheduled_report
+create table scheduled_report (
+  scheduled_id bigint auto_increment not null PRIMARY KEY,
+  report_id bitint not null,
+  cron_expression VARCHAR(250) not null,
+  created_at timestamp not null,
+  updated_at timestamp not null
+);
+
 insert into member (email_address, password, created_at) values ('ijufumi@gmail.com', 'password', now());
