@@ -9,13 +9,13 @@ import scala.language.postfixOps
 // Common Settings
 // -------------------------------------------------------
 
-val appOrganization = "org.skinny-framework"
-val appName = "skinny-blank-app"
-val appVersion = "0.1.0-SNAPSHOT"
+val appOrganization = "jp.ijufumi"
+val appName = "openreports"
+val appVersion = "0.0.1-SNAPSHOT"
 
-val skinnyVersion = "2.3.6"
-val theScalaVersion = "2.12.1"
-val jettyVersion = "9.3.15.v20161220"
+val skinnyVersion = "2.5.2"
+val theScalaVersion = "2.12.5"
+val jettyVersion = "9.4.9.v20180320"
 
 lazy val baseSettings = servletSettings ++ Seq(
   organization := appOrganization,
@@ -26,17 +26,18 @@ lazy val baseSettings = servletSettings ++ Seq(
     "org.scala-lang"         %  "scala-library"            % scalaVersion.value,
     "org.scala-lang"         %  "scala-reflect"            % scalaVersion.value,
     "org.scala-lang"         %  "scala-compiler"           % scalaVersion.value,
-    "org.scala-lang.modules" %% "scala-xml"                % "1.0.6",
-    "org.scala-lang.modules" %% "scala-parser-combinators" % "1.0.5",
-    "org.slf4j"              %  "slf4j-api"                % "1.7.22"
+    "org.scala-lang.modules" %% "scala-xml"                % "1.1.0",
+    "org.scala-lang.modules" %% "scala-parser-combinators" % "1.1.0",
+    "org.slf4j"              %  "slf4j-api"                % "1.7.25"
   ),
   libraryDependencies ++= Seq(
     "org.skinny-framework"    %% "skinny-framework"     % skinnyVersion,
     "org.skinny-framework"    %% "skinny-assets"        % skinnyVersion,
     "org.skinny-framework"    %% "skinny-task"          % skinnyVersion,
-    "org.skinny-framework"    %  "skinny-logback"       % "1.0.12",
+    "org.skinny-framework"    %  "skinny-logback"       % "1.0.14",
     "org.skinny-framework"    %% "skinny-orm"        % skinnyVersion,
-    "com.h2database"          %  "h2"                   % "1.4.194",      // your own JDBC driver
+    // "com.h2database"          %  "h2"                   % "1.4.197",      // your own JDBC driver
+    "mysql" % "mysql-connector-java" % "6.0.6",
     "org.skinny-framework"    %% "skinny-factory-girl"  % skinnyVersion   % "test",
     "org.skinny-framework"    %% "skinny-test"          % skinnyVersion   % "test",
     "org.eclipse.jetty"       %  "jetty-webapp"         % jettyVersion    % "container",
