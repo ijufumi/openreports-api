@@ -1,0 +1,12 @@
+mysql:
+  build: ./docker/postgres
+  volumes:
+    - "./src/main/resources/db:/docker-entrypoint-initdb.d"
+    #- ./var/lib/mysql:/var/lib/mysql
+    #- ./var/log/mysql:/var/log/mysql
+  ports:
+    - "5432:5432"
+  environment:
+    POSTGRES_PASSWORD: password
+    TZ: "Asia/Tokyo"
+  container_name: openreports-db
