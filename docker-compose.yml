@@ -1,9 +1,9 @@
-mysql:
+postgres:
   build: ./docker/postgres
   volumes:
     - "./src/main/resources/db:/docker-entrypoint-initdb.d"
-    #- ./var/lib/mysql:/var/lib/mysql
-    #- ./var/log/mysql:/var/log/mysql
+    - ./var/lib/postgresql:/var/lib/postgresql
+    - ./docker/postgres/postgresql.conf:/var/lib/postgresql/data/postgresql.conf
   ports:
     - "5432:5432"
   environment:
