@@ -6,7 +6,7 @@ create table skinny_sessions (
   expire_at timestamp not null
 );
 create table servlet_sessions (
-  jsession_id varchar(32) not null primary key,
+  jsession_id varchar(100) not null primary key,
   skinny_session_id bigint not null,
   created_at timestamp not null,
   foreign key(skinny_session_id) references skinny_sessions(id)
@@ -24,8 +24,8 @@ alter table skinny_session_attributes add constraint
 
 -- create member
 create table member (
-  member_id bigint auto_increment not null PRIMARY key,
-  email_address VARCHAR(250) not null,
+  member_id serial primary key,
+  email_address varchar(250) not null,
   password varchar(100) not null,
   created_at timestamp not null
 );
@@ -34,7 +34,7 @@ create unique index member_IX1 on member(email_address);
 
 -- create report
 create table report (
-  report_id bigint auto_increment not null PRIMARY KEY,
+  report_id serial primary key,
   report_name varchar(250) not null,
   template_path varchar(250) not null,
   created_at timestamp not null,
@@ -43,7 +43,7 @@ create table report (
 
 -- create scheduled_report
 create table scheduled_report (
-  scheduled_id bigint auto_increment not null PRIMARY KEY,
+  scheduled_id serial primary key,
   report_id bigint not null,
   cron_expression varchar(250) not null,
   created_at timestamp not null,

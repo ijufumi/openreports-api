@@ -37,7 +37,8 @@ lazy val baseSettings = servletSettings ++ Seq(
     "org.skinny-framework"    %  "skinny-logback"       % "1.0.14",
     "org.skinny-framework"    %% "skinny-orm"        % skinnyVersion,
     // "com.h2database"          %  "h2"                   % "1.4.197",      // your own JDBC driver
-    "mysql" % "mysql-connector-java" % "6.0.6",
+    // "mysql" % "mysql-connector-java" % "6.0.6",
+    "org.postgresql" % "postgresql" % "42.2.2",
     "org.skinny-framework"    %% "skinny-factory-girl"  % skinnyVersion   % "test",
     "org.skinny-framework"    %% "skinny-test"          % skinnyVersion   % "test",
     "org.eclipse.jetty"       %  "jetty-webapp"         % jettyVersion    % "container",

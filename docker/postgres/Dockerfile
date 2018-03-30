@@ -1,6 +1,6 @@
 FROM postgres:10.3
 
-MAINTAINER postgre
+# MAINTAINER postgre
 
 #RUN chmod 755 -R /var/lib/postgresql/data
 #COPY ./postgresql.conf /postgresql.conf
