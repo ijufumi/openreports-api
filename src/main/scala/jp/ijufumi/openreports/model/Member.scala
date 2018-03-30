@@ -9,6 +9,8 @@ case class Member(memberId: Long, emailAddress: String, password: String, create
 object Member extends SkinnyCRUDMapper[Member] {
   override def tableName = "member"
   override def defaultAlias = createAlias("mem")
+  override def primaryKeyFieldName = "member_id"
+
   override def extract(rs: WrappedResultSet, n: ResultName[Member]): Member = new Member(
     memberId = rs.get(n.memberId),
     emailAddress = rs.get(n.emailAddress),
