@@ -1,4 +1,4 @@
-## OpenReports powerd by Skinny Framework
+## OpenReports powered by Skinny Framework
 
 ### Features (not implemented yet)
 - [ ] Output reporting.
