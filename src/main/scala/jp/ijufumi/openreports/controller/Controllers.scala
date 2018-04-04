@@ -8,6 +8,9 @@ object Controllers {
   def mount(ctx: ServletContext): Unit = {
     root.mount(ctx)
     home.mount(ctx)
+    report.mount(ctx)
+    scheduledReport.mount(ctx)
+
     AssetsController.mount(ctx)
   }
 
@@ -20,5 +23,13 @@ object Controllers {
   object home extends HomeController with Routes {
     val indexUrl = get("/home/?")(index).as('index)
     val logoutUrl = get("/home/logout/?")(logout).as('logout)
+  }
+
+  object report extends ReportController with Routes {
+    val indexUrl = get("/report/")(index).as('index)
+  }
+
+  object scheduledReport extends ScheduledReportController with Routes {
+    val indexUrl = get("/scheduled_report/")(index).as('index)
   }
 }
