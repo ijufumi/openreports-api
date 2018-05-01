@@ -27,6 +27,7 @@ object Controllers {
 
   object report extends ReportController with Routes {
     val indexUrl = get("/report/")(index).as('index)
+    val downloadUrl = get("/report/download")(download).as('download)
   }
 
   object scheduledReport extends ScheduledReportController with Routes {
