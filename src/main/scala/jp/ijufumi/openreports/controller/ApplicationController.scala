@@ -21,26 +21,30 @@ trait ApplicationController extends SkinnyController
   // override def defaultLocale = Some(new java.util.Locale("ja"))
 
   def fileDownload(in: InputStream, fileName: String, contentType: String): Unit = {
-    val b = new Breaks
-    b.breakable {
-      try {
-        val inputStream = new BufferedInputStream(in)
-        var len = 0
-        val buffer = new Array[Byte](1024 * 1024)
+    val inner = withOutputStream { implicit s =>
+      response.addHeader("Content-Type", contentType)
+      val b = new Breaks
+      b.breakable {
+        try {
+          val inputStream = new BufferedInputStream(in)
+          var len = 0
+          val buffer = new Array[Byte](1024 * 1024)
 
-        while (true) {
-          len = inputStream.read(buffer)
+          while (true) {
+            len = inputStream.read(buffer)
 
-          if (len == -1) {
-            b.break
+            if (len == -1) {
+              b.break
+            }
+
+            writeChunk(buffer)
           }
 
-          response.getOutputStream.write(buffer, 0, len)
+        } catch {
+          case e: java.io.IOException => logger.error(e.getMessage, e)
         }
-
-      } catch {
-        case e: java.io.IOException => logger.error(e.getMessage, e)
       }
     }
   }
+
 }

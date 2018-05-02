@@ -23,10 +23,8 @@ class Bootstrap extends SkinnyLifeCycle {
     //skinnyWorkerService.everyFixedSeconds(sampleWorker, 3)
 
     ctx.mount(classOf[SkinnySessionInitializer], "/*")
-    AssetsController.mount(ctx)
 
-    Controllers.root.mount(ctx)
-    Controllers.home.mount(ctx)
+    Controllers.mount(ctx)
   }
 
 }

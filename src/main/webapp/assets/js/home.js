@@ -4,6 +4,14 @@ $(function(){
     })
 
     $("#fileDownloadButton").on("click", function(e) {
-       $.get("/report/download");
+       $.get("/report/download", function(d){
+           console.log("response:" + d)
+       })
+           .done(function(d){
+               console.log("done:" + d)
+           })
+           .fail(function(d){
+               console.log("fail:" + d)
+           });
     });
 });
