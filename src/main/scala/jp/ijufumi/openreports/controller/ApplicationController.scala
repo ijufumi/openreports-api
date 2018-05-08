@@ -23,6 +23,9 @@ trait ApplicationController extends SkinnyController
   def fileDownload(in: InputStream, fileName: String, contentType: String): Unit = {
     val inner = withOutputStream { implicit s =>
       response.addHeader("Content-Type", contentType)
+      response.setHeader(
+        "Content-Disposition", "attachment; filename=\"%s\"".format(fileName)
+      );
       val b = new Breaks
       b.breakable {
         try {
@@ -37,7 +40,7 @@ trait ApplicationController extends SkinnyController
               b.break
             }
 
-            writeChunk(buffer)
+            writeChunk(buffer.slice(0, len))
           }
 
         } catch {
