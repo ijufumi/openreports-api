@@ -1,11 +1,7 @@
 package jp.ijufumi.openreports.controller
 
-import java.io.{ BufferedInputStream, InputStream }
-
 import jp.ijufumi.openreports.service.ReportingService
 import skinny.Params
-
-import scala.util.control.Breaks
 
 class ReportController extends ApplicationController {
 
@@ -19,8 +15,8 @@ class ReportController extends ApplicationController {
   def outputReport: Unit = {
     val reportFile = new ReportingService("report/sample.xlsx").output()
     if (reportFile != "") {
-      val fileStream = getClass.getClassLoader.getResourceAsStream(reportFile)
-      fileDownload(fileStream, "sample.xlsx", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+      fileDownload(reportFile, "sample.xlsx", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+      deleteFile(reportFile)
     }
   }
 }

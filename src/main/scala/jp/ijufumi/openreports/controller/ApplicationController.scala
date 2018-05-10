@@ -1,9 +1,10 @@
 package jp.ijufumi.openreports.controller
 
-import java.io.{ BufferedInputStream, InputStream }
+import java.io.{ BufferedInputStream, FileInputStream, InputStream }
 
 import skinny._
 import skinny.filter._
+
 import scala.util.control.Breaks
 
 /**
@@ -19,6 +20,21 @@ trait ApplicationController extends SkinnyController
   def i18n: I18n = new I18n()
 
   // override def defaultLocale = Some(new java.util.Locale("ja"))
+
+  def fileDownload(in: String, fileName: String, contentType: String): Unit = {
+    var fileStream: InputStream = null
+    try {
+      fileStream = getClass.getClassLoader.getResourceAsStream(in)
+      if (fileStream == null) {
+        fileStream = new FileInputStream(new java.io.File(in))
+      }
+      fileDownload(fileStream, fileName, contentType)
+    } finally {
+      if (fileStream != null) {
+        fileStream.close()
+      }
+    }
+  }
 
   def fileDownload(in: InputStream, fileName: String, contentType: String): Unit = {
     val inner = withOutputStream { implicit s =>
@@ -50,4 +66,10 @@ trait ApplicationController extends SkinnyController
     }
   }
 
+  def deleteFile(file: String): Unit = {
+    val deleteFile = new java.io.File(file)
+    if (deleteFile.exists() && deleteFile.isFile) {
+      deleteFile.delete()
+    }
+  }
 }

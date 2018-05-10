@@ -1,6 +1,8 @@
 package jp.ijufumi.openreports.service
 
-import java.io.FileOutputStream
+import java.io.{ File, FileOutputStream }
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 import org.jxls.common.Context
 import org.jxls.jdbc.JdbcHelper
@@ -9,7 +11,16 @@ import skinny.logging.LoggerProvider
 
 class ReportingService(templateFile: String) extends LoggerProvider {
   def output(): String = {
-    val outputFile = "/temp/%d_%s".format(java.lang.System.currentTimeMillis(), templateFile)
+    val inFileName = new File(templateFile).getName
+    val dotIndex = inFileName.lastIndexOf('.')
+    val suffix = if (dotIndex != -1) inFileName.substring(dotIndex) else ""
+    val timeStamp = DateTimeFormatter.ofPattern("yyyyMMddHHMMss").format(LocalDateTime.now())
+    val outputFile = "/tmp/%s_%s%s".format(inFileName.substring(0, dotIndex), timeStamp, suffix)
+
+    val outputDirectory = new File(outputFile).getParentFile
+    if (!outputDirectory.exists()) {
+      outputDirectory.mkdirs()
+    }
 
     var con: java.sql.Connection = null
     try {
@@ -19,7 +30,7 @@ class ReportingService(templateFile: String) extends LoggerProvider {
       context.putVar("conn", con)
       context.putVar("jdbc", jdbcHelper)
 
-      var in = getClass.getResourceAsStream(templateFile)
+      var in = getClass.getClassLoader.getResourceAsStream(templateFile)
       var out = new FileOutputStream(outputFile)
       JxlsHelper.getInstance().processTemplate(in, out, context)
     } catch {
