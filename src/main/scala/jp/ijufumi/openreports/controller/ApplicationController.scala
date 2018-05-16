@@ -67,7 +67,10 @@ trait ApplicationController extends SkinnyController
   }
 
   def deleteFile(file: String): Unit = {
-    val deleteFile = new java.io.File(file)
+    deleteFile(new java.io.File(file))
+  }
+
+  def deleteFile(deleteFile: java.io.File): Unit = {
     if (deleteFile.exists() && deleteFile.isFile) {
       deleteFile.delete()
     }

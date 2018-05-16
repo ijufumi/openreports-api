@@ -10,14 +10,14 @@ import org.jxls.util.JxlsHelper
 import skinny.logging.LoggerProvider
 
 class ReportingService(templateFile: String) extends LoggerProvider {
-  def output(): String = {
+  def output(): Option[File] = {
     val inFileName = new File(templateFile).getName
     val dotIndex = inFileName.lastIndexOf('.')
     val suffix = if (dotIndex != -1) inFileName.substring(dotIndex) else ""
     val timeStamp = DateTimeFormatter.ofPattern("yyyyMMddHHMMss").format(LocalDateTime.now())
-    val outputFile = "/tmp/%s_%s%s".format(inFileName.substring(0, dotIndex), timeStamp, suffix)
+    val outputFile = new File("/tmp/%s_%s%s".format(inFileName.substring(0, dotIndex), timeStamp, suffix))
 
-    val outputDirectory = new File(outputFile).getParentFile
+    val outputDirectory = outputFile.getParentFile
     if (!outputDirectory.exists()) {
       outputDirectory.mkdirs()
     }
@@ -36,7 +36,7 @@ class ReportingService(templateFile: String) extends LoggerProvider {
     } catch {
       case e: java.io.IOException => {
         logger.error(e.getMessage, e)
-        return ""
+        return Option.empty
       }
     } finally {
       if (con != null) {
@@ -44,6 +44,6 @@ class ReportingService(templateFile: String) extends LoggerProvider {
       }
     }
 
-    outputFile
+    Option.apply(outputFile)
   }
 }
