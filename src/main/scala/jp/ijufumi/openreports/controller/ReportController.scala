@@ -13,7 +13,7 @@ class ReportController extends ApplicationController {
   }
 
   def outputReport: Unit = {
-    val reportFileOpt = new ReportingService("report/sample.xlsx").output()
+    val reportFileOpt = ReportingService("report/sample.xlsx").output()
     if (reportFileOpt.nonEmpty) {
       var reportFile = reportFileOpt.get
       fileDownload(reportFile.getAbsolutePath, reportFile.getName, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")

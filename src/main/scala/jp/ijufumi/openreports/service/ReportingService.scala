@@ -1,6 +1,6 @@
 package jp.ijufumi.openreports.service
 
-import java.io.{ File, FileOutputStream }
+import java.io.{File, FileOutputStream}
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
@@ -9,7 +9,7 @@ import org.jxls.jdbc.JdbcHelper
 import org.jxls.util.JxlsHelper
 import skinny.logging.LoggerProvider
 
-class ReportingService(templateFile: String) extends LoggerProvider {
+case class ReportingService(templateFile: String) extends LoggerProvider {
   def output(): Option[File] = {
     val inFileName = new File(templateFile).getName
     val dotIndex = inFileName.lastIndexOf('.')
