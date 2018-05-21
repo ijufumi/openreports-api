@@ -1,6 +1,6 @@
 package jp.ijufumi.openreports.controller
 
-import java.io.{ BufferedInputStream, FileInputStream, InputStream }
+import java.io.{BufferedInputStream, FileInputStream, InputStream}
 
 import skinny._
 import skinny.filter._
@@ -8,16 +8,15 @@ import skinny.filter._
 import scala.util.control.Breaks
 
 /**
- * The base jp.ijufumi.openreports.controller for this Skinny application.
- *
- * see also "http://skinny-framework.org/documentation/jp.ijufumi.openreports.controller-and-routes.html"
- */
+  * The base jp.ijufumi.openreports.controller for this Skinny application.
+  *
+  * see also "http://skinny-framework.org/documentation/jp.ijufumi.openreports.controller-and-routes.html"
+  */
 trait ApplicationController extends SkinnyController
-    // with TxPerRequestFilter
-    with SkinnySessionFilter
-    with ErrorPageFilter {
-
-  def i18n: I18n = new I18n()
+  // with TxPerRequestFilter
+  with SkinnySessionFilter
+  with ErrorPageFilter
+  with I18nFeature {
 
   // override def defaultLocale = Some(new java.util.Locale("ja"))
 
@@ -41,7 +40,7 @@ trait ApplicationController extends SkinnyController
       response.addHeader("Content-Type", contentType)
       response.setHeader(
         "Content-Disposition", "attachment; filename=\"%s\"".format(fileName)
-      );
+      )
       val b = new Breaks
       b.breakable {
         try {
