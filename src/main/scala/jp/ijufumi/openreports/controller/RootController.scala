@@ -10,6 +10,7 @@ class RootController extends ApplicationController
   with ThymeleafTemplateEngineFeature {
 
   val path = publicPath
+  val viewPath = publicPath + "/root"
 
   def requestParams = Params(params)
 
@@ -27,7 +28,7 @@ class RootController extends ApplicationController
     if (memberInfo.isDefined) {
       redirect(privatePath + "/home")
     } else {
-      render("/root/index")
+      render(viewPath + "/index")
     }
   }
 
@@ -41,7 +42,7 @@ class RootController extends ApplicationController
         logger.info("invalid id or password : [" + userName + "][" + password + "]")
         set("userName", requestParams.getAs("userName").getOrElse(""))
         set("customErrorMessages", Seq(i18n.get("warning.loginFailure")))
-        render("/root/index")
+        render(viewPath + "/index")
       } else {
         skinnySession.setAttribute("memberInfo", userName);
         redirect(privatePath + "/home")
@@ -49,7 +50,7 @@ class RootController extends ApplicationController
     } else {
       logger.info("invalid id or password : [" + userName + "][" + password + "]")
       set("customErrorMessages", Seq(i18n.get("warning.loginFailure")))
-      render("/root/index")
+      render(viewPath + "/index")
     }
   }
 }

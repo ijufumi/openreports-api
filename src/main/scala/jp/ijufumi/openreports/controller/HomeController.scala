@@ -6,11 +6,12 @@ import skinny.controller.feature.ThymeleafTemplateEngineFeature
 class HomeController extends ApplicationController
   with ThymeleafTemplateEngineFeature {
   val path = privatePath + "/home"
+  val viewPath = privatePath + "/home"
 
   def index = {
     val memberInfo: Option[Any] = skinnySession.getAttribute("memberInfo")
     if (memberInfo.isDefined) {
-      render("/home/index")
+      render(viewPath + "/index")
     } else {
       redirect(publicPath)
     }

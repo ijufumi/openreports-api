@@ -1,7 +1,6 @@
-package jp.ijufumi.openreports.controller.common
-//import jp.ijufumi.openreports.controller.HomeController
+package jp.ijufumi.openreports.controller
+
 import jp.ijufumi.openreports.controller.settings.ReportSettingsController
-import jp.ijufumi.openreports.controller.{HomeController, ReportController, RootController, ScheduledReportController}
 import skinny._
 import skinny.controller.AssetsController
 
@@ -39,7 +38,7 @@ object Controllers {
   }
 
   object reportSettings extends ReportSettingsController with Routes {
-    val uploadFormUrl = get(path + "/report/fileUpload/form")(uploadForm).as('index)
+    val uploadFormUrl = get(path + "/fileUpload/form")(uploadForm).as('uploadForm)
   }
 
 }

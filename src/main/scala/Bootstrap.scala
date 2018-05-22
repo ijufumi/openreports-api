@@ -1,4 +1,4 @@
-import jp.ijufumi.openreports.controller.common.Controllers
+import jp.ijufumi.openreports.controller.Controllers
 import skinny._
 import skinny.session.SkinnySessionInitializer
 
