@@ -1,5 +1,6 @@
 package jp.ijufumi.openreports.controller
 
+import jp.ijufumi.openreports.controller.common.ApplicationController
 import jp.ijufumi.openreports.service.ReportingService
 import skinny.Params
 

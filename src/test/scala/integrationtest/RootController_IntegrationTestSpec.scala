@@ -1,6 +1,6 @@
 package integrationtest
 
-import jp.ijufumi.openreports.controller.Controllers
+import jp.ijufumi.openreports.controller.common.Controllers
 import skinny.test.{SkinnyFlatSpec, SkinnyTestSupport}
 
 class RootController_IntegrationTestSpec extends SkinnyFlatSpec with SkinnyTestSupport {

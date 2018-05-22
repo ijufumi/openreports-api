@@ -1,6 +1,5 @@
-import jp.ijufumi.openreports.controller.Controllers
+import jp.ijufumi.openreports.controller.common.Controllers
 import skinny._
-import skinny.controller.AssetsController
 import skinny.session.SkinnySessionInitializer
 
 class Bootstrap extends SkinnyLifeCycle {

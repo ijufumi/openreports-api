@@ -1,7 +1,6 @@
-package jp.ijufumi.openreports.controller
+package jp.ijufumi.openreports.controller.common
 
 import skinny._
-import skinny.filter._
 
 /**
  * The base jp.ijufumi.openreports.controller for API endpoints.

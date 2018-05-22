@@ -1,4 +1,4 @@
-package jp.ijufumi.openreports.controller
+package jp.ijufumi.openreports.controller.common
 
 import java.io.{BufferedInputStream, FileInputStream, InputStream}
 

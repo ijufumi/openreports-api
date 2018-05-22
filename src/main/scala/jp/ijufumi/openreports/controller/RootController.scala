@@ -1,12 +1,13 @@
 package jp.ijufumi.openreports.controller
 
+import jp.ijufumi.openreports.controller.common.ApplicationController
 import jp.ijufumi.openreports.model.Member
 import skinny._
 import skinny.controller.feature.ThymeleafTemplateEngineFeature
-import skinny.validator.{ required, _ }
+import skinny.validator.{required, _}
 
 class RootController extends ApplicationController
-    with ThymeleafTemplateEngineFeature {
+  with ThymeleafTemplateEngineFeature {
 
   def requestParams = Params(params)
 
@@ -16,11 +17,13 @@ class RootController extends ApplicationController
     paramKey("password") is required
   )
 
+  def toTop = redirect(publicPath)
+
   def index = {
     //render("/root/index")
     val memberInfo: Option[Any] = skinnySession.getAttribute("memberInfo")
     if (memberInfo.isDefined) {
-      redirect("/home/")
+      redirect(privatePath + "/home")
     } else {
       render("/root/index")
     }
@@ -39,7 +42,7 @@ class RootController extends ApplicationController
         render("/root/index")
       } else {
         skinnySession.setAttribute("memberInfo", userName);
-        redirect("/home/")
+        redirect(privatePath + "/home")
       }
     } else {
       logger.info("invalid id or password : [" + userName + "][" + password + "]")
