@@ -1,9 +1,14 @@
 $(function(){
     $("#logoutButton").on("click", function(e) {
-        window.location.href = "/home/logout";
+        window.location.href = "/private/home/logout";
     })
 
     $("#fileDownloadButton").on("click", function(e) {
-        location.href = "/report/download";
+        location.href = "/private/report/download";
     });
+
+    $("#fileUploadButton").on("click", function (e) {
+        location.href = "/private/settings/report/fileUpload/form";
+    });
+
 });

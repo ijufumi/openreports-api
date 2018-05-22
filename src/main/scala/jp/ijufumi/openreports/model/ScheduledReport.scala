@@ -8,7 +8,9 @@ case class ScheduledReport(scheduleId: Long, reportId: Long, cronExpression: Str
 
 object ScheduledReport extends SkinnyCRUDMapper[ScheduledReport] {
   override def tableName = "scheduled_report"
+
   override def defaultAlias = createAlias("sch_rep")
+
   override def primaryKeyFieldName = "schedule_id"
 
   override def extract(rs: WrappedResultSet, n: scalikejdbc.ResultName[ScheduledReport]): ScheduledReport = new ScheduledReport(

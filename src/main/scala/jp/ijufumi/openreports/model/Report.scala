@@ -8,7 +8,9 @@ case class Report(reportId: Long, reportName: String, templatePath: String, crea
 
 object Report extends SkinnyCRUDMapper[Report] {
   override def tableName = "report"
+
   override def defaultAlias = createAlias("rep")
+
   override def primaryKeyFieldName = "report_id"
 
   override def extract(rs: WrappedResultSet, n: scalikejdbc.ResultName[Report]): Report = new Report(

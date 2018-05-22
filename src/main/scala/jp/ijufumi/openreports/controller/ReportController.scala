@@ -5,6 +5,7 @@ import jp.ijufumi.openreports.service.ReportingService
 import skinny.Params
 
 class ReportController extends ApplicationController {
+  val path = privatePath + "/report"
 
   def requestParams = Params(params)
 

@@ -4,7 +4,7 @@ import jp.ijufumi.openreports.controller.common.ApplicationController
 import skinny.controller.feature.ThymeleafTemplateEngineFeature
 
 class HomeController extends ApplicationController
-    with ThymeleafTemplateEngineFeature {
+  with ThymeleafTemplateEngineFeature {
   val path = privatePath + "/home"
 
   def index = {

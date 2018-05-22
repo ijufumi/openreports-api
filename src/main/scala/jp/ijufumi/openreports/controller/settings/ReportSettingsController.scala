@@ -11,6 +11,8 @@ class ReportSettingsController extends SkinnyServlet
   with FileUploadFeature
   with I18nFeature {
 
+  val path = rootPath + "/report"
+
   val requestParams = Params(params)
   val validateParams = validation(
     requestParams,
@@ -18,18 +20,18 @@ class ReportSettingsController extends SkinnyServlet
     paramKey("file") is required
   )
 
-  def index = render(rootPath + "/report/fileUpload/form")
+  def uploadForm = render(rootPath + "/report/fileUpload")
 
-  def uploadFile = {
+  def doUploadFile = {
     if (validateParams.validate) {
       logger.info("uploadFile is %s".format(params.get("name").get))
       var file = fileParams("file")
       var tempFile = FileSystems.getDefault.getPath("/tmp/", file.getName)
       Files.write(tempFile, file.get())
-      redirect(url(Controllers.reportSettings.indexUrl))
+      redirect(url(Controllers.reportSettings.uploadFormUrl))
     } else {
       logger.info("[REQUST] name/file is empty.")
-      render(url(Controllers.reportSettings.indexUrl))
+      render(url(Controllers.reportSettings.uploadFormUrl))
     }
   }
 }

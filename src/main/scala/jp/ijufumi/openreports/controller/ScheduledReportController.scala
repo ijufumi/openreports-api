@@ -5,7 +5,9 @@ import skinny.Params
 import skinny.controller.feature.ThymeleafTemplateEngineFeature
 
 class ScheduledReportController extends ApplicationController
-    with ThymeleafTemplateEngineFeature {
+  with ThymeleafTemplateEngineFeature {
+
+  val path = privatePath + "/scheduled_report"
 
   def requestParams = Params(params)
 

@@ -9,6 +9,8 @@ import skinny.validator.{required, _}
 class RootController extends ApplicationController
   with ThymeleafTemplateEngineFeature {
 
+  val path = publicPath
+
   def requestParams = Params(params)
 
   def validateParams = validation(

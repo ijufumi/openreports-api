@@ -42,7 +42,6 @@
                             <div class="col-md-offset-10 col-md-2">
                                 <button id="fileDownloadButton" type="button" class="btn btn-success">Download</button>
                             </div>
-
                         </div>
                     </div>
                 </div>
@@ -63,6 +62,9 @@
                         </div>
                         <div class="panel-body">
                             Under development now!!
+                            <div class="col-md-offset-10 col-md-2">
+                                <button id="fileUploadButton" type="button" class="btn btn-success">Upload!!</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -71,7 +73,8 @@
     </div>
 </div>
 <th:block layout:fragment="page_scripts">
-<script type="text/javascript" src="../../../assets/js/home.js" th:src="@{/assets/js/home.js} + '?20180508'"></script>
+    <script type="text/javascript" src="../../../assets/js/home.js"
+            th:src="@{/src/main/webapp/assets/js/home.js} + '?20180508'"></script>
 </th:block>
 <script type="text/javascript" src="//netdna.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="/assets/js/skinny-framework.js" th:src="@{/assets/js/skinny-framework.js}"></script>
