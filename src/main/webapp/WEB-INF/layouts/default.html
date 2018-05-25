@@ -25,101 +25,19 @@
        <div th:text="${person.name()}">id</div> // OK!
     */-->
     <meta content="dummy" name="csrf-token" th:name="${s.csrfKey}" th:content="${s.csrfToken}"/>
-
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <!-- Bootstrap core CSS -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css"
+          integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
     <!-- Material Design Bootstrap -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.4.5/css/mdb.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.5.0/css/mdb.min.css" rel="stylesheet">
 </head>
 <body>
 <div class="container span12">
-    <header>
-        <!-- SideNav slide-out button -->
-        <a href="#" data-activates="slide-out" class="btn btn-primary p-3 button-collapse"><i
-                class="fa fa-bars"></i></a>
-
-        <!-- Sidebar navigation -->
-        <div id="slide-out" class="side-nav fixed">
-            <ul class="custom-scrollbar">
-                <!-- Logo -->
-                <li>
-                    <div class="logo-wrapper waves-light">
-                        <a href="#"><img src="https://mdbootstrap.com/img/logo/mdb-transparent.png"
-                                         class="img-fluid flex-center"></a>
-                    </div>
-                </li>
-                <!--/. Logo -->
-                <!-- Side navigation links -->
-                <li>
-                    <ul class="collapsible collapsible-accordion">
-                        <li><a class="collapsible-header waves-effect arrow-r"><i class="fa fa-chevron-right"></i>
-                            Submit blog<i class="fa fa-angle-down rotate-icon"></i></a>
-                            <div class="collapsible-body">
-                                <ul>
-                                    <li><a href="#" class="waves-effect">Submit listing</a>
-                                    </li>
-                                    <li><a href="#" class="waves-effect">Registration form</a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </li>
-                        <li><a class="collapsible-header waves-effect arrow-r"><i class="fa fa-hand-pointer-o"></i>
-                            Instruction<i class="fa fa-angle-down rotate-icon"></i></a>
-                            <div class="collapsible-body">
-                                <ul>
-                                    <li><a href="#" class="waves-effect">For bloggers</a>
-                                    </li>
-                                    <li><a href="#" class="waves-effect">For authors</a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </li>
-                        <li><a class="collapsible-header waves-effect arrow-r"><i class="fa fa-eye"></i> About<i
-                                class="fa fa-angle-down rotate-icon"></i></a>
-                            <div class="collapsible-body">
-                                <ul>
-                                    <li><a href="#" class="waves-effect">Introduction</a>
-                                    </li>
-                                    <li><a href="#" class="waves-effect">Monthly meetings</a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </li>
-                        <li><a class="collapsible-header waves-effect arrow-r"><i class="fa fa-envelope-o"></i> Contact
-                            me<i class="fa fa-angle-down rotate-icon"></i></a>
-                            <div class="collapsible-body">
-                                <ul>
-                                    <li><a href="#" class="waves-effect">FAQ</a>
-                                    </li>
-                                    <li><a href="#" class="waves-effect">Write a message</a>
-                                    </li>
-                                    <li><a href="#" class="waves-effect">FAQ</a>
-                                    </li>
-                                    <li><a href="#" class="waves-effect">Write a message</a>
-                                    </li>
-                                    <li><a href="#" class="waves-effect">FAQ</a>
-                                    </li>
-                                    <li><a href="#" class="waves-effect">Write a message</a>
-                                    </li>
-                                    <li><a href="#" class="waves-effect">FAQ</a>
-                                    </li>
-                                    <li><a href="#" class="waves-effect">Write a message</a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </li>
-                    </ul>
-                </li>
-                <!--/. Side navigation links -->
-            </ul>
-        </div>
-        <!--/. Sidebar navigation -->
-    </header>
     <div layout:fragment="title"><h3>Skinny Application</h3></div>
     <hr/>
-    <div class="panel panel-danger" th:if="${keyAndErrorMessages.size()} != 0 or ${customErrorMessages}">
+    <div class="alert alert-danger" th:if="${keyAndErrorMessages.size()} != 0 or ${customErrorMessages}">
         <div class="panel-heading"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>Error</div>
         <div class="panel-body text-danger">
             <th:block th:each="k : ${keyAndErrorMessages.keySet()}">
@@ -136,19 +54,15 @@
 </div>
 <script type="text/javascript" src="/assets/js/skinny-framework.js" th:src="@{/assets/js/skinny-framework.js}"></script>
 <!-- JQuery -->
-<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <!-- Bootstrap tooltips -->
-<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/popper.js/1.13.0/umd/popper.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.13.0/umd/popper.min.js"></script>
 <!-- Bootstrap core JavaScript -->
-<script type="text/javascript"
-        src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"
+        integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T"
+        crossorigin="anonymous"></script>
 <!-- MDB core JavaScript -->
-<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.4.5/js/mdb.min.js"></script>
-<script>
-    // SideNav Initialization
-    $(".button-collapse").sideNav();
-    new WOW().init();
-</script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.5.3/js/mdb.min.js"></script>
 <th:block layout:fragment="page_scripts"></th:block>
 </body>
 </html>
