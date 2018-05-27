@@ -30,16 +30,16 @@
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css"
           integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
-    <!-- Material Design Bootstrap -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.5.0/css/mdb.min.css" rel="stylesheet">
 </head>
 <body>
 <div class="container span12">
     <div layout:fragment="title"><h3>Skinny Application</h3></div>
     <hr/>
-    <div class="alert alert-danger" th:if="${keyAndErrorMessages.size()} != 0 or ${customErrorMessages}">
-        <div class="panel-heading"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>Error</div>
-        <div class="panel-body text-danger">
+    <div class="alert alert-danger" role="alert" th:if="${keyAndErrorMessages.size()} != 0 or ${customErrorMessages}">
+        <h4 class="alert-heading"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>Error
+        </h4>
+        <p>
+            Some exceptions are occurred.
             <th:block th:each="k : ${keyAndErrorMessages.keySet()}">
                 <div th:text="${keyAndErrorMessages.getErrors(k).mkString()}">
                 </div>
@@ -47,7 +47,7 @@
             <th:block th:each="e : ${customErrorMessages}">
                 <div th:text="*{e.get()}"></div>
             </th:block>
-        </div>
+        </p>
     </div>
     <div layout:fragment="content"></div>
     <hr/>
@@ -61,8 +61,6 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"
         integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T"
         crossorigin="anonymous"></script>
-<!-- MDB core JavaScript -->
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.5.3/js/mdb.min.js"></script>
 <th:block layout:fragment="page_scripts"></th:block>
 </body>
 </html>
