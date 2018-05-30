@@ -18,6 +18,12 @@ trait ApplicationController extends SkinnyController
   with ErrorPageFilter
   with I18nFeature {
 
+  before() {
+    val memberInfo: Option[Any] = skinnySession.getAttribute("memberInfo")
+    // logger.info("before called at " + getClass.getSimpleName + ":" + memberInfo.isDefined)
+    set("loggedIn", memberInfo.isDefined)
+  }
+
   // override def defaultLocale = Some(new java.util.Locale("ja"))
 
   def fileDownload(in: String, fileName: String, contentType: String): Unit = {

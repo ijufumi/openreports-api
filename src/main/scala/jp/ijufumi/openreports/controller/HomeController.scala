@@ -9,8 +9,10 @@ class HomeController extends ApplicationController
   val viewPath = privatePath + "/home"
 
   def index = {
+    //logger.info("index called at " + getClass.getSimpleName)
     val memberInfo: Option[Any] = skinnySession.getAttribute("memberInfo")
     if (memberInfo.isDefined) {
+      //set("loggedIn", memberInfo.isDefined.booleanValue())
       render(viewPath + "/index")
     } else {
       redirect(publicPath)
