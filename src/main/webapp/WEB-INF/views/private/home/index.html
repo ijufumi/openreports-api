@@ -5,8 +5,6 @@
     <script type="text/javascript" src="//code.jquery.com/jquery-2.2.4.min.js"></script>
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
 
-    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/css/bootstrap-datepicker.standalone.min.css" />
-    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/css/bootstrap-datepicker3.standalone.min.css" />
 </head>
 <body>
 <div layout:decorator="../layouts/default">
@@ -15,57 +13,6 @@
             <h3>Home</h3>
         </th:block>
         <th:block layout:fragment="content">
-            <div class="row">
-            </div>
-            <ul class="nav nav-tabs">
-                <li role="presentation" class="active"><a href="#tab-1" aria-controls="tab-1" role="tab" data-toggle="tab">レポート</a></li>
-                <li role="presentation"><a href="#tab-2" aria-controls="tab-2" role="tab" data-toggle="tab">スケジュールレポート</a></li>
-                <li role="presentation"><a href="#tab-3" aria-controls="tab-3" role="tab" data-toggle="tab">管理機能</a></li>
-            </ul>
-            <div class="tab-content">
-                <div role="tabpanel" class="tab-pane active" id="tab-1">
-                    <div class="panel panel-info">
-                        <div class="panel-heading">
-                            <h3 class="panel-title">Hey!!</h3>
-                        </div>
-                        <div class="panel-body">
-                            Under development now!!
-                            <div class="input-group date" data-provide="datepicker" data-date-format="yyyy-mm-dd" data-date-language="ja">
-                                <input type="text" class="form-control" size="14" >
-                                <div class="input-group-addon">
-                                    <span class="glyphicon glyphicon-th"></span>
-                                </div>
-                            </div>
-                            <div class="col-md-offset-10 col-md-2">
-                                <button id="fileDownloadButton" type="button" class="btn btn-success">Download</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div role="tabpanel" class="tab-pane" id="tab-2">
-                    <div class="panel panel-info">
-                        <div class="panel-heading">
-                            <h3 class="panel-title">Hey!!</h3>
-                        </div>
-                        <div class="panel-body">
-                            Under development now!!
-                        </div>
-                    </div>
-                </div>
-                <div role="tabpanel" class="tab-pane" id="tab-3">
-                    <div class="panel panel-info">
-                        <div class="panel-heading">
-                            <h3 class="panel-title">Hey!!</h3>
-                        </div>
-                        <div class="panel-body">
-                            Under development now!!
-                            <div class="col-md-offset-10 col-md-2">
-                                <button id="fileUploadButton" type="button" class="btn btn-success">Upload!!</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </th:block>
     </div>
 </div>
@@ -75,9 +22,5 @@
 </th:block>
 <script type="text/javascript" src="//netdna.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="/assets/js/skinny-framework.js" th:src="@{/assets/js/skinny-framework.js}"></script>
-
-<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/js/bootstrap-datepicker.min.js" ></script>
-<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/locales/bootstrap-datepicker.ja.min.js" ></script>
-
 </body>
 </html>

@@ -6,8 +6,13 @@ import skinny.Params
 
 class ReportController extends ApplicationController {
   val path = privatePath + "/report"
+  val viewPath = privatePath + "/report"
 
   def requestParams = Params(params)
+
+  def index = {
+    render(render(viewPath + "/index"))
+  }
 
   def download: Unit = {
     val fileStream = getClass.getClassLoader.getResourceAsStream("report/sample.xlsx")
