@@ -1,16 +1,16 @@
 package jp.ijufumi.openreports.controller.settings
 
-import java.nio.file.{FileSystems, Files}
+import java.nio.file.{ FileSystems, Files }
 
 import jp.ijufumi.openreports.controller.Controllers
 import jp.ijufumi.openreports.controller.common.I18nFeature
 import skinny.controller.feature.FileUploadFeature
-import skinny.controller.{Params, SkinnyServlet}
-import skinny.validator.{paramKey, required}
+import skinny.controller.{ Params, SkinnyServlet }
+import skinny.validator.{ paramKey, required }
 
 class ReportSettingsController extends SkinnyServlet
-  with FileUploadFeature
-  with I18nFeature {
+    with FileUploadFeature
+    with I18nFeature {
 
   val path = rootPath + "/report"
 

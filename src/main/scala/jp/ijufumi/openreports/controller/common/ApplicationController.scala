@@ -1,22 +1,24 @@
 package jp.ijufumi.openreports.controller.common
 
-import java.io.{BufferedInputStream, FileInputStream, InputStream}
+import java.io.{ BufferedInputStream, FileInputStream, InputStream }
 
 import skinny._
+import skinny.controller.feature.ThymeleafTemplateEngineFeature
 import skinny.filter._
 
 import scala.util.control.Breaks
 
 /**
-  * The base jp.ijufumi.openreports.controller for this Skinny application.
-  *
-  * see also "http://skinny-framework.org/documentation/jp.ijufumi.openreports.controller-and-routes.html"
-  */
+ * The base jp.ijufumi.openreports.controller for this Skinny application.
+ *
+ * see also "http://skinny-framework.org/documentation/jp.ijufumi.openreports.controller-and-routes.html"
+ */
 trait ApplicationController extends SkinnyController
-  // with TxPerRequestFilter
-  with SkinnySessionFilter
-  with ErrorPageFilter
-  with I18nFeature {
+    // with TxPerRequestFilter
+    with SkinnySessionFilter
+    with ErrorPageFilter
+    with I18nFeature
+    with ThymeleafTemplateEngineFeature {
 
   before() {
     val memberInfo: Option[Any] = skinnySession.getAttribute("memberInfo")
@@ -25,6 +27,10 @@ trait ApplicationController extends SkinnyController
   }
 
   // override def defaultLocale = Some(new java.util.Locale("ja"))
+  override lazy val thymeleafResolverPrefix: String = {
+    if (SkinnyEnv.isTest()) "views/"
+    else "/views/"
+  }
 
   def fileDownload(in: String, fileName: String, contentType: String): Unit = {
     var fileStream: InputStream = null

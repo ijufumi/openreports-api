@@ -4,10 +4,9 @@ import jp.ijufumi.openreports.controller.common.ApplicationController
 import jp.ijufumi.openreports.model.Member
 import skinny._
 import skinny.controller.feature.ThymeleafTemplateEngineFeature
-import skinny.validator.{required, _}
+import skinny.validator.{ required, _ }
 
-class RootController extends ApplicationController
-  with ThymeleafTemplateEngineFeature {
+class RootController extends ApplicationController {
 
   val path = publicPath
   val viewPath = publicPath + "/root"
@@ -30,6 +29,10 @@ class RootController extends ApplicationController
     } else {
       render(viewPath + "/index")
     }
+  }
+
+  def signUp = {
+    render(viewPath + "/sign-up")
   }
 
   def login = {

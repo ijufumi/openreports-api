@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <script type="text/javascript" src="//code.jquery.com/jquery-2.2.4.min.js"></script>
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+
+</head>
+<body>
+<div layout:decorator="layouts/default">
+    <div class="container span12">
+        <th:block layout:fragment="title">
+            <h3>Home</h3>
+        </th:block>
+        <th:block layout:fragment="content">
+        </th:block>
+    </div>
+</div>
+<th:block layout:fragment="page_scripts">
+    <script type="text/javascript" src="../../../assets/js/home.js"
+            th:src="@{/src/main/webapp/assets/js/home.js} + '?20180508'"></script>
+</th:block>
+<script type="text/javascript" src="//netdna.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="/assets/js/skinny-framework.js" th:src="@{/assets/js/skinny-framework.js}"></script>
+</body>
+</html>

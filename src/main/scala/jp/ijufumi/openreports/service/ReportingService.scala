@@ -1,6 +1,6 @@
 package jp.ijufumi.openreports.service
 
-import java.io.{File, FileOutputStream}
+import java.io.{ File, FileOutputStream }
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 

@@ -3,8 +3,7 @@ package jp.ijufumi.openreports.controller
 import jp.ijufumi.openreports.controller.common.ApplicationController
 import skinny.controller.feature.ThymeleafTemplateEngineFeature
 
-class HomeController extends ApplicationController
-  with ThymeleafTemplateEngineFeature {
+class HomeController extends ApplicationController {
   val path = privatePath + "/home"
   val viewPath = privatePath + "/home"
 

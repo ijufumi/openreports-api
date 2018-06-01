@@ -1,7 +1,7 @@
 package jp.ijufumi.openreports.model
 
 import org.joda.time.DateTime
-import scalikejdbc.{ResultName, WrappedResultSet}
+import scalikejdbc.{ ResultName, WrappedResultSet }
 import skinny.orm.SkinnyCRUDMapper
 
 case class Member(memberId: Long, emailAddress: String, password: String, createdAt: DateTime)

@@ -20,6 +20,7 @@ object Controllers {
     val toTopUrl = get("/?")(toTop).as('toTop)
     val indexUrl = get(path + "/?")(index).as('index)
     val indexUrl2 = get(path + "/login")(index).as('index)
+    val signUpUrl = get(path + "/signup")(signUp).as('signUp)
     val loginUrl = post(path + "/login")(login).as('login)
   }
 

@@ -3,8 +3,8 @@ package jp.ijufumi.openreports.controller.common
 import skinny._
 
 /**
-  * The base jp.ijufumi.openreports.controller for API endpoints.
-  */
+ * The base jp.ijufumi.openreports.controller for API endpoints.
+ */
 trait ApiController extends SkinnyApiController {
 
   /*
