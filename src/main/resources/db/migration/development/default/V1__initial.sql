@@ -27,10 +27,25 @@ create table member (
   member_id serial primary key,
   email_address varchar(250) not null,
   password varchar(100) not null,
-  created_at timestamp not null
+  created_at timestamp not null,
+  updated_at timestamp not null
 );
 
 create unique index member_IX1 on member(email_address);
+
+-- create group
+create table group (
+  group_id serial primary key,
+  group_name varchar(250) not null,
+  created_at timestamp not null,
+  updated_at timestamp not null
+);
+
+-- create member_group_rel
+create table member_group_rel (
+  member_id integer primary key,
+  group_id integer primary key
+);
 
 -- create report
 create table report (
@@ -50,4 +65,6 @@ create table scheduled_report (
   updated_at timestamp not null
 );
 
-insert into member (email_address, password, created_at) values ('ijufumi@gmail.com', 'password', now());
+insert into group (name, password, created_at) values ('admin', now(), now());
+insert into member (email_address, password, created_at) values ('ijufumi@gmail.com', 'password', now(), now());
+insert into member_group_rel values (1, 1);
