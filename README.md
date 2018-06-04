@@ -8,7 +8,7 @@
 - [ ] Manage users and groups.
 - [ ] Send report mail.
 
-### Menu tree
+### Menu/Function tree
 
 - public
   - Top
@@ -17,9 +17,26 @@
 - private
   - Home
   - Report
-    - Output
-    - Schedule Output
+    - Reporting
+      - List
+      - Output
+    - Scheduled Reporting
+      - List
+      - Add
+      - Edit
   - Setting
     - Report
+      - List
+      - Upload template file
+    - Report Parameters
+      - List
+      - Add
+      - Edit
+    - Group
+      - List
+      - Add
+      - Edit
     - User
-    -
+      - List
+      - Add
+      - Edit
