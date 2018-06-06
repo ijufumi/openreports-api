@@ -59,11 +59,26 @@ create table report (
 -- create scheduled_report
 create table scheduled_report (
   scheduled_id serial primary key,
-  report_id bigint not null,
+  report_id integer not null,
   cron_expression varchar(250) not null,
   created_at timestamp not null,
   updated_at timestamp not null
 );
+
+-- create report_group
+create table report_group (
+  report_group_id serial primary key,
+  report_group_name varchar(250) not null,
+  created_at timestamp not null,
+  updated_at timestamp not null
+);
+
+-- create report_group_rel
+create table report_group_rel (
+  report_id integer primary key,
+  report_group_id integer primary key
+);
+
 
 insert into group (name, password, created_at) values ('admin', now(), now());
 insert into member (email_address, password, created_at) values ('ijufumi@gmail.com', 'password', now(), now());

@@ -40,3 +40,20 @@
       - List
       - Add
       - Edit
+
+### Table Structure
+
+- Users
+  - member
+  - group
+  - member/group relation
+  - group/report_group relation
+- Reports
+  - report
+  - scheduled_report
+  - report_group
+  - report/report_group relation
+  - report_param
+  - report/report_param relation
+- Others
+  - a
