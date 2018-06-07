@@ -1,6 +1,7 @@
 package jp.ijufumi.openreports.service
 
-import java.io.{ File, FileOutputStream }
+import java.io.{File, FileOutputStream, InputStream}
+import java.nio.file.{FileSystems, Files}
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
@@ -32,7 +33,7 @@ case class ReportingService(templateFile: String) extends LoggerProvider {
 
       var in = getClass.getClassLoader.getResourceAsStream(templateFile)
       var out = new FileOutputStream(outputFile)
-      JxlsHelper.getInstance().processTemplate(in, out, context)
+      JxlsHelper.getInstance().processTemplate(toInputStream(templateFile), out, context)
     } catch {
       case e: java.io.IOException => {
         logger.error(e.getMessage, e)
@@ -45,5 +46,14 @@ case class ReportingService(templateFile: String) extends LoggerProvider {
     }
 
     Option.apply(outputFile)
+  }
+
+  def toInputStream(templateFile: String): InputStream = {
+    val fullPath = FileSystems.getDefault.getPath(templatePath, templateFile)
+    if (fullPath.toString.startsWith(prefixClassPath)) {
+      getClass.getClassLoader.getResourceAsStream(fullPath.toString.substring(prefixClassPath.length))
+    } else {
+      Files.newInputStream(fullPath)
+    }
   }
 }
