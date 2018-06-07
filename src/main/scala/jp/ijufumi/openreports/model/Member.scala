@@ -1,13 +1,13 @@
 package jp.ijufumi.openreports.model
 
 import org.joda.time.DateTime
-import scalikejdbc.{ ResultName, WrappedResultSet }
+import scalikejdbc.{ResultName, WrappedResultSet}
 import skinny.orm.SkinnyCRUDMapper
 
-case class Member(memberId: Long, emailAddress: String, password: String, createdAt: DateTime)
+case class Member(memberId: Long, emailAddress: String, password: String, isAdmin: Char, createdAt: DateTime, updatedAt: DateTime)
 
 object Member extends SkinnyCRUDMapper[Member] {
-  override def tableName = "member"
+  override def tableName = "t_member"
 
   override def defaultAlias = createAlias("mem")
 
@@ -17,7 +17,9 @@ object Member extends SkinnyCRUDMapper[Member] {
     memberId = rs.get(n.memberId),
     emailAddress = rs.get(n.emailAddress),
     password = rs.get(n.password),
-    createdAt = rs.get(n.createdAt)
+    isAdmin = rs.get(n.isAdmin),
+    createdAt = rs.get(n.createdAt),
+    updatedAt = rs.get(n.updatedAt)
   )
 }
 

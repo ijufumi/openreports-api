@@ -7,7 +7,7 @@ import skinny.orm.SkinnyCRUDMapper
 case class Report(reportId: Long, reportName: String, templatePath: String, createdAt: DateTime, updatedAt: DateTime)
 
 object Report extends SkinnyCRUDMapper[Report] {
-  override def tableName = "report"
+  override def tableName = "t_report"
 
   override def defaultAlias = createAlias("rep")
 

@@ -7,7 +7,7 @@ import skinny.orm.SkinnyCRUDMapper
 case class ScheduledReport(scheduleId: Long, reportId: Long, cronExpression: String, createdAt: DateTime, updatedAt: DateTime)
 
 object ScheduledReport extends SkinnyCRUDMapper[ScheduledReport] {
-  override def tableName = "scheduled_report"
+  override def tableName = "t_scheduled_report"
 
   override def defaultAlias = createAlias("sch_rep")
 
