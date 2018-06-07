@@ -1,7 +1,7 @@
 package jp.ijufumi.openreports.controller
 
 import jp.ijufumi.openreports.controller.common.ApplicationController
-import jp.ijufumi.openreports.model.Member
+import jp.ijufumi.openreports.model.TMember
 import skinny._
 import skinny.controller.feature.ThymeleafTemplateEngineFeature
 import skinny.validator.{ required, _ }
@@ -39,7 +39,7 @@ class RootController extends ApplicationController {
     val userName = requestParams.getAs("userName").getOrElse("")
     val password = requestParams.getAs("password").getOrElse("")
     if (validateParams.validate) {
-      val members: Seq[Member] = Member.where('emailAddress -> userName, 'password -> password).apply();
+      val members: Seq[TMember] = TMember.where('emailAddress -> userName, 'password -> password).apply();
 
       if (members.isEmpty) {
         logger.info("invalid id or password : [" + userName + "][" + password + "]")
