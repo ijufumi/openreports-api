@@ -1,6 +1,6 @@
 package jp.ijufumi.openreports.service
 
-import java.io.{File, FileOutputStream, InputStream}
+import java.io.{File, InputStream}
 import java.nio.file.{FileSystems, Files}
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -16,11 +16,12 @@ case class ReportingService(templateFile: String) extends LoggerProvider {
     val dotIndex = inFileName.lastIndexOf('.')
     val suffix = if (dotIndex != -1) inFileName.substring(dotIndex) else ""
     val timeStamp = DateTimeFormatter.ofPattern("yyyyMMddHHMMss").format(LocalDateTime.now())
-    val outputFile = new File("/tmp/%s_%s%s".format(inFileName.substring(0, dotIndex), timeStamp, suffix))
+    val outputFile = FileSystems.getDefault.getPath(OUTPUT_FILE_PATH, "/tmp/%s_%s%s".format(inFileName.substring(0, dotIndex), timeStamp, suffix))
+    // val outputFile = new File("/tmp/%s_%s%s".format(inFileName.substring(0, dotIndex), timeStamp, suffix))
 
-    val outputDirectory = outputFile.getParentFile
-    if (!outputDirectory.exists()) {
-      outputDirectory.mkdirs()
+    val outputDirectory = outputFile.getParent
+    if (!Files.isDirectory(outputDirectory)) {
+      Files.createDirectories(outputDirectory)
     }
 
     var con: java.sql.Connection = null
@@ -32,7 +33,7 @@ case class ReportingService(templateFile: String) extends LoggerProvider {
       context.putVar("jdbc", jdbcHelper)
 
       var in = getClass.getClassLoader.getResourceAsStream(templateFile)
-      var out = new FileOutputStream(outputFile)
+      var out = Files.newOutputStream(outputFile)
       JxlsHelper.getInstance().processTemplate(toInputStream(templateFile), out, context)
     } catch {
       case e: java.io.IOException => {
@@ -45,13 +46,13 @@ case class ReportingService(templateFile: String) extends LoggerProvider {
       }
     }
 
-    Option.apply(outputFile)
+    Option.apply(outputFile.toFile)
   }
 
   def toInputStream(templateFile: String): InputStream = {
-    val fullPath = FileSystems.getDefault.getPath(templatePath, templateFile)
-    if (fullPath.toString.startsWith(prefixClassPath)) {
-      getClass.getClassLoader.getResourceAsStream(fullPath.toString.substring(prefixClassPath.length))
+    val fullPath = FileSystems.getDefault.getPath(TEMPLATE_PATH, templateFile)
+    if (fullPath.toString.startsWith(PREFIX_CLASS_PATH)) {
+      getClass.getClassLoader.getResourceAsStream(fullPath.toString.substring(PREFIX_CLASS_PATH.length))
     } else {
       Files.newInputStream(fullPath)
     }
