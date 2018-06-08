@@ -29,7 +29,8 @@ create table t_member (
   password varchar(100) not null,
   is_admin char not null default '0',
   created_at timestamp not null,
-  updated_at timestamp not null
+  updated_at timestamp not null,
+  versions bigint not null default 0
 );
 
 create unique index member_IX1 on t_member(email_address);
@@ -39,7 +40,8 @@ create table t_group (
   group_id serial primary key,
   group_name varchar(250) not null,
   created_at timestamp not null,
-  updated_at timestamp not null
+  updated_at timestamp not null,
+  versions bigint not null default 0
 );
 
 -- create r_member_group
@@ -54,7 +56,8 @@ create table t_report (
   report_name varchar(250) not null,
   template_path varchar(250) not null,
   created_at timestamp not null,
-  updated_at timestamp not null
+  updated_at timestamp not null,
+  versions bigint not null default 0
 );
 
 -- create t_scheduled_report
@@ -64,7 +67,8 @@ create table t_scheduled_report (
   cron_expression varchar(250) not null,
   params bytea,
   created_at timestamp not null,
-  updated_at timestamp not null
+  updated_at timestamp not null,
+  versions bigint not null default 0
 );
 
 -- create t_report_group
@@ -72,7 +76,8 @@ create table t_report_group (
   report_group_id serial primary key,
   report_group_name varchar(250) not null,
   created_at timestamp not null,
-  updated_at timestamp not null
+  updated_at timestamp not null,
+  versions bigint not null default 0
 );
 
 -- create r_report_report_group
@@ -93,7 +98,8 @@ create table t_report_param (
   param_name varchar(250) not null,
   param_type char not null default '0',
   created_at timestamp not null,
-  updated_at timestamp not null
+  updated_at timestamp not null,
+  versions bigint not null default 0
 );
 
 -- create r_report_report_param
