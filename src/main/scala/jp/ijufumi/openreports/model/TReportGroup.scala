@@ -4,7 +4,11 @@ import org.joda.time.DateTime
 import scalikejdbc.{ResultName, WrappedResultSet}
 import skinny.orm.SkinnyCRUDMapper
 
-case class TReportGroup(reportGroupId: Long, reportGroupName: String, createdAt: DateTime, updatedAt: DateTime)
+case class TReportGroup(reportGroupId: Long,
+                        reportGroupName: String,
+                        createdAt: DateTime,
+                        updatedAt: DateTime,
+                        reports: Seq[TReport] = Nil)
 
 object TReportGroup extends SkinnyCRUDMapper[TReportGroup] {
   override def tableName = "t_report_group"
@@ -19,4 +23,9 @@ object TReportGroup extends SkinnyCRUDMapper[TReportGroup] {
     createdAt = rs.get(n.createdAt),
     updatedAt = rs.get(n.updatedAt)
   )
+
+  hasManyThrough[TReport](
+    through = RGroupReportGroup,
+    many = TReport,
+    merge = (a, reports) => a.copy(reports = reports)).byDefault
 }

@@ -4,7 +4,12 @@ import org.joda.time.DateTime
 import scalikejdbc.{ResultName, WrappedResultSet}
 import skinny.orm.{Alias, SkinnyCRUDMapper}
 
-case class TReportParam(paramId: Long, paramName: String, paramType: Char, createdAt: DateTime, updatedAt: DateTime)
+case class TReportParam(paramId: Long,
+                        paramName: String,
+                        paramType: Char,
+                        createdAt: DateTime,
+                        updatedAt: DateTime,
+                        reports: Seq[TReport] = Nil)
 
 object TReportParam extends SkinnyCRUDMapper[TReportParam] {
   override def tableName: String = "t_report_param"
@@ -20,4 +25,9 @@ object TReportParam extends SkinnyCRUDMapper[TReportParam] {
     createdAt = rs.get(n.createdAt),
     updatedAt = rs.get(n.updatedAt)
   )
+
+  hasManyThrough[TReport](
+    through = RReportReportParam,
+    many = TReport,
+    merge = (a, reports) => a.copy(reports = reports)).byDefault
 }

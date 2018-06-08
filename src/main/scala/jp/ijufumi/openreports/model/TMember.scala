@@ -4,7 +4,7 @@ import org.joda.time.DateTime
 import scalikejdbc.{ResultName, WrappedResultSet}
 import skinny.orm.SkinnyCRUDMapper
 
-case class TMember(memberId: Long, emailAddress: String, password: String, isAdmin: Char, createdAt: DateTime, updatedAt: DateTime)
+case class TMember(memberId: Long, emailAddress: String, password: String, isAdmin: Char, createdAt: DateTime, updatedAt: DateTime, groups: Seq[TGroup] = Nil)
 
 object TMember extends SkinnyCRUDMapper[TMember] {
   override def tableName = "t_member"
@@ -21,5 +21,10 @@ object TMember extends SkinnyCRUDMapper[TMember] {
     createdAt = rs.get(n.createdAt),
     updatedAt = rs.get(n.updatedAt)
   )
+
+  hasManyThrough[TGroup](
+    through = RMemberGroup,
+    many = TGroup,
+    merge = (a, groups) => a.copy(groups = groups)).byDefault
 }
 
