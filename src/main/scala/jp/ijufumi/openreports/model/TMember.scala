@@ -5,13 +5,15 @@ import scalikejdbc.{ ResultName, WrappedResultSet }
 import skinny.orm.SkinnyCRUDMapper
 import skinny.orm.feature.OptimisticLockWithVersionFeature
 
-case class TMember(memberId: Long,
-                   emailAddress: String,
-                   password: String,
-                   isAdmin: String,
-                   createdAt: DateTime,
-                   updatedAt: DateTime,
-                   groups: Seq[TGroup] = Nil)
+case class TMember(
+  memberId: Long,
+  emailAddress: String,
+  password: String,
+  isAdmin: String,
+  createdAt: DateTime,
+  updatedAt: DateTime,
+  groups: Seq[TGroup] = Nil
+)
 
 object TMember extends SkinnyCRUDMapper[TMember]
     with OptimisticLockWithVersionFeature[TMember] {
