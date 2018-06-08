@@ -1,19 +1,21 @@
 package jp.ijufumi.openreports.model
 
 import org.joda.time.DateTime
-import scalikejdbc.{ResultName, WrappedResultSet}
+import scalikejdbc.{ ResultName, WrappedResultSet }
 import skinny.orm.feature.OptimisticLockWithVersionFeature
-import skinny.orm.{Alias, SkinnyCRUDMapper}
+import skinny.orm.{ Alias, SkinnyCRUDMapper }
 
-case class TReportParam(paramId: Long,
-                        paramName: String,
-                        paramType: Char,
-                        createdAt: DateTime,
-                        updatedAt: DateTime,
-                        reports: Seq[TReport] = Nil)
+case class TReportParam(
+  paramId: Long,
+  paramName: String,
+  paramType: String,
+  createdAt: DateTime,
+  updatedAt: DateTime,
+  reports: Seq[TReport] = Nil
+)
 
 object TReportParam extends SkinnyCRUDMapper[TReportParam]
-  with OptimisticLockWithVersionFeature[TReportParam] {
+    with OptimisticLockWithVersionFeature[TReportParam] {
 
   override def tableName: String = "t_report_param"
 
@@ -34,5 +36,6 @@ object TReportParam extends SkinnyCRUDMapper[TReportParam]
   hasManyThrough[TReport](
     through = RReportReportParam,
     many = TReport,
-    merge = (a, reports) => a.copy(reports = reports)).byDefault
+    merge = (a, reports) => a.copy(reports = reports)
+  ).byDefault
 }

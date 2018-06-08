@@ -1,14 +1,20 @@
 package jp.ijufumi.openreports.model
 
 import org.joda.time.DateTime
-import scalikejdbc.{ResultName, WrappedResultSet}
+import scalikejdbc.{ ResultName, WrappedResultSet }
 import skinny.orm.SkinnyCRUDMapper
 import skinny.orm.feature.OptimisticLockWithVersionFeature
 
-case class TMember(memberId: Long, emailAddress: String, password: String, isAdmin: Char, createdAt: DateTime, updatedAt: DateTime, groups: Seq[TGroup] = Nil)
+case class TMember(memberId: Long,
+                   emailAddress: String,
+                   password: String,
+                   isAdmin: String,
+                   createdAt: DateTime,
+                   updatedAt: DateTime,
+                   groups: Seq[TGroup] = Nil)
 
 object TMember extends SkinnyCRUDMapper[TMember]
-  with OptimisticLockWithVersionFeature[TMember] {
+    with OptimisticLockWithVersionFeature[TMember] {
 
   override def tableName = "t_member"
 
@@ -30,6 +36,7 @@ object TMember extends SkinnyCRUDMapper[TMember]
   hasManyThrough[TGroup](
     through = RMemberGroup,
     many = TGroup,
-    merge = (a, groups) => a.copy(groups = groups)).byDefault
+    merge = (a, groups) => a.copy(groups = groups)
+  ).byDefault
 }
 
