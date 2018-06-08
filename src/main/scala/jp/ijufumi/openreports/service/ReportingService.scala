@@ -1,7 +1,7 @@
 package jp.ijufumi.openreports.service
 
-import java.io.{File, InputStream}
-import java.nio.file.{FileSystems, Files}
+import java.io.{ File, InputStream }
+import java.nio.file.{ FileSystems, Files }
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 

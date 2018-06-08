@@ -5,16 +5,18 @@ import scalikejdbc.WrappedResultSet
 import skinny.orm.SkinnyCRUDMapper
 import skinny.orm.feature.OptimisticLockWithVersionFeature
 
-case class TReport(reportId: Long,
-                   reportName: String,
-                   templatePath: String,
-                   createdAt: DateTime,
-                   updatedAt: DateTime,
-                   params: Seq[TReportParam] = Nil,
-                   groups: Seq[TReportGroup] = Nil)
+case class TReport(
+  reportId: Long,
+  reportName: String,
+  templatePath: String,
+  createdAt: DateTime,
+  updatedAt: DateTime,
+  params: Seq[TReportParam] = Nil,
+  groups: Seq[TReportGroup] = Nil
+)
 
 object TReport extends SkinnyCRUDMapper[TReport]
-  with OptimisticLockWithVersionFeature[TReport] {
+    with OptimisticLockWithVersionFeature[TReport] {
 
   override def tableName = "t_report"
 
@@ -35,10 +37,12 @@ object TReport extends SkinnyCRUDMapper[TReport]
   hasManyThrough[TReportParam](
     through = RReportReportParam,
     many = TReportParam,
-    merge = (a, params) => a.copy(params = params)).byDefault
+    merge = (a, params) => a.copy(params = params)
+  ).byDefault
 
   hasManyThrough[TReportGroup](
     through = RGroupReportGroup,
     many = TReportGroup,
-    merge = (a, groups) => a.copy(groups = groups)).byDefault
+    merge = (a, groups) => a.copy(groups = groups)
+  ).byDefault
 }

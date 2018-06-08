@@ -8,7 +8,7 @@ import skinny.orm.feature.OptimisticLockWithVersionFeature
 case class TScheduledReport(scheduleId: Long, reportId: Long, cronExpression: String, createdAt: DateTime, updatedAt: DateTime)
 
 object TScheduledReport extends SkinnyCRUDMapper[TScheduledReport]
-  with OptimisticLockWithVersionFeature[TScheduledReport] {
+    with OptimisticLockWithVersionFeature[TScheduledReport] {
   override def tableName = "t_scheduled_report"
 
   override def defaultAlias = createAlias("sch_rep")
