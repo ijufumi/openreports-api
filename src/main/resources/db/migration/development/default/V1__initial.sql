@@ -46,8 +46,9 @@ create table t_group (
 
 -- create r_member_group
 create table r_member_group (
-  member_id integer primary key,
-  group_id integer primary key
+  member_id integer not null,
+  group_id integer not null,
+  primary key (member_id, group_id)
 );
 
 -- create t_report
@@ -82,14 +83,16 @@ create table t_report_group (
 
 -- create r_report_report_group
 create table r_report_report_group (
-  report_id integer primary key,
-  report_group_id integer primary key
+  report_id integer not null,
+  report_group_id integer not null,
+  primary key (report_id, report_group_id)
 );
 
 -- create r_group_report_group
 create table r_group_report_group (
-  group_id integer primary key,
-  report_group_id integer primary key
+  group_id integer not null,
+  report_group_id integer not null,
+  primary key (group_id, report_group_id)
 );
 
 -- create t_report_param
@@ -104,8 +107,9 @@ create table t_report_param (
 
 -- create r_report_report_param
 create table r_report_report_param (
-  report_id integer primary key,
-  param_id integer primary key
+  report_id integer not null,
+  param_id integer not null,
+  primary key (report_id, param_id)
 );
 
 insert into t_group (group_name, created_at, updated_at) values ('admin', now(), now());
