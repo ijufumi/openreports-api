@@ -45,7 +45,6 @@ lazy val baseSettings = servletSettings ++ Seq(
     "org.eclipse.jetty"       %  "jetty-plus"           % jettyVersion    % "container",
     "javax.servlet"           %  "javax.servlet-api"    % "3.1.0"         % "container;provided;test",
     "org.jxls"                %  "jxls"                 % "2.4.4",
-    "org.jxls"                %  "jxls-jexcel"          % "1.0.6",
     "org.jxls"                %  "jxls-poi"             % "1.0.14"
   ),
   libraryDependencies += "org.skinny-framework" %% "skinny-thymeleaf" % skinnyVersion,
