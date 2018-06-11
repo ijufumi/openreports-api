@@ -51,6 +51,20 @@ create table r_member_group (
   primary key (member_id, group_id)
 );
 
+-- create t_function
+create table t_function (
+  function_id integer primary key,
+  function_name varchar(250) not null,
+  created_at timestamp not null,
+  updated_at timestamp not null
+);
+
+-- create r_group_function
+create r_group_function (
+  group_id integer not null,
+  function_id integer not null
+);
+
 -- create t_report
 create table t_report (
   report_id serial primary key,
