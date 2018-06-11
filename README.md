@@ -1,16 +1,15 @@
 ## OpenReports powered by Skinny Framework
 ### Frameworks and libraries.
 
-| Name | Version | Coment |
+| Name | Version | Notes |
 | --- | --- | --- |
-| Scala | 2.12.5 | All of them. |
-| Skinny Framework | 2.6.0 | |
-| Servlet API | 3.1.0 | |
+| Scala | 2.12.5 | - |
+| Skinny Framework | 2.6.0 | All of them. |
+| Servlet API | 3.1.0 | Web API |
 | Skinny Logback | 1.0.14 | Logging |
 | SLF4J | 1.7.25 | Logging |
-| jXls | 2.4.4 | |
-| jXls JExcel | 1.0.6 | Reporting |
-| jXls POI | 1.0.14 | |
+| jXls | 2.4.4 | Reporting |
+| jXls POI | 1.0.14 | Reporting |
 
 ### Features (not implemented yet)
 - [ ] Output reporting.
@@ -61,6 +60,7 @@
   - group
   - member/group relation
   - group/report_group relation
+  - group/function relation
 - Reports
   - report
   - scheduled_report
@@ -69,4 +69,4 @@
   - report_param
   - report/report_param relation
 - Others
-  -
+  - functions
