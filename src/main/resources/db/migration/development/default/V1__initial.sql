@@ -60,7 +60,7 @@ create table t_function (
 );
 
 -- create r_group_function
-create r_group_function (
+create table r_group_function (
   group_id integer not null,
   function_id integer not null
 );
