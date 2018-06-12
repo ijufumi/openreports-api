@@ -35,9 +35,11 @@ object TMember extends SkinnyCRUDMapper[TMember]
     updatedAt = rs.get(n.updatedAt)
   )
 
-  hasManyThrough[TGroup](
+  hasManyThroughWithFk[TGroup](
     through = RMemberGroup,
     many = TGroup,
+    throughFk = "memberId",
+    manyFk = "groupId",
     merge = (a, groups) => a.copy(groups = groups)
   ).byDefault
 }

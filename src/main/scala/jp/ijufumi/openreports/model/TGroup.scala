@@ -1,5 +1,6 @@
 package jp.ijufumi.openreports.model
 
+import jp.ijufumi.openreports.model.TMember.hasManyThroughWithFk
 import org.joda.time.DateTime
 import scalikejdbc.{ ResultName, WrappedResultSet }
 import skinny.orm.SkinnyCRUDMapper
@@ -32,10 +33,4 @@ object TGroup extends SkinnyCRUDMapper[TGroup]
     createdAt = rs.get(n.createdAt),
     updatedAt = rs.get(n.updatedAt)
   )
-
-  hasManyThrough[TMember](
-    through = RMemberGroup,
-    many = TMember,
-    merge = (a, members) => a.copy(members = members)
-  ).byDefault
 }
