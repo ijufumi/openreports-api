@@ -3,7 +3,6 @@ package jp.ijufumi.openreports.controller
 import jp.ijufumi.openreports.controller.common.ApplicationController
 import jp.ijufumi.openreports.model.TMember
 import skinny._
-import skinny.controller.feature.ThymeleafTemplateEngineFeature
 import skinny.validator.{ required, _ }
 
 class RootController extends ApplicationController {
@@ -47,6 +46,7 @@ class RootController extends ApplicationController {
         set("customErrorMessages", Seq(i18n.get("warning.loginFailure")))
         render(viewPath + "/index")
       } else {
+        logger.info("groups:%s".format(members(0).groups))
         skinnySession.setAttribute("memberInfo", userName);
         redirect(privatePath + "/home")
       }
