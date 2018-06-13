@@ -12,7 +12,8 @@ case class TGroup(
   createdAt: DateTime,
   updatedAt: DateTime,
   versions: Long,
-  members: Seq[TMember] = Nil
+  members: Seq[TMember] = Nil,
+  functions : Seq[TFunction] = Nil,
 )
 
 object TGroup extends SkinnyCRUDMapper[TGroup]
@@ -22,7 +23,7 @@ object TGroup extends SkinnyCRUDMapper[TGroup]
 
   override def defaultAlias = createAlias("grp")
 
-  override def primaryKeyFieldName = "group_id"
+  override def primaryKeyFieldName = "groupId"
 
   override def lockVersionFieldName: String = "versions"
 
@@ -33,4 +34,20 @@ object TGroup extends SkinnyCRUDMapper[TGroup]
     createdAt = rs.get(n.createdAt),
     updatedAt = rs.get(n.updatedAt)
   )
+
+  lazy val members = hasManyThroughWithFk[TMember](
+    through = RMemberGroup,
+    many = TMember,
+    throughFk = "groupId",
+    manyFk = "memberId",
+    merge = (a, members) => a.copy(members = members)
+  ).includes[TMember]((mg, members) => mg.map { m => m.copy(members = members.filter(_.groups.exists(_.groupId == m.groupId))) })
+
+  hasManyThroughWithFk[TFunction](
+    through = RGroupFunction,
+    many = TFunction,
+    throughFk = "groupId",
+    manyFk = "function_id",
+    merge = (g, functions) => g.copy(functions = functions)
+  ).byDefault
 }

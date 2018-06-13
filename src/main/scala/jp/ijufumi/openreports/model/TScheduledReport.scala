@@ -5,7 +5,13 @@ import scalikejdbc.WrappedResultSet
 import skinny.orm.SkinnyCRUDMapper
 import skinny.orm.feature.OptimisticLockWithVersionFeature
 
-case class TScheduledReport(scheduleId: Long, reportId: Long, cronExpression: String, createdAt: DateTime, updatedAt: DateTime)
+case class TScheduledReport(
+  scheduleId: Long,
+  reportId: Long,
+  cronExpression: String,
+  createdAt: DateTime,
+  updatedAt: DateTime
+)
 
 object TScheduledReport extends SkinnyCRUDMapper[TScheduledReport]
     with OptimisticLockWithVersionFeature[TScheduledReport] {
@@ -13,7 +19,7 @@ object TScheduledReport extends SkinnyCRUDMapper[TScheduledReport]
 
   override def defaultAlias = createAlias("sch_rep")
 
-  override def primaryKeyFieldName = "schedule_id"
+  override def primaryKeyFieldName = "scheduleId"
 
   override def lockVersionFieldName: String = "versions"
 

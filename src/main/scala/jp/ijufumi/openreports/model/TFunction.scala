@@ -12,11 +12,11 @@ case class TFunction(
 )
 
 object TFunction extends SkinnyCRUDMapper[TFunction] {
-  override def tableName = "t_member"
+  override def tableName = "t_function"
 
-  override def defaultAlias = createAlias("mem")
+  override def defaultAlias = createAlias("fun")
 
-  override def primaryKeyFieldName = "member_id"
+  override def primaryKeyFieldName = "functionId"
 
   override def extract(rs: WrappedResultSet, n: ResultName[TFunction]): TFunction = new TFunction(
     functionId = rs.get(n.functionId),

@@ -20,7 +20,7 @@ object TReportGroup extends SkinnyCRUDMapper[TReportGroup]
 
   override def defaultAlias = createAlias("rep_grp")
 
-  override def primaryKeyFieldName = "report_group_id"
+  override def primaryKeyFieldName = "reportGroupId"
 
   override def lockVersionFieldName: String = "versions"
 
@@ -31,9 +31,11 @@ object TReportGroup extends SkinnyCRUDMapper[TReportGroup]
     updatedAt = rs.get(n.updatedAt)
   )
 
-  hasManyThrough[TReport](
+  hasManyThroughWithFk[TReport](
     through = RGroupReportGroup,
     many = TReport,
+    throughFk = "reportId",
+    manyFk = "reportGroupId",
     merge = (a, reports) => a.copy(reports = reports)
   ).byDefault
 }

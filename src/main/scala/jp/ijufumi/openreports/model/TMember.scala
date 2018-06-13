@@ -22,7 +22,7 @@ object TMember extends SkinnyCRUDMapper[TMember]
 
   override def defaultAlias = createAlias("mem")
 
-  override def primaryKeyFieldName = "member_id"
+  override def primaryKeyFieldName = "memberId"
 
   override def lockVersionFieldName: String = "versions"
 
@@ -40,7 +40,7 @@ object TMember extends SkinnyCRUDMapper[TMember]
     many = TGroup,
     throughFk = "memberId",
     manyFk = "groupId",
-    merge = (a, groups) => a.copy(groups = groups)
+    merge = (m, groups) => m.copy(groups = groups)
   ).byDefault
 }
 
