@@ -130,6 +130,9 @@ insert into t_group (group_name, created_at, updated_at) values ('admin', now(),
 insert into t_member (email_address, password, is_admin, created_at, updated_at) values ('ijufumi@gmail.com', 'password', '1', now(), now());
 insert into r_member_group values (1, 1);
 
+insert into t_function (function_id, function_name, created_at, updated_at) values (1, 'テスト機能', now(), now());
+insert into r_group_function values (1, 1);
+
 insert into t_report (report_name, template_path, created_at, updated_at) values ('テストレポート', 'sample.xlsx', now(), now());
 insert into t_report_group (report_group_name, created_at, updated_at) values ('テストグループ', now(), now());
 insert into r_report_report_group values (1, 1);
