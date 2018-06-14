@@ -27,6 +27,7 @@ create table t_member (
   member_id serial primary key,
   email_address varchar(250) not null,
   password varchar(100) not null,
+  name varchar(250) not null,
   is_admin char not null default '0',
   created_at timestamp not null,
   updated_at timestamp not null,
@@ -46,8 +47,8 @@ create table t_group (
 
 -- create r_member_group
 create table r_member_group (
-  member_id integer not null,
-  group_id integer not null,
+  member_id integer references t_member(member_id),
+  group_id integer references t_group(group_id),
   primary key (member_id, group_id)
 );
 
@@ -61,8 +62,9 @@ create table t_function (
 
 -- create r_group_function
 create table r_group_function (
-  group_id integer not null,
-  function_id integer not null
+  group_id integer references t_group(group_id),
+  function_id integer references t_function(function_id),
+  primary key (group_id, function_id)
 );
 
 -- create t_report
@@ -97,15 +99,15 @@ create table t_report_group (
 
 -- create r_report_report_group
 create table r_report_report_group (
-  report_id integer not null,
-  report_group_id integer not null,
+  report_id integer references t_report(report_id),
+  report_group_id integer references t_report_group(report_group_id),
   primary key (report_id, report_group_id)
 );
 
 -- create r_group_report_group
 create table r_group_report_group (
-  group_id integer not null,
-  report_group_id integer not null,
+  group_id integer references t_group(group_id),
+  report_group_id integer references t_report_group(report_group_id),
   primary key (group_id, report_group_id)
 );
 
@@ -121,17 +123,28 @@ create table t_report_param (
 
 -- create r_report_report_param
 create table r_report_report_param (
-  report_id integer not null,
-  param_id integer not null,
+  report_id integer references t_report(report_id),
+  param_id integer references t_report_param(param_id),
   primary key (report_id, param_id)
 );
 
 insert into t_group (group_name, created_at, updated_at) values ('admin', now(), now());
-insert into t_member (email_address, password, is_admin, created_at, updated_at) values ('ijufumi@gmail.com', 'password', '1', now(), now());
-insert into r_member_group values (1, 1);
+insert into t_group (group_name, created_at, updated_at) values ('assistant', now(), now());
 
-insert into t_function (function_id, function_name, created_at, updated_at) values (1, 'テスト機能', now(), now());
+insert into t_member (email_address, password, name, is_admin, created_at, updated_at) values ('ijufumi@gmail.com', 'password', 'administrator', '1', now(), now());
+insert into r_member_group values (1, 1);
+insert into r_member_group values (1, 2);
+
+insert into t_function (function_id, function_name, created_at, updated_at) values (1, 'テスト機能1', now(), now());
+insert into t_function (function_id, function_name, created_at, updated_at) values (2, 'テスト機能2', now(), now());
+insert into t_function (function_id, function_name, created_at, updated_at) values (3, 'テスト機能3', now(), now());
+insert into t_function (function_id, function_name, created_at, updated_at) values (4, 'テスト機能4', now(), now());
+insert into t_function (function_id, function_name, created_at, updated_at) values (5, 'テスト機能5', now(), now());
 insert into r_group_function values (1, 1);
+insert into r_group_function values (1, 2);
+insert into r_group_function values (2, 3);
+insert into r_group_function values (2, 4);
+insert into r_group_function values (2, 5);
 
 insert into t_report (report_name, template_path, created_at, updated_at) values ('テストレポート', 'sample.xlsx', now(), now());
 insert into t_report_group (report_group_name, created_at, updated_at) values ('テストグループ', now(), now());
