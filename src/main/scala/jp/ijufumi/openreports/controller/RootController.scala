@@ -1,9 +1,12 @@
 package jp.ijufumi.openreports.controller
 
 import jp.ijufumi.openreports.controller.common.ApplicationController
-import jp.ijufumi.openreports.model.TMember
+import jp.ijufumi.openreports.model.{ TGroup, TMember }
+import jp.ijufumi.openreports.vo.MemberInfo
 import skinny._
 import skinny.validator.{ required, _ }
+
+import scala.collection.mutable
 
 class RootController extends ApplicationController {
 
@@ -46,8 +49,15 @@ class RootController extends ApplicationController {
         set("customErrorMessages", Seq(i18n.get("warning.loginFailure")))
         render(viewPath + "/index")
       } else {
-        logger.info("groups:%s".format(members(0).groups))
-        skinnySession.setAttribute("memberInfo", userName);
+        var menus = mutable.Set[Long]()
+        val m = members.head
+        for (g <- m.groups) {
+          val group = TGroup.findById(g.groupId)
+          menus ++ group.get.functions.map(_.functionId).toSet
+        }
+        val memberInfo = MemberInfo(m.memberId, m.name, menus.toSet)
+        logger.info("memberInfo:%s".format(memberInfo))
+        skinnySession.setAttribute("memberInfo", memberInfo);
         redirect(privatePath + "/home")
       }
     } else {

@@ -9,6 +9,7 @@ case class TMember(
   memberId: Long,
   emailAddress: String,
   password: String,
+  name: String,
   isAdmin: String,
   createdAt: DateTime,
   updatedAt: DateTime,
@@ -30,6 +31,7 @@ object TMember extends SkinnyCRUDMapper[TMember]
     memberId = rs.get(n.memberId),
     emailAddress = rs.get(n.emailAddress),
     password = rs.get(n.password),
+    name = rs.get(n.name),
     isAdmin = rs.get(n.isAdmin),
     createdAt = rs.get(n.createdAt),
     updatedAt = rs.get(n.updatedAt)
