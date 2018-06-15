@@ -1,8 +1,7 @@
 package jp.ijufumi.openreports.model
 
-import jp.ijufumi.openreports.model.TMember.hasManyThroughWithFk
 import org.joda.time.DateTime
-import scalikejdbc.{ ResultName, WrappedResultSet }
+import scalikejdbc.{ResultName, WrappedResultSet}
 import skinny.orm.SkinnyCRUDMapper
 import skinny.orm.feature.OptimisticLockWithVersionFeature
 
@@ -17,7 +16,7 @@ case class TGroup(
 )
 
 object TGroup extends SkinnyCRUDMapper[TGroup]
-    with OptimisticLockWithVersionFeature[TGroup] {
+  with OptimisticLockWithVersionFeature[TGroup] {
 
   override def tableName = "t_group"
 
@@ -47,7 +46,7 @@ object TGroup extends SkinnyCRUDMapper[TGroup]
     through = RGroupFunction,
     many = TFunction,
     throughFk = "groupId",
-    manyFk = "function_id",
+    manyFk = "functionId",
     merge = (g, functions) => g.copy(functions = functions)
   ).byDefault
 }

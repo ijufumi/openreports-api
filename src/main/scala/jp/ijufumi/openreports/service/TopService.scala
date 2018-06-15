@@ -16,8 +16,10 @@ class TopService extends LoggerProvider {
     } else {
       var menus = mutable.Set[Long]()
       val m = members.head
-      for (g <- m.groups) {
+      for (g <- m.groups) { //TODO:同じグループが複数取れる問題あり
+        logger.debug("Group:%s".format(g))
         val group = TGroup.findById(g.groupId)
+        logger.debug("Group:%s".format(group))
         menus ++ group.get.functions.map(_.functionId).toSet
       }
       member = MemberInfo(m.memberId, m.name, menus.toSet)

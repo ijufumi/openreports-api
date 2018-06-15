@@ -3,7 +3,7 @@ package jp.ijufumi.openreports.controller
 import jp.ijufumi.openreports.controller.common.ApplicationController
 import jp.ijufumi.openreports.service.TopService
 import skinny._
-import skinny.validator.{required, _}
+import skinny.validator.{ required, _ }
 
 class TopController extends ApplicationController {
 
