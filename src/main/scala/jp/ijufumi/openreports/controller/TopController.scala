@@ -8,10 +8,10 @@ import skinny.validator.{ required, _ }
 
 import scala.collection.mutable
 
-class RootController extends ApplicationController {
+class TopController extends ApplicationController {
 
   val path = publicPath
-  val viewPath = publicPath + "/root"
+  val viewPath = publicPath + "/top"
 
   def requestParams = Params(params)
 
@@ -24,7 +24,7 @@ class RootController extends ApplicationController {
   def toTop = redirect(publicPath)
 
   def index = {
-    //render("/root/index")
+    //render("/top/index")
     val memberInfo: Option[Any] = skinnySession.getAttribute("memberInfo")
     if (memberInfo.isDefined) {
       redirect(privatePath + "/home")

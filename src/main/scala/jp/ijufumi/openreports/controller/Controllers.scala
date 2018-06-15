@@ -7,7 +7,7 @@ import skinny.controller.AssetsController
 object Controllers {
 
   def mount(ctx: ServletContext): Unit = {
-    root.mount(ctx)
+    top$.mount(ctx)
     home.mount(ctx)
     report.mount(ctx)
     scheduledReport.mount(ctx)
@@ -16,7 +16,7 @@ object Controllers {
     AssetsController.mount(ctx)
   }
 
-  object root extends RootController with Routes {
+  object top$ extends TopController with Routes {
     val toTopUrl = get("/?")(toTop).as('toTop)
     val indexUrl = get(path + "/?")(index).as('index)
     val indexUrl2 = get(path + "/login")(index).as('index)
