@@ -1,12 +1,9 @@
 package jp.ijufumi.openreports.controller
 
 import jp.ijufumi.openreports.controller.common.ApplicationController
-import jp.ijufumi.openreports.model.{ TGroup, TMember }
-import jp.ijufumi.openreports.vo.MemberInfo
+import jp.ijufumi.openreports.service.TopService
 import skinny._
-import skinny.validator.{ required, _ }
-
-import scala.collection.mutable
+import skinny.validator.{required, _}
 
 class TopController extends ApplicationController {
 
@@ -17,7 +14,7 @@ class TopController extends ApplicationController {
 
   def validateParams = validation(
     requestParams,
-    paramKey("userName") is required,
+    paramKey("loginId") is required,
     paramKey("password") is required
   )
 
@@ -38,30 +35,21 @@ class TopController extends ApplicationController {
   }
 
   def login = {
-    val userName = requestParams.getAs("userName").getOrElse("")
+    val loginId = requestParams.getAs("loginId").getOrElse("")
     val password = requestParams.getAs("password").getOrElse("")
     if (validateParams.validate) {
-      val members: Seq[TMember] = TMember.where('emailAddress -> userName, 'password -> password).apply();
+      val memberInfoOpt = new TopService().login(loginId, password)
 
-      if (members.isEmpty) {
-        logger.info("invalid id or password : [" + userName + "][" + password + "]")
-        set("userName", requestParams.getAs("userName").getOrElse(""))
+      if (memberInfoOpt.isEmpty) {
+        set("loginId", requestParams.getAs("loginId").getOrElse(""))
         set("customErrorMessages", Seq(i18n.get("warning.loginFailure")))
         render(viewPath + "/index")
       } else {
-        var menus = mutable.Set[Long]()
-        val m = members.head
-        for (g <- m.groups) {
-          val group = TGroup.findById(g.groupId)
-          menus ++ group.get.functions.map(_.functionId).toSet
-        }
-        val memberInfo = MemberInfo(m.memberId, m.name, menus.toSet)
-        logger.info("memberInfo:%s".format(memberInfo))
-        skinnySession.setAttribute("memberInfo", memberInfo);
+        skinnySession.setAttribute("memberInfo", memberInfoOpt.get);
         redirect(privatePath + "/home")
       }
     } else {
-      logger.info("invalid id or password : [" + userName + "][" + password + "]")
+      logger.info("invalid id or password : [" + loginId + "][" + password + "]")
       set("customErrorMessages", Seq(i18n.get("warning.loginFailure")))
       render(viewPath + "/index")
     }
