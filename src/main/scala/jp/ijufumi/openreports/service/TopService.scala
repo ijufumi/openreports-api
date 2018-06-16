@@ -1,6 +1,6 @@
 package jp.ijufumi.openreports.service
 
-import jp.ijufumi.openreports.model.{TGroup, TMember}
+import jp.ijufumi.openreports.model.{ TGroup, TMember }
 import jp.ijufumi.openreports.vo.MemberInfo
 import skinny.LoggerProvider
 
@@ -14,13 +14,13 @@ class TopService extends LoggerProvider {
     if (members.isEmpty) {
       logger.info("invalid id or password : [%s][%s]".format(emailAddress, password))
     } else {
-      var menus = mutable.Set[Long]()
+      val menus = mutable.Set[Long]()
       val m = members.head
-      for (g <- m.groups) { //TODO:同じグループが複数取れる問題あり
-        logger.debug("Group:%s".format(g))
-        val group = TGroup.findById(g.groupId)
-        logger.debug("Group:%s".format(group))
-        menus ++ group.get.functions.map(_.functionId).toSet
+      for (g <- m.groups) {
+        logger.debug("[1]Group:%s".format(g))
+        val group = TGroup.includes(TGroup.functions).findById(g.groupId).get
+        logger.debug("[2]Group:%s".format(group))
+        menus ++ group.functions.map(_.functionId).toSet
       }
       member = MemberInfo(m.memberId, m.name, menus.toSet)
       logger.info("memberInfo:%s".format(member))

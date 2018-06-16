@@ -42,11 +42,11 @@ object TGroup extends SkinnyCRUDMapper[TGroup]
     merge = (a, members) => a.copy(members = members)
   ).includes[TMember]((mg, members) => mg.map { m => m.copy(members = members.filter(_.groups.exists(_.groupId == m.groupId))) })
 
-  hasManyThroughWithFk[TFunction](
+  lazy val functions = hasManyThroughWithFk[TFunction](
     through = RGroupFunction,
     many = TFunction,
     throughFk = "groupId",
     manyFk = "functionId",
     merge = (g, functions) => g.copy(functions = functions)
-  ).byDefault
+  ).includes[TFunction]((gf, functions) => gf.map { f => f.copy(functions = functions.filter(_.groups.exists(_.groupId == f.groupId))) })
 }

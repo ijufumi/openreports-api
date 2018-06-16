@@ -1,7 +1,7 @@
 package jp.ijufumi.openreports.model
 
 import org.joda.time.DateTime
-import scalikejdbc.{ ResultName, WrappedResultSet }
+import scalikejdbc.{ResultName, WrappedResultSet}
 import skinny.orm.SkinnyCRUDMapper
 
 case class TFunction(
@@ -9,6 +9,7 @@ case class TFunction(
   functionName: String,
   createdAt: DateTime,
   updatedAt: DateTime,
+  groups: Seq[TGroup] = Nil,
 )
 
 object TFunction extends SkinnyCRUDMapper[TFunction] {
@@ -24,4 +25,12 @@ object TFunction extends SkinnyCRUDMapper[TFunction] {
     createdAt = rs.get(n.createdAt),
     updatedAt = rs.get(n.updatedAt)
   )
+
+  lazy val groups = hasManyThroughWithFk[TGroup](
+    through = RGroupFunction,
+    many = TGroup,
+    throughFk = "functionId",
+    manyFk = "groupId",
+    merge = (f, groups) => f.copy(groups = groups)
+  ).includes[TGroup]((gf, groups) => gf.map { g => g.copy(groups = groups.filter(_.functions.exists(_.functionId == g.functionId))) })
 }
