@@ -17,11 +17,11 @@ class TopService extends LoggerProvider {
       val menus = mutable.Set[Long]()
       val m = members.head
       for (g <- m.groups) {
-        logger.debug("[1]Group:%s".format(g))
         val group = TGroup.includes(TGroup.functions).findById(g.groupId).get
-        logger.debug("[2]Group:%s".format(group))
-        menus ++ group.functions.map(_.functionId).toSet
+        logger.debug("Group:%s".format(group))
+        menus ++= group.functions.map(_.functionId).toSet
       }
+
       member = MemberInfo(m.memberId, m.name, menus.toSet)
       logger.info("memberInfo:%s".format(member))
     }

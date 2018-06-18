@@ -5,15 +5,14 @@ import scalikejdbc.{ResultName, WrappedResultSet}
 import skinny.orm.SkinnyCRUDMapper
 import skinny.orm.feature.OptimisticLockWithVersionFeature
 
-case class TGroup(
-  groupId: Long,
-  groupName: String,
-  createdAt: DateTime,
-  updatedAt: DateTime,
-  versions: Long,
-  members: Seq[TMember] = Nil,
-  functions : Seq[TFunction] = Nil,
-)
+case class TGroup(groupId: Long,
+                  groupName: String,
+                  createdAt: DateTime,
+                  updatedAt: DateTime,
+                  versions: Long,
+                  members: Seq[TMember] = Nil,
+                  functions: Seq[TFunction] = Nil,
+                 )
 
 object TGroup extends SkinnyCRUDMapper[TGroup]
   with OptimisticLockWithVersionFeature[TGroup] {
@@ -48,5 +47,5 @@ object TGroup extends SkinnyCRUDMapper[TGroup]
     throughFk = "groupId",
     manyFk = "functionId",
     merge = (g, functions) => g.copy(functions = functions)
-  ).includes[TFunction]((gf, functions) => gf.map { f => f.copy(functions = functions.filter(_.groups.exists(_.groupId == f.groupId))) })
+  ).includes[TFunction]((groups, func) => groups.map { g => g.copy(functions = func) })
 }
