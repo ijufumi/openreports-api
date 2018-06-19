@@ -9,6 +9,7 @@ class ReportController extends ApplicationController {
   val viewPath = privatePath + "/report"
 
   override val activeMenu = "report"
+  override val requiredMemberInfo = true
 
   def requestParams = Params(params)
 

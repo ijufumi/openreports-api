@@ -2,6 +2,7 @@ package jp.ijufumi.openreports.controller.common
 
 import java.io.{ BufferedInputStream, FileInputStream, InputStream }
 
+import jp.ijufumi.openreports.controller.publicPath
 import skinny._
 import skinny.controller.feature.ThymeleafTemplateEngineFeature
 import skinny.filter._
@@ -21,11 +22,16 @@ trait ApplicationController extends SkinnyController
     with ThymeleafTemplateEngineFeature {
 
   val activeMenu = ""
+  val requiredMemberInfo = false
 
-  before() {
+  beforeAction() {
     val memberInfo: Option[Any] = skinnySession.getAttribute("memberInfo")
     // logger.info("before called at " + getClass.getSimpleName + ":" + memberInfo.isDefined)
     set("loggedIn", memberInfo.isDefined)
+    if (requiredMemberInfo && memberInfo.isEmpty) {
+      redirect(publicPath)
+    }
+
     set("activeMenu", activeMenu)
   }
 
