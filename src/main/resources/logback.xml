@@ -15,7 +15,7 @@
     <logger name="skinny.micro.contrib.ScalateSupport##anon#1.SourceMap" level="warn"/>
     <logger name="org.flywaydb" level="info"/>
     <logger name="org.thymeleaf" level="warn"/>
-    <logger name="scalikejdbc" level="debug"/>
+    <logger name="scalikejdbc" level="info"/>
 
     <logger name="jp.ijufumi.openreports" level="debug"/>
 
