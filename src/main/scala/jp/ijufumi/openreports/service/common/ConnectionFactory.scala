@@ -1,4 +1,4 @@
-package jp.ijufumi.openreports.service
+package jp.ijufumi.openreports.service.common
 
 import scalikejdbc.Commons2ConnectionPoolFactory
 
