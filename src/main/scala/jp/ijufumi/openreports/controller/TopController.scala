@@ -10,6 +10,8 @@ class TopController extends ApplicationController {
   val path = publicPath
   val viewPath = publicPath + "/top"
 
+  override val activeMenu = "top"
+
   def requestParams = Params(params)
 
   def validateParams = validation(

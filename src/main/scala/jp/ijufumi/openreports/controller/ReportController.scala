@@ -8,10 +8,12 @@ class ReportController extends ApplicationController {
   val path = privatePath + "/report"
   val viewPath = privatePath + "/report"
 
+  override val activeMenu = "report"
+
   def requestParams = Params(params)
 
   def index = {
-    render(render(viewPath + "/index"))
+    render(viewPath + "/index")
   }
 
   def download: Unit = {

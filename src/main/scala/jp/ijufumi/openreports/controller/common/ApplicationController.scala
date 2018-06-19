@@ -20,10 +20,13 @@ trait ApplicationController extends SkinnyController
     with I18nFeature
     with ThymeleafTemplateEngineFeature {
 
+  val activeMenu = ""
+
   before() {
     val memberInfo: Option[Any] = skinnySession.getAttribute("memberInfo")
     // logger.info("before called at " + getClass.getSimpleName + ":" + memberInfo.isDefined)
     set("loggedIn", memberInfo.isDefined)
+    set("activeMenu", activeMenu)
   }
 
   // override def defaultLocale = Some(new java.util.Locale("ja"))

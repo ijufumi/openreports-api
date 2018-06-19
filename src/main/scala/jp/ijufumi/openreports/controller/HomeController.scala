@@ -7,6 +7,8 @@ class HomeController extends ApplicationController {
   val path = privatePath + "/home"
   val viewPath = privatePath + "/home"
 
+  override val activeMenu = "home"
+
   def index = {
     //logger.info("index called at " + getClass.getSimpleName)
     val memberInfo: Option[Any] = skinnySession.getAttribute("memberInfo")
