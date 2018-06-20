@@ -1,7 +1,9 @@
 package jp.ijufumi.openreports.controller
 
 import jp.ijufumi.openreports.controller.common.ApplicationController
-import jp.ijufumi.openreports.service.ReportingService
+import jp.ijufumi.openreports.service.ReportService
+import jp.ijufumi.openreports.service.common.ReportingService
+import jp.ijufumi.openreports.vo.MemberInfo
 import skinny.Params
 
 class ReportController extends ApplicationController {
@@ -14,6 +16,9 @@ class ReportController extends ApplicationController {
   def requestParams = Params(params)
 
   def index = {
+    val memberInfo: Option[MemberInfo] = skinnySession.getAttribute("memberInfo").asInstanceOf[Option[MemberInfo]]
+    val reportGroups = new ReportService().list(memberInfo.get.groups)
+    set("reportGroups", reportGroups)
     render(viewPath + "/index")
   }
 

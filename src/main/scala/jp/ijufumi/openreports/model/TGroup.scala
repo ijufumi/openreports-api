@@ -12,6 +12,7 @@ case class TGroup(groupId: Long,
                   versions: Long,
                   members: Seq[TMember] = Nil,
                   functions: Seq[TFunction] = Nil,
+                  reportGroups: Seq[TReportGroup] = Nil,
                  )
 
 object TGroup extends SkinnyCRUDMapper[TGroup]
@@ -39,7 +40,7 @@ object TGroup extends SkinnyCRUDMapper[TGroup]
     throughFk = "groupId",
     manyFk = "memberId",
     merge = (a, members) => a.copy(members = members)
-  ).includes[TMember]((mg, members) => mg.map { m => m.copy(members = members.filter(_.groups.exists(_.groupId == m.groupId))) })
+  ).includes[TMember]((mg, mems) => mg.map { m => m.copy(members = mems) })
 
   lazy val functions = hasManyThroughWithFk[TFunction](
     through = RGroupFunction,
@@ -48,4 +49,12 @@ object TGroup extends SkinnyCRUDMapper[TGroup]
     manyFk = "functionId",
     merge = (g, functions) => g.copy(functions = functions)
   ).includes[TFunction]((groups, func) => groups.map { g => g.copy(functions = func) })
+
+  lazy val reportGroups = hasManyThroughWithFk[TReportGroup](
+    through = RGroupReportGroup,
+    many = TReportGroup,
+    throughFk = "groupId",
+    manyFk = "reportGroupId",
+    merge = (g, reportGroups) => g.copy(reportGroups = reportGroups)
+  ).includes[TReportGroup]((groups, repgrps) => groups.map { g => g.copy(reportGroups = repgrps) })
 }

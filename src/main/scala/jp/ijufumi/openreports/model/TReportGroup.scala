@@ -10,7 +10,8 @@ case class TReportGroup(
   reportGroupName: String,
   createdAt: DateTime,
   updatedAt: DateTime,
-  reports: Seq[TReport] = Nil
+  reports: Seq[TReport] = Nil,
+  groups: Seq[TGroup] = Nil
 )
 
 object TReportGroup extends SkinnyCRUDMapper[TReportGroup]
@@ -31,11 +32,19 @@ object TReportGroup extends SkinnyCRUDMapper[TReportGroup]
     updatedAt = rs.get(n.updatedAt)
   )
 
-  hasManyThroughWithFk[TReport](
+  lazy val reports = hasManyThroughWithFk[TReport](
     through = RGroupReportGroup,
     many = TReport,
     throughFk = "reportId",
     manyFk = "reportGroupId",
     merge = (a, reports) => a.copy(reports = reports)
-  ).byDefault
+  ).includes[TReport]((rg, reps) => rg.map { m => m.copy(reports = reps) })
+
+  lazy val groups = hasManyThroughWithFk[TGroup](
+    through = RGroupReportGroup,
+    many = TGroup,
+    throughFk = "",
+    manyFk = "",
+    merge = (a, groups) => a.copy(groups = groups)
+  ).includes[TGroup]((rg, grps) => rg.map { m => m.copy(groups = grps) })
 }

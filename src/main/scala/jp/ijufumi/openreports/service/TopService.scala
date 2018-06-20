@@ -1,6 +1,6 @@
 package jp.ijufumi.openreports.service
 
-import jp.ijufumi.openreports.model.{TGroup, TMember}
+import jp.ijufumi.openreports.model.{ TGroup, TMember }
 import jp.ijufumi.openreports.vo.MemberInfo
 import skinny.LoggerProvider
 
