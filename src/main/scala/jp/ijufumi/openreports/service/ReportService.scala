@@ -1,6 +1,6 @@
 package jp.ijufumi.openreports.service
 
-import jp.ijufumi.openreports.model.{TGroup, TReportGroup}
+import jp.ijufumi.openreports.model.{ TGroup, TReportGroup }
 
 import scala.collection.mutable
 
@@ -17,7 +17,7 @@ class ReportService {
 }
 
 object ReportService {
-  def apply : ReportService = {
+  def apply(): ReportService = {
     new ReportService()
   }
 }

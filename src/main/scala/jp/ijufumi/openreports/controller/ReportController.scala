@@ -17,7 +17,7 @@ class ReportController extends ApplicationController {
 
   def index = {
     val memberInfo: Option[MemberInfo] = skinnySession.getAttribute("memberInfo").asInstanceOf[Option[MemberInfo]]
-    val reportGroups = new ReportService().list(memberInfo.get.groups)
+    val reportGroups = ReportService().list(memberInfo.get.groups)
     set("reportGroups", reportGroups)
     render(viewPath + "/index")
   }
