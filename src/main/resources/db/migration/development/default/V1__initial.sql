@@ -147,6 +147,12 @@ insert into r_group_function values (2, 4);
 insert into r_group_function values (2, 5);
 
 insert into t_report (report_name, template_path, created_at, updated_at) values ('テストレポート', 'sample.xlsx', now(), now());
-insert into t_report_group (report_group_name, created_at, updated_at) values ('テストグループ', now(), now());
+insert into t_report_group (report_group_name, created_at, updated_at) values ('テストグループ1', now(), now());
+insert into t_report_group (report_group_name, created_at, updated_at) values ('テストグループ2', now(), now());
+insert into t_report_group (report_group_name, created_at, updated_at) values ('テストグループ3', now(), now());
 insert into r_report_report_group values (1, 1);
+insert into r_report_report_group values (1, 2);
+insert into r_report_report_group values (1, 3);
 insert into r_group_report_group values (1, 1);
+insert into r_group_report_group values (1, 2);
+insert into r_group_report_group values (1, 3);
