@@ -6,8 +6,9 @@ import skinny.logging.Logging
 import scala.collection.mutable
 
 class ReportService extends Logging {
-  def list(groupId: Set[Long]): Seq[TReportGroup] = {
-    val groups = TGroup.includes(TGroup.reportGroups).where('groupId -> Seq(1, 2, 3)).apply() // TODO:Use groupId params.
+  def list(groupId: Seq[Long]): Seq[TReportGroup] = {
+
+    val groups = TGroup.includes(TGroup.reportGroups).where('groupId -> groupId).apply()
 
     logger.debug("groups:%s".format(groups))
 

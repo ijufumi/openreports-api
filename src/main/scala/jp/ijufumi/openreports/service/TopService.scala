@@ -1,6 +1,6 @@
 package jp.ijufumi.openreports.service
 
-import jp.ijufumi.openreports.model.{ TGroup, TMember }
+import jp.ijufumi.openreports.model.{TGroup, TMember}
 import jp.ijufumi.openreports.vo.MemberInfo
 import skinny.LoggerProvider
 
@@ -21,10 +21,10 @@ class TopService extends LoggerProvider {
         val group = TGroup.includes(TGroup.functions).findById(g.groupId).get
         logger.debug("Group:%s".format(group))
         menus ++= group.functions.map(_.functionId).toSet
-        groups + g.groupId
+        groups += g.groupId
       }
 
-      member = MemberInfo(m.memberId, m.name, groups.toSet, menus.toSet)
+      member = MemberInfo(m.memberId, m.name, Seq(groups.toSeq: _*), Seq(menus.toSeq: _*))
       logger.info("memberInfo:%s".format(member))
     }
     Option(member)
