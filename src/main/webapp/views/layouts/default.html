@@ -99,7 +99,7 @@
         <h4 class="alert-heading"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>Error
         </h4>
         <p>
-            Some exceptions are occurred.
+            <div th:remove="all">Some exceptions are occurred.</div>
             <th:block th:each="k : ${keyAndErrorMessages.keySet()}">
                 <div th:text="${keyAndErrorMessages.getErrors(k).mkString()}">
                 </div>
