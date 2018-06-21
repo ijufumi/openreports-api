@@ -1,4 +1,4 @@
-package jp.ijufumi.openreports.service.common
+package jp.ijufumi.openreports.service.support
 
 import java.io.{ File, InputStream }
 import java.nio.file.{ FileSystems, Files }
@@ -11,7 +11,7 @@ import org.jxls.jdbc.JdbcHelper
 import org.jxls.util.JxlsHelper
 import skinny.logging.LoggerProvider
 
-case class ReportingService(templateFile: String) extends LoggerProvider {
+case class ReportingSupportService(templateFile: String) extends LoggerProvider {
   def output(): Option[File] = {
     val inFileName = new File(templateFile).getName
     val dotIndex = inFileName.lastIndexOf('.')

@@ -2,7 +2,7 @@ package jp.ijufumi.openreports.controller
 
 import jp.ijufumi.openreports.controller.common.ApplicationController
 import jp.ijufumi.openreports.service.ReportService
-import jp.ijufumi.openreports.service.common.ReportingService
+import jp.ijufumi.openreports.service.support.ReportingSupportService
 import jp.ijufumi.openreports.vo.MemberInfo
 import skinny.Params
 
@@ -28,7 +28,7 @@ class ReportController extends ApplicationController {
   }
 
   def outputReport: Unit = {
-    val reportFileOpt = ReportingService("report/sample.xlsx").output()
+    val reportFileOpt = ReportingSupportService("report/sample.xlsx").output()
     if (reportFileOpt.nonEmpty) {
       var reportFile = reportFileOpt.get
       fileDownload(reportFile.getAbsolutePath, reportFile.getName, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
