@@ -19,11 +19,11 @@
         </th:block>
         <th:block layout:fragment="content">
             <ul>
-                <li th:each="g : ${reportGroup}" th:text="${g.reportGroupName}">aaaa</li>
-                <li th:remove="tag">bbbb</li>
-                <li th:remove="tag">cccc</li>
-                <li th:remove="tag">dddd</li>
-                <li th:remove="tag">eeee</li>
+                <li th:each="g : ${reportGroups}" th:text="${g}">aaaa</li>
+                <li th:remove="all">bbbb</li>
+                <li th:remove="all">cccc</li>
+                <li th:remove="all">dddd</li>
+                <li th:remove="all">eeee</li>
             </ul>
         </th:block>
     </div>
