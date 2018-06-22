@@ -10,26 +10,41 @@
           href="../../../assets/library/bootstrap-datepicker/bootstrap-datepicker.standalone.min.css"/>
     <link rel="stylesheet"
           href="../../../assets/library/bootstrap-datepicker/bootstrap-datepicker3.standalone.min.css"/>
+
+    <link rel="stylesheet" href="../../../assets/css/layout.css">
 </head>
 <body>
 <div layout:decorator="layouts/default">
-    <div class="container span12">
-        <th:block layout:fragment="title">
-            <h3>レポート管理</h3>
-        </th:block>
-        <th:block layout:fragment="content">
-            <ul>
-                <li th:each="g : ${reportGroups}">
-                    <a th:href="@{'/private/report/'} + ${g.getReportGroupId()}">
-                        <th:block th:text="${g.getReportGroupName()}">aaaa</th:block>
+    <div class="container">
+        <div class="row title">
+            <th:block layout:fragment="title">
+                <h2>レポート管理</h2>
+            </th:block>
+        </div>
+        <div class="row">
+            <th:block layout:fragment="content">
+                <div class="list-group">
+                    <a th:each="g : ${reportGroups}"
+                       th:href="@{'/private/report/'} + ${g.getReportGroupId()}"
+                       th:text="${g.getReportGroupName()}"
+                       href="#" class="list-group-item list-group-item-action">
+                        aaaaa
                     </a>
-                </li>
-                <li th:remove="all">bbbb</li>
-                <li th:remove="all">cccc</li>
-                <li th:remove="all">dddd</li>
-                <li th:remove="all">eeee</li>
-            </ul>
-        </th:block>
+                    <a th:remove="all" href="#" class="list-group-item list-group-item-action">
+                        bbbbb
+                    </a>
+                    <a th:remove="all" href="#" class="list-group-item list-group-item-action">
+                        ccccc
+                    </a>
+                    <a th:remove="all" href="#" class="list-group-item list-group-item-action">
+                        ddddd
+                    </a>
+                    <a th:remove="all" href="#" class="list-group-item list-group-item-action">
+                        eeeee
+                    </a>
+                </div>
+            </th:block>
+        </div>
     </div>
 </div>
 <script type="text/javascript" src="/assets/js/skinny-framework.js" th:src="@{/assets/js/skinny-framework.js}"></script>

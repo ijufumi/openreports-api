@@ -9,36 +9,35 @@
           href="../../../assets/library/bootstrap-datepicker/bootstrap-datepicker.standalone.min.css"/>
     <link rel="stylesheet"
           href="../../../assets/library/bootstrap-datepicker/bootstrap-datepicker3.standalone.min.css"/>
+
+    <link rel="stylesheet" href="../../../assets/css/layout.css">
+
 </head>
 <body>
 <div layout:decorator="layouts/default">
-    <div class="container span12">
-        <th:block layout:fragment="title">
-            <h3>OpenReports</h3>
-        </th:block>
-        <th:block layout:fragment="content">
-            <form class="form-horizontal" method="POST" action="/public/login">
-                <div class="form-group">
-                    <label class="control-label col-md-1" for="loginId">ID</label>
-                    <div class="col-md-4">
+    <div class="container">
+        <div class="row title">
+            <th:block layout:fragment="title">
+                    <h2>OpenReports</h2>
+            </th:block>
+        </div>
+        <div class="row">
+            <th:block layout:fragment="content">
+                <form class="form-horizontal" method="POST" action="/public/login">
+                    <div class="form-group">
+                        <label class="sr-only" for="loginId">Input your email address. (ex: aaaaa@bbb.ccc.com)</label>
                         <input type="email" name="loginId" th:value="${loginId}" id="loginId" class="form-control"
-                               placeholder="Input your email address. (ex: aaaaa@bbb.ccc.com)"/>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="control-label col-md-1" for="password">Password</label>
-                    <div class="col-md-4">
+                               placeholder="Email Address"/>
+                        <label class="sr-only" for="password">Password</label>
                         <input type="password" name="password" th:value="${password}" id="password" class="form-control"
-                               placeholder="Input your password."/>
+                               placeholder="Password"/>
                     </div>
-                </div>
-                <div class="form-group">
-                    <div class="col-md-offset-1 col-md-4">
-                        <button type="submit" class="btn btn-primary">Sign In</button>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-lg btn-primary">Sign In</button>
                     </div>
-                </div>
-            </form>
-        </th:block>
+                </form>
+            </th:block>
+        </div>
     </div>
 </div>
 <script src="../../../assets/library/fontawesome/js/fontawesome-all.min.js"></script>

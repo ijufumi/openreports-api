@@ -41,7 +41,7 @@
           th:href="@{/assets/library/bootstrap-datepicker/bootstrap-datepicker3.standalone.min.css}"/>
 </head>
 <body>
-<div class="container span12">
+<div class="container">
     <nav class="navbar navbar-expand-lg navbar-light " style="background-color: #e3f2fd;">
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
                 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -93,7 +93,11 @@
             </ul>
         </div>
     </nav>
-    <div layout:fragment="title"><h3>Skinny Application</h3></div>
+    <div class="row">
+        <div layout:fragment="title">
+            <h2>Skinny Application</h2>
+        </div>
+    </div>
     <hr/>
     <div class="alert alert-danger" role="alert" th:if="${keyAndErrorMessages.size()} != 0 or ${customErrorMessages}">
         <h4 class="alert-heading"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>Error
@@ -109,7 +113,9 @@
             </th:block>
         </p>
     </div>
-    <div layout:fragment="content"></div>
+    <div class="row">
+        <div layout:fragment="content"></div>
+    </div>
     <hr/>
 </div>
 <script src="../../assets/library/fontawesome/js/fontawesome-all.min.js"
