@@ -1,6 +1,6 @@
 package jp.ijufumi.openreports.service
 
-import jp.ijufumi.openreports.model.{ TGroup, TReportGroup }
+import jp.ijufumi.openreports.model.{TGroup, TReport, TReportGroup}
 import skinny.logging.Logging
 
 import scala.collection.mutable
@@ -20,6 +20,15 @@ class ReportService extends Logging {
     logger.debug("reportGroups:%s".format(reportGroups))
 
     reportGroups.toSeq.sortBy(_.reportGroupId)
+  }
+
+  def reportList(groupId: Long): Seq[TReport] = {
+    val reportGroup = TReportGroup.includes(TReportGroup.reports).findById(groupId)
+    if (reportGroup.isEmpty) {
+      return Seq.empty
+    }
+
+    reportGroup.get.reports
   }
 }
 

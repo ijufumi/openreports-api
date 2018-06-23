@@ -1,11 +1,9 @@
 package jp.ijufumi.openreports.controller
 
 import jp.ijufumi.openreports.controller.common.ApplicationController
-import jp.ijufumi.openreports.model.TReportGroup
 import jp.ijufumi.openreports.service.ReportService
 import jp.ijufumi.openreports.service.support.ReportingSupportService
 import jp.ijufumi.openreports.vo.{MemberInfo, ReportGroupInfo}
-import skinny.Params
 
 class ReportController extends ApplicationController {
   val path = privatePath + "/report"
@@ -21,13 +19,11 @@ class ReportController extends ApplicationController {
     render(viewPath + "/index")
   }
 
-  def reportList = params.getAs[Long]("id").map{id =>
-    TReportGroup.includes(TReportGroup.reports).findById(id).map{reps =>
-      set("reports", reps)
-      render(viewPath + "/report-list")
-    } getOrElse haltWithBody(404)
-  } getOrElse haltWithBody(404)
-
+  def reportList = params.getAs[Long]("id").map { id =>
+    val reports = ReportService().reportList(id)
+    set("reports", reports)
+    render(viewPath + "/report-list")
+  }
 
   def download: Unit = {
     val fileStream = getClass.getClassLoader.getResourceAsStream("report/sample.xlsx")
