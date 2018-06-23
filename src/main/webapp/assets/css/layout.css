@@ -1,3 +1,4 @@
+/* common */
 .container {
     width: 1000px;
 }
@@ -10,15 +11,19 @@
     padding-bottom: 20px;
 }
 
-.container .row input{
+/** public **/
+/* top */
+.container .row .public-top input{
     width: 400px;
     margin-bottom: -1px;
 }
 
-.container .row button{
+.container .row .public-top button{
     width: 400px;
 }
 
-.container .row .list-group{
+/** private **/
+/* report */
+.container .row .private-report .list-group{
     width: 500px;
 }

@@ -23,25 +23,27 @@
         </div>
         <div class="row">
             <th:block layout:fragment="content">
-                <div class="list-group">
-                    <a th:each="g : ${reportGroups}"
-                       th:href="@{'/private/report/'} + ${g.getReportGroupId()}"
-                       th:text="${g.getReportGroupName()}"
-                       href="#" class="list-group-item list-group-item-action">
-                        aaaaa
-                    </a>
-                    <a th:remove="all" href="#" class="list-group-item list-group-item-action">
-                        bbbbb
-                    </a>
-                    <a th:remove="all" href="#" class="list-group-item list-group-item-action">
-                        ccccc
-                    </a>
-                    <a th:remove="all" href="#" class="list-group-item list-group-item-action">
-                        ddddd
-                    </a>
-                    <a th:remove="all" href="#" class="list-group-item list-group-item-action">
-                        eeeee
-                    </a>
+                <div class="private-report">
+                    <div class="list-group">
+                        <a th:each="g : ${reportGroups}"
+                           th:href="@{'/private/report/'} + ${g.getReportGroupId()}"
+                           th:text="${g.getReportGroupName()}"
+                           href="#" class="list-group-item list-group-item-action">
+                            aaaaa
+                        </a>
+                        <a th:remove="all" href="#" class="list-group-item list-group-item-action">
+                            bbbbb
+                        </a>
+                        <a th:remove="all" href="#" class="list-group-item list-group-item-action">
+                            ccccc
+                        </a>
+                        <a th:remove="all" href="#" class="list-group-item list-group-item-action">
+                            ddddd
+                        </a>
+                        <a th:remove="all" href="#" class="list-group-item list-group-item-action">
+                            eeeee
+                        </a>
+                    </div>
                 </div>
             </th:block>
         </div>

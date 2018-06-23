@@ -11,7 +11,6 @@
           href="../../../assets/library/bootstrap-datepicker/bootstrap-datepicker3.standalone.min.css"/>
 
     <link rel="stylesheet" href="../../../assets/css/layout.css">
-
 </head>
 <body>
 <div layout:decorator="layouts/default">
@@ -23,7 +22,7 @@
         </div>
         <div class="row">
             <th:block layout:fragment="content">
-                <form class="form-horizontal" method="POST" action="/public/login">
+                <form class="public-top" method="POST" action="/public/login">
                     <div class="form-group">
                         <label class="sr-only" for="loginId">Input your email address. (ex: aaaaa@bbb.ccc.com)</label>
                         <input type="email" name="loginId" th:value="${loginId}" id="loginId" class="form-control"
