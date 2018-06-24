@@ -2,8 +2,7 @@ package jp.ijufumi.openreports.controller
 
 import jp.ijufumi.openreports.controller.common.ApplicationController
 import jp.ijufumi.openreports.service.ReportService
-import jp.ijufumi.openreports.service.support.ReportingSupportService
-import jp.ijufumi.openreports.vo.{MemberInfo, ReportGroupInfo}
+import jp.ijufumi.openreports.vo.{MemberInfo, ReportGroupInfo, ReportInfo}
 
 class ReportController extends ApplicationController {
   val path = privatePath + "/report"
@@ -21,21 +20,26 @@ class ReportController extends ApplicationController {
 
   def reportList = params.getAs[Long]("id").map { id =>
     val reports = ReportService().reportList(id)
-    set("reports", reports)
+    set("reports", reports.map { r => ReportInfo(r.reportId, r.reportName) })
     render(viewPath + "/report-list")
-  }
+  } getOrElse haltWithBody(404)
 
   def download: Unit = {
     val fileStream = getClass.getClassLoader.getResourceAsStream("report/sample.xlsx")
     fileDownload(fileStream, "sample.xlsx", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
   }
 
-  def outputReport: Unit = {
-    val reportFileOpt = ReportingSupportService("report/sample.xlsx").output()
-    if (reportFileOpt.nonEmpty) {
-      var reportFile = reportFileOpt.get
-      fileDownload(reportFile.getAbsolutePath, reportFile.getName, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
-      deleteFile(reportFile)
-    }
-  }
+  def outputReport = params.getAs[Long]("id").map { id =>
+    val pageNo = params.getAs[Long]("pageNo") getOrElse (0)
+    render(viewPath + "/output-report")
+  } getOrElse haltWithBody(404)
+
+  //  def outputReport: Unit = {
+  //    val reportFileOpt = ReportingSupportService("report/sample.xlsx").output()
+  //    if (reportFileOpt.nonEmpty) {
+  //      var reportFile = reportFileOpt.get
+  //      fileDownload(reportFile.getAbsolutePath, reportFile.getName, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+  //      deleteFile(reportFile)
+  //    }
+  //  }
 }

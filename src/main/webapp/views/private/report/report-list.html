@@ -19,9 +19,9 @@
         </th:block>
         <th:block layout:fragment="content">
             <ul>
-                <li th:each="g : ${reportGroups}">
-                    <a th:href="@{'/private/report/'} + ${g.getReportGroupId()}">
-                        <th:block th:text="${g.getReportGroupName()}">aaaa</th:block>
+                <li th:each="r : ${reports}">
+                    <a th:href="@{'/private/report/output/'} + ${g.getReportId()}">
+                        <th:block th:text="${g.getReportName()}">aaaa</th:block>
                     </a>
                 </li>
                 <li th:remove="all">bbbb</li>

@@ -18,7 +18,7 @@
     <div class="container">
         <div class="row title">
             <th:block layout:fragment="title">
-                <h2>レポート管理</h2>
+                <h2>レポート管理 - レポートグループ一覧</h2>
             </th:block>
         </div>
         <div class="row">
@@ -26,8 +26,8 @@
                 <div class="private-report">
                     <div class="list-group">
                         <a th:each="g : ${reportGroups}"
-                           th:href="@{'/private/report/'} + ${g.getReportGroupId()}"
-                           th:text="${g.getReportGroupName()}"
+                           th:href="@{'/private/report/'} + ${g.reportGroupId()}"
+                           th:text="${g.reportGroupName()}"
                            href="#" class="list-group-item list-group-item-action">
                             aaaaa
                         </a>

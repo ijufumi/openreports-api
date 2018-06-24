@@ -1,11 +1,7 @@
 package jp.ijufumi.openreports.vo
 
-case class ReportGroupInfo(reportGroupId: Long, reportGroupName: String) {
-  def getReportGroupId: Long = {
-    reportGroupId
-  }
+case class ReportGroupInfo(_reportGroupId: Long, _reportGroupName: String) {
+  def reportGroupId: Long = _reportGroupId
 
-  def getReportGroupName: String = {
-    reportGroupName
-  }
+  def reportGroupName: String = _reportGroupName
 }
