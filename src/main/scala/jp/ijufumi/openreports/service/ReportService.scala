@@ -1,6 +1,6 @@
 package jp.ijufumi.openreports.service
 
-import jp.ijufumi.openreports.model.{TGroup, TReport, TReportGroup}
+import jp.ijufumi.openreports.model.{TGroup, TReport, TReportGroup, TReportParam}
 import skinny.logging.Logging
 
 import scala.collection.mutable
@@ -29,6 +29,10 @@ class ReportService extends Logging {
     }
 
     reportGroup.get.reports
+  }
+
+  def paramInfo(reportId:Long): Seq[TReportParam] = {
+
   }
 }
 

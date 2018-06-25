@@ -67,6 +67,6 @@
   - report_group
   - report/report_group relation
   - report_param
-  - report/report_param relation
+  - report_param_config
 - Others
   - functions

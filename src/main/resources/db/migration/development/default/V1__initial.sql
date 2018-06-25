@@ -121,12 +121,23 @@ create table t_report_param (
   versions bigint not null default 0
 );
 
--- create r_report_report_param
-create table r_report_report_param (
+-- create t_report_param_config
+create table t_report_param_config (
+  config_id serial primary key,
   report_id integer references t_report(report_id),
   param_id integer references t_report_param(param_id),
-  primary key (report_id, param_id)
+  page_no integer not null,
+  seq integer not null,
+  created_at timestamp not null,
+  updated_at timestamp not null,
+  versions bigint not null default 0
 );
+
+create index report_param_config_IX1 on t_report_param_config(report_id);
+
+--
+-- test data
+--
 
 insert into t_group (group_name, created_at, updated_at) values ('admin', now(), now());
 insert into t_group (group_name, created_at, updated_at) values ('assistant', now(), now());
