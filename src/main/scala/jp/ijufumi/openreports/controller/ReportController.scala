@@ -2,7 +2,7 @@ package jp.ijufumi.openreports.controller
 
 import jp.ijufumi.openreports.controller.common.ApplicationController
 import jp.ijufumi.openreports.service.ReportService
-import jp.ijufumi.openreports.vo.{ MemberInfo, ReportGroupInfo, ReportInfo }
+import jp.ijufumi.openreports.vo.{MemberInfo, ReportGroupInfo, ReportInfo, ReportParamInfo}
 
 class ReportController extends ApplicationController {
   val path = privatePath + "/report"
@@ -30,7 +30,9 @@ class ReportController extends ApplicationController {
   }
 
   def outputReport = params.getAs[Long]("id").map { id =>
-    val pageNo = params.getAs[Long]("pageNo") getOrElse (0)
+    val pageNo = params.getAs[Long]("pageNo") getOrElse 0
+    val paramInfo = ReportService().paramInfo(id)
+    set("paramInfo", paramInfo.map { p => p.param.get }.map(p => ReportParamInfo(p.paramId, p.paramName, p.paramType)))
     render(viewPath + "/output-report")
   } getOrElse haltWithBody(404)
 
