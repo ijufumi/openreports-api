@@ -2,6 +2,7 @@ package jp.ijufumi.openreports.model
 
 import org.joda.time.DateTime
 import scalikejdbc.WrappedResultSet
+import scalikejdbc.interpolation.SQLSyntax
 import skinny.orm.SkinnyCRUDMapper
 import skinny.orm.feature.OptimisticLockWithVersionFeature
 
@@ -11,7 +12,7 @@ case class TReport(
   templatePath: String,
   createdAt: DateTime,
   updatedAt: DateTime,
-  params: Seq[TReportParam] = Nil,
+  params: Seq[TReportParamConfig] = Nil,
   groups: Seq[TReportGroup] = Nil
 )
 
@@ -34,12 +35,10 @@ object TReport extends SkinnyCRUDMapper[TReport]
     updatedAt = rs.get(n.updatedAt)
   )
 
-  hasManyThroughWithFk[TReportParam](
-    through = RReportReportParam,
-    many = TReportParam,
-    throughFk = "reportId",
-    manyFk = "paramId",
-    merge = (a, params) => a.copy(params = params)
+  lazy val params = hasMany[TReportParamConfig](
+    many = TReportParamConfig -> TReportParamConfig.defaultAlias,
+    on = (r, p) => SQLSyntax.eq(r.column("id"), p.column("id")),
+    merge = (r, params) => r.copy(params = params)
   ).byDefault
 
   hasManyThroughWithFk[TReportGroup](

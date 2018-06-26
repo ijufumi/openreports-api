@@ -8,9 +8,11 @@ import skinny.orm.{ Alias, SkinnyCRUDMapper }
 case class TReportParam(
   paramId: Long,
   paramName: String,
+  description: String,
   paramType: String,
   createdAt: DateTime,
   updatedAt: DateTime,
+  versions: Long,
   reports: Seq[TReport] = Nil
 )
 
@@ -28,16 +30,10 @@ object TReportParam extends SkinnyCRUDMapper[TReportParam]
   override def extract(rs: WrappedResultSet, n: ResultName[TReportParam]): TReportParam = new TReportParam(
     paramId = rs.get(n.paramId),
     paramName = rs.get(n.paramName),
+    description = rs.get(n.description),
     paramType = rs.get(n.paramType),
     createdAt = rs.get(n.createdAt),
-    updatedAt = rs.get(n.updatedAt)
+    updatedAt = rs.get(n.updatedAt),
+    versions = rs.get(n.versions)
   )
-
-  hasManyThroughWithFk[TReport](
-    through = RReportReportParam,
-    many = TReport,
-    throughFk = "paramId",
-    manyFk = "reportId",
-    merge = (a, reports) => a.copy(reports = reports)
-  ).byDefault
 }

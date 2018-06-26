@@ -10,7 +10,8 @@ case class TScheduledReport(
   reportId: Long,
   cronExpression: String,
   createdAt: DateTime,
-  updatedAt: DateTime
+  updatedAt: DateTime,
+  versions: Long
 )
 
 object TScheduledReport extends SkinnyCRUDMapper[TScheduledReport]
@@ -28,6 +29,7 @@ object TScheduledReport extends SkinnyCRUDMapper[TScheduledReport]
     reportId = rs.get(n.reportId),
     cronExpression = rs.get(n.cronExpression),
     createdAt = rs.get(n.createdAt),
-    updatedAt = rs.get(n.updatedAt)
+    updatedAt = rs.get(n.updatedAt),
+    versions = rs.get(n.versions)
   )
 }

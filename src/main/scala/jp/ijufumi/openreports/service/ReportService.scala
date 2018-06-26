@@ -28,11 +28,17 @@ class ReportService extends Logging {
       return Seq.empty
     }
 
-    reportGroup.get.reports
+    reportGroup.get.reports.sortBy(_.reportId)
   }
 
-  def paramInfo(reportId:Long): Seq[TReportParam] = {
+  def paramInfo(reportId: Long): Seq[TReportParam] = {
+    val report = TReport.includes(TReport.params).findById(reportId)
 
+    if (report.isEmpty) {
+      logger.info("report not exists. id:%d".format(reportId))
+    }
+
+    report.get.params.sortBy(_.pageNo)
   }
 }
 
