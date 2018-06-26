@@ -29,8 +29,8 @@ create table t_member (
   password varchar(100) not null,
   name varchar(250) not null,
   is_admin char not null default '0',
-  created_at timestamp not null,
-  updated_at timestamp not null,
+  created_at timestamp not null default now(),
+  updated_at timestamp not null default now(),
   versions bigint not null default 0
 );
 
@@ -40,8 +40,8 @@ create unique index member_IX1 on t_member(email_address);
 create table t_group (
   group_id serial primary key,
   group_name varchar(250) not null,
-  created_at timestamp not null,
-  updated_at timestamp not null,
+  created_at timestamp not null default now(),
+  updated_at timestamp not null default now(),
   versions bigint not null default 0
 );
 
@@ -56,8 +56,9 @@ create table r_member_group (
 create table t_function (
   function_id integer primary key,
   function_name varchar(250) not null,
-  created_at timestamp not null,
-  updated_at timestamp not null
+  created_at timestamp not null default now(),
+  updated_at timestamp not null default now(),
+  versions bigint not null default 0
 );
 
 -- create r_group_function
@@ -72,8 +73,8 @@ create table t_report (
   report_id serial primary key,
   report_name varchar(250) not null,
   template_path varchar(250) not null,
-  created_at timestamp not null,
-  updated_at timestamp not null,
+  created_at timestamp not null default now(),
+  updated_at timestamp not null default now(),
   versions bigint not null default 0
 );
 
@@ -83,8 +84,8 @@ create table t_scheduled_report (
   report_id integer not null,
   cron_expression varchar(250) not null,
   params bytea,
-  created_at timestamp not null,
-  updated_at timestamp not null,
+  created_at timestamp not null default now(),
+  updated_at timestamp not null default now(),
   versions bigint not null default 0
 );
 
@@ -92,8 +93,8 @@ create table t_scheduled_report (
 create table t_report_group (
   report_group_id serial primary key,
   report_group_name varchar(250) not null,
-  created_at timestamp not null,
-  updated_at timestamp not null,
+  created_at timestamp not null default now(),
+  updated_at timestamp not null default now(),
   versions bigint not null default 0
 );
 
@@ -115,9 +116,10 @@ create table r_group_report_group (
 create table t_report_param (
   param_id serial primary key,
   param_name varchar(250) not null,
+  description varchar(500) not null,
   param_type char not null default '0',
-  created_at timestamp not null,
-  updated_at timestamp not null,
+  created_at timestamp not null default now(),
+  updated_at timestamp not null default now(),
   versions bigint not null default 0
 );
 
@@ -126,10 +128,10 @@ create table t_report_param_config (
   config_id serial primary key,
   report_id integer references t_report(report_id),
   param_id integer references t_report_param(param_id),
-  page_no integer not null,
-  seq integer not null,
-  created_at timestamp not null,
-  updated_at timestamp not null,
+  page_no integer not null default 0,
+  seq integer not null default 0,
+  created_at timestamp not null default now(),
+  updated_at timestamp not null default now(),
   versions bigint not null default 0
 );
 
@@ -157,13 +159,44 @@ insert into r_group_function values (2, 3);
 insert into r_group_function values (2, 4);
 insert into r_group_function values (2, 5);
 
-insert into t_report (report_name, template_path, created_at, updated_at) values ('テストレポート', 'sample.xlsx', now(), now());
+insert into t_report (report_name, template_path, created_at, updated_at) values ('テストレポート1', 'sample.xlsx', now(), now());
+insert into t_report (report_name, template_path, created_at, updated_at) values ('テストレポート2', 'sample.xlsx', now(), now());
+insert into t_report (report_name, template_path, created_at, updated_at) values ('テストレポート3', 'sample.xlsx', now(), now());
+insert into t_report (report_name, template_path, created_at, updated_at) values ('テストレポート4', 'sample.xlsx', now(), now());
+insert into t_report (report_name, template_path, created_at, updated_at) values ('テストレポート5', 'sample.xlsx', now(), now());
+insert into t_report (report_name, template_path, created_at, updated_at) values ('テストレポート6', 'sample.xlsx', now(), now());
+insert into t_report (report_name, template_path, created_at, updated_at) values ('テストレポート7', 'sample.xlsx', now(), now());
+
 insert into t_report_group (report_group_name, created_at, updated_at) values ('テストグループ1', now(), now());
 insert into t_report_group (report_group_name, created_at, updated_at) values ('テストグループ2', now(), now());
 insert into t_report_group (report_group_name, created_at, updated_at) values ('テストグループ3', now(), now());
+
 insert into r_report_report_group values (1, 1);
 insert into r_report_report_group values (1, 2);
 insert into r_report_report_group values (1, 3);
+insert into r_report_report_group values (2, 1);
+insert into r_report_report_group values (2, 2);
+insert into r_report_report_group values (2, 3);
+insert into r_report_report_group values (3, 1);
+insert into r_report_report_group values (3, 2);
+insert into r_report_report_group values (3, 3);
+insert into r_report_report_group values (4, 3);
+insert into r_report_report_group values (5, 3);
+insert into r_report_report_group values (6, 3);
+insert into r_report_report_group values (7, 1);
+
 insert into r_group_report_group values (1, 1);
 insert into r_group_report_group values (1, 2);
 insert into r_group_report_group values (1, 3);
+
+insert into t_report_param (param_name, description, param_type) values ('ぱらむ1', 'テスト用パラメメータ1', '1');
+insert into t_report_param (param_name, description, param_type) values ('ぱらむ2', 'テスト用パラメメータ2', '1');
+insert into t_report_param (param_name, description, param_type) values ('ぱらむ3', 'テスト用パラメメータ3', '1');
+insert into t_report_param (param_name, description, param_type) values ('ぱらむ4', 'テスト用パラメメータ4', '1');
+insert into t_report_param (param_name, description, param_type) values ('ぱらむ5', 'テスト用パラメメータ5', '1');
+
+insert into t_report_param_config (report_id, param_id) values (1, 1);
+insert into t_report_param_config (report_id, param_id) values (1, 2);
+insert into t_report_param_config (report_id, param_id) values (1, 3);
+insert into t_report_param_config (report_id, param_id) values (1, 4);
+insert into t_report_param_config (report_id, param_id) values (1, 5);
