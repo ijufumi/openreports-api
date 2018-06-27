@@ -21,31 +21,11 @@
                 <h2>レポート管理 - レポート出力</h2>
             </th:block>
         </div>
-        <div class="row">
+        <div class="row main-contents">
             <th:block layout:fragment="content">
                 <div class="private-report">
                     <div th:each="p : ${paramInfo}">
-
-                    </div>
-                    <div class="list-group">
-                        <a th:each="p : ${paramInfo}"
-                           th:href="@{'/private/report/'} + ${g.reportGroupId()}"
-                           th:text="${g.reportGroupName()}"
-                           href="#" class="list-group-item list-group-item-action">
-                            aaaaa
-                        </a>
-                        <a th:remove="all" href="#" class="list-group-item list-group-item-action">
-                            bbbbb
-                        </a>
-                        <a th:remove="all" href="#" class="list-group-item list-group-item-action">
-                            ccccc
-                        </a>
-                        <a th:remove="all" href="#" class="list-group-item list-group-item-action">
-                            ddddd
-                        </a>
-                        <a th:remove="all" href="#" class="list-group-item list-group-item-action">
-                            eeeee
-                        </a>
+                        <div th:text="${p.getParamName()}"></div>
                     </div>
                 </div>
             </th:block>

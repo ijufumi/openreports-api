@@ -1,15 +1,20 @@
 /* common */
 .container {
-    width: 1000px;
-}
-
-.container .row {
-    width: 800px;
+    width: 1200px;
 }
 
 .container .row.title {
+    width: 900px;
+    margin-left: 10px;
+    padding-top: 5px;
     padding-bottom: 20px;
 }
+
+.container .row.main-contents {
+    width: 900px;
+    margin-left: 10px;
+}
+
 
 /** public **/
 /* top */

@@ -2,7 +2,7 @@ package jp.ijufumi.openreports.controller
 
 import jp.ijufumi.openreports.controller.common.ApplicationController
 import jp.ijufumi.openreports.service.ReportService
-import jp.ijufumi.openreports.vo.{MemberInfo, ReportGroupInfo, ReportInfo, ReportParamInfo}
+import jp.ijufumi.openreports.vo.{ MemberInfo, ReportGroupInfo, ReportInfo, ReportParamInfo }
 
 class ReportController extends ApplicationController {
   val path = privatePath + "/report"
