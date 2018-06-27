@@ -42,7 +42,7 @@ object TReport extends SkinnyCRUDMapper[TReport]
   ).byDefault
 
   hasManyThroughWithFk[TReportGroup](
-    through = RGroupReportGroup,
+    through = RReportReportGroup,
     many = TReportGroup,
     throughFk = "reportId",
     manyFk = "reportGroupId",
