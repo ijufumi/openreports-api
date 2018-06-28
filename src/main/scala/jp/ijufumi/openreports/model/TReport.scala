@@ -37,7 +37,7 @@ object TReport extends SkinnyCRUDMapper[TReport]
 
   lazy val params = hasMany[TReportParamConfig](
     many = TReportParamConfig -> TReportParamConfig.defaultAlias,
-    on = (r, p) => SQLSyntax.eq(r.column("id"), p.column("id")),
+    on = (r, p) => SQLSyntax.eq(r.field("reportId"), p.field("reportId")),
     merge = (r, params) => r.copy(params = params)
   ).byDefault
 

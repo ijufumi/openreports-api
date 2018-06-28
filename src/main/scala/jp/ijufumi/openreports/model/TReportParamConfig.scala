@@ -14,7 +14,7 @@ case class TReportParamConfig(
   createdAt: DateTime,
   updatedAt: DateTime,
   versions: Long,
-  param: Option[TReportParam] = Option.empty
+  param: Option[TReportParam] = None
 )
 
 object TReportParamConfig extends SkinnyCRUDMapper[TReportParamConfig]
@@ -38,8 +38,9 @@ object TReportParamConfig extends SkinnyCRUDMapper[TReportParamConfig]
     versions = rs.get(n.versions)
   )
 
-  hasOne[TReportParam](
+  hasOneWithFk[TReportParam](
     right = TReportParam,
+    fk = "paramId",
     merge = (a, b) => a.copy(param = b)
   ).byDefault
 }
