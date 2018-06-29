@@ -19,17 +19,16 @@
             <h3>レポート管理 - レポートリスト</h3>
         </th:block>
         <th:block layout:fragment="content">
-            <ul>
-                <li th:each="r : ${reports}">
-                    <a th:href="@{'/private/report/output/'} + ${r.reportId()}">
-                        <th:block th:text="${r.reportName()}">aaaa</th:block>
+            <div class="private-report">
+                <div class="list-group">
+                    <a th:each="r : ${reports}"
+                       th:href="@{'/private/report/output/'} + ${r.reportId()}"
+                       th:text="${r.reportName()}"
+                       href="#" class="list-group-item list-group-item-action">
+                        aaaaa
                     </a>
-                </li>
-                <li th:remove="all">bbbb</li>
-                <li th:remove="all">cccc</li>
-                <li th:remove="all">dddd</li>
-                <li th:remove="all">eeee</li>
-            </ul>
+                </div>
+            </div>
         </th:block>
     </div>
 </div>

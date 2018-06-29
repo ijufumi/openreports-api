@@ -25,7 +25,23 @@
             <th:block layout:fragment="content">
                 <div class="private-report">
                     <div th:each="p : ${paramInfo}">
-                        <div th:text="${p.getParamName()}"></div>
+                        <div th:text="${p.paramName()}"></div>
+                        <th:block th:switch="${p.paramType()}">
+                            <!-- Date -->
+                            <div th:case="'1'">
+                                <input type="date" name="${p.paramKey()}" />
+                            </div>
+                            <!-- List -->
+                            <div th:case="'2'">
+                                <select name="${p.paramKey()}">
+                                    <value th:each="v : ${p.paramValues()}" th:value="${v}" th:text="${v}">aaa</value>
+                                </select>
+                            </div>
+                            <!-- Default -->
+                            <div th:case="*">
+                                <input type="text" name="${p.paramKey()}" />
+                            </div>
+                        </th:block>
                     </div>
                 </div>
             </th:block>

@@ -39,7 +39,7 @@ object TReport extends SkinnyCRUDMapper[TReport]
     many = TReportParamConfig -> TReportParamConfig.defaultAlias,
     on = (r, p) => SQLSyntax.eq(r.field("reportId"), p.field("reportId")),
     merge = (r, params) => r.copy(params = params)
-  ).byDefault
+  ).includes[TReportParamConfig]((a, b) => a.map { m => m.copy(params = b) })
 
   hasManyThroughWithFk[TReportGroup](
     through = RReportReportGroup,

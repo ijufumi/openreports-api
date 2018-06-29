@@ -10,6 +10,7 @@ case class TReportParam(
   paramName: String,
   description: String,
   paramType: String,
+  paramValues: String,
   createdAt: DateTime,
   updatedAt: DateTime,
   versions: Long,
@@ -32,6 +33,7 @@ object TReportParam extends SkinnyCRUDMapper[TReportParam]
     paramName = rs.get(n.paramName),
     description = rs.get(n.description),
     paramType = rs.get(n.paramType),
+    paramValues = rs.get(n.paramValues),
     createdAt = rs.get(n.createdAt),
     updatedAt = rs.get(n.updatedAt),
     versions = rs.get(n.versions)

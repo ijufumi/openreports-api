@@ -115,7 +115,9 @@ create table r_group_report_group (
 -- create t_report_param
 create table t_report_param (
   param_id serial primary key,
+  param_key varchar(250) not null,
   param_name varchar(250) not null,
+  param_values text not null,
   description varchar(500) not null,
   param_type char not null default '0',
   created_at timestamp not null default now(),
@@ -189,11 +191,11 @@ insert into r_group_report_group values (1, 1);
 insert into r_group_report_group values (1, 2);
 insert into r_group_report_group values (1, 3);
 
-insert into t_report_param (param_name, description, param_type) values ('ぱらむ1', 'テスト用パラメメータ1', '1');
-insert into t_report_param (param_name, description, param_type) values ('ぱらむ2', 'テスト用パラメメータ2', '1');
-insert into t_report_param (param_name, description, param_type) values ('ぱらむ3', 'テスト用パラメメータ3', '1');
-insert into t_report_param (param_name, description, param_type) values ('ぱらむ4', 'テスト用パラメメータ4', '1');
-insert into t_report_param (param_name, description, param_type) values ('ぱらむ5', 'テスト用パラメメータ5', '1');
+insert into t_report_param (param_key, param_name, description, param_type, param_values) values ('param1', 'ぱらむ1', 'テスト用パラメメータ1', '1', '');
+insert into t_report_param (param_key, param_name, description, param_type, param_values) values ('param2', 'ぱらむ2', 'テスト用パラメメータ2', '1', '');
+insert into t_report_param (param_key, param_name, description, param_type, param_values) values ('param3', 'ぱらむ3', 'テスト用パラメメータ3', '1', '');
+insert into t_report_param (param_key, param_name, description, param_type, param_values) values ('param4', 'ぱらむ4', 'テスト用パラメメータ4', '1', '');
+insert into t_report_param (param_key, param_name, description, param_type, param_values) values ('param5', 'ぱらむ5', 'テスト用パラメメータ5', '1', '');
 
 insert into t_report_param_config (report_id, param_id) values (1, 1);
 insert into t_report_param_config (report_id, param_id) values (1, 2);
