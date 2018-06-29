@@ -25,7 +25,7 @@ trait ApplicationController extends SkinnyController
   val requiredMemberInfo = false
 
   beforeAction() {
-    val memberInfo: Option[Any] = skinnySession.getAttribute("memberInfo")
+    val memberInfo = skinnySession.getAs("memberInfo")
     // logger.info("before called at " + getClass.getSimpleName + ":" + memberInfo.isDefined)
     set("loggedIn", memberInfo.isDefined)
     if (requiredMemberInfo && memberInfo.isEmpty) {
