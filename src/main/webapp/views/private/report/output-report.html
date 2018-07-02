@@ -23,23 +23,23 @@
         </div>
         <div class="row main-contents">
             <th:block layout:fragment="content">
-                <div class="private-report">
-                    <div th:each="p : ${paramInfo}">
-                        <div th:text="${p.paramName()}"></div>
+                <div class="private-report form-group">
+                    <div th:each="p : ${paramInfo}" class="form-inline pt-1">
+                        <label th:for="${p.paramKey()}" th:text="${p.paramName()}" class="pr-3">Email address</label>
                         <th:block th:switch="${p.paramType()}">
                             <!-- Date -->
                             <div th:case="'1'">
-                                <input type="date" name="${p.paramKey()}" />
+                                <input class="form-control" type="date" th:name="${p.paramKey()}" th:id="${p.paramKey()}"/>
                             </div>
                             <!-- List -->
                             <div th:case="'2'">
-                                <select name="${p.paramKey()}">
+                                <select class="form-control" th:name="${p.paramKey()}" th:id="${p.paramKey()}">
                                     <value th:each="v : ${p.paramValues()}" th:value="${v}" th:text="${v}">aaa</value>
                                 </select>
                             </div>
                             <!-- Default -->
                             <div th:case="*">
-                                <input type="text" name="${p.paramKey()}" />
+                                <input class="form-control" type="text" th:name="${p.paramKey()}" th:id="${p.paramKey()}"/>
                             </div>
                         </th:block>
                     </div>
