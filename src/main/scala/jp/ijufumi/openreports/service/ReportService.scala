@@ -2,7 +2,7 @@ package jp.ijufumi.openreports.service
 
 import jp.ijufumi.openreports.model._
 import jp.ijufumi.openreports.model.support.ParamType._
-import jp.ijufumi.openreports.vo.{ReportGroupInfo, ReportInfo, ReportParamInfo}
+import jp.ijufumi.openreports.vo.{ ReportGroupInfo, ReportInfo, ReportParamInfo }
 import skinny.logging.Logging
 
 import scala.collection.mutable
