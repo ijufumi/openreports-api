@@ -1,5 +1,7 @@
 package jp.ijufumi.openreports.model.support
 
+import scala.language.implicitConversions
+
 object ParamType extends Enumeration {
 
   protected case class Val(value: String) extends super.Val {
