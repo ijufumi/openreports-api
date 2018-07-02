@@ -7,6 +7,7 @@ import skinny.orm.{ Alias, SkinnyCRUDMapper }
 
 case class TReportParam(
   paramId: Long,
+  paramKey: String,
   paramName: String,
   description: String,
   paramType: String,
@@ -30,6 +31,7 @@ object TReportParam extends SkinnyCRUDMapper[TReportParam]
 
   override def extract(rs: WrappedResultSet, n: ResultName[TReportParam]): TReportParam = new TReportParam(
     paramId = rs.get(n.paramId),
+    paramKey = rs.get(n.paramKey),
     paramName = rs.get(n.paramName),
     description = rs.get(n.description),
     paramType = rs.get(n.paramType),

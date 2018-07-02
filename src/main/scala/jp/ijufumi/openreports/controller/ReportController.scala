@@ -32,7 +32,7 @@ class ReportController extends ApplicationController {
   def outputReport = params.getAs[Long]("id").map { id =>
     val pageNo = params.getAs[Long]("pageNo") getOrElse 0
     val paramInfo = ReportService().paramInfo(id)
-    set("paramInfo", paramInfo.map { p => p.param.get }.map(p => ReportParamInfo(p)))
+    set("paramInfo", paramInfo)
     render(viewPath + "/output-report")
   } getOrElse haltWithBody(404)
 
