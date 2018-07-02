@@ -2,7 +2,7 @@ package jp.ijufumi.openreports.controller
 
 import jp.ijufumi.openreports.controller.common.ApplicationController
 import jp.ijufumi.openreports.service.ReportService
-import jp.ijufumi.openreports.vo.{ MemberInfo, ReportGroupInfo, ReportInfo, ReportParamInfo }
+import jp.ijufumi.openreports.vo.MemberInfo
 
 class ReportController extends ApplicationController {
   val path = privatePath + "/report"
@@ -14,13 +14,13 @@ class ReportController extends ApplicationController {
   def groupList = {
     val memberInfo: Option[MemberInfo] = skinnySession.getAttribute("memberInfo").asInstanceOf[Option[MemberInfo]]
     val reportGroups = ReportService().groupList(memberInfo.get.groups)
-    set("reportGroups", reportGroups.map(r => ReportGroupInfo(r.reportGroupId, r.reportGroupName)).seq)
+    set("reportGroups", reportGroups)
     render(viewPath + "/index")
   }
 
   def reportList = params.getAs[Long]("id").map { id =>
     val reports = ReportService().reportList(id)
-    set("reports", reports.map { r => ReportInfo(r.reportId, r.reportName) })
+    set("reports", reports)
     render(viewPath + "/report-list")
   } getOrElse haltWithBody(404)
 

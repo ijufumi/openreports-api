@@ -2,13 +2,13 @@ package jp.ijufumi.openreports.service
 
 import jp.ijufumi.openreports.model._
 import jp.ijufumi.openreports.model.support.ParamType._
-import jp.ijufumi.openreports.vo.ReportParamInfo
+import jp.ijufumi.openreports.vo.{ReportGroupInfo, ReportInfo, ReportParamInfo}
 import skinny.logging.Logging
 
 import scala.collection.mutable
 
 class ReportService extends Logging {
-  def groupList(groupId: Seq[Long]): Seq[TReportGroup] = {
+  def groupList(groupId: Seq[Long]): Seq[ReportGroupInfo] = {
 
     val groups = TGroup.includes(TGroup.reportGroups).where('groupId -> groupId).apply()
 
@@ -21,16 +21,23 @@ class ReportService extends Logging {
 
     logger.debug("reportGroups:%s".format(reportGroups))
 
-    reportGroups.toSeq.sortBy(_.reportGroupId)
+    reportGroups
+      .toSeq
+      .sortBy(_.reportGroupId)
+      .map(r => ReportGroupInfo(r.reportGroupId, r.reportGroupName))
   }
 
-  def reportList(groupId: Long): Seq[TReport] = {
+  def reportList(groupId: Long): Seq[ReportInfo] = {
     val reportGroup = TReportGroup.includes(TReportGroup.reports).findById(groupId)
     if (reportGroup.isEmpty) {
       return Seq.empty
     }
 
-    reportGroup.get.reports.sortBy(_.reportId)
+    reportGroup
+      .get
+      .reports
+      .sortBy(_.reportId)
+      .map { r => ReportInfo(r.reportId, r.reportName) }
   }
 
   def paramInfo(reportId: Long): Seq[ReportParamInfo] = {
