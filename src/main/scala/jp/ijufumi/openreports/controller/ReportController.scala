@@ -29,12 +29,17 @@ class ReportController extends ApplicationController {
     fileDownload(fileStream, "sample.xlsx", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
   }
 
-  def outputReport = params.getAs[Long]("id").map { id =>
-    val pageNo = params.getAs[Long]("pageNo") getOrElse 0
-    val paramInfo = ReportService().paramInfo(id)
+  def prepareReport = params.getAs[Long]("id").map { id =>
+    val pageNo = params.getAs[Int]("pageNo") getOrElse 0
+    val (paramInfo, nextPageNo) = ReportService().paramInfo(id, pageNo)
     set("paramInfo", paramInfo)
-    render(viewPath + "/output-report")
+    set("nextPageNo", nextPageNo)
+    render(viewPath + "/prepare-report")
   } getOrElse haltWithBody(404)
+
+  def printOutReport = {
+
+  }
 
   //  def outputReport: Unit = {
   //    val reportFileOpt = ReportingSupportService("report/sample.xlsx").output()

@@ -32,7 +32,7 @@ object Controllers {
   object report extends ReportController with Routes {
     val indexUrl = get(path + "/?")(groupList).as('index)
     val reportListUrl = get(path + "/:id")(reportList).as('reportList)
-    val outputUrl = get(path + "/output/:id")(outputReport).as('output)
+    val prepareUrl = get(path + "/prepare/:id")(prepareReport).as('prepare)
     val downloadUrl = get(path + "/download")(download).as('download)
   }
 

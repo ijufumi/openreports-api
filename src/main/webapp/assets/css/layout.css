@@ -1,34 +1,45 @@
 /* common */
 .container {
-    width: 1200px;
+  width: 1200px;
 }
 
 .container .row.title {
-    width: 900px;
-    margin-left: 10px;
-    padding-top: 5px;
-    padding-bottom: 20px;
+  width: 900px;
+  margin-left: 10px;
+  padding-top: 5px;
+  padding-bottom: 20px;
 }
 
 .container .row.main-contents {
-    width: 900px;
-    margin-left: 10px;
+  width: 900px;
+  margin-left: 10px;
 }
-
 
 /** public **/
 /* top */
-.container .row .public-top input{
-    width: 400px;
-    margin-bottom: -1px;
+.container .row .public-top input {
+  width: 400px;
+  margin-bottom: -1px;
 }
 
-.container .row .public-top button{
-    width: 400px;
+.container .row .public-top button {
+  width: 400px;
 }
 
 /** private **/
 /* report */
-.container .row .private-report .list-group{
-    width: 500px;
+.container .row .private-report .list-group {
+  width: 500px;
+}
+
+.container .row .private-report button {
+  width: 200px;
+}
+
+.container .row .private-report select {
+  width: 200px;
+}
+
+.container .row .private-report input {
+  width: 200px;
 }
