@@ -33,9 +33,19 @@ class ReportController extends ApplicationController {
     val pageNo = params.getAs[Int]("pageNo") getOrElse 0
     val (paramInfo, nextPageNo) = ReportService().paramInfo(id, pageNo)
     set("paramInfo", paramInfo)
+    set("pageNo", pageNo)
+    set("reportId", id)
     set("nextPageNo", nextPageNo)
     render(viewPath + "/prepare-report")
   } getOrElse haltWithBody(404)
+
+  def setParams = params.getAs[Long]("reportId").map { id =>
+    params.getAs[Int]("pageNo").map { pageNo =>
+      val (paramInfo, _) = ReportService().paramInfo(id, pageNo)
+
+    } getOrElse halt(status = 400)
+  } getOrElse halt(status = 400)
+
 
   def printOutReport = {
 
