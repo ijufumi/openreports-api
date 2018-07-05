@@ -11,7 +11,7 @@ import org.jxls.jdbc.JdbcHelper
 import org.jxls.util.JxlsHelper
 import skinny.logging.LoggerProvider
 
-case class ReportingSupportService(templateFile: String) extends LoggerProvider {
+case class ReportingSupport(templateFile: String) extends LoggerProvider {
   def output(): Option[File] = {
     val inFileName = new File(templateFile).getName
     val dotIndex = inFileName.lastIndexOf('.')
