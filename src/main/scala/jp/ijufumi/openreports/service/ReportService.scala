@@ -8,6 +8,12 @@ import skinny.logging.Logging
 import scala.collection.mutable
 
 class ReportService extends Logging {
+  def report(reportId: Long): Option[ReportInfo] = {
+    val report = TReport.findById(reportId)
+
+    report.map { r => Option(ReportInfo(r.reportId, r.reportName, r.templatePath)) } getOrElse Option.empty
+  }
+
   def groupList(groupId: Seq[Long]): Seq[ReportGroupInfo] = {
 
     val groups = TGroup.includes(TGroup.reportGroups).where('groupId -> groupId).apply()
@@ -71,6 +77,7 @@ class ReportService extends Logging {
 
           ReportParamInfo(p, values)
         }
+
     val nextPageNo =
       report
         .get

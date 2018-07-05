@@ -1,18 +1,20 @@
 package jp.ijufumi.openreports.service.support
 
-import java.io.{ File, InputStream }
-import java.nio.file.{ FileSystems, Files }
+import java.io.{File, InputStream}
+import java.nio.file.{FileSystems, Files}
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
-import jp.ijufumi.openreports.service.{ OUTPUT_FILE_PATH, PREFIX_CLASS_PATH, TEMPLATE_PATH }
+import jp.ijufumi.openreports.service.{OUTPUT_FILE_PATH, PREFIX_CLASS_PATH, TEMPLATE_PATH}
 import org.jxls.common.Context
 import org.jxls.jdbc.JdbcHelper
 import org.jxls.util.JxlsHelper
 import skinny.logging.LoggerProvider
 
 case class ReportingSupport() extends LoggerProvider {
-  def output(templateFile: String): Option[File] = {
+
+  def output(templateFile: String,
+             param: Map[String, String] = Map.empty): Option[File] = {
     val inFileName = new File(templateFile).getName
     val dotIndex = inFileName.lastIndexOf('.')
     val suffix = if (dotIndex != -1) inFileName.substring(dotIndex) else ""

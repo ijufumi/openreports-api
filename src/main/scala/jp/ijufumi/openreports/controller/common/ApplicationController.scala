@@ -1,6 +1,6 @@
 package jp.ijufumi.openreports.controller.common
 
-import java.io.{ BufferedInputStream, FileInputStream, InputStream }
+import java.io.{BufferedInputStream, FileInputStream, InputStream}
 
 import jp.ijufumi.openreports.controller.publicPath
 import skinny._
@@ -10,16 +10,16 @@ import skinny.filter._
 import scala.util.control.Breaks
 
 /**
- * The base jp.ijufumi.openreports.controller for this Skinny application.
- *
- * see also "http://skinny-framework.org/documentation/jp.ijufumi.openreports.controller-and-routes.html"
- */
+  * The base jp.ijufumi.openreports.controller for this Skinny application.
+  *
+  * see also "http://skinny-framework.org/documentation/jp.ijufumi.openreports.controller-and-routes.html"
+  */
 trait ApplicationController extends SkinnyController
-    // with TxPerRequestFilter
-    with SkinnySessionFilter
-    with ErrorPageFilter
-    with I18nFeature
-    with ThymeleafTemplateEngineFeature {
+  // with TxPerRequestFilter
+  with SkinnySessionFilter
+  with ErrorPageFilter
+  with I18nFeature
+  with ThymeleafTemplateEngineFeature {
 
   val activeMenu = ""
   val requiredMemberInfo = false
@@ -41,7 +41,7 @@ trait ApplicationController extends SkinnyController
     else "/views/"
   }
 
-  def fileDownload(in: String, fileName: String, contentType: String): Unit = {
+  def fileDownload(in: String, fileName: String, contentType: String, streamClose: Boolean = true): Unit = {
     var fileStream: InputStream = null
     try {
       fileStream = getClass.getClassLoader.getResourceAsStream(in)
@@ -50,7 +50,7 @@ trait ApplicationController extends SkinnyController
       }
       fileDownload(fileStream, fileName, contentType)
     } finally {
-      if (fileStream != null) {
+      if (streamClose && fileStream != null) {
         fileStream.close()
       }
     }

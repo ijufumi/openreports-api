@@ -2,6 +2,7 @@ package jp.ijufumi.openreports.controller
 
 import jp.ijufumi.openreports.controller.common.ApplicationController
 import jp.ijufumi.openreports.service.ReportService
+import jp.ijufumi.openreports.service.support.ReportingSupport
 import jp.ijufumi.openreports.vo.{ApiResponse, MemberInfo}
 
 import scala.collection.mutable
@@ -43,7 +44,9 @@ class ReportController extends ApplicationController {
 
   def setParams = params.getAs[Long]("reportId").map { id =>
     params.getAs[Int]("pageNo").map { pageNo =>
-      val paramMap = skinnySession.getAs[mutable.Map[String, String]]("paramMap").getOrElse(mutable.Map[String, String]())
+      val paramMap = skinnySession
+        .getAs[mutable.Map[String, String]]("paramMap")
+        .getOrElse(mutable.Map[String, String]())
       val (paramInfo, _) = ReportService().paramInfo(id, pageNo)
       for (key <- params.keys) {
         val requestedParam = paramInfo.find(_.paramKey == key)
@@ -58,9 +61,26 @@ class ReportController extends ApplicationController {
   } getOrElse halt(status = 400)
 
 
-  def printOutReport = {
+  def printOutReport = params.getAs[Long]("reportId").map { id =>
+    val paramMap = skinnySession
+      .getAs[mutable.Map[String, String]]("paramMap")
+      .getOrElse(mutable.Map[String, String]())
 
-  }
+    val templateFile = ReportService().report(id).map {
+      _.templateFile
+    } getOrElse ""
+
+    val reportFileOpt = ReportingSupport().output(templateFile, paramMap.toMap)
+
+    if (reportFileOpt.isDefined) {
+      val reportFile = reportFileOpt.get
+
+      fileDownload(reportFile.getAbsolutePath, reportFile.getName, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", false)
+      deleteFile(reportFile)
+    }
+
+    render(viewPath + "/prepare-report")
+  } getOrElse halt(status = 400)
 
   //  def outputReport: Unit = {
   //    val reportFileOpt = ReportingSupportService("report/sample.xlsx").output()
