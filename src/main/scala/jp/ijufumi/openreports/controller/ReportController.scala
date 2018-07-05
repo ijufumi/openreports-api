@@ -79,7 +79,7 @@ class ReportController extends ApplicationController {
       deleteFile(reportFile)
     }
 
-    render(viewPath + "/prepare-report")
+    render(viewPath + "/report-finished")
   } getOrElse halt(status = 400)
 
   //  def outputReport: Unit = {
