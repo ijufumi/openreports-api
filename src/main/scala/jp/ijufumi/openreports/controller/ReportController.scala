@@ -2,7 +2,9 @@ package jp.ijufumi.openreports.controller
 
 import jp.ijufumi.openreports.controller.common.ApplicationController
 import jp.ijufumi.openreports.service.ReportService
-import jp.ijufumi.openreports.vo.MemberInfo
+import jp.ijufumi.openreports.vo.{ApiResponse, MemberInfo}
+
+import scala.collection.mutable
 
 class ReportController extends ApplicationController {
   val path = privatePath + "/report"
@@ -41,8 +43,17 @@ class ReportController extends ApplicationController {
 
   def setParams = params.getAs[Long]("reportId").map { id =>
     params.getAs[Int]("pageNo").map { pageNo =>
+      val paramMap = skinnySession.getAs[mutable.Map[String, String]]("paramMap").getOrElse(mutable.Map[String, String]())
       val (paramInfo, _) = ReportService().paramInfo(id, pageNo)
-
+      for (key <- params.keys) {
+        val requestedParam = paramInfo.find(_.paramKey == key)
+        if (requestedParam.isDefined) {
+          paramMap + key -> params.getAs[String](key)
+        }
+      }
+      skinnySession.setAttribute("paramMap", paramMap)
+      status = 200
+      toPrettyJSONString(ApiResponse("OK"))
     } getOrElse halt(status = 400)
   } getOrElse halt(status = 400)
 
