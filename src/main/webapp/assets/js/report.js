@@ -1,11 +1,27 @@
-(function () {
-  var postData = $("#paramForm").serialize();
-
+$(function () {
   $("#nextPage").on('click', function () {
+    var postData = $("#paramForm").serialize();
     $.ajax({
       url: "/private/report/params",
       method: "post",
-      contentType: "application/json",
+      data: postData
+    })
+      .fail(function (jqXHR, status, ex) {
+        console.log("status:" + status);
+        console.log("error:" + ex);
+      })
+      .done(function (data) {
+        console.log(data);
+      })
+    ;
+  });
+
+  $("#printOutBtn").on('click', function () {
+    var postData = $("#paramForm").serialize();
+    console.log("postData:" + postData);
+    $.ajax({
+      url: "/private/report/printOut",
+      method: "post",
       data: postData
     })
       .fail(function (jqXHR, status, ex) {

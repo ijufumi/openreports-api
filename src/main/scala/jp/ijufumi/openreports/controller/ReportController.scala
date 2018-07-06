@@ -57,8 +57,8 @@ class ReportController extends ApplicationController {
       skinnySession.setAttribute("paramMap", paramMap)
       status = 200
       toPrettyJSONString(ApiResponse("OK"))
-    } getOrElse halt(status = 400)
-  } getOrElse halt(status = 400)
+    } getOrElse halt(status = 400, body = "pageNo is missing.")
+  } getOrElse halt(status = 400, body = "reportId is missing.")
 
 
   def printOutReport = params.getAs[Long]("reportId").map { id =>
@@ -80,7 +80,7 @@ class ReportController extends ApplicationController {
     }
 
     render(viewPath + "/report-finished")
-  } getOrElse halt(status = 400)
+  } getOrElse halt(status = 400, body = "reportId is missing.")
 
   //  def outputReport: Unit = {
   //    val reportFileOpt = ReportingSupportService("report/sample.xlsx").output()

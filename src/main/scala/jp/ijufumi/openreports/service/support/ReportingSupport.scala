@@ -15,6 +15,9 @@ case class ReportingSupport() extends LoggerProvider {
 
   def output(templateFile: String,
              param: Map[String, String] = Map.empty): Option[File] = {
+
+    logger.debug("templateFile:%s, param:%s".format(templateFile, param))
+
     val inFileName = new File(templateFile).getName
     val dotIndex = inFileName.lastIndexOf('.')
     val suffix = if (dotIndex != -1) inFileName.substring(dotIndex) else ""

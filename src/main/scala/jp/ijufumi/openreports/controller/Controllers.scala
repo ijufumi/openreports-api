@@ -33,6 +33,8 @@ object Controllers {
     val indexUrl = get(path + "/?")(groupList).as('index)
     val reportListUrl = get(path + "/:id")(reportList).as('reportList)
     val prepareUrl = get(path + "/prepare/:id")(prepareReport).as('prepare)
+    val paramsUrl = post(path + "/params")(setParams).as('setParams)
+    val printOutReportUrl = post(path + "/printOut")(printOutReport).as('printOutReport)
     val downloadUrl = get(path + "/download")(download).as('download)
   }
 
