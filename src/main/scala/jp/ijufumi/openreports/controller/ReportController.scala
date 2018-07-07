@@ -4,6 +4,8 @@ import jp.ijufumi.openreports.controller.common.ApplicationController
 import jp.ijufumi.openreports.service.ReportService
 import jp.ijufumi.openreports.service.support.ReportingSupport
 import jp.ijufumi.openreports.vo.{ApiResponse, MemberInfo}
+import skinny.Params
+import skinny.validator.{paramKey, required}
 
 import scala.collection.mutable
 
@@ -13,6 +15,14 @@ class ReportController extends ApplicationController {
 
   override val activeMenu = "report"
   override val requiredMemberInfo = true
+
+  def requestParams = Params(params)
+
+  def validateParams = validation(
+    requestParams,
+    paramKey("reportId") is required,
+    paramKey("pageNo") is required
+  )
 
   def groupList = {
     val memberInfo: Option[MemberInfo] = skinnySession.getAttribute("memberInfo").asInstanceOf[Option[MemberInfo]]
@@ -47,35 +57,39 @@ class ReportController extends ApplicationController {
     params.getAs[Int]("pageNo").map { pageNo =>
       val paramMap = updateParamMap(id, pageNo)
 
+      logger.debug("[%d][%d]updated map:%s".format(id, pageNo, paramMap))
+
       skinnySession.setAttribute("paramMap", paramMap)
       status = 200
       toPrettyJSONString(ApiResponse("OK"))
     } getOrElse halt(status = 400, body = "pageNo is missing.")
   } getOrElse halt(status = 400, body = "reportId is missing.")
 
+  def printOutReport: Unit = {
+    // TODO: idのチェック
+    val reportId = params.getAs[Long]("id").get
 
-  def printOutReport: String = params.getAs[Long]("reportId").map { id =>
-    params.getAs[Int]("pageNo").map { pageNo =>
-      val paramMap = updateParamMap(id, pageNo)
+    val paramMap = skinnySession
+      .getAs[mutable.Map[String, String]]("paramMap")
+      .getOrElse(mutable.Map[String, String]())
 
-      val templateFile = ReportService().report(id).map {
-        _.templateFile
-      } getOrElse ""
+    val templateFile = ReportService().report(reportId).map {
+      _.templateFile
+    } getOrElse ""
 
-      val reportFileOpt = ReportingSupport().output(templateFile, paramMap.toMap)
+    // TODO:templateFileのチェック
+    val reportFileOpt = ReportingSupport().output(templateFile, paramMap.toMap)
 
-      if (reportFileOpt.isDefined) {
-        val reportFile = reportFileOpt.get
+    if (reportFileOpt.isDefined) {
+      val reportFile = reportFileOpt.get
 
-        fileDownload(reportFile.getAbsolutePath,
-          reportFile.getName,
-          "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-          false)
-        //deleteFile(reportFile)
-      }
-      ""
-    } getOrElse halt(status = 400, body = "pageNo is missing.")
-  } getOrElse halt(status = 400, body = "reportId is missing.")
+      fileDownload(reportFile.getAbsolutePath,
+        reportFile.getName,
+        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        false)
+      deleteFile(reportFile)
+    }
+  }
 
   def updateParamMap(id: Long, pageNo: Int): mutable.Map[String, String] = {
     val paramMap = skinnySession
@@ -85,7 +99,7 @@ class ReportController extends ApplicationController {
     for (key <- params.keys) {
       val requestedParam = paramInfo.find(_.paramKey == key)
       if (requestedParam.isDefined) {
-        paramMap + key -> params.getAs[String](key)
+        paramMap += (key -> params.getAs[String](key).get)
       }
     }
     paramMap

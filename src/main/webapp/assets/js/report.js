@@ -20,7 +20,7 @@ $(function () {
     var postData = $("#paramForm").serialize();
     console.log("postData:" + postData);
     $.ajax({
-      url: "/private/report/printOut",
+      url: "/private/report/params",
       method: "post",
       data: postData
     })
@@ -30,6 +30,7 @@ $(function () {
       })
       .done(function (data) {
         console.log(data);
+        window.location.href="/private/report/printOut/" + $("#reportId").val();
       })
     ;
   });

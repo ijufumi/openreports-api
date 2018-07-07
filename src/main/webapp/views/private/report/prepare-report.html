@@ -84,7 +84,7 @@
         th:src="@{/assets/js/layout.js}"></script>
 
 <th:block layout:fragment="page_scripts">
-  <script src="../../../assets/js/report.js" th:src="@{/assets/js/report.js} + '?201807060934'"></script>
+  <script src="../../../assets/js/report.js" th:src="@{/assets/js/report.js} + '?' + ${timeStamp}"></script>
 </th:block>
 </body>
 </html>
