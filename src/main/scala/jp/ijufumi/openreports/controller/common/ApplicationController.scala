@@ -1,6 +1,7 @@
 package jp.ijufumi.openreports.controller.common
 
 import java.io.{BufferedInputStream, FileInputStream, InputStream}
+import java.time.{LocalDateTime, ZoneOffset}
 
 import jp.ijufumi.openreports.controller.publicPath
 import skinny._
@@ -33,6 +34,7 @@ trait ApplicationController extends SkinnyController
     }
 
     set("activeMenu", activeMenu)
+    set("timeStamp", LocalDateTime.now().toEpochSecond(ZoneOffset.UTC))
   }
 
   // override def defaultLocale = Some(new java.util.Locale("ja"))

@@ -40,7 +40,7 @@
         href="../../assets/library/bootstrap-datepicker/bootstrap-datepicker3.standalone.min.css"
         th:href="@{/assets/library/bootstrap-datepicker/bootstrap-datepicker3.standalone.min.css}"/>
 
-  <link rel="stylesheet" href="../../../assets/css/layout.css">
+  <link rel="stylesheet" href="../../../assets/css/layout.css" th:href="@{/assets/css/layout.css} + '?' + ${timeStamp}">
 </head>
 <body>
 <div class="container">
@@ -158,7 +158,7 @@
         th:src="@{/assets/library/bootstrap-datepicker/bootstrap-datepicker.ja.min.js}"></script>
 
 <script src="../../assets/js/layout.js"
-        th:src="@{/assets/js/layout.js} + '?20180706'"></script>
+        th:src="@{/assets/js/layout.js} + '?' + ${timeStamp}"></script>
 
 <th:block layout:fragment="page_scripts"></th:block>
 </body>
