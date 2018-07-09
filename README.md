@@ -10,7 +10,7 @@
 | SLF4J | 1.7.25 | Logging |
 | jXls | 2.4.4 | Reporting |
 | jXls POI | 1.0.14 | Reporting |
-| iText | 5.5.13 | PDF output |
+| JODConverter | 4.2.0 | PDF output |
 
 ### Features (not implemented yet)
 - [ ] Output reporting.

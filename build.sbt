@@ -46,7 +46,8 @@ lazy val baseSettings = servletSettings ++ Seq(
     "javax.servlet"           %  "javax.servlet-api"    % "3.1.0"         % "container;provided;test",
     "org.jxls"                %  "jxls"                 % "2.4.4",
     "org.jxls"                %  "jxls-poi"             % "1.0.14",
-    "com.itextpdf"            %  "itextpdf"             % "5.5.13"
+    "org.jodconverter"        % "jodconverter-core"     % "4.2.0"
+
   ),
   libraryDependencies += "org.skinny-framework" %% "skinny-thymeleaf" % skinnyVersion,
   // ------------------------------
