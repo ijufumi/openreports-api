@@ -1,12 +1,12 @@
-package jp.ijufumi.openreports.model.support
+package jp.ijufumi.openreports.service.enums
 
 import scala.language.implicitConversions
 
-object ParamType extends Enumeration {
+object ReportParamType extends Enumeration {
 
   protected case class Val(value: String) extends super.Val {
     def equals(value: String): Boolean = {
-      Val.this == ParamType.of(value)
+      Val.this == ReportParamType.of(value)
     }
   }
 
@@ -17,7 +17,7 @@ object ParamType extends Enumeration {
 
   implicit def valueToVal(x: Value): Val = x.asInstanceOf[Val]
 
-  def of(value: String): ParamType.Val = {
+  def of(value: String): ReportParamType.Val = {
     values.find(_.value == value).getOrElse(TEXT)
   }
 }
