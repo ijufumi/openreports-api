@@ -10,3 +10,6 @@ postgres:
     POSTGRES_PASSWORD: password
     TZ: "Asia/Tokyo"
   container_name: openreports-db
+
+libreoffice:
+  build: ./docker/libreoffice
