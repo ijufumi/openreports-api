@@ -77,7 +77,11 @@ class ReportController extends ApplicationController {
       _.templateFile
     } getOrElse ""
 
-    // TODO:templateFileのチェック
+    if (templateFile.isEmpty) {
+      logger.warn("templateFile is blank.[%d]".format(reportId))
+      return
+    }
+
     val reportFileOpt = ReportingSupport().output(templateFile, paramMap.toMap)
 
     if (reportFileOpt.isDefined) {
@@ -88,6 +92,8 @@ class ReportController extends ApplicationController {
         "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
         false)
       deleteFile(reportFile)
+    } else {
+      logger.warn("reportFile is not exists.[%s]".format(templateFile))
     }
   }
 
