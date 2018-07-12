@@ -1,9 +1,9 @@
 package jp.ijufumi.openreports.vo
 
-case class ReportInfo(_reportId: Long, _reportName: String, _templateFile: String = "") {
-  def reportId: Long = _reportId
+import scala.beans.BeanProperty
 
-  def reportName: String = _reportName
-
-  def templateFile: String = _templateFile
-}
+case class ReportInfo(
+  @BeanProperty reportId: Long,
+  @BeanProperty reportName: String,
+  @BeanProperty templateFile: String = ""
+)
