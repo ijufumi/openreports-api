@@ -6,13 +6,13 @@ import skinny.orm.SkinnyCRUDMapper
 import skinny.orm.feature.OptimisticLockWithVersionFeature
 
 case class TMember(
-  memberId: Long,
+  memberId: Long = null,
   emailAddress: String,
   password: String,
   name: String,
-  isAdmin: String,
-  createdAt: DateTime,
-  updatedAt: DateTime,
+  isAdmin: String = "0",
+  createdAt: DateTime = DateTime.now(),
+  updatedAt: DateTime = DateTime.now(),
   groups: Seq[TGroup] = Nil
 )
 
