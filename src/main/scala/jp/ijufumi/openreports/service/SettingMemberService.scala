@@ -10,9 +10,6 @@ class SettingMemberService extends LoggerProvider {
   }
 
   def register(name: String, emailAddress: String, password: String, isAdmin: Boolean): Unit = {
-    val member = TMember(
-      emailAddress = emailAddress,
-      password = password,
-      name = name)
+    TMember.createWithAttributes('emailAddress -> emailAddress, 'passowrd -> password, 'name -> name)
   }
 }
