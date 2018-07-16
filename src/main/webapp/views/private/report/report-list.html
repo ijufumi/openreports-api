@@ -1,36 +1,36 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="../../../assets/library/fontawesome/css/fa-svg-with-js.css">
-    <!-- Bootstrap core CSS -->
-    <link rel="stylesheet" href="../../../assets/library/bootstrap/v411/css/bootstrap.min.css" />
-    <link rel="stylesheet"
-          href="../../../assets/library/bootstrap-datepicker/bootstrap-datepicker.standalone.min.css"/>
-    <link rel="stylesheet"
-          href="../../../assets/library/bootstrap-datepicker/bootstrap-datepicker3.standalone.min.css"/>
-    <link rel="stylesheet" href="../../../assets/css/layout.css">
+  <meta charset="UTF-8">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="../../../assets/library/fontawesome/css/fa-svg-with-js.css">
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="../../../assets/library/bootstrap/v411/css/bootstrap.min.css"/>
+  <link rel="stylesheet"
+        href="../../../assets/library/bootstrap-datepicker/bootstrap-datepicker.standalone.min.css"/>
+  <link rel="stylesheet"
+        href="../../../assets/library/bootstrap-datepicker/bootstrap-datepicker3.standalone.min.css"/>
+  <link rel="stylesheet" href="../../../assets/css/layout.css">
 </head>
 <body>
 <div layout:decorator="layouts/default">
-    <div class="container span12">
-        <th:block layout:fragment="title">
-            <h3>レポート管理 - レポートリスト</h3>
-        </th:block>
-        <th:block layout:fragment="content">
-            <div class="private-report">
-                <div class="list-group">
-                    <a th:each="r : ${reports}"
-                       th:href="@{'/private/report/prepare/'} + ${r.reportId()}"
-                       th:text="${r.reportName()}"
-                       href="#" class="list-group-item list-group-item-action">
-                        aaaaa
-                    </a>
-                </div>
-            </div>
-        </th:block>
-    </div>
+  <div class="container span12">
+    <th:block layout:fragment="title">
+      <h3>レポート管理 - レポートリスト</h3>
+    </th:block>
+    <th:block layout:fragment="content">
+      <div class="private-report">
+        <div class="list-group">
+          <a th:each="r : ${reports}"
+             th:href="@{'/private/report/prepare/'} + ${r.reportId(}"
+             th:text="${r.reportName}"
+             href="#" class="list-group-item list-group-item-action">
+            aaaaa
+          </a>
+        </div>
+      </div>
+    </th:block>
+  </div>
 </div>
 <script type="text/javascript" src="/assets/js/skinny-framework.js" th:src="@{/assets/js/skinny-framework.js}"></script>
 <!-- JQuery -->

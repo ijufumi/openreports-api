@@ -1,7 +1,8 @@
 package jp.ijufumi.openreports.vo
 
-case class ReportGroupInfo(_reportGroupId: Long, _reportGroupName: String) {
-  def reportGroupId: Long = _reportGroupId
+import scala.beans.BeanProperty
 
-  def reportGroupName: String = _reportGroupName
-}
+case class ReportGroupInfo(
+  @BeanProperty reportGroupId: Long,
+  @BeanProperty reportGroupName: String
+)
