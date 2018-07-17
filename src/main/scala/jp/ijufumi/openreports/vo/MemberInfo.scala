@@ -1,23 +1,22 @@
 package jp.ijufumi.openreports.vo
 
-import scala.beans.BeanProperty
-
 import jp.ijufumi.openreports.model.TMember
 
-case class MemberInfo(
-  @BeanProperty memberId: Long,
-  @BeanProperty name: String,
-  @BeanProperty groups: Seq[Long],
-  @BeanProperty menus: Seq[Long]
-) {
+import scala.beans.BeanProperty
 
-  def this(member: TMember) =  {
-    this(member.memberId, member.name, Seq.empty, Seq.empty)
+case class MemberInfo(@BeanProperty memberId: Long,
+                      @BeanProperty name: String,
+                      @BeanProperty groups: Seq[Long],
+                      @BeanProperty menus: Seq[Long],
+                      versions: Long) {
+
+  def this(member: TMember) = {
+    this(member.memberId, member.name, Seq.empty, Seq.empty, member.versions)
   }
 }
 
 object MemberInfo {
-  def apply(member: TMember) : MemberInfo ={
+  def apply(member: TMember): MemberInfo = {
     new MemberInfo(member)
   }
 }

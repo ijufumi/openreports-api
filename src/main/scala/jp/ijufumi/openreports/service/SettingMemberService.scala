@@ -9,7 +9,28 @@ class SettingMemberService extends LoggerProvider {
     TMember.findAll().map(m => MemberInfo(m))
   }
 
-  def register(name: String, emailAddress: String, password: String, isAdmin: Boolean): Unit = {
-    TMember.createWithAttributes('emailAddress -> emailAddress, 'passowrd -> password, 'name -> name)
+  def registerMember(name: String,
+                     emailAddress: String,
+                     password: String,
+                     isAdmin: Boolean): Unit = {
+    TMember.createWithAttributes(
+      'emailAddress -> emailAddress,
+      'passowrd -> password,
+      'name -> name)
+  }
+
+  def updateMember(memberId: Long,
+                   name: String,
+                   emailAddress: String,
+                   password: String,
+                   isAdmin: Boolean,
+                   versions: Long): Unit = {
+    TMember
+      .updateByIdAndVersion(memberId, versions)
+      .withAttributes(
+        'emailAddress -> emailAddress,
+        'passowrd -> password,
+        'name -> name
+      )
   }
 }
