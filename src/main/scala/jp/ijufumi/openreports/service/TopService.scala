@@ -24,7 +24,7 @@ class TopService extends LoggerProvider {
         groups += g.groupId
       }
 
-      member = MemberInfo(m.memberId, m.name, Seq(groups.toSeq: _*), Seq(menus.toSeq: _*))
+      member = MemberInfo(m.memberId, m.name, Seq(groups.toSeq: _*), Seq(menus.toSeq: _*), m.versions)
       logger.info("memberInfo:%s".format(member))
     }
     Option(member)

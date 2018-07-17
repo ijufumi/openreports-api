@@ -5,7 +5,7 @@ import scalikejdbc.{ResultName, WrappedResultSet}
 import skinny.orm.SkinnyCRUDMapper
 import skinny.orm.feature.OptimisticLockWithVersionFeature
 
-case class TMember(memberId: Long = null,
+case class TMember(memberId: Long = 0,
                    emailAddress: String,
                    password: String,
                    name: String,
