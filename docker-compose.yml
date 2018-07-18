@@ -13,3 +13,5 @@ postgres:
 
 libreoffice:
   build: ./docker/libreoffice
+  environment:
+    TZ: "Asia/Tokyo"
