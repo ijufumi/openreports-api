@@ -5,8 +5,12 @@ import jp.ijufumi.openreports.vo.MemberInfo
 import skinny.LoggerProvider
 
 class SettingMemberService extends LoggerProvider {
-  def memberList(): Seq[MemberInfo] = {
+  def getMembers(): Seq[MemberInfo] = {
     TMember.findAll().map(m => MemberInfo(m))
+  }
+
+  def getMember(memberId: Long): Option[MemberInfo] = {
+    TMember.findById(memberId).map(m => MemberInfo(m))
   }
 
   def registerMember(name: String,
@@ -16,7 +20,8 @@ class SettingMemberService extends LoggerProvider {
     TMember.createWithAttributes(
       'emailAddress -> emailAddress,
       'passowrd -> password,
-      'name -> name)
+      'name -> name
+    )
   }
 
   def updateMember(memberId: Long,
