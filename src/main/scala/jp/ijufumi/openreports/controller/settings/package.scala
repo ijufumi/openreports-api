@@ -1,5 +1,5 @@
 package jp.ijufumi.openreports.controller
 
 package object settings {
-  val rootPath = "/settings"
+  val rootPath = privatePath + "/settings"
 }

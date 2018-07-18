@@ -15,6 +15,10 @@
   margin-left: 10px;
 }
 
+.container .row .list-group {
+  width: 500px;
+}
+
 /** public **/
 /* top */
 .container .row .public-top input {
@@ -28,10 +32,6 @@
 
 /** private **/
 /* report */
-.container .row .private-report .list-group {
-  width: 500px;
-}
-
 .container .row .private-report button {
   width: 200px;
 }

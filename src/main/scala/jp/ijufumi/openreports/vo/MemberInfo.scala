@@ -6,12 +6,20 @@ import scala.beans.BeanProperty
 
 case class MemberInfo(@BeanProperty memberId: Long,
                       @BeanProperty name: String,
+                      @BeanProperty emailAddress: String,
                       @BeanProperty groups: Seq[Long],
                       @BeanProperty menus: Seq[Long],
                       versions: Long) {
 
   def this(member: TMember) = {
-    this(member.memberId, member.name, Seq.empty, Seq.empty, member.versions)
+    this(
+      member.memberId,
+      member.name,
+      member.emailAddress,
+      Seq.empty,
+      Seq.empty,
+      member.versions
+    )
   }
 }
 

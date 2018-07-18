@@ -1,6 +1,7 @@
 package jp.ijufumi.openreports.controller
 
-import jp.ijufumi.openreports.controller.settings.ReportSettingsController
+import jp.ijufumi.openreports.controller.Controllers.scheduledReport.{get, index, path}
+import jp.ijufumi.openreports.controller.settings.{MemberSettingsController, ReportSettingsController}
 import skinny._
 import skinny.controller.AssetsController
 
@@ -12,6 +13,7 @@ object Controllers {
     report.mount(ctx)
     scheduledReport.mount(ctx)
     reportSettings.mount(ctx)
+    memberSettings.mount(ctx)
 
     AssetsController.mount(ctx)
   }
@@ -46,4 +48,7 @@ object Controllers {
     val uploadFormUrl = get(path + "/fileUpload/form")(uploadForm).as('uploadForm)
   }
 
+  object memberSettings extends MemberSettingsController with Routes {
+    val indexUrl = get(path + "/?")(index).as('index)
+  }
 }
