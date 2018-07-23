@@ -14,4 +14,20 @@ class MemberSettingsController extends ApplicationController {
     set("members", members)
     render(viewPath + "/index")
   }
+
+  def form = {
+    render(viewPath + "/form")
+  }
+
+  def register = {
+    render(viewPath + "/register-complete")
+  }
+
+  def edit() = {
+    render(viewPath + "/edit")
+  }
+
+  def update() = {
+    render(viewPath + "/update-complete")
+  }
 }
