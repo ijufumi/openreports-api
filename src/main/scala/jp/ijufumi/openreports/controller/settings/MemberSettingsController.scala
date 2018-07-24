@@ -20,14 +20,22 @@ class MemberSettingsController extends ApplicationController {
   }
 
   def register = {
+    redirect(path + "/registerCompleted")
+  }
+
+  def registerCompleted = {
     render(viewPath + "/register-complete")
   }
 
-  def edit() = {
+  def edit = {
     render(viewPath + "/edit")
   }
 
-  def update() = {
+  def update = {
+    redirect(path + "/updateCompleted")
+  }
+
+  def updateCompleted = {
     render(viewPath + "/update-complete")
   }
 }
