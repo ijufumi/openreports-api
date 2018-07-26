@@ -17,35 +17,31 @@
 <div layout:decorator="layouts/default">
   <div class="container">
     <div class="row title">
-      <th:block layout:fragment="title">
-        <h2>レポート管理 - レポートグループ一覧</h2>
-      </th:block>
+      <h2 layout:fragment="title">レポート管理 - レポートグループ一覧</h2>
     </div>
     <div class="row">
-      <th:block layout:fragment="content">
-        <div class="private-report">
-          <div class="list-group">
-            <a th:each="g : ${reportGroups}"
-               th:href="@{'/private/report/'} + ${g.reportGroupId}"
-               th:text="${g.reportGroupName}"
-               href="#" class="list-group-item list-group-item-action">
-              aaaaa
-            </a>
-            <a th:remove="all" href="#" class="list-group-item list-group-item-action">
-              bbbbb
-            </a>
-            <a th:remove="all" href="#" class="list-group-item list-group-item-action">
-              ccccc
-            </a>
-            <a th:remove="all" href="#" class="list-group-item list-group-item-action">
-              ddddd
-            </a>
-            <a th:remove="all" href="#" class="list-group-item list-group-item-action">
-              eeeee
-            </a>
-          </div>
+      <div class="private-report" layout:fragment="content">
+        <div class="list-group">
+          <a th:each="g : ${reportGroups}"
+             th:href="@{'/private/report/'} + ${g.reportGroupId}"
+             th:text="${g.reportGroupName}"
+             href="#" class="list-group-item list-group-item-action">
+            aaaaa
+          </a>
+          <a th:remove="all" href="#" class="list-group-item list-group-item-action">
+            bbbbb
+          </a>
+          <a th:remove="all" href="#" class="list-group-item list-group-item-action">
+            ccccc
+          </a>
+          <a th:remove="all" href="#" class="list-group-item list-group-item-action">
+            ddddd
+          </a>
+          <a th:remove="all" href="#" class="list-group-item list-group-item-action">
+            eeeee
+          </a>
         </div>
-      </th:block>
+      </div>
     </div>
   </div>
 </div>

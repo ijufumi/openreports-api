@@ -17,50 +17,46 @@
 <div layout:decorator="layouts/default">
   <div class="container">
     <div class="row title">
-      <th:block layout:fragment="title">
-        <h2>レポート管理 - レポート出力</h2>
-      </th:block>
+      <h2 layout:fragment="title">レポート管理 - レポート出力</h2>
     </div>
     <div class="row main-contents">
-      <th:block layout:fragment="content">
-        <div class="private-report">
-          <form id="paramForm">
-            <div class="form-group">
-              <div th:each="p : ${paramInfo}" class="form-inline pt-1">
-                <label th:for="${p.paramKey}" th:text="${p.paramName}" class="pr-3">Email address</label>
-                <th:block th:switch="${p.paramType}">
-                  <!-- Date -->
-                  <div th:case="'1'">
-                    <input class="form-control" type="date" th:name="${p.paramKey}" th:id="${p.paramKey}"/>
-                  </div>
-                  <!-- List -->
-                  <div th:case="'2'">
-                    <select class="form-control" th:name="${p.paramKey}" th:id="${p.paramKey}">
-                      <value th:each="v : ${p.paramValues}" th:value="${v}" th:text="${v}">aaa</value>
-                    </select>
-                  </div>
-                  <!-- Default -->
-                  <div th:case="*">
-                    <input class="form-control" type="text" th:name="${p.paramKey}" th:id="${p.paramKey}"/>
-                  </div>
-                </th:block>
-              </div>
-            </div>
-            <div class="form-group">
-              <th:block th:if="${nextPageNo} != -1">
-                <button type="button" id="backBtn" class="btn btn-dark btn-lg">戻る</button>
-                <button type="button" id="nextPage" class="btn btn-info btn-lg">次のページ</button>
-              </th:block>
-              <th:block th:if="${nextPageNo} == -1">
-                <button type="button" id="printOutBtn" class="btn btn-info btn-lg">出力</button>
+      <div class="private-report" layout:fragment="content">
+        <form id="paramForm">
+          <div class="form-group">
+            <div th:each="p : ${paramInfo}" class="form-inline pt-1">
+              <label th:for="${p.paramKey}" th:text="${p.paramName}" class="pr-3">Email address</label>
+              <th:block th:switch="${p.paramType}">
+                <!-- Date -->
+                <div th:case="'1'">
+                  <input class="form-control" type="date" th:name="${p.paramKey}" th:id="${p.paramKey}"/>
+                </div>
+                <!-- List -->
+                <div th:case="'2'">
+                  <select class="form-control" th:name="${p.paramKey}" th:id="${p.paramKey}">
+                    <value th:each="v : ${p.paramValues}" th:value="${v}" th:text="${v}">aaa</value>
+                  </select>
+                </div>
+                <!-- Default -->
+                <div th:case="*">
+                  <input class="form-control" type="text" th:name="${p.paramKey}" th:id="${p.paramKey}"/>
+                </div>
               </th:block>
             </div>
-            <input type="hidden" id="nextPageNo" name="nextPageNo" th:value="${nextPageNo}"/>
-            <input type="hidden" id="pageNo" name="pageNo" th:value="${pageNo}"/>
-            <input type="hidden" id="reportId" name="reportId" th:value="${reportId}"/>
-          </form>
-        </div>
-      </th:block>
+          </div>
+          <div class="form-group">
+            <th:block th:if="${nextPageNo} != -1">
+              <button type="button" id="backBtn" class="btn btn-dark btn-lg">戻る</button>
+              <button type="button" id="nextPage" class="btn btn-info btn-lg">次のページ</button>
+            </th:block>
+            <th:block th:if="${nextPageNo} == -1">
+              <button type="button" id="printOutBtn" class="btn btn-info btn-lg">出力</button>
+            </th:block>
+          </div>
+          <input type="hidden" id="nextPageNo" name="nextPageNo" th:value="${nextPageNo}"/>
+          <input type="hidden" id="pageNo" name="pageNo" th:value="${pageNo}"/>
+          <input type="hidden" id="reportId" name="reportId" th:value="${reportId}"/>
+        </form>
+      </div>
     </div>
   </div>
 </div>
