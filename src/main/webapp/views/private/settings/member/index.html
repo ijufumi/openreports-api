@@ -21,6 +21,9 @@
     </div>
     <div class="row">
       <div class="private-setting-member" layout:fragment="content">
+        <div class="col-md-4 pl-0 mb-4 offset-md-8">
+          <a class="btn btn-block btn-lg btn-primary" href="/private/settings/member/form">ユーザ登録</a>
+        </div>
         <div class="list-group">
           <a th:each="m : ${members}"
              th:href="@{'/private/settings/member/'} + ${m.memberId}"
