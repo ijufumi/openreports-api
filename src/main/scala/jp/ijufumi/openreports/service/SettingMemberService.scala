@@ -19,7 +19,7 @@ class SettingMemberService extends LoggerProvider {
                      isAdmin: Boolean): Unit = {
     TMember.createWithAttributes(
       'emailAddress -> emailAddress,
-      'passowrd -> password,
+      'password -> password,
       'name -> name
     )
   }
@@ -34,7 +34,7 @@ class SettingMemberService extends LoggerProvider {
       .updateByIdAndVersion(memberId, versions)
       .withAttributes(
         'emailAddress -> emailAddress,
-        'passowrd -> password,
+        'password -> password,
         'name -> name
       )
   }
