@@ -29,11 +29,11 @@ class MemberSettingsController
     render(viewPath + "/index")
   }
 
-  def form = {
-    render(viewPath + "/form")
+  def register = {
+    render(viewPath + "/register")
   }
 
-  def register = {
+  def register2 = {
     if (validateRegisterParams.validate) {
       val password = requestParams.getAs[String]("password").getOrElse("")
       val checkedPassword = requestParams.getAs[String]("checkedPassword").getOrElse("")
@@ -41,7 +41,7 @@ class MemberSettingsController
       if (!password.equals(checkedPassword)) {
         logger.info("invalid params:%s".format(requestParams))
         set("customErrorMessages", Seq(i18n.get("warning.loginFailure"))) // TODO:メッセージ変更
-        render(viewPath + "/form")
+        render(viewPath + "/register")
       }
       val name = requestParams.getAs[String]("name").getOrElse("")
       val emailAddress = requestParams.getAs[String]("emailAddress").getOrElse("")
@@ -53,7 +53,7 @@ class MemberSettingsController
     } else {
       logger.info("invalid params:%s".format(requestParams))
       set("customErrorMessages", Seq(i18n.get("warning.loginFailure"))) // TODO:メッセージ変更
-      render(viewPath + "/form")
+      render(viewPath + "/register")
     }
   }
 
@@ -61,11 +61,11 @@ class MemberSettingsController
     render(viewPath + "/register-complete")
   }
 
-  def edit = {
-    render(viewPath + "/edit")
+  def update = {
+    render(viewPath + "/update")
   }
 
-  def update = {
+  def update2 = {
     redirect(path + "/updateCompleted")
   }
 

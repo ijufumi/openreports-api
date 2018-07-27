@@ -50,11 +50,11 @@ object Controllers {
 
   object memberSettings extends MemberSettingsController with Routes {
     val indexUrl = get(path + "/?")(index).as('index)
-    val formUrl = get(path + "/form")(form).as('form)
-    val registerUrl = post(path + "/register")(register).as('register)
-    val registerUrl2 = get(path + "/register")(form).as('register2)
+    val registerUrl = get(path + "/register")(register).as('register)
+    val registerUrl2 = post(path + "/register")(register2).as('register2)
     val registerCompletedUrl = get(path + "/registerCompleted")(registerCompleted).as('registerCompleted)
-    val updateUrl = post(path + "/update")(update).as('update)
+    val updateUrl = get(path + "/update/:id")(update).as('update)
+    val updateUrl2 = post(path + "/update/:id")(update).as('update2)
     val updateCompletedUrl = get(path + "/updateCompleted")(updateCompleted).as('updateCompleted)
   }
 }
