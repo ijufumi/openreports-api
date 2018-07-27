@@ -52,7 +52,6 @@ class TopController extends ApplicationController {
       }
     } else {
       logger.info("invalid id or password : [" + loginId + "][" + password + "]")
-      set("customErrorMessages", Seq(i18n.get("warning.loginFailure")))
       render(viewPath + "/index")
     }
   }

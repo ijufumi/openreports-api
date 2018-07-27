@@ -52,7 +52,6 @@ class MemberSettingsController
       redirect(path + "/registerCompleted")
     } else {
       logger.info("invalid params:%s".format(requestParams))
-      set("customErrorMessages", Seq(i18n.get("warning.loginFailure"))) // TODO:メッセージ変更
       render(viewPath + "/register")
     }
   }
