@@ -2,11 +2,11 @@ package jp.ijufumi.openreports.controller.settings
 
 import jp.ijufumi.openreports.controller.common.ApplicationController
 import jp.ijufumi.openreports.service.SettingMemberService
+import jp.ijufumi.openreports.service.enums.StatusCode
 import skinny.Params
 import skinny.validator.{email, paramKey, required}
 
-class MemberSettingsController
-  extends ApplicationController {
+class MemberSettingsController extends ApplicationController {
   val path = rootPath + "/member"
   val viewPath = rootPath + "/member"
 
@@ -36,7 +36,8 @@ class MemberSettingsController
   def register2 = {
     if (validateRegisterParams.validate) {
       val password = requestParams.getAs[String]("password").getOrElse("")
-      val checkedPassword = requestParams.getAs[String]("checkedPassword").getOrElse("")
+      val checkedPassword =
+        requestParams.getAs[String]("checkedPassword").getOrElse("")
       // パスワードの不一致
       if (!password.equals(checkedPassword)) {
         logger.info("invalid params:%s".format(requestParams))
@@ -44,12 +45,25 @@ class MemberSettingsController
         render(viewPath + "/register")
       }
       val name = requestParams.getAs[String]("name").getOrElse("")
-      val emailAddress = requestParams.getAs[String]("emailAddress").getOrElse("")
+      val emailAddress =
+        requestParams.getAs[String]("emailAddress").getOrElse("")
       val isAdmin = requestParams.getAs[Boolean]("isAdmin").getOrElse(false)
-      new SettingMemberService()
-        .registerMember(name = name, emailAddress = emailAddress, password = password, isAdmin = isAdmin)
-      // TODO:emailAddressの重複チェックとエラー処理の追加
-      redirect(path + "/registerCompleted")
+      val statusCode = new SettingMemberService()
+        .registerMember(
+          name = name,
+          emailAddress = emailAddress,
+          password = password,
+          isAdmin = isAdmin
+        )
+
+      statusCode match {
+        case StatusCode.OK => redirect(path + "/registerCompleted")
+        case StatusCode.DUPLICATE_ERR =>
+          set("customErrorMessages", Seq(i18n.get("warning.loginFailure"))) // TODO:メッセージ変更
+        case _ =>
+          set("customErrorMessages", Seq(i18n.get("warning.loginFailure"))) // TODO:メッセージ変更
+      }
+      render(viewPath + "/register")
     } else {
       logger.info("invalid params:%s".format(requestParams))
       render(viewPath + "/register")

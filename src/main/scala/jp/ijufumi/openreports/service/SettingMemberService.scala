@@ -1,6 +1,9 @@
 package jp.ijufumi.openreports.service
 
+import java.sql.SQLException
+
 import jp.ijufumi.openreports.model.TMember
+import jp.ijufumi.openreports.service.enums.StatusCode
 import jp.ijufumi.openreports.vo.MemberInfo
 import skinny.LoggerProvider
 
@@ -16,12 +19,20 @@ class SettingMemberService extends LoggerProvider {
   def registerMember(name: String,
                      emailAddress: String,
                      password: String,
-                     isAdmin: Boolean): Unit = {
-    TMember.createWithAttributes(
-      'emailAddress -> emailAddress,
-      'password -> password,
-      'name -> name
-    )
+                     isAdmin: Boolean): StatusCode.Value = {
+
+    try {
+      TMember.createWithAttributes(
+        'emailAddress -> emailAddress,
+        'password -> password,
+        'name -> name
+      )
+
+    } catch {
+      case e: SQLException => return StatusCode.of(e)
+      case _               => return StatusCode.OTHER_ERROR
+    }
+    StatusCode.OK
   }
 
   def updateMember(memberId: Long,
