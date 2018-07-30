@@ -2,14 +2,18 @@ package jp.ijufumi.openreports.service.enums
 
 import scala.language.implicitConversions
 
-object StatusCode extends Enumeration {
-  protected case class Val(value: String) extends super.Val {
+object StatusCode
+  extends Enumeration {
+
+  protected case class Val(value: String)
+    extends super.Val {
     def equals(value: String): Boolean = {
       Val.this == StatusCode.of(value)
     }
   }
 
   val OK = Val("")
+  val DATA_NOT_FOUND = Val("not found")
   val DUPLICATE_ERR = Val("duplicate key value violates")
   val OTHER_ERROR = Val("error")
 

@@ -4,7 +4,7 @@ import jp.ijufumi.openreports.controller.common.ApplicationController
 import jp.ijufumi.openreports.service.SettingMemberService
 import jp.ijufumi.openreports.service.enums.StatusCode
 import skinny.Params
-import skinny.validator.{email, paramKey, required}
+import skinny.validator.{email, numeric, paramKey, required}
 
 class MemberSettingsController
   extends ApplicationController {
@@ -26,6 +26,7 @@ class MemberSettingsController
 
   def validateUpdateParams = validation(
     requestParams,
+    paramKey("versions") is required & numeric,
     paramKey("emailAddress") is email
   )
 
@@ -95,10 +96,25 @@ class MemberSettingsController
         set("customErrorMessages", Seq(i18n.get("warning.passwordMismatch")))
         render(viewPath + "/update/%d".format(id))
       }
-    } else {
+      val name = requestParams.getAs[String]("name").getOrElse("")
+      val emailAddress =
+        requestParams.getAs[String]("emailAddress").getOrElse("")
+      val isAdmin = requestParams.getAs[Boolean]("isAdmin").getOrElse(false)
+      val versions = requestParams.getAs[Long]("versions").get
 
+      val statusCode = new SettingMemberService()
+        .updateMember(id, name, emailAddress, password, isAdmin, versions)
+
+      statusCode match {
+        case StatusCode.OK => redirect(path + "/updateCompleted")
+        case _ =>
+          set("customErrorMessages", Seq(i18n.get("error.systemError")))
+      }
+      render(viewPath + "/update")
+    } else {
+      logger.info("invalid params:%s".format(requestParams))
+      render(viewPath + "/update")
     }
-    redirect(path + "/updateCompleted")
   } getOrElse haltWithBody(404)
 
   def updateCompleted = {
