@@ -59,9 +59,9 @@ class MemberSettingsController extends ApplicationController {
       statusCode match {
         case StatusCode.OK => redirect(path + "/registerCompleted")
         case StatusCode.DUPLICATE_ERR =>
-          set("customErrorMessages", Seq(i18n.get("warning.loginFailure"))) // TODO:メッセージ変更
+          set("customErrorMessages", Seq(i18n.get("warning.duplicateRegister")))
         case _ =>
-          set("customErrorMessages", Seq(i18n.get("warning.loginFailure"))) // TODO:メッセージ変更
+          set("customErrorMessages", Seq(i18n.get("error.systemError")))
       }
       render(viewPath + "/register")
     } else {
