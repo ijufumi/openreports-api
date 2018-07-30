@@ -13,7 +13,7 @@ val appOrganization = "jp.ijufumi"
 val appName = "openreports"
 val appVersion = "0.0.1-SNAPSHOT"
 
-val skinnyVersion = "2.6.0"
+val skinnyVersion = "3.0.0"
 val theScalaVersion = "2.12.6"
 val jettyVersion = "9.4.11.v20180605"
 
