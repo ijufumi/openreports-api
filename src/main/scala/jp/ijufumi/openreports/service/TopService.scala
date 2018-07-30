@@ -1,16 +1,21 @@
 package jp.ijufumi.openreports.service
 
 import jp.ijufumi.openreports.model.{TGroup, TMember}
+import jp.ijufumi.openreports.service.support.Hash
 import jp.ijufumi.openreports.vo.MemberInfo
 import skinny.LoggerProvider
 
 import scala.collection.mutable
 
-class TopService extends LoggerProvider {
-  def login(emailAddress: String, password: String): Option[MemberInfo] = {
+class TopService
+  extends LoggerProvider {
+  def login(
+    emailAddress: String,
+    password: String
+  ): Option[MemberInfo] = {
     var member: MemberInfo = null
     val members: Seq[TMember] = TMember
-      .where('emailAddress -> emailAddress, 'password -> password)
+      .where('emailAddress -> emailAddress, 'password -> Hash.hmacSha256("test", password))
       .apply();
 
     if (members.isEmpty) {

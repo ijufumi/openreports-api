@@ -82,7 +82,13 @@ class MemberSettingsController
   }
 
   def showUpdate = params.getAs[Long]("id").map { id =>
-    render(viewPath + "/update")
+    val memberOpt = new SettingMemberService().getMember(id)
+    if (memberOpt.isEmpty) {
+      haltWithBody(404)
+    } else {
+      set("member", memberOpt.get)
+      render(viewPath + "/update")
+    }
   } getOrElse haltWithBody(404)
 
   def doUpdate = params.getAs[Long]("id").map { id =>

@@ -4,6 +4,7 @@ import java.sql.SQLException
 
 import jp.ijufumi.openreports.model.TMember
 import jp.ijufumi.openreports.service.enums.StatusCode
+import jp.ijufumi.openreports.service.support.Hash
 import jp.ijufumi.openreports.vo.MemberInfo
 import skinny.LoggerProvider
 
@@ -27,7 +28,7 @@ class SettingMemberService
     try {
       TMember.createWithAttributes(
         'emailAddress -> emailAddress,
-        'password -> password,
+        'password -> Hash.hmacSha256("test", password),
         'name -> name
       )
 
@@ -56,18 +57,22 @@ class SettingMemberService
         .updateByIdAndVersion(memberId, versions)
 
       val member = memberOpt.get
-      if (!name.equals(member.name)) {
+      if (name.length != 0 && !name.equals(member.name)) {
         updateBuilder.addAttributeToBeUpdated((TMember.column.field("name"), name))
       }
-      if (!emailAddress.equals(member.emailAddress)) {
+      if (emailAddress.length != 0 && !emailAddress.equals(member.emailAddress)) {
         updateBuilder.addAttributeToBeUpdated((TMember.column.field("emailAddress"), emailAddress))
       }
-      if (!password.equals(member.password)) {
-        updateBuilder.addAttributeToBeUpdated((TMember.column.field("password"), password))
+      if (password.length != 0) {
+        val hashedPassword = Hash.hmacSha256("test", password)
+        if (!hashedPassword.equals(member.password)) {
+          updateBuilder.addAttributeToBeUpdated((TMember.column.field("password"), hashedPassword))
+        }
       }
 
       updateBuilder.withAttributes()
     } catch {
+      case e: SQLException => return StatusCode.of(e)
       case _ => return StatusCode.OTHER_ERROR
     }
     StatusCode.OK
