@@ -29,11 +29,11 @@ class MemberSettingsController extends ApplicationController {
     render(viewPath + "/index")
   }
 
-  def register = {
+  def showRegister = {
     render(viewPath + "/register")
   }
 
-  def register2 = {
+  def doRegister = {
     if (validateRegisterParams.validate) {
       val password = requestParams.getAs[String]("password").getOrElse("")
       val checkedPassword =
@@ -74,11 +74,11 @@ class MemberSettingsController extends ApplicationController {
     render(viewPath + "/register-complete")
   }
 
-  def update = {
+  def showUpdate = {
     render(viewPath + "/update")
   }
 
-  def update2 = {
+  def doUpdate = {
     redirect(path + "/updateCompleted")
   }
 
