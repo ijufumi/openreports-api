@@ -6,7 +6,8 @@ import jp.ijufumi.openreports.service.enums.StatusCode
 import skinny.Params
 import skinny.validator.{email, paramKey, required}
 
-class MemberSettingsController extends ApplicationController {
+class MemberSettingsController
+  extends ApplicationController {
   val path = rootPath + "/member"
   val viewPath = rootPath + "/member"
 
@@ -21,6 +22,11 @@ class MemberSettingsController extends ApplicationController {
     paramKey("emailAddress") is required & email,
     paramKey("password") is required,
     paramKey("checkedPassword") is required
+  )
+
+  def validateUpdateParams = validation(
+    requestParams,
+    paramKey("emailAddress") is email
   )
 
   def index = {
@@ -41,7 +47,7 @@ class MemberSettingsController extends ApplicationController {
       // パスワードの不一致
       if (!password.equals(checkedPassword)) {
         logger.info("invalid params:%s".format(requestParams))
-        set("customErrorMessages", Seq(i18n.get("warning.loginFailure"))) // TODO:メッセージ変更
+        set("customErrorMessages", Seq(i18n.get("warning.passwordMismatch")))
         render(viewPath + "/register")
       }
       val name = requestParams.getAs[String]("name").getOrElse("")
@@ -74,13 +80,26 @@ class MemberSettingsController extends ApplicationController {
     render(viewPath + "/register-complete")
   }
 
-  def showUpdate = {
+  def showUpdate = params.getAs[Long]("id").map { id =>
     render(viewPath + "/update")
-  }
+  } getOrElse haltWithBody(404)
 
-  def doUpdate = {
+  def doUpdate = params.getAs[Long]("id").map { id =>
+    if (validateUpdateParams.validate) {
+      val password = requestParams.getAs[String]("password").getOrElse("")
+      val checkedPassword =
+        requestParams.getAs[String]("checkedPassword").getOrElse("")
+      // パスワードの不一致
+      if (!password.equals(checkedPassword)) {
+        logger.info("invalid params:%s".format(requestParams))
+        set("customErrorMessages", Seq(i18n.get("warning.passwordMismatch")))
+        render(viewPath + "/update/%d".format(id))
+      }
+    } else {
+
+    }
     redirect(path + "/updateCompleted")
-  }
+  } getOrElse haltWithBody(404)
 
   def updateCompleted = {
     render(viewPath + "/update-complete")
