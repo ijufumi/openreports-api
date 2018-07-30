@@ -26,8 +26,8 @@
         </div>
         <div class="list-group">
           <a th:each="m : ${members}"
-             th:href="@{'/private/settings/member/'} + ${m.memberId}"
-             th:text="${m.name} + '( ' + ${m.emailAddress} + ' )'"
+             th:href="@{'/private/settings/member/update/'} + ${m.memberId}"
+             th:text="${m.name} + '< ' + ${m.emailAddress} + ' >'"
              href="#" class="list-group-item list-group-item-action">
             aaaaa
           </a>

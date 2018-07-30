@@ -54,7 +54,7 @@ object Controllers {
     val doRegisterUrl = post(path + "/register")(doRegister).as('doRegister)
     val registerCompletedUrl = get(path + "/registerCompleted")(registerCompleted).as('registerCompleted)
     val showRpdateUrl = get(path + "/update/:id")(showUpdate).as('showUpdate)
-    val doRpdateUrl = post(path + "/update/:id")(showUpdate).as('doUpdate)
+    val doUpdateUrl = post(path + "/update/:id")(doUpdate).as('doUpdate)
     val updateCompletedUrl = get(path + "/updateCompleted")(updateCompleted).as('updateCompleted)
   }
 }

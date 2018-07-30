@@ -14,13 +14,14 @@ class TopService
     password: String
   ): Option[MemberInfo] = {
     var member: MemberInfo = null
+    val hashedPassword =  Hash.hmacSha256(HASHED_KEY, password)
     val members: Seq[TMember] = TMember
-      .where('emailAddress -> emailAddress, 'password -> Hash.hmacSha256("test", password))
+      .where('emailAddress -> emailAddress, 'password -> hashedPassword)
       .apply();
 
     if (members.isEmpty) {
       logger.info(
-        "invalid id or password : [%s][%s]".format(emailAddress, password)
+        "invalid id or password : [%s][%s]".format(emailAddress, hashedPassword)
       )
     } else {
       val menus = mutable.Set[Long]()

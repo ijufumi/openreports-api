@@ -9,7 +9,7 @@ case class MemberInfo(@BeanProperty memberId: Long,
                       @BeanProperty emailAddress: String,
                       @BeanProperty groups: Seq[Long],
                       @BeanProperty menus: Seq[Long],
-                      versions: Long) {
+                      @BeanProperty versions: Long) {
 
   def this(member: TMember) = {
     this(

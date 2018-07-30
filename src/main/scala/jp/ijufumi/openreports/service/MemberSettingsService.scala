@@ -6,10 +6,10 @@ import jp.ijufumi.openreports.model.TMember
 import jp.ijufumi.openreports.service.enums.StatusCode
 import jp.ijufumi.openreports.service.support.Hash
 import jp.ijufumi.openreports.vo.MemberInfo
+import org.joda.time.DateTime
 import skinny.LoggerProvider
 
-class SettingMemberService
-  extends LoggerProvider {
+class MemberSettingsService extends LoggerProvider {
   def getMembers(): Seq[MemberInfo] = {
     TMember.findAll().map(m => MemberInfo(m))
   }
@@ -18,35 +18,31 @@ class SettingMemberService
     TMember.findById(memberId).map(m => MemberInfo(m))
   }
 
-  def registerMember(
-    name: String,
-    emailAddress: String,
-    password: String,
-    isAdmin: Boolean
-  ): StatusCode.Value = {
+  def registerMember(name: String,
+                     emailAddress: String,
+                     password: String,
+                     isAdmin: Boolean): StatusCode.Value = {
 
     try {
       TMember.createWithAttributes(
         'emailAddress -> emailAddress,
-        'password -> Hash.hmacSha256("test", password),
+        'password -> Hash.hmacSha256(HASHED_KEY, password),
         'name -> name
       )
 
     } catch {
       case e: SQLException => return StatusCode.of(e)
-      case _ => return StatusCode.OTHER_ERROR
+      case _: Throwable    => return StatusCode.OTHER_ERROR
     }
     StatusCode.OK
   }
 
-  def updateMember(
-    memberId: Long,
-    name: String,
-    emailAddress: String,
-    password: String,
-    isAdmin: Boolean,
-    versions: Long
-  ): StatusCode.Value = {
+  def updateMember(memberId: Long,
+                   name: String,
+                   emailAddress: String,
+                   password: String,
+                   isAdmin: Boolean,
+                   versions: Long): StatusCode.Value = {
     try {
       val memberOpt = TMember.findById(memberId)
       if (memberOpt.isEmpty) {
@@ -58,22 +54,28 @@ class SettingMemberService
 
       val member = memberOpt.get
       if (name.length != 0 && !name.equals(member.name)) {
-        updateBuilder.addAttributeToBeUpdated((TMember.column.field("name"), name))
+        updateBuilder.addAttributeToBeUpdated(
+          (TMember.column.field("name"), name)
+        )
       }
       if (emailAddress.length != 0 && !emailAddress.equals(member.emailAddress)) {
-        updateBuilder.addAttributeToBeUpdated((TMember.column.field("emailAddress"), emailAddress))
+        updateBuilder.addAttributeToBeUpdated(
+          (TMember.column.field("emailAddress"), emailAddress)
+        )
       }
       if (password.length != 0) {
-        val hashedPassword = Hash.hmacSha256("test", password)
+        val hashedPassword = Hash.hmacSha256(HASHED_KEY, password)
         if (!hashedPassword.equals(member.password)) {
-          updateBuilder.addAttributeToBeUpdated((TMember.column.field("password"), hashedPassword))
+          updateBuilder.addAttributeToBeUpdated(
+            (TMember.column.field("password"), hashedPassword)
+          )
         }
       }
 
-      updateBuilder.withAttributes()
+      updateBuilder.withAttributes('updatedAt -> DateTime.now)
     } catch {
       case e: SQLException => return StatusCode.of(e)
-      case _ => return StatusCode.OTHER_ERROR
+      case _: Throwable    => return StatusCode.OTHER_ERROR
     }
     StatusCode.OK
   }
