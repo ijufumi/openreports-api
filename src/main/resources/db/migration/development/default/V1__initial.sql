@@ -146,7 +146,7 @@ create index report_param_config_IX1 on t_report_param_config(report_id);
 insert into t_group (group_name, created_at, updated_at) values ('admin', now(), now());
 insert into t_group (group_name, created_at, updated_at) values ('assistant', now(), now());
 
-insert into t_member (email_address, password, name, is_admin, created_at, updated_at) values ('ijufumi@gmail.com', 'password', 'administrator', '1', now(), now());
+insert into t_member (email_address, password, name, is_admin, created_at, updated_at) values ('ijufumi@gmail.com', 'a11efa8c78f2870fd3918ee6528fd8bcb2daa9edb9f7a57384ac7a40c98a8daf', 'administrator', '1', now(), now());
 insert into r_member_group values (1, 1);
 insert into r_member_group values (1, 2);
 
