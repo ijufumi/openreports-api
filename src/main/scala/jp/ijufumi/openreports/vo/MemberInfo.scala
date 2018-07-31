@@ -7,7 +7,7 @@ import scala.beans.BeanProperty
 case class MemberInfo(@BeanProperty memberId: Long,
                       @BeanProperty name: String,
                       @BeanProperty emailAddress: String,
-                      @BeanProperty groups: Seq[Long],
+                      @BeanProperty groups: Seq[GroupInfo],
                       @BeanProperty menus: Seq[Long],
                       @BeanProperty versions: Long) {
 
