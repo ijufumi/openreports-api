@@ -1,7 +1,7 @@
 package jp.ijufumi.openreports.controller.settings
 
 import jp.ijufumi.openreports.controller.common.ApplicationController
-import jp.ijufumi.openreports.service.MemberSettingsService
+import jp.ijufumi.openreports.service.{GroupSettingsService, MemberSettingsService}
 import jp.ijufumi.openreports.service.enums.StatusCode
 import skinny.Params
 import skinny.validator.{email, numeric, paramKey, required}
@@ -36,6 +36,7 @@ class MemberSettingsController extends ApplicationController {
   }
 
   def showRegister = {
+    set("groups", new GroupSettingsService().getGroups)
     render(viewPath + "/register")
   }
 

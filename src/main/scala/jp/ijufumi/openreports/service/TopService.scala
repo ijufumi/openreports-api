@@ -2,7 +2,7 @@ package jp.ijufumi.openreports.service
 
 import jp.ijufumi.openreports.model.{TGroup, TMember}
 import jp.ijufumi.openreports.service.support.Hash
-import jp.ijufumi.openreports.vo.MemberInfo
+import jp.ijufumi.openreports.vo.{GroupInfo, MemberInfo}
 import skinny.LoggerProvider
 
 import scala.collection.mutable
@@ -25,13 +25,13 @@ class TopService
       )
     } else {
       val menus = mutable.Set[Long]()
-      val groups = mutable.Set[Long]()
+      val groups = mutable.Set[GroupInfo]()
       val m = members.head
       for (g <- m.groups) {
         val group = TGroup.includes(TGroup.functions).findById(g.groupId).get
         logger.debug("Group:%s".format(group))
         menus ++= group.functions.map(_.functionId).toSet
-        groups += g.groupId
+        groups += GroupInfo(g.groupId, g.groupName)
       }
 
       member = MemberInfo(
