@@ -23,7 +23,7 @@ class MemberSettingsService extends LoggerProvider {
                      emailAddress: String,
                      password: String,
                      isAdmin: Boolean,
-                     groups: Array[String]): StatusCode.Value = {
+                     groups: Seq[String]): StatusCode.Value = {
 
     try {
       val id = TMember.createWithAttributes(
@@ -46,7 +46,7 @@ class MemberSettingsService extends LoggerProvider {
                    emailAddress: String,
                    password: String,
                    isAdmin: Boolean,
-                   groups: Array[String],
+                   groups: Seq[String],
                    versions: Long): StatusCode.Value = {
     try {
       val memberOpt = TMember.findById(memberId)

@@ -3,7 +3,7 @@ package jp.ijufumi.openreports.controller.settings
 import jp.ijufumi.openreports.controller.common.ApplicationController
 import jp.ijufumi.openreports.service.{GroupSettingsService, MemberSettingsService}
 import jp.ijufumi.openreports.service.enums.StatusCode
-import skinny.Params
+import skinny.{ParamType, Params}
 import skinny.validator.{email, numeric, paramKey, required}
 
 class MemberSettingsController extends ApplicationController {
@@ -55,7 +55,7 @@ class MemberSettingsController extends ApplicationController {
       val emailAddress =
         params.getAs[String]("emailAddress").getOrElse("")
       val isAdmin = params.getAs[Boolean]("isAdmin").getOrElse(false)
-      val groups = params.getAs[Array[String]]("groups").getOrElse(Array.empty)
+      val groups = multiParams.get("groups").get
 
       val statusCode = new MemberSettingsService()
         .registerMember(
@@ -113,7 +113,7 @@ class MemberSettingsController extends ApplicationController {
         val emailAddress =
           params.getAs[String]("emailAddress").getOrElse("")
         val isAdmin = params.getAs[Boolean]("isAdmin").getOrElse(false)
-        val groups = params.getAs[Array[String]]("groups").getOrElse(Array.empty)
+        val groups = multiParams.get("groups").get
         val versions = params.getAs[Long]("versions").get
 
         val statusCode = new MemberSettingsService()
