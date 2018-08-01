@@ -2,13 +2,15 @@ package jp.ijufumi.openreports.service
 
 import java.sql.SQLException
 
-import jp.ijufumi.openreports.model.{RMemberGroup, TMember}
+import jp.ijufumi.openreports.model.{RMemberGroup, TGroup, TMember}
 import jp.ijufumi.openreports.service.enums.StatusCode
 import jp.ijufumi.openreports.service.support.Hash
-import jp.ijufumi.openreports.vo.MemberInfo
+import jp.ijufumi.openreports.vo.{GroupInfo, MemberInfo}
 import org.joda.time.DateTime
 import scalikejdbc.SQLSyntax
 import skinny.LoggerProvider
+
+import scala.collection.mutable
 
 class MemberSettingsService extends LoggerProvider {
   def getMembers(): Seq[MemberInfo] = {
@@ -16,7 +18,31 @@ class MemberSettingsService extends LoggerProvider {
   }
 
   def getMember(memberId: Long): Option[MemberInfo] = {
-    TMember.findById(memberId).map(m => MemberInfo(m))
+    val memOpt = TMember.findById(memberId).map(m => MemberInfo(m))
+    if (memOpt.isEmpty) {
+      return memOpt
+    }
+
+    val mem = memOpt.get
+
+    val newGroups = mutable.Seq[GroupInfo]()
+    // 所属しているグループを追加
+    newGroups ++ mem.groups
+    // 所属していないグループを追加
+    newGroups ++ TGroup
+      .findAll()
+      .find(g => !mem.groups.exists(_.groupId == g.groupId))
+      .map(g => GroupInfo(g.groupId, g.groupName))
+
+    Option.apply(
+      new MemberInfo(
+        mem.memberId,
+        mem.name,
+        mem.emailAddress,
+        newGroups,
+        mem.menus,
+        mem.versions
+      ))
   }
 
   def registerMember(name: String,
@@ -32,8 +58,7 @@ class MemberSettingsService extends LoggerProvider {
         'name -> name
       )
       groups.foreach(s =>
-        RMemberGroup.createWithAttributes('memberId -> id, 'groupId -> s)
-      )
+        RMemberGroup.createWithAttributes('memberId -> id, 'groupId -> s))
     } catch {
       case e: SQLException => return StatusCode.of(e)
       case _: Throwable    => return StatusCode.OTHER_ERROR
@@ -79,11 +104,11 @@ class MemberSettingsService extends LoggerProvider {
 
       updateBuilder.withAttributes('updatedAt -> DateTime.now)
 
-      RMemberGroup.deleteBy(SQLSyntax.eq(RMemberGroup.column.field("memberId"), memberId))
+      RMemberGroup.deleteBy(
+        SQLSyntax.eq(RMemberGroup.column.field("memberId"), memberId))
 
       groups.foreach(s =>
-        RMemberGroup.createWithAttributes('memberId -> memberId, 'groupId -> s)
-      )
+        RMemberGroup.createWithAttributes('memberId -> memberId, 'groupId -> s))
     } catch {
       case e: SQLException => return StatusCode.of(e)
       case _: Throwable    => return StatusCode.OTHER_ERROR

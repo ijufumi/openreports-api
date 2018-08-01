@@ -11,12 +11,12 @@ case class MemberInfo(@BeanProperty memberId: Long,
                       @BeanProperty menus: Seq[Long],
                       @BeanProperty versions: Long) {
 
-  def this(member: TMember) = {
+  def this(member: TMember, groups: Seq[GroupInfo]) = {
     this(
       member.memberId,
       member.name,
       member.emailAddress,
-      Seq.empty,
+      groups,
       Seq.empty,
       member.versions
     )
@@ -25,6 +25,8 @@ case class MemberInfo(@BeanProperty memberId: Long,
 
 object MemberInfo {
   def apply(member: TMember): MemberInfo = {
-    new MemberInfo(member)
+    new MemberInfo(member, member.groups.map { g =>
+      GroupInfo(g.groupId, g.groupName, true)
+    })
   }
 }
