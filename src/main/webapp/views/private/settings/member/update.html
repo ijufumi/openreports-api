@@ -70,7 +70,8 @@
             </div>
             <div class="col-md-8">
               <select class="custom-select" id="groups" name="groups" multiple>
-                <option value="1" th:each="g : ${groups}" th:vavlue="${g.groupId}" th:text="${g.groupName}">テスト</option>
+                <option value=""></option>
+                <option value="1" th:each="g : ${groups}" th:vavlue="${g.groupId}" th:text="${g.groupName}" th:selected="${g.isBelong}">テスト</option>
               </select>
             </div>
           </div>
