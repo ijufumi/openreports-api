@@ -55,12 +55,15 @@ class MemberSettingsController extends ApplicationController {
       val emailAddress =
         params.getAs[String]("emailAddress").getOrElse("")
       val isAdmin = params.getAs[Boolean]("isAdmin").getOrElse(false)
+      val groups = params.getAs[Array[String]]("groups").getOrElse(Array.empty)
+
       val statusCode = new MemberSettingsService()
         .registerMember(
           name = name,
           emailAddress = emailAddress,
           password = password,
-          isAdmin = isAdmin
+          isAdmin = isAdmin,
+          groups = groups
         )
 
       statusCode match {
@@ -110,10 +113,11 @@ class MemberSettingsController extends ApplicationController {
         val emailAddress =
           params.getAs[String]("emailAddress").getOrElse("")
         val isAdmin = params.getAs[Boolean]("isAdmin").getOrElse(false)
+        val groups = params.getAs[Array[String]]("groups").getOrElse(Array.empty)
         val versions = params.getAs[Long]("versions").get
 
         val statusCode = new MemberSettingsService()
-          .updateMember(id, name, emailAddress, password, isAdmin, versions)
+          .updateMember(id, name, emailAddress, password, isAdmin, groups, versions)
 
         statusCode match {
           case StatusCode.OK => redirect(path + "/updateCompleted")

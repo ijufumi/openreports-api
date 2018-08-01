@@ -2,11 +2,12 @@ package jp.ijufumi.openreports.service
 
 import java.sql.SQLException
 
-import jp.ijufumi.openreports.model.TMember
+import jp.ijufumi.openreports.model.{RMemberGroup, TMember}
 import jp.ijufumi.openreports.service.enums.StatusCode
 import jp.ijufumi.openreports.service.support.Hash
 import jp.ijufumi.openreports.vo.MemberInfo
 import org.joda.time.DateTime
+import scalikejdbc.SQLSyntax
 import skinny.LoggerProvider
 
 class MemberSettingsService extends LoggerProvider {
@@ -21,15 +22,18 @@ class MemberSettingsService extends LoggerProvider {
   def registerMember(name: String,
                      emailAddress: String,
                      password: String,
-                     isAdmin: Boolean): StatusCode.Value = {
+                     isAdmin: Boolean,
+                     groups: Array[String]): StatusCode.Value = {
 
     try {
-      TMember.createWithAttributes(
+      val id = TMember.createWithAttributes(
         'emailAddress -> emailAddress,
         'password -> Hash.hmacSha256(HASHED_KEY, password),
         'name -> name
       )
-
+      groups.foreach(s =>
+        RMemberGroup.createWithAttributes('memberId -> id, 'groupId -> s)
+      )
     } catch {
       case e: SQLException => return StatusCode.of(e)
       case _: Throwable    => return StatusCode.OTHER_ERROR
@@ -42,6 +46,7 @@ class MemberSettingsService extends LoggerProvider {
                    emailAddress: String,
                    password: String,
                    isAdmin: Boolean,
+                   groups: Array[String],
                    versions: Long): StatusCode.Value = {
     try {
       val memberOpt = TMember.findById(memberId)
@@ -73,6 +78,12 @@ class MemberSettingsService extends LoggerProvider {
       }
 
       updateBuilder.withAttributes('updatedAt -> DateTime.now)
+
+      RMemberGroup.deleteBy(SQLSyntax.eq(RMemberGroup.column.field("memberId"), memberId))
+
+      groups.foreach(s =>
+        RMemberGroup.createWithAttributes('memberId -> memberId, 'groupId -> s)
+      )
     } catch {
       case e: SQLException => return StatusCode.of(e)
       case _: Throwable    => return StatusCode.OTHER_ERROR

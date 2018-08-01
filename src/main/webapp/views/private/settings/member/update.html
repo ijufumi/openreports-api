@@ -61,12 +61,21 @@
               <label for="isAdmin" class="form-check-label">Admin</label>
             </div>
             <div class="col-md-8">
-              <input type="checkbox" class="form-check-input ml-0" id="isAdmin" name="isAdmin"
-                     placeholder="Enter password">
+              <input type="checkbox" class="form-check-input ml-0" id="isAdmin" name="isAdmin">
+            </div>
+          </div>
+          <div class="form-group row">
+            <div class="col-md-2">
+              <label for="groups" class="form-check-label">Group</label>
+            </div>
+            <div class="col-md-8">
+              <select class="custom-select" id="groups" name="groups" multiple>
+                <option value="1" th:each="g : ${groups}" th:vavlue="${g.groupId}" th:text="${g.groupName}">テスト</option>
+              </select>
             </div>
           </div>
           <div class="col-md-4 pl-0">
-            <button type="submit" class="btn btn-block btn-lg btn-primary">登録</button>
+            <button type="submit" class="btn btn-block btn-lg btn-primary">更新</button>
           </div>
         </form>
       </div>
