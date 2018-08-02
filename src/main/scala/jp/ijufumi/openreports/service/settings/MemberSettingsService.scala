@@ -1,18 +1,19 @@
-package jp.ijufumi.openreports.service
+package jp.ijufumi.openreports.service.settings
 
 import java.sql.SQLException
 
 import jp.ijufumi.openreports.model.{RMemberGroup, TGroup, TMember}
+import jp.ijufumi.openreports.service.HASHED_KEY
 import jp.ijufumi.openreports.service.enums.StatusCode
 import jp.ijufumi.openreports.service.support.Hash
 import jp.ijufumi.openreports.vo.{GroupInfo, MemberInfo}
 import org.joda.time.DateTime
 import scalikejdbc.SQLSyntax
-import skinny.LoggerProvider
+import skinny.Logging
 
 import scala.collection.mutable
 
-class MemberSettingsService extends LoggerProvider {
+class MemberSettingsService extends Logging {
   def getMembers(): Seq[MemberInfo] = {
     TMember.findAll().map(m => MemberInfo(m))
   }

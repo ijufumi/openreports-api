@@ -1,8 +1,12 @@
 package jp.ijufumi.openreports.controller.settings
 
 import jp.ijufumi.openreports.controller.common.ApplicationController
-import jp.ijufumi.openreports.service.{GroupSettingsService, MemberSettingsService}
+import jp.ijufumi.openreports.service.MemberSettingsService
 import jp.ijufumi.openreports.service.enums.StatusCode
+import jp.ijufumi.openreports.service.settings.{
+  GroupSettingsService,
+  MemberSettingsService
+}
 import skinny.{ParamType, Params}
 import skinny.validator.{email, numeric, paramKey, required}
 
@@ -117,7 +121,13 @@ class MemberSettingsController extends ApplicationController {
         val versions = params.getAs[Long]("versions").get
 
         val statusCode = new MemberSettingsService()
-          .updateMember(id, name, emailAddress, password, isAdmin, groups, versions)
+          .updateMember(id,
+                        name,
+                        emailAddress,
+                        password,
+                        isAdmin,
+                        groups,
+                        versions)
 
         statusCode match {
           case StatusCode.OK => redirect(path + "/updateCompleted")
