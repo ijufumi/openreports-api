@@ -51,4 +51,19 @@ class GroupSettingController extends ApplicationController {
   def registerCompleted = {
     render(viewPath + "/register-completed")
   }
+
+  def showUpdate =
+    params.getAs[Long]("id").map { id =>
+      val groupOpt = new GroupSettingsService().getGroup(id)
+      if (groupOpt.isEmpty) {
+        haltWithBody(404)
+      } else {
+        set("group", groupOpt.get)
+        render(viewPath + "/update")
+      }
+    } getOrElse haltWithBody(404)
+
+  def updateCompleted = {
+    render(viewPath + "/update-completed")
+  }
 }

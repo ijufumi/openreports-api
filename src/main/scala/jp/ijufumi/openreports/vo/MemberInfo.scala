@@ -26,7 +26,7 @@ case class MemberInfo(@BeanProperty memberId: Long,
 object MemberInfo {
   def apply(member: TMember): MemberInfo = {
     new MemberInfo(member, member.groups.map { g =>
-      GroupInfo(g.groupId, g.groupName, true)
+      GroupInfo(g.groupId, g.groupName, g.versions, true)
     })
   }
 }

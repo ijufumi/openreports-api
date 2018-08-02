@@ -3,15 +3,16 @@ import scala.beans.BeanProperty
 
 case class GroupInfo(@BeanProperty groupId: Long,
                      @BeanProperty groupName: String,
-                    @BeanProperty isBelong: Boolean) {
+                     @BeanProperty versions: Long,
+                     @BeanProperty isBelong: Boolean) {
 
-  def this(groupId: Long, groupName: String) = {
-    this(groupId, groupName, false)
+  def this(groupId: Long, groupName: String, versions: Long) = {
+    this(groupId, groupName, versions, false)
   }
 }
 
 object GroupInfo {
-  def apply(groupId: Long, groupName: String): GroupInfo = {
-    GroupInfo(groupId, groupName, false)
+  def apply(groupId: Long, groupName: String, versions: Long): GroupInfo = {
+    GroupInfo(groupId, groupName, versions, false)
   }
 }

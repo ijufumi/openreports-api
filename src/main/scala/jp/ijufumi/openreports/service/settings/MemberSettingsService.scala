@@ -33,7 +33,7 @@ class MemberSettingsService extends Logging {
     newGroups ++ TGroup
       .findAll()
       .find(g => !mem.groups.exists(_.groupId == g.groupId))
-      .map(g => GroupInfo(g.groupId, g.groupName))
+      .map(g => GroupInfo(g.groupId, g.groupName, g.versions))
 
     Option.apply(
       new MemberInfo(
@@ -75,7 +75,7 @@ class MemberSettingsService extends Logging {
                    groups: Seq[String],
                    versions: Long): StatusCode.Value = {
     try {
-      val memberOpt = TMember.findBy(memberId)
+      val memberOpt = TMember.findById(memberId)
       if (memberOpt.isEmpty) {
         return StatusCode.DATA_NOT_FOUND
       }

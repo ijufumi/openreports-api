@@ -10,7 +10,13 @@ import skinny.Logging
 
 class GroupSettingsService extends Logging {
   def getGroups(): Seq[GroupInfo] = {
-    TGroup.findAll().map(g => GroupInfo(g.groupId, g.groupName))
+    TGroup.findAll().map(g => GroupInfo(g.groupId, g.groupName, g.versions))
+  }
+
+  def getGroup(groupId: Long): Option[GroupInfo] = {
+    TGroup
+      .findById(groupId)
+      .map(g => GroupInfo(g.groupId, g.groupName, g.versions))
   }
 
   def registerGroup(groupName: String): StatusCode.Value = {
