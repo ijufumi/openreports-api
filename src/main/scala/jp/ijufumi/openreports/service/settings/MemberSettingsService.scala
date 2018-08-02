@@ -75,7 +75,7 @@ class MemberSettingsService extends Logging {
                    groups: Seq[String],
                    versions: Long): StatusCode.Value = {
     try {
-      val memberOpt = TMember.findById(memberId)
+      val memberOpt = TMember.findBy(memberId)
       if (memberOpt.isEmpty) {
         return StatusCode.DATA_NOT_FOUND
       }
