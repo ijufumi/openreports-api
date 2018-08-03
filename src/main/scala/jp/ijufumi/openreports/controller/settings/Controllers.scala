@@ -8,8 +8,7 @@ object Controllers {
   def mount(ctx: ServletContext): Unit = {
     reportSettings.mount(ctx)
     memberSettings.mount(ctx)
-
-    AssetsController.mount(ctx)
+    groupSettings.mount(ctx)
   }
 
   object reportSettings extends ReportSettingsController with Routes {
