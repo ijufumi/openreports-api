@@ -4,9 +4,9 @@ import jp.ijufumi.openreports.controller.common.ApplicationController
 import jp.ijufumi.openreports.service.enums.StatusCode
 import jp.ijufumi.openreports.service.settings.GroupSettingsService
 import skinny.Params
-import skinny.validator.{length, numeric, paramKey, required}
+import skinny.validator.{longValue, maxLength, paramKey, required}
 
-class GroupSettingController extends ApplicationController {
+class GroupSettingsController extends ApplicationController {
   val path = rootPath + "/group"
   val viewPath = rootPath + "/group"
 
@@ -17,13 +17,13 @@ class GroupSettingController extends ApplicationController {
 
   def validateRegisterParams = validation(
     requestParams,
-    paramKey("groupName") is required & length(250)
+    paramKey("groupName") is required & maxLength(250)
   )
 
   def validateUpdateParams = validation(
     requestParams,
-    paramKey("groupName") is required & length(250),
-    paramKey("versions") is required & numeric
+    paramKey("groupName") is required & maxLength(250),
+    paramKey("versions") is required & longValue
   )
 
   def index = {
@@ -80,7 +80,8 @@ class GroupSettingController extends ApplicationController {
       val groupName = params.getAs[String]("groupName").getOrElse("")
       val versions = params.getAs[Long]("versions").getOrElse(0)
 
-      val statusCode = new GroupSettingsService().updateGroup(id, groupName, versions)
+      val statusCode =
+        new GroupSettingsService().updateGroup(id, groupName, versions)
       statusCode match {
         case StatusCode.OK => redirect(path + "/updateCompleted")
         case _ =>
@@ -90,7 +91,6 @@ class GroupSettingController extends ApplicationController {
       render(viewPath + "/update")
 
     } getOrElse haltWithBody(404)
-
 
   def updateCompleted = {
     render(viewPath + "/update-completed")

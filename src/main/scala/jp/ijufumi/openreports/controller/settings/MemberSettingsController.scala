@@ -1,14 +1,13 @@
 package jp.ijufumi.openreports.controller.settings
 
 import jp.ijufumi.openreports.controller.common.ApplicationController
-import jp.ijufumi.openreports.service.MemberSettingsService
 import jp.ijufumi.openreports.service.enums.StatusCode
 import jp.ijufumi.openreports.service.settings.{
   GroupSettingsService,
   MemberSettingsService
 }
 import skinny.{ParamType, Params}
-import skinny.validator.{email, numeric, paramKey, required}
+import skinny.validator.{email, intValue, paramKey, required}
 
 class MemberSettingsController extends ApplicationController {
   val path = rootPath + "/member"
@@ -29,7 +28,7 @@ class MemberSettingsController extends ApplicationController {
 
   def validateUpdateParams = validation(
     requestParams,
-    paramKey("versions") is required & numeric,
+    paramKey("versions") is required & intValue,
     paramKey("emailAddress") is email
   )
 
