@@ -19,6 +19,19 @@
   width: 500px;
 }
 
+.dropdown-item-group {
+  display: block;
+  width: 100%;
+  padding: .25rem 1.5rem;
+  clear: both;
+  font-weight: 400;
+  color: #212529;
+  text-align: inherit;
+  white-space: nowrap;
+  background-color: transparent;
+  border: 0;
+}
+
 /** public **/
 /* top */
 .container .row .public-top input {
