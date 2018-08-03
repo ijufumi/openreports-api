@@ -1,7 +1,6 @@
 package jp.ijufumi.openreports.controller.settings
 
 import skinny._
-import skinny.controller.AssetsController
 
 object Controllers {
 
