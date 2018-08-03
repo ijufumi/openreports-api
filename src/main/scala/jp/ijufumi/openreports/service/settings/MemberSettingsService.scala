@@ -43,14 +43,17 @@ class MemberSettingsService extends Logging {
         newGroups,
         mem.menus,
         mem.versions
-      ))
+      )
+    )
   }
 
-  def registerMember(name: String,
-                     emailAddress: String,
-                     password: String,
-                     isAdmin: Boolean,
-                     groups: Seq[String]): StatusCode.Value = {
+  def registerMember(
+      name: String,
+      emailAddress: String,
+      password: String,
+      isAdmin: Boolean,
+      groups: Seq[String]
+  ): StatusCode.Value = {
 
     try {
       val id = TMember.createWithAttributes(
@@ -58,8 +61,9 @@ class MemberSettingsService extends Logging {
         'password -> Hash.hmacSha256(HASHED_KEY, password),
         'name -> name
       )
-      groups.foreach(s =>
-        RMemberGroup.createWithAttributes('memberId -> id, 'groupId -> s))
+      groups.foreach(
+        s => RMemberGroup.createWithAttributes('memberId -> id, 'groupId -> s)
+      )
     } catch {
       case e: SQLException => return StatusCode.of(e)
       case _: Throwable    => return StatusCode.OTHER_ERROR
@@ -67,13 +71,15 @@ class MemberSettingsService extends Logging {
     StatusCode.OK
   }
 
-  def updateMember(memberId: Long,
-                   name: String,
-                   emailAddress: String,
-                   password: String,
-                   isAdmin: Boolean,
-                   groups: Seq[String],
-                   versions: Long): StatusCode.Value = {
+  def updateMember(
+      memberId: Long,
+      name: String,
+      emailAddress: String,
+      password: String,
+      isAdmin: Boolean,
+      groups: Seq[String],
+      versions: Long
+  ): StatusCode.Value = {
     try {
       val memberOpt = TMember.findById(memberId)
       if (memberOpt.isEmpty) {
@@ -106,10 +112,14 @@ class MemberSettingsService extends Logging {
       updateBuilder.withAttributes('updatedAt -> DateTime.now)
 
       RMemberGroup.deleteBy(
-        SQLSyntax.eq(RMemberGroup.column.field("memberId"), memberId))
+        SQLSyntax.eq(RMemberGroup.column.field("memberId"), memberId)
+      )
 
-      groups.foreach(s =>
-        RMemberGroup.createWithAttributes('memberId -> memberId, 'groupId -> s))
+      groups.foreach(
+        s =>
+          RMemberGroup
+            .createWithAttributes('memberId -> memberId, 'groupId -> s)
+      )
     } catch {
       case e: SQLException => return StatusCode.of(e)
       case _: Throwable    => return StatusCode.OTHER_ERROR

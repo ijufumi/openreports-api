@@ -40,4 +40,5 @@ object Controllers {
     val updateCompletedUrl =
       get(path + "/updateCompleted")(updateCompleted).as('updateCompleted)
   }
+
 }

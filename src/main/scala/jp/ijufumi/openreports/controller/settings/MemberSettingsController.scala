@@ -6,31 +6,14 @@ import jp.ijufumi.openreports.service.settings.{
   GroupSettingsService,
   MemberSettingsService
 }
-import skinny.{ParamType, Params}
+import skinny.Params
 import skinny.validator.{email, intValue, paramKey, required}
 
 class MemberSettingsController extends ApplicationController {
-  val path = rootPath + "/member"
-  val viewPath = rootPath + "/member"
-
   override val activeMenu = "settings/member"
   override val requiredMemberInfo = true
-
-  def requestParams = Params(params)
-
-  def validateRegisterParams = validation(
-    requestParams,
-    paramKey("name") is required,
-    paramKey("emailAddress") is required & email,
-    paramKey("password") is required,
-    paramKey("checkedPassword") is required
-  )
-
-  def validateUpdateParams = validation(
-    requestParams,
-    paramKey("versions") is required & intValue,
-    paramKey("emailAddress") is email
-  )
+  val path = rootPath + "/member"
+  val viewPath = rootPath + "/member"
 
   def index = {
     val members = new MemberSettingsService().getMembers()
@@ -83,6 +66,16 @@ class MemberSettingsController extends ApplicationController {
     }
   }
 
+  def validateRegisterParams = validation(
+    requestParams,
+    paramKey("name") is required,
+    paramKey("emailAddress") is required & email,
+    paramKey("password") is required,
+    paramKey("checkedPassword") is required
+  )
+
+  def requestParams = Params(params)
+
   def registerCompleted = {
     render(viewPath + "/register-completed")
   }
@@ -120,13 +113,15 @@ class MemberSettingsController extends ApplicationController {
         val versions = params.getAs[Long]("versions").get
 
         val statusCode = new MemberSettingsService()
-          .updateMember(id,
-                        name,
-                        emailAddress,
-                        password,
-                        isAdmin,
-                        groups,
-                        versions)
+          .updateMember(
+            id,
+            name,
+            emailAddress,
+            password,
+            isAdmin,
+            groups,
+            versions
+          )
 
         statusCode match {
           case StatusCode.OK => redirect(path + "/updateCompleted")
@@ -139,6 +134,12 @@ class MemberSettingsController extends ApplicationController {
         render(viewPath + "/update")
       }
     } getOrElse haltWithBody(404)
+
+  def validateUpdateParams = validation(
+    requestParams,
+    paramKey("versions") is required & intValue,
+    paramKey("emailAddress") is email
+  )
 
   def updateCompleted = {
     render(viewPath + "/update-completed")

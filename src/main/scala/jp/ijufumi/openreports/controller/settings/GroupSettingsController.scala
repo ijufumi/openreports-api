@@ -7,24 +7,10 @@ import skinny.Params
 import skinny.validator.{longValue, maxLength, paramKey, required}
 
 class GroupSettingsController extends ApplicationController {
-  val path = rootPath + "/group"
-  val viewPath = rootPath + "/group"
-
   override val activeMenu = "settings/group"
   override val requiredMemberInfo = true
-
-  def requestParams = Params(params)
-
-  def validateRegisterParams = validation(
-    requestParams,
-    paramKey("groupName") is required & maxLength(250)
-  )
-
-  def validateUpdateParams = validation(
-    requestParams,
-    paramKey("groupName") is required & maxLength(250),
-    paramKey("versions") is required & longValue
-  )
+  val path = rootPath + "/group"
+  val viewPath = rootPath + "/group"
 
   def index = {
     val groups = new GroupSettingsService().getGroups()
@@ -54,6 +40,11 @@ class GroupSettingsController extends ApplicationController {
     }
   }
 
+  def validateRegisterParams = validation(
+    requestParams,
+    paramKey("groupName") is required & maxLength(250)
+  )
+
   def registerCompleted = {
     render(viewPath + "/register-completed")
   }
@@ -74,6 +65,14 @@ class GroupSettingsController extends ApplicationController {
       render(viewPath + "/update")
     }
   }
+
+  def validateUpdateParams = validation(
+    requestParams,
+    paramKey("groupName") is required & maxLength(250),
+    paramKey("versions") is required & longValue
+  )
+
+  def requestParams = Params(params)
 
   def doUpdate =
     params.getAs[Long]("id").map { id =>

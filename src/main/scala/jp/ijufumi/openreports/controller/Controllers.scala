@@ -1,11 +1,5 @@
 package jp.ijufumi.openreports.controller
 
-import jp.ijufumi.openreports.controller.Controllers.scheduledReport.{
-  get,
-  index,
-  path
-}
-
 import skinny._
 import skinny.controller.AssetsController
 

@@ -24,9 +24,11 @@ class GroupSettingsService extends Logging {
     StatusCode.OK
   }
 
-  def updateGroup(groupId: Long,
-                  groupName: String,
-                  versions: Long): StatusCode.Value = {
+  def updateGroup(
+      groupId: Long,
+      groupName: String,
+      versions: Long
+  ): StatusCode.Value = {
 
     val groupOpt = TGroup.findById(groupId)
     if (groupOpt.isEmpty) {

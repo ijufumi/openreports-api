@@ -3,22 +3,13 @@ package jp.ijufumi.openreports.controller
 import jp.ijufumi.openreports.controller.common.ApplicationController
 import jp.ijufumi.openreports.service.TopService
 import skinny._
-import skinny.validator.{ required, _ }
+import skinny.validator.{required, _}
 
 class TopController extends ApplicationController {
 
+  override val activeMenu = "top"
   val path = publicPath
   val viewPath = publicPath + "/top"
-
-  override val activeMenu = "top"
-
-  def requestParams = Params(params)
-
-  def validateParams = validation(
-    requestParams,
-    paramKey("loginId") is required,
-    paramKey("password") is required
-  )
 
   def toTop = redirect(publicPath)
 
@@ -51,8 +42,18 @@ class TopController extends ApplicationController {
         redirect(privatePath + "/home")
       }
     } else {
-      logger.info("invalid id or password : [" + loginId + "][" + password + "]")
+      logger.info(
+        "invalid id or password : [" + loginId + "][" + password + "]"
+      )
       render(viewPath + "/index")
     }
   }
+
+  def requestParams = Params(params)
+
+  def validateParams = validation(
+    requestParams,
+    paramKey("loginId") is required,
+    paramKey("password") is required
+  )
 }

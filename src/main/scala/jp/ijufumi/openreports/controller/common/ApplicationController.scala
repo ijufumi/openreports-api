@@ -15,15 +15,20 @@ import scala.util.control.Breaks
   *
   * see also "http://skinny-framework.org/documentation/jp.ijufumi.openreports.controller-and-routes.html"
   */
-trait ApplicationController extends SkinnyController
-  // with TxPerRequestFilter
-  with SkinnySessionFilter
-  with ErrorPageFilter
-  with I18nFeature
-  with ThymeleafTemplateEngineFeature {
+trait ApplicationController
+    extends SkinnyController
+    // with TxPerRequestFilter
+    with SkinnySessionFilter
+    with ErrorPageFilter
+    with I18nFeature
+    with ThymeleafTemplateEngineFeature {
 
+  // override def defaultLocale = Some(new java.util.Locale("ja"))
+  override lazy val thymeleafResolverPrefix: String = {
+    if (SkinnyEnv.isTest()) "views/"
+    else "/views/"
+  }
   val activeMenu = ""
-  val requiredMemberInfo = false
 
   beforeAction() {
     val memberInfo = skinnySession.getAs("memberInfo")
@@ -36,14 +41,14 @@ trait ApplicationController extends SkinnyController
     set("activeMenu", activeMenu)
     set("timeStamp", LocalDateTime.now().toEpochSecond(ZoneOffset.UTC))
   }
+  val requiredMemberInfo = false
 
-  // override def defaultLocale = Some(new java.util.Locale("ja"))
-  override lazy val thymeleafResolverPrefix: String = {
-    if (SkinnyEnv.isTest()) "views/"
-    else "/views/"
-  }
-
-  def fileDownload(in: String, fileName: String, contentType: String, streamClose: Boolean = true): Unit = {
+  def fileDownload(
+      in: String,
+      fileName: String,
+      contentType: String,
+      streamClose: Boolean = true
+  ): Unit = {
     var fileStream: InputStream = null
     try {
       fileStream = getClass.getClassLoader.getResourceAsStream(in)
@@ -58,11 +63,16 @@ trait ApplicationController extends SkinnyController
     }
   }
 
-  def fileDownload(in: InputStream, fileName: String, contentType: String): Unit = {
+  def fileDownload(
+      in: InputStream,
+      fileName: String,
+      contentType: String
+  ): Unit = {
     val inner = withOutputStream { implicit s =>
       response.addHeader("Content-Type", contentType)
       response.setHeader(
-        "Content-Disposition", "attachment; filename=\"%s\"".format(fileName)
+        "Content-Disposition",
+        "attachment; filename=\"%s\"".format(fileName)
       )
       val b = new Breaks
       b.breakable {

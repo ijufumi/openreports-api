@@ -4,14 +4,19 @@ import jp.ijufumi.openreports.model.TMember
 
 import scala.beans.BeanProperty
 
-case class MemberInfo(@BeanProperty memberId: Long,
-                      @BeanProperty name: String,
-                      @BeanProperty emailAddress: String,
-                      @BeanProperty groups: Seq[GroupInfo],
-                      @BeanProperty menus: Seq[Long],
-                      @BeanProperty versions: Long) {
+case class MemberInfo(
+    @BeanProperty memberId: Long,
+    @BeanProperty name: String,
+    @BeanProperty emailAddress: String,
+    @BeanProperty groups: Seq[GroupInfo],
+    @BeanProperty menus: Seq[Long],
+    @BeanProperty versions: Long
+) {
 
-  def this(member: TMember, groups: Seq[GroupInfo]) = {
+  def this(
+      member: TMember,
+      groups: Seq[GroupInfo]
+  ) = {
     this(
       member.memberId,
       member.name,

@@ -1,9 +1,8 @@
 package jp.ijufumi.openreports
 
 /**
- * Job Workers
- *
- * @see http://skinny-framework.org/documentation/worker_jobs.html
- */
-package object worker {
-}
+  * Job Workers
+  *
+  * @see http://skinny-framework.org/documentation/worker_jobs.html
+  */
+package object worker {}
