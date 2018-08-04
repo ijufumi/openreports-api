@@ -1,17 +1,16 @@
 package jp.ijufumi.openreports.controller.settings
-
 import jp.ijufumi.openreports.controller.common.I18nFeature
 import jp.ijufumi.openreports.service.settings.ReportSettingsService
+import skinny.controller.SkinnyServlet
 import skinny.controller.feature.FileUploadFeature
-import skinny.controller.{Params, SkinnyServlet}
 
-class ReportSettingsController
+class ReportTemplateSettingsController
     extends SkinnyServlet
     with FileUploadFeature
     with I18nFeature {
 
-  val path = rootPath + "/report"
-  val viewPath = rootPath + "/report"
+  val path = rootPath + "/report-template"
+  val viewPath = rootPath + "/report-template"
 
   def index = {
     val reports = new ReportSettingsService().getReports()
@@ -23,5 +22,4 @@ class ReportSettingsController
     render(viewPath + "/register")
   }
 
-  def requestParams = Params(params)
 }

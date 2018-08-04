@@ -13,8 +13,6 @@ object Controllers {
 
   object reportSettings extends ReportSettingsController with Routes {
     val indexUrl = get(path + "/?")(index).as('index)
-    val uploadFormUrl =
-      get(path + "/fileUpload/form")(uploadForm).as('uploadForm)
   }
 
   object memberSettings extends MemberSettingsController with Routes {
