@@ -4,13 +4,11 @@ import org.joda.time.DateTime
 import scalikejdbc.{ResultName, WrappedResultSet}
 import skinny.orm.SkinnyCRUDMapper
 
-case class TFunction(
-    functionId: Long,
-    functionName: String,
-    createdAt: DateTime,
-    updatedAt: DateTime,
-    groups: Seq[TGroup] = Nil,
-)
+case class TFunction(functionId: Long,
+                     functionName: String,
+                     createdAt: DateTime,
+                     updatedAt: DateTime,
+                     groups: Seq[TGroup] = Nil,)
 
 object TFunction extends SkinnyCRUDMapper[TFunction] {
   lazy val groups = hasManyThroughWithFk[TGroup](
@@ -18,15 +16,9 @@ object TFunction extends SkinnyCRUDMapper[TFunction] {
     many = TGroup,
     throughFk = "functionId",
     manyFk = "groupId",
-    merge = (
-        f,
-        groups
-    ) => f.copy(groups = groups)
+    merge = (f, groups) => f.copy(groups = groups)
   ).includes[TGroup](
-    (
-        gf,
-        groups
-    ) =>
+    (gf, groups) =>
       gf.map { g =>
         g.copy(
           groups =
@@ -41,10 +33,8 @@ object TFunction extends SkinnyCRUDMapper[TFunction] {
 
   override def primaryKeyFieldName = "functionId"
 
-  override def extract(
-      rs: WrappedResultSet,
-      n: ResultName[TFunction]
-  ): TFunction = new TFunction(
+  override def extract(rs: WrappedResultSet,
+                       n: ResultName[TFunction]): TFunction = new TFunction(
     functionId = rs.get(n.functionId),
     functionName = rs.get(n.functionName),
     createdAt = rs.get(n.createdAt),

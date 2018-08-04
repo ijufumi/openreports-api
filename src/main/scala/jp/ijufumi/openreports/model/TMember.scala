@@ -5,17 +5,15 @@ import scalikejdbc.{ResultName, WrappedResultSet}
 import skinny.orm.SkinnyCRUDMapper
 import skinny.orm.feature.OptimisticLockWithVersionFeature
 
-case class TMember(
-    memberId: Long = 0,
-    emailAddress: String,
-    password: String,
-    name: String,
-    isAdmin: String = "0",
-    createdAt: DateTime = DateTime.now(),
-    updatedAt: DateTime = DateTime.now(),
-    versions: Long,
-    groups: Seq[TGroup] = Nil
-)
+case class TMember(memberId: Long = 0,
+                   emailAddress: String,
+                   password: String,
+                   name: String,
+                   isAdmin: String = "0",
+                   createdAt: DateTime = DateTime.now(),
+                   updatedAt: DateTime = DateTime.now(),
+                   versions: Long,
+                   groups: Seq[TGroup] = Nil)
 
 object TMember
     extends SkinnyCRUDMapper[TMember]
@@ -29,10 +27,7 @@ object TMember
 
   override def lockVersionFieldName: String = "versions"
 
-  override def extract(
-      rs: WrappedResultSet,
-      n: ResultName[TMember]
-  ): TMember =
+  override def extract(rs: WrappedResultSet, n: ResultName[TMember]): TMember =
     new TMember(
       memberId = rs.get(n.memberId),
       emailAddress = rs.get(n.emailAddress),
@@ -49,9 +44,6 @@ object TMember
     many = TGroup,
     throughFk = "memberId",
     manyFk = "groupId",
-    merge = (
-        m,
-        groups
-    ) => m.copy(groups = groups)
+    merge = (m, groups) => m.copy(groups = groups)
   ).byDefault
 }

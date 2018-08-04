@@ -43,12 +43,10 @@ trait ApplicationController
   }
   val requiredMemberInfo = false
 
-  def fileDownload(
-      in: String,
-      fileName: String,
-      contentType: String,
-      streamClose: Boolean = true
-  ): Unit = {
+  def fileDownload(in: String,
+                   fileName: String,
+                   contentType: String,
+                   streamClose: Boolean = true): Unit = {
     var fileStream: InputStream = null
     try {
       fileStream = getClass.getClassLoader.getResourceAsStream(in)
@@ -63,11 +61,9 @@ trait ApplicationController
     }
   }
 
-  def fileDownload(
-      in: InputStream,
-      fileName: String,
-      contentType: String
-  ): Unit = {
+  def fileDownload(in: InputStream,
+                   fileName: String,
+                   contentType: String): Unit = {
     val inner = withOutputStream { implicit s =>
       response.addHeader("Content-Type", contentType)
       response.setHeader(

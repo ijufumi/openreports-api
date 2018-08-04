@@ -75,10 +75,7 @@ class ReportController extends ApplicationController {
       } getOrElse halt(status = 400, body = "pageNo is missing.")
     } getOrElse halt(status = 400, body = "reportId is missing.")
 
-  def updateParamMap(
-      id: Long,
-      pageNo: Int
-  ): mutable.Map[String, String] = {
+  def updateParamMap(id: Long, pageNo: Int): mutable.Map[String, String] = {
     val paramMap = skinnySession
       .getAs[mutable.Map[String, String]]("paramMap")
       .getOrElse(mutable.Map[String, String]())

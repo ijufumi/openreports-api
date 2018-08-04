@@ -5,16 +5,14 @@ import scalikejdbc.{ResultName, WrappedResultSet}
 import skinny.orm.SkinnyCRUDMapper
 import skinny.orm.feature.OptimisticLockWithVersionFeature
 
-case class TGroup(
-    groupId: Long,
-    groupName: String,
-    createdAt: DateTime,
-    updatedAt: DateTime,
-    versions: Long,
-    members: Seq[TMember] = Nil,
-    functions: Seq[TFunction] = Nil,
-    reportGroups: Seq[TReportGroup] = Nil,
-)
+case class TGroup(groupId: Long,
+                  groupName: String,
+                  createdAt: DateTime,
+                  updatedAt: DateTime,
+                  versions: Long,
+                  members: Seq[TMember] = Nil,
+                  functions: Seq[TFunction] = Nil,
+                  reportGroups: Seq[TReportGroup] = Nil,)
 
 object TGroup
     extends SkinnyCRUDMapper[TGroup]
@@ -25,17 +23,10 @@ object TGroup
     many = TMember,
     throughFk = "groupId",
     manyFk = "memberId",
-    merge = (
-        a,
-        members
-    ) => a.copy(members = members)
+    merge = (a, members) => a.copy(members = members)
   ).includes[TMember](
-    (
-        mg,
-        mems
-    ) =>
-      mg.map { m =>
-        m.copy(members = mems)
+    (mg, mems) =>
+      mg.map { m => m.copy(members = mems)
     }
   )
   lazy val functions = hasManyThroughWithFk[TFunction](
@@ -43,17 +34,10 @@ object TGroup
     many = TFunction,
     throughFk = "groupId",
     manyFk = "functionId",
-    merge = (
-        g,
-        functions
-    ) => g.copy(functions = functions)
+    merge = (g, functions) => g.copy(functions = functions)
   ).includes[TFunction](
-    (
-        groups,
-        func
-    ) =>
-      groups.map { g =>
-        g.copy(functions = func)
+    (groups, func) =>
+      groups.map { g => g.copy(functions = func)
     }
   )
   lazy val reportGroups = hasManyThroughWithFk[TReportGroup](
@@ -61,17 +45,10 @@ object TGroup
     many = TReportGroup,
     throughFk = "groupId",
     manyFk = "reportGroupId",
-    merge = (
-        g,
-        reportGroups
-    ) => g.copy(reportGroups = reportGroups)
+    merge = (g, reportGroups) => g.copy(reportGroups = reportGroups)
   ).includes[TReportGroup](
-    (
-        groups,
-        repgrps
-    ) =>
-      groups.map { g =>
-        g.copy(reportGroups = repgrps)
+    (groups, repgrps) =>
+      groups.map { g => g.copy(reportGroups = repgrps)
     }
   )
 
@@ -83,10 +60,7 @@ object TGroup
 
   override def lockVersionFieldName: String = "versions"
 
-  override def extract(
-      rs: WrappedResultSet,
-      n: ResultName[TGroup]
-  ): TGroup =
+  override def extract(rs: WrappedResultSet, n: ResultName[TGroup]): TGroup =
     new TGroup(
       groupId = rs.get(n.groupId),
       groupName = rs.get(n.groupName),

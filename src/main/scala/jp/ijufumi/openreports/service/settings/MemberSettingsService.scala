@@ -47,13 +47,11 @@ class MemberSettingsService extends Logging {
     )
   }
 
-  def registerMember(
-      name: String,
-      emailAddress: String,
-      password: String,
-      isAdmin: Boolean,
-      groups: Seq[String]
-  ): StatusCode.Value = {
+  def registerMember(name: String,
+                     emailAddress: String,
+                     password: String,
+                     isAdmin: Boolean,
+                     groups: Seq[String]): StatusCode.Value = {
 
     try {
       val id = TMember.createWithAttributes(
@@ -71,15 +69,13 @@ class MemberSettingsService extends Logging {
     StatusCode.OK
   }
 
-  def updateMember(
-      memberId: Long,
-      name: String,
-      emailAddress: String,
-      password: String,
-      isAdmin: Boolean,
-      groups: Seq[String],
-      versions: Long
-  ): StatusCode.Value = {
+  def updateMember(memberId: Long,
+                   name: String,
+                   emailAddress: String,
+                   password: String,
+                   isAdmin: Boolean,
+                   groups: Seq[String],
+                   versions: Long): StatusCode.Value = {
     try {
       val memberOpt = TMember.findById(memberId)
       if (memberOpt.isEmpty) {

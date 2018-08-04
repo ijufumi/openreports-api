@@ -5,14 +5,12 @@ import scalikejdbc.{ResultName, WrappedResultSet}
 import skinny.orm.SkinnyCRUDMapper
 import skinny.orm.feature.OptimisticLockWithVersionFeature
 
-case class TReportGroup(
-    reportGroupId: Long,
-    reportGroupName: String,
-    createdAt: DateTime,
-    updatedAt: DateTime,
-    reports: Seq[TReport] = Nil,
-    groups: Seq[TGroup] = Nil
-)
+case class TReportGroup(reportGroupId: Long,
+                        reportGroupName: String,
+                        createdAt: DateTime,
+                        updatedAt: DateTime,
+                        reports: Seq[TReport] = Nil,
+                        groups: Seq[TGroup] = Nil)
 
 object TReportGroup
     extends SkinnyCRUDMapper[TReportGroup]
@@ -23,17 +21,10 @@ object TReportGroup
     many = TReport,
     throughFk = "reportGroupId",
     manyFk = "reportId",
-    merge = (
-        a,
-        reports
-    ) => a.copy(reports = reports)
+    merge = (a, reports) => a.copy(reports = reports)
   ).includes[TReport](
-    (
-        rg,
-        reps
-    ) =>
-      rg.map { m =>
-        m.copy(reports = reps)
+    (rg, reps) =>
+      rg.map { m => m.copy(reports = reps)
     }
   )
   lazy val groups = hasManyThroughWithFk[TGroup](
@@ -41,17 +32,10 @@ object TReportGroup
     many = TGroup,
     throughFk = "reportGroupId",
     manyFk = "groupId",
-    merge = (
-        a,
-        groups
-    ) => a.copy(groups = groups)
+    merge = (a, groups) => a.copy(groups = groups)
   ).includes[TGroup](
-    (
-        rg,
-        grps
-    ) =>
-      rg.map { m =>
-        m.copy(groups = grps)
+    (rg, grps) =>
+      rg.map { m => m.copy(groups = grps)
     }
   )
 
@@ -63,10 +47,8 @@ object TReportGroup
 
   override def lockVersionFieldName: String = "versions"
 
-  override def extract(
-      rs: WrappedResultSet,
-      n: ResultName[TReportGroup]
-  ): TReportGroup =
+  override def extract(rs: WrappedResultSet,
+                       n: ResultName[TReportGroup]): TReportGroup =
     new TReportGroup(
       reportGroupId = rs.get(n.reportGroupId),
       reportGroupName = rs.get(n.reportGroupName),

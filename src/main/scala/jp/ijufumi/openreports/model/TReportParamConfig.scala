@@ -5,17 +5,15 @@ import scalikejdbc.WrappedResultSet
 import skinny.orm.SkinnyCRUDMapper
 import skinny.orm.feature.OptimisticLockWithVersionFeature
 
-case class TReportParamConfig(
-    configId: Long,
-    reportId: Long,
-    paramId: Long,
-    pageNo: Int,
-    seq: Int,
-    createdAt: DateTime,
-    updatedAt: DateTime,
-    versions: Long,
-    param: Option[TReportParam] = None
-)
+case class TReportParamConfig(configId: Long,
+                              reportId: Long,
+                              paramId: Long,
+                              pageNo: Int,
+                              seq: Int,
+                              createdAt: DateTime,
+                              updatedAt: DateTime,
+                              versions: Long,
+                              param: Option[TReportParam] = None)
 
 object TReportParamConfig
     extends SkinnyCRUDMapper[TReportParamConfig]
@@ -29,8 +27,8 @@ object TReportParamConfig
   override def lockVersionFieldName: String = "versions"
 
   override def extract(
-      rs: WrappedResultSet,
-      n: scalikejdbc.ResultName[TReportParamConfig]
+    rs: WrappedResultSet,
+    n: scalikejdbc.ResultName[TReportParamConfig]
   ): TReportParamConfig = new TReportParamConfig(
     configId = rs.get(n.configId),
     reportId = rs.get(n.reportId),
@@ -45,9 +43,6 @@ object TReportParamConfig
   hasOneWithFk[TReportParam](
     right = TReportParam,
     fk = "paramId",
-    merge = (
-        a,
-        b
-    ) => a.copy(param = b)
+    merge = (a, b) => a.copy(param = b)
   ).byDefault
 }

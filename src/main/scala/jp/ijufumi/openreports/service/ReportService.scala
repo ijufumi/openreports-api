@@ -48,15 +48,11 @@ class ReportService extends Logging {
 
     reportGroup.get.reports
       .sortBy(_.reportId)
-      .map { r =>
-        ReportInfo(r.reportId, r.reportName)
+      .map { r => ReportInfo(r.reportId, r.reportName)
       }
   }
 
-  def paramInfo(
-      reportId: Long,
-      pageNo: Int
-  ): (Seq[ReportParamInfo], Int) = {
+  def paramInfo(reportId: Long, pageNo: Int): (Seq[ReportParamInfo], Int) = {
     val report = TReport.includes(TReport.params).findById(reportId)
 
     if (report.isEmpty) {
@@ -66,11 +62,7 @@ class ReportService extends Logging {
     val infos =
       report.get.params
         .filter(_.pageNo == pageNo)
-        .sortWith(
-          (
-              a,
-              b
-          ) => a.seq < b.seq)
+        .sortWith((a, b) => a.seq < b.seq)
         .map {
           _.param.get
         }
@@ -80,8 +72,7 @@ class ReportService extends Logging {
           if (LIST.equals(p.paramType)) {
             values = p.paramValues
               .split(",")
-              .map { v =>
-                Map(v -> v)
+              .map { v => Map(v -> v)
               }
               .toSeq
           } else if (QUERY.equals(p.paramType)) {

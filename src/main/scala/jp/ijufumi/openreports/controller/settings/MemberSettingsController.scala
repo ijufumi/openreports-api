@@ -2,10 +2,7 @@ package jp.ijufumi.openreports.controller.settings
 
 import jp.ijufumi.openreports.controller.common.ApplicationController
 import jp.ijufumi.openreports.service.enums.StatusCode
-import jp.ijufumi.openreports.service.settings.{
-  GroupSettingsService,
-  MemberSettingsService
-}
+import jp.ijufumi.openreports.service.settings.{GroupSettingsService, MemberSettingsService}
 import skinny.Params
 import skinny.validator.{email, intValue, paramKey, required}
 
@@ -74,8 +71,6 @@ class MemberSettingsController extends ApplicationController {
     paramKey("checkedPassword") is required
   )
 
-  def requestParams = Params(params)
-
   def registerCompleted = {
     render(viewPath + "/register-completed")
   }
@@ -140,6 +135,8 @@ class MemberSettingsController extends ApplicationController {
     paramKey("versions") is required & intValue,
     paramKey("emailAddress") is email
   )
+
+  def requestParams = Params(params)
 
   def updateCompleted = {
     render(viewPath + "/update-completed")

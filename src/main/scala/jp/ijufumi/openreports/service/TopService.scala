@@ -8,10 +8,7 @@ import skinny.LoggerProvider
 import scala.collection.mutable
 
 class TopService extends LoggerProvider {
-  def login(
-      emailAddress: String,
-      password: String
-  ): Option[MemberInfo] = {
+  def login(emailAddress: String, password: String): Option[MemberInfo] = {
     var member: MemberInfo = null
     val hashedPassword = Hash.hmacSha256(HASHED_KEY, password)
     val members: Seq[TMember] = TMember

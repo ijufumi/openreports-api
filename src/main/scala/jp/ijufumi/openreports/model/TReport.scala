@@ -6,15 +6,13 @@ import scalikejdbc.interpolation.SQLSyntax
 import skinny.orm.SkinnyCRUDMapper
 import skinny.orm.feature.OptimisticLockWithVersionFeature
 
-case class TReport(
-    reportId: Long,
-    reportName: String,
-    templatePath: String,
-    createdAt: DateTime,
-    updatedAt: DateTime,
-    params: Seq[TReportParamConfig] = Nil,
-    groups: Seq[TReportGroup] = Nil
-)
+case class TReport(reportId: Long,
+                   reportName: String,
+                   templatePath: String,
+                   createdAt: DateTime,
+                   updatedAt: DateTime,
+                   params: Seq[TReportParamConfig] = Nil,
+                   groups: Seq[TReportGroup] = Nil)
 
 object TReport
     extends SkinnyCRUDMapper[TReport]
@@ -22,21 +20,11 @@ object TReport
 
   lazy val params = hasMany[TReportParamConfig](
     many = TReportParamConfig -> TReportParamConfig.defaultAlias,
-    on = (
-        r,
-        p
-    ) => SQLSyntax.eq(r.field("reportId"), p.field("reportId")),
-    merge = (
-        r,
-        params
-    ) => r.copy(params = params)
+    on = (r, p) => SQLSyntax.eq(r.field("reportId"), p.field("reportId")),
+    merge = (r, params) => r.copy(params = params)
   ).includes[TReportParamConfig](
-    (
-        a,
-        b
-    ) =>
-      a.map { m =>
-        m.copy(params = b)
+    (a, b) =>
+      a.map { m => m.copy(params = b)
     }
   )
 
@@ -48,10 +36,8 @@ object TReport
 
   override def lockVersionFieldName: String = "versions"
 
-  override def extract(
-      rs: WrappedResultSet,
-      n: scalikejdbc.ResultName[TReport]
-  ): TReport =
+  override def extract(rs: WrappedResultSet,
+                       n: scalikejdbc.ResultName[TReport]): TReport =
     new TReport(
       reportId = rs.get(n.reportId),
       reportName = rs.get(n.reportName),
@@ -65,9 +51,6 @@ object TReport
     many = TReportGroup,
     throughFk = "reportId",
     manyFk = "reportGroupId",
-    merge = (
-        a,
-        groups
-    ) => a.copy(groups = groups)
+    merge = (a, groups) => a.copy(groups = groups)
   ).byDefault
 }
