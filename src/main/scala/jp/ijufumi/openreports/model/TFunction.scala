@@ -8,7 +8,7 @@ case class TFunction(functionId: Long,
                      functionName: String,
                      createdAt: DateTime,
                      updatedAt: DateTime,
-                     groups: Seq[TGroup] = Nil,)
+                     groups: Seq[TGroup] = Nil)
 
 object TFunction extends SkinnyCRUDMapper[TFunction] {
   lazy val groups = hasManyThroughWithFk[TGroup](
