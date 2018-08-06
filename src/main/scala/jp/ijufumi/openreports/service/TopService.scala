@@ -27,7 +27,7 @@ class TopService extends LoggerProvider {
         val group = TGroup.includes(TGroup.functions).findById(g.groupId).get
         logger.debug("Group:%s".format(group))
         menus ++= group.functions.map(_.functionId).toSet
-        groups += GroupInfo(g.groupId, g.groupName)
+        groups += GroupInfo(g.groupId, g.groupName, g.versions)
       }
 
       member = MemberInfo(

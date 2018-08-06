@@ -77,7 +77,7 @@ class GroupSettingsController extends ApplicationController {
   def doUpdate =
     params.getAs[Long]("id").map { id =>
       val groupName = params.getAs[String]("groupName").getOrElse("")
-      val versions = params.getAs[Long]("versions").getOrElse(0)
+      val versions = params.getAs[Long]("versions").getOrElse(0L)
 
       val statusCode =
         new GroupSettingsService().updateGroup(id, groupName, versions)
