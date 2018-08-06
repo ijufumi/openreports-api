@@ -72,7 +72,7 @@ create table r_group_function (
 create table t_report_template (
   template_id serial primary key,
   file_name varchar(250) not null,
-  fild_path varchar(250) not null,
+  file_path varchar(250) not null,
   created_at timestamp not null default now(),
   updated_at timestamp not null default now(),
   versions bigint not null default 0
