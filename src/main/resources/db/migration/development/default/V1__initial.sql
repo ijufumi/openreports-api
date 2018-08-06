@@ -72,11 +72,23 @@ create table r_group_function (
 create table t_report (
   report_id serial primary key,
   report_name varchar(250) not null,
-  template_path varchar(250) not null,
+  template_id integer references t_report_template(template_id),
   created_at timestamp not null default now(),
   updated_at timestamp not null default now(),
   versions bigint not null default 0
 );
+
+-- create t_report_template
+create table t_report_template (
+  template_id serial primary key,
+  file_name varchar(250) not null,
+  fild_path varchar(250) not null,
+  created_at timestamp not null default now(),
+  updated_at timestamp not null default now(),
+  versions bigint not null default 0
+);
+
+create unique index report_template_IX1 on t_report_template(file_name);
 
 -- create t_scheduled_report
 create table t_scheduled_report (

@@ -6,13 +6,14 @@ import skinny.orm.SkinnyCRUDMapper
 import skinny.orm.feature.OptimisticLockWithVersionFeature
 
 case class TReportTemplate(templateId: Long,
-                           templatePath: String,
+                           fileName: String,
+                           filePath: String,
                            createdAt: DateTime,
                            updatedAt: DateTime,
                            versions: Long)
 
 object TReportTemplate
-  extends SkinnyCRUDMapper[TReportTemplate]
+    extends SkinnyCRUDMapper[TReportTemplate]
     with OptimisticLockWithVersionFeature[TReportTemplate] {
 
   override def tableName = "t_report_template"
@@ -23,11 +24,13 @@ object TReportTemplate
 
   override def lockVersionFieldName: String = "versions"
 
-  override def extract(rs: WrappedResultSet,
-    n: scalikejdbc.ResultName[TReportTemplate]): TReportTemplate =
+  override def extract(
+      rs: WrappedResultSet,
+      n: scalikejdbc.ResultName[TReportTemplate]): TReportTemplate =
     new TReportTemplate(
       templateId = rs.get(n.templateId),
-      templatePath = rs.get(n.templatePath),
+      fileName = rs.get(n.fileName),
+      filePath = rs.get(n.filePath),
       createdAt = rs.get(n.createdAt),
       updatedAt = rs.get(n.updatedAt),
       versions = rs.get(n.versions)
