@@ -1,17 +1,21 @@
 package jp.ijufumi.openreports.controller.settings
 
-import jp.ijufumi.openreports.controller.settings.Controllers.memberSettings.{get, index, path}
 import skinny._
 
 object Controllers {
 
   def mount(ctx: ServletContext): Unit = {
     reportSettings.mount(ctx)
+    reportTemplateSettings.mount(ctx)
     memberSettings.mount(ctx)
     groupSettings.mount(ctx)
   }
 
   object reportSettings extends ReportSettingsController with Routes {
+    val indexUrl = get(path + "/?")(index).as('index)
+  }
+
+  object reportTemplateSettings extends ReportTemplateSettingsController with Routes {
     val indexUrl = get(path + "/?")(index).as('index)
   }
 

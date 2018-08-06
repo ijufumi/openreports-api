@@ -12,7 +12,7 @@ class ReportService extends Logging {
     val report = TReport.findById(reportId)
 
     report.map { r =>
-      Option(ReportInfo(r.reportId, r.reportName, r.templatePath))
+      Option(ReportInfo(r.reportId, r.reportName))
     } getOrElse Option.empty
   }
 

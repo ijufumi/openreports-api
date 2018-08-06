@@ -8,7 +8,7 @@ import skinny.orm.feature.OptimisticLockWithVersionFeature
 
 case class TReport(reportId: Long,
                    reportName: String,
-                   templatePath: String,
+                   templateId: Long,
                    createdAt: DateTime,
                    updatedAt: DateTime,
                    params: Seq[TReportParamConfig] = Nil,
@@ -41,7 +41,7 @@ object TReport
     new TReport(
       reportId = rs.get(n.reportId),
       reportName = rs.get(n.reportName),
-      templatePath = rs.get(n.templatePath),
+      templateId = rs.get(n.templateId),
       createdAt = rs.get(n.createdAt),
       updatedAt = rs.get(n.updatedAt)
     )

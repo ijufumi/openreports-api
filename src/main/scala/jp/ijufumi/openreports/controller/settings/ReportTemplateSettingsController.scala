@@ -1,13 +1,8 @@
 package jp.ijufumi.openreports.controller.settings
-import jp.ijufumi.openreports.controller.common.I18nFeature
-import jp.ijufumi.openreports.service.settings.{ReportSettingsService, ReportTemplateSettingsService}
-import skinny.controller.SkinnyServlet
-import skinny.controller.feature.FileUploadFeature
+import jp.ijufumi.openreports.controller.common.ApplicationController
+import jp.ijufumi.openreports.service.settings.ReportTemplateSettingsService
 
-class ReportTemplateSettingsController
-    extends SkinnyServlet
-    with FileUploadFeature
-    with I18nFeature {
+class ReportTemplateSettingsController extends ApplicationController {
 
   val path = rootPath + "/report-template"
   val viewPath = rootPath + "/report-template"
