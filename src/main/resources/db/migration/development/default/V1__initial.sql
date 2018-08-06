@@ -173,13 +173,18 @@ insert into r_group_function values (2, 3);
 insert into r_group_function values (2, 4);
 insert into r_group_function values (2, 5);
 
-insert into t_report (report_name, template_path, created_at, updated_at) values ('テストレポート1', 'sample.xlsx', now(), now());
-insert into t_report (report_name, template_path, created_at, updated_at) values ('テストレポート2', 'sample.xlsx', now(), now());
-insert into t_report (report_name, template_path, created_at, updated_at) values ('テストレポート3', 'sample.xlsx', now(), now());
-insert into t_report (report_name, template_path, created_at, updated_at) values ('テストレポート4', 'sample.xlsx', now(), now());
-insert into t_report (report_name, template_path, created_at, updated_at) values ('テストレポート5', 'sample.xlsx', now(), now());
-insert into t_report (report_name, template_path, created_at, updated_at) values ('テストレポート6', 'sample.xlsx', now(), now());
-insert into t_report (report_name, template_path, created_at, updated_at) values ('テストレポート7', 'sample.xlsx', now(), now());
+insert into t_report_template(file_name, fild_path, created_at, updated_at) values ('sample1.xlsx', 'sample1.xlsx', now(), now());
+insert into t_report_template(file_name, fild_path, created_at, updated_at) values ('sample2.xlsx', 'sample2.xlsx', now(), now());
+insert into t_report_template(file_name, fild_path, created_at, updated_at) values ('sample3.xlsx', 'sample3.xlsx', now(), now());
+insert into t_report_template(file_name, fild_path, created_at, updated_at) values ('sample4.xlsx', 'sample4.xlsx', now(), now());
+
+insert into t_report (report_name, template_id, created_at, updated_at) values ('テストレポート1', 1, now(), now());
+insert into t_report (report_name, template_id, created_at, updated_at) values ('テストレポート2', 2, now(), now());
+insert into t_report (report_name, template_id, created_at, updated_at) values ('テストレポート3', 3, now(), now());
+insert into t_report (report_name, template_id, created_at, updated_at) values ('テストレポート4', 4, now(), now());
+insert into t_report (report_name, template_id, created_at, updated_at) values ('テストレポート5', 1, now(), now());
+insert into t_report (report_name, template_id, created_at, updated_at) values ('テストレポート6', 2, now(), now());
+insert into t_report (report_name, template_id, created_at, updated_at) values ('テストレポート7', 3, now(), now());
 
 insert into t_report_group (report_group_name, created_at, updated_at) values ('テストグループ1', now(), now());
 insert into t_report_group (report_group_name, created_at, updated_at) values ('テストグループ2', now(), now());
