@@ -80,6 +80,20 @@ create table t_report_template (
 
 create unique index report_template_IX1 on t_report_template(file_name);
 
+-- create t_report_template_history
+create table t_report_template_history (
+  history_id serial primary key,
+  template_id integer not null,
+  file_name varchar(250) not null,
+  file_path varchar(250) not null,
+  created_at timestamp not null default now(),
+  updated_at timestamp not null default now(),
+  versions bigint not null default 0
+);
+
+create index report_template_history_IX1 on t_report_template_history(template_id);
+create index report_template_history_IX2 on t_report_template_history(file_name);
+
 -- create t_report
 create table t_report (
   report_id serial primary key,
