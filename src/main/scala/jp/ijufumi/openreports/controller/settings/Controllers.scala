@@ -7,6 +7,7 @@ object Controllers {
   def mount(ctx: ServletContext): Unit = {
     reportSettings.mount(ctx)
     reportTemplateSettings.mount(ctx)
+    reportParamSettings.mount(ctx)
     memberSettings.mount(ctx)
     groupSettings.mount(ctx)
   }
@@ -15,7 +16,13 @@ object Controllers {
     val indexUrl = get(path + "/?")(index).as('index)
   }
 
-  object reportTemplateSettings extends ReportTemplateSettingsController with Routes {
+  object reportTemplateSettings
+      extends ReportTemplateSettingsController
+      with Routes {
+    val indexUrl = get(path + "/?")(index).as('index)
+  }
+
+  object reportParamSettings extends ReportParamSettingsController with Routes {
     val indexUrl = get(path + "/?")(index).as('index)
   }
 
