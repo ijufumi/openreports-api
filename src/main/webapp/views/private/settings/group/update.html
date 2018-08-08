@@ -20,7 +20,7 @@
       <h2 layout:fragment="title">設定 - グループ変更</h2>
     </div>
     <div class="row main-contents">
-      <div class="private-setting-member col" layout:fragment="content">
+      <div class="private-setting-group col" layout:fragment="content">
         <form method="post" th:action="'/private/settings/group/update/' + ${group.groupId}">
           <input type="hidden" name="versions" th:value="${group.versions}" />
           <div class="form-group row">
