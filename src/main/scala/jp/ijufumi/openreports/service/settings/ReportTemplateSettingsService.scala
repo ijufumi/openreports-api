@@ -10,7 +10,7 @@ import skinny.Logging
 import skinny.micro.multipart.FileItem
 
 class ReportTemplateSettingsService extends Logging {
-  def getReportTemplates(): Seq[ReportTemplateInfo] = {
+  def getReportTemplates: Seq[ReportTemplateInfo] = {
     TReportTemplate
       .findAll()
       .map(r => ReportTemplateInfo(r.templateId, r.fileName))
