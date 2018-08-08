@@ -13,8 +13,8 @@ class ReportTemplateSettingsController extends ApplicationController {
     render(viewPath + "/index")
   }
 
-  def showRegister = {
-    render(viewPath + "/register")
+  def showUpload = {
+    render(viewPath + "/upload")
   }
 
 }

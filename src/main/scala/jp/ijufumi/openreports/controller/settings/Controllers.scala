@@ -20,6 +20,7 @@ object Controllers {
       extends ReportTemplateSettingsController
       with Routes {
     val indexUrl = get(path + "/?")(index).as('index)
+    val showUploadUrl = get(path + "/?")(showUpload).as('showUpload)
   }
 
   object reportParamSettings extends ReportParamSettingsController with Routes {
