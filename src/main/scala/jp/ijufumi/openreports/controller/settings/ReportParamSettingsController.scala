@@ -1,6 +1,7 @@
 package jp.ijufumi.openreports.controller.settings
 
 import jp.ijufumi.openreports.controller.common.ApplicationController
+import jp.ijufumi.openreports.service.enums.ReportParamType
 import jp.ijufumi.openreports.service.settings.ReportParamSettingsService
 import skinny.controller.Params
 
@@ -16,6 +17,7 @@ class ReportParamSettingsController extends ApplicationController {
   }
 
   def showRegister = {
+    set("paramTypes", ReportParamType.list())
     render(viewPath + "/register")
   }
 
