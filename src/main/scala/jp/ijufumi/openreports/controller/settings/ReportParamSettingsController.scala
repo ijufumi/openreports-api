@@ -22,7 +22,7 @@ class ReportParamSettingsController extends ApplicationController {
   )
 
   def index = {
-    val params = new ReportParamSettingsService().getReportParamConfig()
+    val params = new ReportParamSettingsService().getParams
     set("params", params)
     render(viewPath + "/index")
   }

@@ -2,20 +2,17 @@ package jp.ijufumi.openreports.service.settings
 
 import java.sql.SQLException
 
-import jp.ijufumi.openreports.model.{TReportParam, TReportParamConfig}
+import jp.ijufumi.openreports.model.TReportParam
 import jp.ijufumi.openreports.service.enums.StatusCode
-import jp.ijufumi.openreports.vo.{ReportParamConfigInfo, ReportParamInfo}
+import jp.ijufumi.openreports.vo.ReportParamInfo
 import skinny.Logging
 
 class ReportParamSettingsService
   extends Logging {
-  def getReportParamConfig(): Seq[ReportParamConfigInfo] = {
-    TReportParamConfig
+  def getParams: Seq[ReportParamInfo] = {
+    TReportParam
       .findAll()
-      .map(p => ReportParamConfigInfo(p
-        .paramId, p
-        .pageNo, p
-        .seq))
+      .map(p => ReportParamInfo(p))
   }
 
   def getParam(paramId: Long): Option[ReportParamInfo] = {
