@@ -14,18 +14,18 @@ object ReportParamType extends Enumeration {
   val QUERY = Val("4", "Query")
 
   def of(value: String): ReportParamType.Val = {
-    values.find(_.value == value).getOrElse(TEXT)
+    values.find(_.paramName == value).getOrElse(TEXT)
   }
 
   implicit def valueToVal(x: Value): Val = x.asInstanceOf[Val]
 
-  protected case class Val(key: String, value: String) extends super.Val {
+  protected case class Val(paramId: String, paramName: String) extends super.Val {
     def equals(value: String): Boolean = {
-      Val.this == ReportParamType.of(key)
+      Val.this == ReportParamType.of(paramId)
     }
   }
 
   def list(): Seq[ReportParamType] = {
-    values.map(v => new ReportParamType(v.key, v.value))
+    values.map(v => new ReportParamType(v.paramId, v.paramName))
   }
 }
