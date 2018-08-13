@@ -2,9 +2,12 @@ package jp.ijufumi.openreports.controller.settings
 
 import jp.ijufumi.openreports.controller.common.ApplicationController
 import jp.ijufumi.openreports.service.enums.{ReportParamType, StatusCode}
-import jp.ijufumi.openreports.service.settings.{MemberSettingsService, ReportParamSettingsService}
+import jp.ijufumi.openreports.service.settings.{
+  MemberSettingsService,
+  ReportParamSettingsService
+}
 import skinny.Params
-import skinny.validator.{maxLength, paramKey, required}
+import skinny.validator.{maxLength, numeric, paramKey, required}
 
 class ReportParamSettingsController extends ApplicationController {
 
@@ -19,6 +22,15 @@ class ReportParamSettingsController extends ApplicationController {
     paramKey("paramName") is required & maxLength(250),
     paramKey("description") is maxLength(250),
     paramKey("paramType") is required
+  )
+
+  def validateUpdateParams = validation(
+    requestParams,
+    paramKey("paramKey") is required & maxLength(250),
+    paramKey("paramName") is required & maxLength(250),
+    paramKey("description") is maxLength(250),
+    paramKey("paramType") is required,
+    paramKey("versions") is required & numeric
   )
 
   def index = {
@@ -40,7 +52,10 @@ class ReportParamSettingsController extends ApplicationController {
       val paramType = params.getAs[String]("paramType").getOrElse("")
 
       val statusCode = new ReportParamSettingsService().registerParam(
-        paramKey, paramName, description, paramType
+        paramKey,
+        paramName,
+        description,
+        paramType
       )
       statusCode match {
         case StatusCode.OK => redirect(path + "/registerCompleted")
@@ -70,5 +85,39 @@ class ReportParamSettingsController extends ApplicationController {
         render(viewPath + "/update")
       }
     } getOrElse haltWithBody(404)
+  }
+
+  def doUpdate = {
+    params.getAs[Long]("id").map { id =>
+      if (validateUpdateParams.validate) {
+        val paramKey = params.getAs[String]("paramKey").getOrElse("")
+        val paramName = params.getAs[String]("paramName").getOrElse("")
+        val description = params.getAs[String]("description").getOrElse("")
+        val paramType = params.getAs[String]("paramType").getOrElse("")
+        val versions = params.getAs[Long]("versions").get
+
+        val statusCode = new ReportParamSettingsService().updateParam(
+          id,
+          paramKey,
+          paramName,
+          description,
+          paramType,
+          versions
+        )
+        statusCode match {
+          case StatusCode.OK => redirect(path + "/updateCompleted")
+          case _ =>
+            set("customErrorMessages", Seq(i18n.get("error.systemError")))
+        }
+        render(viewPath + "/update/" + id)
+      } else {
+        logger.info("invalid params:%s".format(params))
+        render(viewPath + "/update/" + id)
+      }
+    } getOrElse haltWithBody(404)
+  }
+
+  def updateCompleted = {
+    render(viewPath + "/update-completed")
   }
 }

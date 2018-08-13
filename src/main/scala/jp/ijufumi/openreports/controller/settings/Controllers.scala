@@ -1,6 +1,13 @@
 package jp.ijufumi.openreports.controller.settings
 
-import jp.ijufumi.openreports.controller.settings.Controllers.memberSettings.{doRegister, get, path, post, registerCompleted, showRegister}
+import jp.ijufumi.openreports.controller.settings.Controllers.memberSettings.{
+  doRegister,
+  get,
+  path,
+  post,
+  registerCompleted,
+  showRegister
+}
 import skinny._
 
 object Controllers {
@@ -35,6 +42,15 @@ object Controllers {
 
     val registerCompletedUrl =
       get(path + "/registerCompleted")(registerCompleted).as('registerCompleted)
+
+    val showUpdateUrl =
+      get(path + "/update")(showUpdate).as('showUpdate)
+
+    val doUpdateUrl = post(path + "/update")(doUpdate).as('doUpdate)
+
+    val updateCompletedUrl =
+      get(path + "/updateCompleted")(updateCompleted).as('updateCompleted)
+
   }
 
   object memberSettings extends MemberSettingsController with Routes {
@@ -48,7 +64,7 @@ object Controllers {
     val registerCompletedUrl =
       get(path + "/registerCompleted")(registerCompleted).as('registerCompleted)
 
-    val showRpdateUrl = get(path + "/update/:id")(showUpdate).as('showUpdate)
+    val showUpdateUrl = get(path + "/update/:id")(showUpdate).as('showUpdate)
 
     val doUpdateUrl = post(path + "/update/:id")(doUpdate).as('doUpdate)
 
