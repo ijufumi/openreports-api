@@ -12,6 +12,19 @@ class GroupSettingsController extends ApplicationController {
   val path = rootPath + "/group"
   val viewPath = rootPath + "/group"
 
+  def requestParams = Params(params)
+
+  def validateRegisterParams = validation(
+    requestParams,
+    paramKey("groupName") is required & maxLength(250)
+  )
+
+  def validateUpdateParams = validation(
+    requestParams,
+    paramKey("groupName") is required & maxLength(250),
+    paramKey("versions") is required & longValue
+  )
+
   def index = {
     val groups = new GroupSettingsService().getGroups()
     set("groups", groups)
@@ -40,56 +53,43 @@ class GroupSettingsController extends ApplicationController {
     }
   }
 
-  def validateRegisterParams = validation(
-    requestParams,
-    paramKey("groupName") is required & maxLength(250)
-  )
-
   def registerCompleted = {
     render(viewPath + "/register-completed")
   }
 
   def showUpdate = {
+    params.getAs[Long]("id").map { id =>
+      val groupOpt = new GroupSettingsService().getGroup(id)
+      if (groupOpt.isEmpty) {
+        haltWithBody(404)
+      } else {
+        set("group", groupOpt.get)
+        render(viewPath + "/update")
+      }
+    } getOrElse haltWithBody(404)
+  }
+
+  def doUpdate =
     if (validateUpdateParams.validate) {
       params.getAs[Long]("id").map { id =>
-        val groupOpt = new GroupSettingsService().getGroup(id)
-        if (groupOpt.isEmpty) {
-          haltWithBody(404)
-        } else {
-          set("group", groupOpt.get)
-          render(viewPath + "/update")
+        val groupName = params.getAs[String]("groupName").getOrElse("")
+        val versions = params.getAs[Long]("versions").getOrElse(0L)
+
+        val statusCode =
+          new GroupSettingsService().updateGroup(id, groupName, versions)
+        statusCode match {
+          case StatusCode.OK => redirect(path + "/updateCompleted")
+          case _ =>
+            set("customErrorMessages", Seq(i18n.get("error.systemError")))
         }
+
+        render(viewPath + "/update")
+
       } getOrElse haltWithBody(404)
     } else {
       logger.info("invalid params:%s".format(params))
       render(viewPath + "/update")
     }
-  }
-
-  def validateUpdateParams = validation(
-    requestParams,
-    paramKey("groupName") is required & maxLength(250),
-    paramKey("versions") is required & longValue
-  )
-
-  def requestParams = Params(params)
-
-  def doUpdate =
-    params.getAs[Long]("id").map { id =>
-      val groupName = params.getAs[String]("groupName").getOrElse("")
-      val versions = params.getAs[Long]("versions").getOrElse(0L)
-
-      val statusCode =
-        new GroupSettingsService().updateGroup(id, groupName, versions)
-      statusCode match {
-        case StatusCode.OK => redirect(path + "/updateCompleted")
-        case _ =>
-          set("customErrorMessages", Seq(i18n.get("error.systemError")))
-      }
-
-      render(viewPath + "/update")
-
-    } getOrElse haltWithBody(404)
 
   def updateCompleted = {
     render(viewPath + "/update-completed")
