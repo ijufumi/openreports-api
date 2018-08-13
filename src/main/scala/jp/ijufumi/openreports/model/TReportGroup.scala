@@ -9,6 +9,7 @@ case class TReportGroup(reportGroupId: Long,
                         reportGroupName: String,
                         createdAt: DateTime,
                         updatedAt: DateTime,
+                        versions: Long,
                         reports: Seq[TReport] = Nil,
                         groups: Seq[TGroup] = Nil)
 
@@ -24,7 +25,8 @@ object TReportGroup
     merge = (a, reports) => a.copy(reports = reports)
   ).includes[TReport](
     (rg, reps) =>
-      rg.map { m => m.copy(reports = reps)
+      rg.map { m =>
+        m.copy(reports = reps)
     }
   )
   lazy val groups = hasManyThroughWithFk[TGroup](
@@ -35,7 +37,8 @@ object TReportGroup
     merge = (a, groups) => a.copy(groups = groups)
   ).includes[TGroup](
     (rg, grps) =>
-      rg.map { m => m.copy(groups = grps)
+      rg.map { m =>
+        m.copy(groups = grps)
     }
   )
 
@@ -53,6 +56,7 @@ object TReportGroup
       reportGroupId = rs.get(n.reportGroupId),
       reportGroupName = rs.get(n.reportGroupName),
       createdAt = rs.get(n.createdAt),
-      updatedAt = rs.get(n.updatedAt)
+      updatedAt = rs.get(n.updatedAt),
+      versions = rs.get(n.versions)
     )
 }

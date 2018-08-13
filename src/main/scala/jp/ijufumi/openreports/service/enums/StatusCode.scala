@@ -7,6 +7,7 @@ object StatusCode extends Enumeration {
   val OK = Val("")
   val DATA_NOT_FOUND = Val("not found")
   val DUPLICATE_ERR = Val("duplicate key value violates")
+  val ALREADY_UPDATED = Val("already updated")
   val OTHER_ERROR = Val("error")
 
   def of(e: Exception): StatusCode.Val = {
