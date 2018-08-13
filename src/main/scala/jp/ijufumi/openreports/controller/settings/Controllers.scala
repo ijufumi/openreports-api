@@ -1,25 +1,5 @@
 package jp.ijufumi.openreports.controller.settings
 
-import jp.ijufumi.openreports.controller.settings.Controllers.groupSettings.{
-  doRegister,
-  doUpdate,
-  get,
-  index,
-  path,
-  post,
-  registerCompleted,
-  showRegister,
-  showUpdate,
-  updateCompleted
-}
-import jp.ijufumi.openreports.controller.settings.Controllers.memberSettings.{
-  doRegister,
-  get,
-  path,
-  post,
-  registerCompleted,
-  showRegister
-}
 import skinny._
 
 object Controllers {
