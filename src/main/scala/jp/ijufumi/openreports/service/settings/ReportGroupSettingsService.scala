@@ -43,8 +43,6 @@ class ReportGroupSettingsService extends Logging {
         return StatusCode.DATA_NOT_FOUND
       }
 
-      val group = groupOpt.get
-
       val count = TReportGroup
         .updateByIdAndVersion(reportGroupId, versions)
         .withAttributes('reportGroupName -> reportGroupName,
