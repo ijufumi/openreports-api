@@ -98,6 +98,7 @@ create index report_template_history_IX2 on t_report_template_history(file_name)
 create table t_report (
   report_id serial primary key,
   report_name varchar(250) not null,
+  description varchar(250) not null,
   template_id integer references t_report_template(template_id),
   created_at timestamp not null default now(),
   updated_at timestamp not null default now(),
@@ -192,13 +193,13 @@ insert into t_report_template(file_name, file_path, created_at, updated_at) valu
 insert into t_report_template(file_name, file_path, created_at, updated_at) values ('sample3.xlsx', 'sample3.xlsx', now(), now());
 insert into t_report_template(file_name, file_path, created_at, updated_at) values ('sample4.xlsx', 'sample4.xlsx', now(), now());
 
-insert into t_report (report_name, template_id, created_at, updated_at) values ('テストレポート1', 1, now(), now());
-insert into t_report (report_name, template_id, created_at, updated_at) values ('テストレポート2', 2, now(), now());
-insert into t_report (report_name, template_id, created_at, updated_at) values ('テストレポート3', 3, now(), now());
-insert into t_report (report_name, template_id, created_at, updated_at) values ('テストレポート4', 4, now(), now());
-insert into t_report (report_name, template_id, created_at, updated_at) values ('テストレポート5', 1, now(), now());
-insert into t_report (report_name, template_id, created_at, updated_at) values ('テストレポート6', 2, now(), now());
-insert into t_report (report_name, template_id, created_at, updated_at) values ('テストレポート7', 3, now(), now());
+insert into t_report (report_name, description, template_id, created_at, updated_at) values ('テストレポート1', 'テストレポート1', 1, now(), now());
+insert into t_report (report_name, description, template_id, created_at, updated_at) values ('テストレポート2', 'テストレポート2', 2, now(), now());
+insert into t_report (report_name, description, template_id, created_at, updated_at) values ('テストレポート3', 'テストレポート3', 3, now(), now());
+insert into t_report (report_name, description, template_id, created_at, updated_at) values ('テストレポート4', 'テストレポート4', 4, now(), now());
+insert into t_report (report_name, description, template_id, created_at, updated_at) values ('テストレポート5', 'テストレポート5', 1, now(), now());
+insert into t_report (report_name, description, template_id, created_at, updated_at) values ('テストレポート6', 'テストレポート6', 2, now(), now());
+insert into t_report (report_name, description, template_id, created_at, updated_at) values ('テストレポート7', 'テストレポート7', 3, now(), now());
 
 insert into t_report_group (report_group_name, created_at, updated_at) values ('テストグループ1', now(), now());
 insert into t_report_group (report_group_name, created_at, updated_at) values ('テストグループ2', now(), now());
