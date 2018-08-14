@@ -58,7 +58,9 @@ object Controllers {
       with Routes {
     val indexUrl = get(path + "/?")(index).as('index)
 
-    val showUploadUrl = get(path + "/?")(showUpload).as('showUpload)
+    val showUploadUrl = get(path + "/upload")(showUpload).as('showUpload)
+
+    val uploaderUrl = post(path + "/upload")(upload).as('upload)
   }
 
   object reportParamSettings extends ReportParamSettingsController with Routes {

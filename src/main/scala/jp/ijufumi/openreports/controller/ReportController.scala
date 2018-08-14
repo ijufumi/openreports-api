@@ -4,6 +4,7 @@ import jp.ijufumi.openreports.controller.common.ApplicationController
 import jp.ijufumi.openreports.service.ReportService
 import jp.ijufumi.openreports.service.support.ReportingSupport
 import jp.ijufumi.openreports.vo.{ApiResponse, MemberInfo}
+import org.apache.commons.lang3.StringUtils
 import skinny.Params
 import skinny.validator.{paramKey, required}
 
@@ -99,7 +100,7 @@ class ReportController extends ApplicationController {
 
     val templateFile = ReportService().report(reportId).map {
       _.templateFile
-    } getOrElse ""
+    }.map{_.map(t => t.fileName).getOrElse("")}.getOrElse("")
 
     if (templateFile.isEmpty) {
       logger.warn("templateFile is blank.[%d]".format(reportId))
