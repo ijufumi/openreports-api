@@ -8,6 +8,7 @@ import skinny.orm.feature.OptimisticLockWithVersionFeature
 
 case class TReport(reportId: Long,
                    reportName: String,
+                   description: String,
                    templateId: Long,
                    createdAt: DateTime,
                    updatedAt: DateTime,
@@ -24,7 +25,8 @@ object TReport
     merge = (r, params) => r.copy(params = params)
   ).includes[TReportParamConfig](
     (a, b) =>
-      a.map { m => m.copy(params = b)
+      a.map { m =>
+        m.copy(params = b)
     }
   )
 
@@ -41,6 +43,7 @@ object TReport
     new TReport(
       reportId = rs.get(n.reportId),
       reportName = rs.get(n.reportName),
+      description = rs.get(n.description),
       templateId = rs.get(n.templateId),
       createdAt = rs.get(n.createdAt),
       updatedAt = rs.get(n.updatedAt)

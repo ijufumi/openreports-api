@@ -12,7 +12,7 @@ class ReportService extends Logging {
     val report = TReport.findById(reportId)
 
     report.map { r =>
-      Option(ReportInfo(r.reportId, r.reportName))
+      Option(ReportInfo(r.reportId, r.reportName, r.description))
     } getOrElse Option.empty
   }
 
@@ -48,7 +48,8 @@ class ReportService extends Logging {
 
     reportGroup.get.reports
       .sortBy(_.reportId)
-      .map { r => ReportInfo(r.reportId, r.reportName)
+      .map { r =>
+        ReportInfo(r.reportId, r.reportName, r.description)
       }
   }
 
@@ -72,7 +73,8 @@ class ReportService extends Logging {
           if (LIST.equals(p.paramType)) {
             values = p.paramValues
               .split(",")
-              .map { v => Map(v -> v)
+              .map { v =>
+                Map(v -> v)
               }
               .toSeq
           } else if (QUERY.equals(p.paramType)) {
