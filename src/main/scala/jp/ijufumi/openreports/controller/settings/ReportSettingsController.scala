@@ -51,7 +51,7 @@ class ReportSettingsController extends ApplicationController {
     if (validateRegisterParams.validate) {
       val reportName = params.getAs[String]("reportName").get
       val description = params.getAs[String]("description").getOrElse("")
-      val templateId = params.getAs[Long]("templateId").getOrElse(0)
+      val templateId = params.getAs[Long]("templateId").getOrElse(0L)
 
       val statusCode = new ReportSettingsService().registerReport(
         reportName,
@@ -94,8 +94,8 @@ class ReportSettingsController extends ApplicationController {
       if (validateUpdateParams.validate) {
         val reportName = params.getAs[String]("reportName").get
         val description = params.getAs[String]("description").getOrElse("")
-        val templateId = params.getAs[Long]("templateId").getOrElse(0)
-        val versions = params.getAs[Long]("versions").getOrElse(0)
+        val templateId = params.getAs[Long]("templateId").getOrElse(0L)
+        val versions = params.getAs[Long]("versions").getOrElse(0L)
 
         val statusCode = new ReportSettingsService().updateReport(
           id,

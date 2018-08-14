@@ -26,7 +26,7 @@ class ReportGroupSettingsService extends Logging {
       TReportGroup.createWithAttributes('reportGroupName -> reportGroupName)
     } catch {
       case e: SQLException => return StatusCode.of(e)
-      case _               => return StatusCode.OTHER_ERROR
+      case _: Throwable    => return StatusCode.OTHER_ERROR
     }
 
     StatusCode.OK
@@ -53,7 +53,7 @@ class ReportGroupSettingsService extends Logging {
       }
     } catch {
       case e: SQLException => return StatusCode.of(e)
-      case _               => return StatusCode.OTHER_ERROR
+      case _: Throwable    => return StatusCode.OTHER_ERROR
     }
 
     StatusCode.OK

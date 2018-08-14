@@ -11,7 +11,7 @@ class ReportTemplateSettingsController
   val viewPath = rootPath + "/report-template"
 
   def index = {
-    val templates = new ReportTemplateSettingsService().getReportTemplates()
+    val templates = new ReportTemplateSettingsService().getReportTemplates
     set("templates", templates)
     render(viewPath + "/index")
   }

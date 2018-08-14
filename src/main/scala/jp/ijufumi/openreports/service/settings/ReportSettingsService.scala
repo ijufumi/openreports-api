@@ -41,7 +41,7 @@ class ReportSettingsService extends Logging {
 
     } catch {
       case e: SQLException => return StatusCode.of(e)
-      case _               => return StatusCode.OTHER_ERROR
+      case _: Throwable    => return StatusCode.OTHER_ERROR
     }
     StatusCode.OK
   }
@@ -73,7 +73,7 @@ class ReportSettingsService extends Logging {
       }
     } catch {
       case e: SQLException => return StatusCode.of(e)
-      case _               => return StatusCode.OTHER_ERROR
+      case _: Throwable    => return StatusCode.OTHER_ERROR
     }
     StatusCode.OK
   }
