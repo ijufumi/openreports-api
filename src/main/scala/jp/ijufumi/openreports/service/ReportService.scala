@@ -42,15 +42,16 @@ class ReportService extends Logging {
   def reportList(groupId: Long): Seq[ReportInfo] = {
     val reportGroup =
       TReportGroup.includes(TReportGroup.reports).findById(groupId)
-    if (reportGroup.isEmpty) {
-      return Seq.empty
-    }
 
-    reportGroup.get.reports
-      .sortBy(_.reportId)
-      .map { r =>
-        ReportInfo(r.reportId, r.reportName, r.description)
-      }
+    reportGroup
+      .map(
+        rg =>
+          rg.reports
+            .sortBy(_.reportId)
+            .map { r =>
+              ReportInfo(r.reportId, r.reportName, r.description)
+          })
+      .getOrElse(Seq.empty)
   }
 
   def paramInfo(reportId: Long, pageNo: Int): (Seq[ReportParamInfo], Int) = {
