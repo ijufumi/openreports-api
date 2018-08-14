@@ -9,6 +9,7 @@ object Controllers {
     reportGroupSettings.mount(ctx)
     reportTemplateSettings.mount(ctx)
     reportParamSettings.mount(ctx)
+
     memberSettings.mount(ctx)
     groupSettings.mount(ctx)
   }
