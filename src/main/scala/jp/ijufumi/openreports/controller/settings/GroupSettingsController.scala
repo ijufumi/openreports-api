@@ -77,6 +77,9 @@ class GroupSettingsController extends ApplicationController {
 
         val statusCode =
           new GroupSettingsService().updateGroup(id, groupName, versions)
+
+        logger.debug("update group result:%s".format(statusCode))
+
         statusCode match {
           case StatusCode.OK => redirect(path + "/updateCompleted")
           case _ =>
