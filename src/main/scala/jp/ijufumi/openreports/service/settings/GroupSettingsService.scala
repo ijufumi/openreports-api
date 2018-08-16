@@ -32,17 +32,19 @@ class GroupSettingsService extends Logging {
     if (groupOpt.isEmpty) {
       return StatusCode.DATA_NOT_FOUND
     }
-    val group = groupOpt.get
-    val updateBuilder = TGroup.updateByIdAndVersion(groupId, versions)
-    if (!groupName.equals(group.groupName)) {
-      updateBuilder.withAttributes('groupNme -> groupName)
-    }
-
     try {
-      updateBuilder.withAttributes('updatedAt -> DateTime.now)
+      TGroup.updateByIdAndVersion(groupId, versions)
+        .withAttributes(
+          'groupName -> groupName,
+          'updatedAt -> DateTime.now
+        )
     } catch {
-      case e: SQLException => return StatusCode.of(e)
-      case _: Throwable    => return StatusCode.OTHER_ERROR
+      case e: SQLException =>
+        logger.error(e)
+        return StatusCode.of(e)
+      case e: Throwable    =>
+        logger.error(e)
+        return StatusCode.OTHER_ERROR
     }
 
     StatusCode.OK
