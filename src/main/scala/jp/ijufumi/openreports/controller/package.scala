@@ -1,6 +1,6 @@
 package jp.ijufumi.openreports
 
 package object controller {
-  val publicPath = "/public"
-  val privatePath = "/private"
+  val PublicPath = "/public"
+  val PrivatePath = "/private"
 }

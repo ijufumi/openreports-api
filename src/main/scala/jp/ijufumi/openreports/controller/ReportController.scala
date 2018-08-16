@@ -13,8 +13,8 @@ import scala.collection.mutable
 class ReportController extends ApplicationController {
   override val activeMenu = "report"
   override val requiredMemberInfo = true
-  val path = privatePath + "/report"
-  val viewPath = privatePath + "/report"
+  val path = PrivatePath + "/report"
+  val viewPath = PrivatePath + "/report"
 
   def validateParams = validation(
     requestParams,
@@ -98,9 +98,13 @@ class ReportController extends ApplicationController {
       .getAs[mutable.Map[String, String]]("paramMap")
       .getOrElse(mutable.Map[String, String]())
 
-    val templateFile = ReportService().report(reportId).map {
-      _.templateFile
-    }.map{_.map(t => t.fileName).getOrElse("")}.getOrElse("")
+    val templateFile = ReportService()
+      .report(reportId)
+      .map {
+        _.templateFile
+      }
+      .map { _.map(t => t.fileName).getOrElse("") }
+      .getOrElse("")
 
     if (templateFile.isEmpty) {
       logger.warn("templateFile is blank.[%d]".format(reportId))

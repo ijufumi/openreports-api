@@ -3,7 +3,7 @@ package jp.ijufumi.openreports.controller.common
 import java.io.{BufferedInputStream, FileInputStream, InputStream}
 import java.time.{LocalDateTime, ZoneOffset}
 
-import jp.ijufumi.openreports.controller.publicPath
+import jp.ijufumi.openreports.controller.PublicPath
 import skinny._
 import skinny.controller.feature.ThymeleafTemplateEngineFeature
 import skinny.filter._
@@ -35,7 +35,7 @@ trait ApplicationController
     // logger.info("before called at " + getClass.getSimpleName + ":" + memberInfo.isDefined)
     set("loggedIn", memberInfo.isDefined)
     if (requiredMemberInfo && memberInfo.isEmpty) {
-      redirect(publicPath)
+      redirect(PublicPath)
     }
 
     set("activeMenu", activeMenu)

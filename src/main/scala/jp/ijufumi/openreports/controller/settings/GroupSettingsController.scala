@@ -9,8 +9,8 @@ import skinny.validator.{longValue, maxLength, paramKey, required}
 class GroupSettingsController extends ApplicationController {
   override val activeMenu = "settings/group"
   override val requiredMemberInfo = true
-  val path = rootPath + "/group"
-  val viewPath = rootPath + "/group"
+  val path = RootPath + "/group"
+  val viewPath = RootPath + "/group"
 
   def requestParams = Params(params)
 
