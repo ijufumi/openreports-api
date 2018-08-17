@@ -10,8 +10,6 @@ object Controllers {
     home.mount(ctx)
     report.mount(ctx)
     scheduledReport.mount(ctx)
-
-    AssetsController.mount(ctx)
   }
 
   object top$ extends TopController with Routes {

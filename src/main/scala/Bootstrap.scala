@@ -3,6 +3,7 @@ import jp.ijufumi.openreports.controller.settings.{
   Controllers => SettingsController
 }
 import skinny._
+import skinny.controller.AssetsController
 import skinny.session.SkinnySessionInitializer
 
 class Bootstrap extends SkinnyLifeCycle {
@@ -26,6 +27,8 @@ class Bootstrap extends SkinnyLifeCycle {
     //skinnyWorkerService.everyFixedSeconds(sampleWorker, 3)
 
     ctx.mount(classOf[SkinnySessionInitializer], "/*")
+
+    AssetsController.mount(ctx)
 
     Controllers.mount(ctx)
     SettingsController.mount(ctx)
