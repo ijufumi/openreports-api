@@ -1,8 +1,7 @@
 package jp.ijufumi.openreports.controller
 
 import jp.ijufumi.openreports.controller.common.ApplicationController
-import jp.ijufumi.openreports.service.ReportService
-import jp.ijufumi.openreports.service.support.ReportingSupport
+import jp.ijufumi.openreports.service.{ReportService, ReportingOutputService}
 import jp.ijufumi.openreports.vo.{ApiResponse, MemberInfo}
 import org.apache.commons.lang3.StringUtils
 import skinny.Params
@@ -111,7 +110,8 @@ class ReportController extends ApplicationController {
       return
     }
 
-    val reportFileOpt = ReportingSupport().output(templateFile, paramMap.toMap)
+    val reportFileOpt =
+      ReportingOutputService().output(templateFile, paramMap.toMap)
 
     if (reportFileOpt.isDefined) {
       val reportFile = reportFileOpt.get

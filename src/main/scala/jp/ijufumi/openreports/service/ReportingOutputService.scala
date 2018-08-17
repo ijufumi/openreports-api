@@ -1,21 +1,17 @@
-package jp.ijufumi.openreports.service.support
+package jp.ijufumi.openreports.service
 
 import java.io.{File, InputStream}
 import java.nio.file.{FileSystems, Files}
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
-import jp.ijufumi.openreports.service.{
-  OutputFilePath,
-  PrefixClassPath,
-  TemplatePath
-}
+import jp.ijufumi.openreports.service.support.ConnectionFactory
 import org.jxls.common.Context
 import org.jxls.jdbc.JdbcHelper
 import org.jxls.util.JxlsHelper
 import skinny.logging.LoggerProvider
 
-case class ReportingSupport() extends LoggerProvider {
+case class ReportingOutputService() extends LoggerProvider {
 
   def output(templateFile: String,
              param: Map[String, String] = Map.empty): Option[File] = {
