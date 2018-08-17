@@ -5,7 +5,11 @@ import java.nio.file.{FileSystems, Files}
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
-import jp.ijufumi.openreports.service.{OUTPUT_FILE_PATH, PREFIX_CLASS_PATH, TEMPLATE_PATH}
+import jp.ijufumi.openreports.service.{
+  OutputFilePath,
+  PrefixClassPath,
+  TemplatePath
+}
 import org.jxls.common.Context
 import org.jxls.jdbc.JdbcHelper
 import org.jxls.util.JxlsHelper
@@ -24,7 +28,7 @@ case class ReportingSupport() extends LoggerProvider {
     val timeStamp =
       DateTimeFormatter.ofPattern("yyyyMMddHHMMss").format(LocalDateTime.now())
     val outputFile = FileSystems.getDefault.getPath(
-      OUTPUT_FILE_PATH,
+      OutputFilePath,
       "/tmp/%s_%s%s"
         .format(inFileName.substring(0, dotIndex), timeStamp, suffix)
     )
@@ -67,10 +71,10 @@ case class ReportingSupport() extends LoggerProvider {
   }
 
   def toInputStream(templateFile: String): InputStream = {
-    val fullPath = FileSystems.getDefault.getPath(TEMPLATE_PATH, templateFile)
-    if (fullPath.toString.startsWith(PREFIX_CLASS_PATH)) {
+    val fullPath = FileSystems.getDefault.getPath(TemplatePath, templateFile)
+    if (fullPath.toString.startsWith(PrefixClassPath)) {
       getClass.getClassLoader.getResourceAsStream(
-        fullPath.toString.substring(PREFIX_CLASS_PATH.length)
+        fullPath.toString.substring(PrefixClassPath.length)
       )
     } else {
       Files.newInputStream(fullPath)
