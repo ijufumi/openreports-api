@@ -47,8 +47,8 @@ case class ReportingOutputService() extends LoggerProvider {
       context.putVar("conn", con)
       context.putVar("jdbc", jdbcHelper)
 
-      var in = getClass.getClassLoader.getResourceAsStream(templateFile)
-      var out = Files.newOutputStream(outputFile)
+      val in = getClass.getClassLoader.getResourceAsStream(templateFile)
+      val out = Files.newOutputStream(outputFile)
       JxlsHelper
         .getInstance()
         .processTemplate(toInputStream(templateFile), out, context)
