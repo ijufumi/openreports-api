@@ -6,7 +6,6 @@ object ConnectionFactory {
   def getConnection(url: String,
                     user: String,
                     password: String): java.sql.Connection = {
-    val factory = Commons2ConnectionPoolFactory(url, user, password)
-    factory.borrow()
+    Commons2ConnectionPoolFactory(url, user, password).borrow()
   }
 }
