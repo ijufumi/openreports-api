@@ -9,7 +9,7 @@ import org.joda.time.DateTime
 import skinny.Logging
 
 class GroupSettingsService extends Logging {
-  def getGroups(): Seq[GroupInfo] = {
+  def getGroups: Seq[GroupInfo] = {
     TGroup.findAll().map(g => GroupInfo(g.groupId, g.groupName, g.versions))
   }
 
