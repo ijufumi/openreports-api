@@ -17,7 +17,7 @@ class TopController extends ApplicationController {
     //render("/top/index")
     val memberInfo: Option[Any] = skinnySession.getAttribute("memberInfo")
     if (memberInfo.isDefined) {
-      redirect(privatePath + "/home")
+      redirect(PrivatePath + "/home")
     } else {
       render(viewPath + "/index")
     }
@@ -39,7 +39,7 @@ class TopController extends ApplicationController {
         render(viewPath + "/index")
       } else {
         skinnySession.setAttribute("memberInfo", memberInfoOpt.get);
-        redirect(privatePath + "/home")
+        redirect(PrivatePath + "/home")
       }
     } else {
       logger.info(

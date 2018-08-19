@@ -12,8 +12,8 @@ import skinny.validator.{longValue, maxLength, paramKey, required}
 
 class ReportSettingsController extends ApplicationController {
 
-  val path = rootPath + "/report"
-  val viewPath = rootPath + "/report"
+  val path = RootPath + "/report"
+  val viewPath = RootPath + "/report"
 
   def requestParams = Params(params)
 

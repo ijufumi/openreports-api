@@ -5,8 +5,8 @@ import jp.ijufumi.openreports.controller.common.ApplicationController
 class HomeController extends ApplicationController {
   override val activeMenu = "home"
   override val requiredMemberInfo = true
-  val path = privatePath + "/home"
-  val viewPath = privatePath + "/home"
+  val path = PrivatePath + "/home"
+  val viewPath = PrivatePath + "/home"
 
   def index = {
     render(viewPath + "/index")

@@ -5,7 +5,7 @@ import skinny.Params
 
 class ScheduledReportController extends ApplicationController {
 
-  val path = privatePath + "/scheduled_report"
+  val path = PrivatePath + "/scheduled_report"
 
   def requestParams = Params(params)
 

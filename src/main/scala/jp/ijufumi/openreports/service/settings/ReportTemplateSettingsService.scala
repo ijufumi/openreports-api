@@ -4,7 +4,7 @@ import java.nio.file.FileSystems
 
 import jp.ijufumi.openreports.model.{TReportTemplate, TReportTemplateHistory}
 import jp.ijufumi.openreports.vo.ReportTemplateInfo
-import jp.ijufumi.openreports.service.{PREFIX_CLASS_PATH, TEMPLATE_PATH}
+import jp.ijufumi.openreports.service.{PrefixClassPath, TemplatePath}
 import org.joda.time.DateTime
 import skinny.Logging
 import skinny.micro.multipart.FileItem
@@ -21,7 +21,8 @@ class ReportTemplateSettingsService extends Logging {
       .where('fileNme -> file.name)
       .apply()
 
-    val filePath = "%s_%s".format(DateTime.now().toString("yyyyMMddHHmmss"), file.name)
+    val filePath =
+      "%s_%s".format(DateTime.now().toString("yyyyMMddHHmmss"), file.name)
     if (templates.isEmpty) {
       TReportTemplate.createWithAttributes('fileName -> file.name,
                                            'filePath -> filePath)
@@ -48,12 +49,14 @@ class ReportTemplateSettingsService extends Logging {
         )
     }
 
-    val fullPath = FileSystems.getDefault.getPath(TEMPLATE_PATH, filePath)
+    val fullPath = FileSystems.getDefault.getPath(TemplatePath, filePath)
     var fullPathString = fullPath.toString
-    if (fullPathString.startsWith(PREFIX_CLASS_PATH)) {
-      fullPathString = getClass.getClassLoader.getResource(
-        fullPathString.substring(PREFIX_CLASS_PATH.length)
-      ).getPath
+    if (fullPathString.startsWith(PrefixClassPath)) {
+      fullPathString = getClass.getClassLoader
+        .getResource(
+          fullPathString.substring(PrefixClassPath.length)
+        )
+        .getPath
     }
     // TODO: Add error handling.
     file.write(fullPathString)

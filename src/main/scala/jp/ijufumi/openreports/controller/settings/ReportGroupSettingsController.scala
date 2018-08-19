@@ -9,8 +9,8 @@ import skinny.validator.{longValue, maxLength, paramKey, required}
 class ReportGroupSettingsController extends ApplicationController {
   override val activeMenu = "settings/report-group"
   override val requiredMemberInfo = true
-  val path = rootPath + "/report-group"
-  val viewPath = rootPath + "/report-group"
+  val path = RootPath + "/report-group"
+  val viewPath = RootPath + "/report-group"
 
   def requestParams = Params(params)
 

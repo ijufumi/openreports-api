@@ -1,8 +1,7 @@
 package jp.ijufumi.openreports.controller
 
 import jp.ijufumi.openreports.controller.common.ApplicationController
-import jp.ijufumi.openreports.service.ReportService
-import jp.ijufumi.openreports.service.support.ReportingSupport
+import jp.ijufumi.openreports.service.{ReportService, ReportingOutputService}
 import jp.ijufumi.openreports.vo.{ApiResponse, MemberInfo}
 import org.apache.commons.lang3.StringUtils
 import skinny.Params
@@ -13,8 +12,8 @@ import scala.collection.mutable
 class ReportController extends ApplicationController {
   override val activeMenu = "report"
   override val requiredMemberInfo = true
-  val path = privatePath + "/report"
-  val viewPath = privatePath + "/report"
+  val path = PrivatePath + "/report"
+  val viewPath = PrivatePath + "/report"
 
   def validateParams = validation(
     requestParams,
@@ -98,16 +97,21 @@ class ReportController extends ApplicationController {
       .getAs[mutable.Map[String, String]]("paramMap")
       .getOrElse(mutable.Map[String, String]())
 
-    val templateFile = ReportService().report(reportId).map {
-      _.templateFile
-    }.map{_.map(t => t.fileName).getOrElse("")}.getOrElse("")
+    val templateFile = ReportService()
+      .report(reportId)
+      .map {
+        _.templateFile
+      }
+      .map { _.map(t => t.fileName).getOrElse("") }
+      .getOrElse("")
 
     if (templateFile.isEmpty) {
       logger.warn("templateFile is blank.[%d]".format(reportId))
       return
     }
 
-    val reportFileOpt = ReportingSupport().output(templateFile, paramMap.toMap)
+    val reportFileOpt =
+      ReportingOutputService().output(templateFile, paramMap.toMap)
 
     if (reportFileOpt.isDefined) {
       val reportFile = reportFileOpt.get
