@@ -13,6 +13,22 @@ class MemberSettingsController extends ApplicationController {
   val path = rootPath + "/member"
   val viewPath = rootPath + "/member"
 
+  def requestParams = Params(params)
+
+  def validateRegisterParams = validation(
+    requestParams,
+    paramKey("name") is required,
+    paramKey("emailAddress") is required & email,
+    paramKey("password") is required & password,
+    paramKey("checkedPassword") is required
+  )
+
+  def validateUpdateParams = validation(
+    requestParams,
+    paramKey("versions") is required & intValue,
+    paramKey("emailAddress") is email
+  )
+
   def index = {
     val members = new MemberSettingsService().getMembers()
     set("members", members)
@@ -63,14 +79,6 @@ class MemberSettingsController extends ApplicationController {
       render(viewPath + "/register")
     }
   }
-
-  def validateRegisterParams = validation(
-    requestParams,
-    paramKey("name") is required,
-    paramKey("emailAddress") is required & email,
-    paramKey("password") is required & password,
-    paramKey("checkedPassword") is required
-  )
 
   def registerCompleted = {
     render(viewPath + "/register-completed")
@@ -130,14 +138,6 @@ class MemberSettingsController extends ApplicationController {
         render(viewPath + "/update")
       }
     } getOrElse haltWithBody(404)
-
-  def validateUpdateParams = validation(
-    requestParams,
-    paramKey("versions") is required & intValue,
-    paramKey("emailAddress") is email
-  )
-
-  def requestParams = Params(params)
 
   def updateCompleted = {
     render(viewPath + "/update-completed")
