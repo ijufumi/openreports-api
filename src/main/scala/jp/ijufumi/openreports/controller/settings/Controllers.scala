@@ -53,9 +53,7 @@ object Controllers {
 
   }
 
-  object reportTemplateSettings
-      extends ReportTemplateSettingsController
-      with Routes {
+  object reportTemplateSettings extends ReportTemplateSettingsController with Routes {
     val indexUrl = get(path + "/?")(index).as('index)
 
     val showUploadUrl = get(path + "/upload")(showUpload).as('showUpload)
@@ -75,9 +73,9 @@ object Controllers {
       get(path + "/registerCompleted")(registerCompleted).as('registerCompleted)
 
     val showUpdateUrl =
-      get(path + "/update")(showUpdate).as('showUpdate)
+      get(path + "/update/:id")(showUpdate).as('showUpdate)
 
-    val doUpdateUrl = post(path + "/update")(doUpdate).as('doUpdate)
+    val doUpdateUrl = post(path + "/update/:id")(doUpdate).as('doUpdate)
 
     val updateCompletedUrl =
       get(path + "/updateCompleted")(updateCompleted).as('updateCompleted)

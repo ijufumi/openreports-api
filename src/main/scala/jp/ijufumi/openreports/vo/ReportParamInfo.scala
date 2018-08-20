@@ -8,8 +8,9 @@ case class ReportParamInfo(@BeanProperty paramId: Long,
                            @BeanProperty paramKey: String,
                            @BeanProperty paramName: String,
                            @BeanProperty paramType: String,
-                           @BeanProperty paramValues: Seq[Map[String, String]] =
-                             Seq.empty)
+                           @BeanProperty description: String,
+                           @BeanProperty versions: Long,
+                           @BeanProperty paramValues: Seq[Map[String, String]] = Seq.empty)
 
 object ReportParamInfo {
   def apply(param: TReportParam): ReportParamInfo = {
@@ -17,17 +18,20 @@ object ReportParamInfo {
       param.paramId,
       param.paramKey,
       param.paramName,
-      param.paramType
+      param.paramType,
+      param.description,
+      param.versions
     )
   }
 
-  def apply(param: TReportParam,
-            values: Seq[Map[String, String]]): ReportParamInfo = {
+  def apply(param: TReportParam, values: Seq[Map[String, String]]): ReportParamInfo = {
     ReportParamInfo(
       param.paramId,
       param.paramKey,
       param.paramName,
       param.paramType,
+      param.description,
+      param.versions,
       values
     )
   }

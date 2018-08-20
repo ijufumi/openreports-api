@@ -21,7 +21,7 @@
     </div>
     <div class="row main-contents">
       <div class="private-setting-report-group col" layout:fragment="content">
-        <form method="post" th:action="'/private/settings/report-group/update/' + ${group.groupId}">
+        <form method="post" th:action="'/private/settings/report-group/update/' + ${group.reportGroupId}">
           <input type="hidden" name="versions" th:value="${group.versions}" />
           <div class="form-group row">
             <div class="col-md-2">

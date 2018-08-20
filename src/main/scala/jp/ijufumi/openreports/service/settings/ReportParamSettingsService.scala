@@ -25,7 +25,8 @@ class ReportParamSettingsService extends Logging {
       paramKey: String,
       paramName: String,
       description: String,
-      paramType: String
+      paramType: String,
+      paramValues: String
   ): StatusCode.Value = {
     try {
       TReportParam
@@ -33,7 +34,8 @@ class ReportParamSettingsService extends Logging {
           'paramKey -> paramKey,
           'paramName -> paramName,
           'description -> description,
-          'paramType -> paramType
+          'paramType -> paramType,
+          'paramValues -> paramValues
         )
     } catch {
       case e: SQLException =>
