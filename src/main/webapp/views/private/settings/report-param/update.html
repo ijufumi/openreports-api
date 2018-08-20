@@ -28,7 +28,7 @@
               <label for="paramKey" class="col-form-label">Param Key</label>
             </div>
             <div class="col-md-8">
-              <input type="text" class="form-control" id="paramKey" name="paramKey">
+              <input type="text" class="form-control" id="paramKey" name="paramKey" th:value="${param.paramKey}">
             </div>
           </div>
           <div class="form-group row">
@@ -36,7 +36,7 @@
               <label for="paramName" class="col-form-label">Param名</label>
             </div>
             <div class="col-md-8">
-              <input type="text" class="form-control" id="paramName" name="paramName">
+              <input type="text" class="form-control" id="paramName" name="paramName" th:value="${param.paramName}">
             </div>
           </div>
           <div class="form-group row">
@@ -44,7 +44,7 @@
               <label for="description" class="col-form-label">説明</label>
             </div>
             <div class="col-md-8">
-              <input type="text" class="form-control" id="description" name="description">
+              <input type="text" class="form-control" id="description" name="description" th:value="${param.description}">
             </div>
           </div>
           <div class="form-group row">
@@ -54,7 +54,7 @@
             <div class="col-md-8">
               <select class="custom-select" id="paramType" name="paramType">
                 <option value=""></option>
-                <option value="1" th:each="p : ${paramTypes}" th:vavlue="${p.typeId}" th:text="${p.typeName}">テスト</option>
+                <option value="1" th:each="p : ${paramTypes}" th:vavlue="${p.typeId}" th:text="${p.typeName}" th:selected="${p.typeId} == ${param.paramType}">テスト</option>
               </select>
             </div>
           </div>

@@ -28,7 +28,7 @@
               <label for="reportName" class="col-form-label">Name</label>
             </div>
             <div class="col-md-8">
-              <input type="text" class="form-control" id="reportName" name="reportName" placeholder="Enter name">
+              <input type="text" class="form-control" id="reportName" name="reportName" placeholder="Enter name" th:value="${report.reportName}">
             </div>
           </div>
           <div class="form-group row">
@@ -36,7 +36,7 @@
               <label for="description" class="col-form-label">Description</label>
             </div>
             <div class="col-md-8">
-              <input type="text" class="form-control" id="description" name="description" placeholder="Enter description">
+              <input type="text" class="form-control" id="description" name="description" placeholder="Enter description" th:value="${report.description}">
             </div>
           </div>
           <div class="form-group row">
@@ -46,7 +46,7 @@
             <div class="col-md-8">
               <select class="custom-select" id="template" name="template">
                 <option value=""></option>
-                <option value="1" th:each="t : ${templates}" th:vavlue="${t.templateId}" th:text="${t.templateName}">テスト</option>
+                <option value="1" th:each="t : ${templates}" th:vavlue="${t.templateId}" th:text="${t.templateName}" th:selected="${t.templateId} == ${report.templateId}">テスト</option>
               </select>
             </div>
           </div>
