@@ -3,15 +3,18 @@ package jp.ijufumi.openreports.controller.settings
 import jp.ijufumi.openreports.controller.common.ApplicationController
 import jp.ijufumi.openreports.controller.validator.password
 import jp.ijufumi.openreports.service.enums.StatusCode
-import jp.ijufumi.openreports.service.settings.{GroupSettingsService, MemberSettingsService}
+import jp.ijufumi.openreports.service.settings.{
+  GroupSettingsService,
+  MemberSettingsService
+}
 import skinny.Params
 import skinny.validator.{email, intValue, paramKey, required, same}
 
 class MemberSettingsController extends ApplicationController {
   override val activeMenu = "settings/member"
   override val requiredMemberInfo = true
-  val path = rootPath + "/member"
-  val viewPath = rootPath + "/member"
+  val path = RootPath + "/member"
+  val viewPath = RootPath + "/member"
 
   def requestParams = Params(params)
 
