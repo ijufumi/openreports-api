@@ -8,10 +8,10 @@ import skinny.validator.{required, _}
 class TopController extends ApplicationController {
 
   override val activeMenu = "top"
-  val path = publicPath
-  val viewPath = publicPath + "/top"
+  val path = PublicPath
+  val viewPath = PublicPath + "/top"
 
-  def toTop = redirect(publicPath)
+  def toTop = redirect(PublicPath)
 
   def index = {
     //render("/top/index")

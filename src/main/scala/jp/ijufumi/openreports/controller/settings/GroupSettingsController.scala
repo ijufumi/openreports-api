@@ -26,7 +26,7 @@ class GroupSettingsController extends ApplicationController {
   )
 
   def index = {
-    val groups = new GroupSettingsService().getGroups()
+    val groups = new GroupSettingsService().getGroups
     set("groups", groups)
     render(viewPath + "/index")
   }
