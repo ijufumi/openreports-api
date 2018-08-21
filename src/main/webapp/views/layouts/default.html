@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
-  <title>OpenReports</title>
+  <title layout:title-pattern="$CONTENT_TITLE - $DECORATOR_TITLE">OpenReports</title>
   <meta charset="utf-8"/>
   <!--/*
    Be aware that Thymeleaf's OGNL getter support and Scala accessor methods.
