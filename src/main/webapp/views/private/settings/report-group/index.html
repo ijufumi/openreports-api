@@ -1,7 +1,11 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layouts/default">
 <head>
   <meta charset="UTF-8">
+  <title>設定 - レポートグループ一覧</title>
   <!-- Font Awesome -->
   <link rel="stylesheet" href="../../../../assets/library/fontawesome/css/fa-svg-with-js.css">
   <!-- Bootstrap core CSS -->
@@ -14,7 +18,7 @@
   <link rel="stylesheet" href="../../../../assets/css/layout.css">
 </head>
 <body>
-<div layout:decorator="layouts/default">
+<div>
   <div class="container">
     <div class="row title">
       <h2 layout:fragment="title">設定 - レポートグループ一覧</h2>
