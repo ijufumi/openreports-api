@@ -5,10 +5,10 @@ import java.sql.SQLException
 import jp.ijufumi.openreports.model.{RMemberGroup, TGroup, TMember}
 import jp.ijufumi.openreports.service.Hashedkey
 import jp.ijufumi.openreports.service.enums.StatusCode
-import jp.ijufumi.openreports.service.support.Hash
+import jp.ijufumi.openreports.service.support.{ConnectionFactory, Hash}
 import jp.ijufumi.openreports.vo.{GroupInfo, MemberInfo}
 import org.joda.time.DateTime
-import scalikejdbc.SQLSyntax
+import scalikejdbc.{DB, SQLSyntax}
 import skinny.Logging
 
 import scala.collection.mutable
@@ -53,7 +53,9 @@ class MemberSettingsService extends Logging {
                      isAdmin: Boolean,
                      groups: Seq[String]): StatusCode.Value = {
 
+    val db = DB(ConnectionFactory.getConnection)
     try {
+      db.begin()
       val id = TMember.createWithAttributes(
         'emailAddress -> emailAddress,
         'password -> Hash.hmacSha256(Hashedkey, password),
@@ -62,9 +64,16 @@ class MemberSettingsService extends Logging {
       groups.foreach(
         s => RMemberGroup.createWithAttributes('memberId -> id, 'groupId -> s)
       )
+      db.commit()
     } catch {
-      case e: SQLException => return StatusCode.of(e)
-      case _: Throwable    => return StatusCode.OTHER_ERROR
+      case e: SQLException => {
+        db.rollback()
+        return StatusCode.of(e)
+      }
+      case _: Throwable    => {
+        db.rollback()
+        return StatusCode.OTHER_ERROR
+      }
     }
     StatusCode.OK
   }
@@ -76,7 +85,9 @@ class MemberSettingsService extends Logging {
                    isAdmin: Boolean,
                    groups: Seq[String],
                    versions: Long): StatusCode.Value = {
+    val db = DB(ConnectionFactory.getConnection)
     try {
+      db.begin()
       val memberOpt = TMember.findById(memberId)
       if (memberOpt.isEmpty) {
         return StatusCode.DATA_NOT_FOUND
@@ -116,9 +127,16 @@ class MemberSettingsService extends Logging {
           RMemberGroup
             .createWithAttributes('memberId -> memberId, 'groupId -> s)
       )
+      db.commit()
     } catch {
-      case e: SQLException => return StatusCode.of(e)
-      case _: Throwable    => return StatusCode.OTHER_ERROR
+      case e: SQLException => {
+        db.rollback()
+        return StatusCode.of(e)
+      }
+      case _: Throwable    => {
+        db.rollback()
+        return StatusCode.OTHER_ERROR
+      }
     }
     StatusCode.OK
   }
