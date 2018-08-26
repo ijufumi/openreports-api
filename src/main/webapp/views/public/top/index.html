@@ -1,43 +1,47 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layouts/default">
 <head>
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="../../../assets/library/fontawesome/css/fa-svg-with-js.css">
-    <!-- Bootstrap core CSS -->
-    <link rel="stylesheet" href="../../../assets/library/bootstrap/v411/css/bootstrap.min.css" />
-    <link rel="stylesheet"
-          href="../../../assets/library/bootstrap-datepicker/bootstrap-datepicker.standalone.min.css"/>
-    <link rel="stylesheet"
-          href="../../../assets/library/bootstrap-datepicker/bootstrap-datepicker3.standalone.min.css"/>
+  <title>トップ</title>
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="../../../assets/library/fontawesome/css/fa-svg-with-js.css">
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="../../../assets/library/bootstrap/v411/css/bootstrap.min.css"/>
+  <link rel="stylesheet"
+        href="../../../assets/library/bootstrap-datepicker/bootstrap-datepicker.standalone.min.css"/>
+  <link rel="stylesheet"
+        href="../../../assets/library/bootstrap-datepicker/bootstrap-datepicker3.standalone.min.css"/>
 
-    <link rel="stylesheet" href="../../../assets/css/layout.css">
+  <link rel="stylesheet" href="../../../assets/css/layout.css">
 </head>
 <body>
-<div layout:decorator="layouts/default">
-    <div class="container">
-        <div class="row title">
-            <th:block layout:fragment="title">
-                    <h2>OpenReports</h2>
-            </th:block>
-        </div>
-        <div class="row">
-            <th:block layout:fragment="content">
-                <form class="public-top" method="POST" action="/public/login">
-                    <div class="form-group">
-                        <label class="sr-only" for="loginId">Input your email address. (ex: aaaaa@bbb.ccc.com)</label>
-                        <input type="email" name="loginId" th:value="${loginId}" id="loginId" class="form-control"
-                               placeholder="Email Address"/>
-                        <label class="sr-only" for="password">Password</label>
-                        <input type="password" name="password" th:value="${password}" id="password" class="form-control"
-                               placeholder="Password"/>
-                    </div>
-                    <div class="form-group">
-                        <button type="submit" class="btn btn-lg btn-primary">Sign In</button>
-                    </div>
-                </form>
-            </th:block>
-        </div>
+<div>
+  <div class="container">
+    <div class="row title">
+      <th:block layout:fragment="title">
+        <h2>OpenReports</h2>
+      </th:block>
     </div>
+    <div class="row">
+      <th:block layout:fragment="content">
+        <form class="public-top" method="POST" action="/public/login">
+          <div class="form-group">
+            <label class="sr-only" for="loginId">Input your email address. (ex: aaaaa@bbb.ccc.com)</label>
+            <input type="email" name="loginId" th:value="${loginId}" id="loginId" class="form-control"
+                   placeholder="Email Address"/>
+            <label class="sr-only" for="password">Password</label>
+            <input type="password" name="password" th:value="${password}" id="password" class="form-control"
+                   placeholder="Password"/>
+          </div>
+          <div class="form-group">
+            <button type="submit" class="btn btn-lg btn-primary">Sign In</button>
+          </div>
+        </form>
+      </th:block>
+    </div>
+  </div>
 </div>
 <script src="../../../assets/library/fontawesome/js/fontawesome-all.min.js"></script>
 <!-- JQuery -->

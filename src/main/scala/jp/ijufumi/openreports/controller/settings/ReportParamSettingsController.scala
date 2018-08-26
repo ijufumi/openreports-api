@@ -2,10 +2,7 @@ package jp.ijufumi.openreports.controller.settings
 
 import jp.ijufumi.openreports.controller.common.ApplicationController
 import jp.ijufumi.openreports.service.enums.{ReportParamType, StatusCode}
-import jp.ijufumi.openreports.service.settings.{
-  MemberSettingsService,
-  ReportParamSettingsService
-}
+import jp.ijufumi.openreports.service.settings.{MemberSettingsService, ReportParamSettingsService}
 import skinny.Params
 import skinny.validator.{maxLength, numeric, paramKey, required}
 
@@ -50,12 +47,14 @@ class ReportParamSettingsController extends ApplicationController {
       val paramName = params.getAs[String]("paramName").getOrElse("")
       val description = params.getAs[String]("description").getOrElse("")
       val paramType = params.getAs[String]("paramType").getOrElse("")
+      val paramValues = params.getAs[String]("paramValues").getOrElse("")
 
       val statusCode = new ReportParamSettingsService().registerParam(
         paramKey,
         paramName,
         description,
-        paramType
+        paramType,
+        paramValues
       )
       statusCode match {
         case StatusCode.OK => redirect(path + "/registerCompleted")
@@ -81,7 +80,8 @@ class ReportParamSettingsController extends ApplicationController {
       if (paramOpt.isEmpty) {
         haltWithBody(404)
       } else {
-        set("param", paramOpt.get)
+        set("paramTypes", ReportParamType.list())
+        set("params", paramOpt.get)
         render(viewPath + "/update")
       }
     } getOrElse haltWithBody(404)

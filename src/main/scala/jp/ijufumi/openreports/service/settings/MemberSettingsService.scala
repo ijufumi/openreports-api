@@ -95,25 +95,18 @@ class MemberSettingsService extends Logging {
 
       val updateBuilder = TMember
         .updateByIdAndVersion(memberId, versions)
-
-      val member = memberOpt.get
-      if (name.length != 0 && !name.equals(member.name)) {
-        updateBuilder.addAttributeToBeUpdated(
+        .addAttributeToBeUpdated(
           (TMember.column.field("name"), name)
         )
-      }
-      if (emailAddress.length != 0 && !emailAddress.equals(member.emailAddress)) {
-        updateBuilder.addAttributeToBeUpdated(
+        .addAttributeToBeUpdated(
           (TMember.column.field("emailAddress"), emailAddress)
         )
-      }
+
       if (password.length != 0) {
         val hashedPassword = Hash.hmacSha256(Hashedkey, password)
-        if (!hashedPassword.equals(member.password)) {
-          updateBuilder.addAttributeToBeUpdated(
-            (TMember.column.field("password"), hashedPassword)
-          )
-        }
+        updateBuilder.addAttributeToBeUpdated(
+          (TMember.column.field("password"), hashedPassword)
+        )
       }
 
       updateBuilder.withAttributes('updatedAt -> DateTime.now)

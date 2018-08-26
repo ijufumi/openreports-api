@@ -1,7 +1,11 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layouts/default">
 <head>
   <meta charset="UTF-8">
+  <title>Home</title>
   <!-- Font Awesome -->
   <link rel="stylesheet" href="../../../assets/library/fontawesome/css/fa-svg-with-js.css">
   <!-- Bootstrap core CSS -->
@@ -13,14 +17,13 @@
   <link rel="stylesheet" href="../../../assets/css/layout.css">
 </head>
 <body>
-<div layout:decorator="layouts/default">
+<div>
   <div class="container span12">
     <h2 layout:fragment="title">Home</h2>
     <div layout:fragment="content"></div>
   </div>
 </div>
 <script type="text/javascript" src="//netdna.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="/assets/js/skinny-framework.js" th:src="@{/assets/js/skinny-framework.js}"></script>
 <th:block layout:fragment="page_scripts">
   <script type="text/javascript" src="../../../assets/js/home.js"
           th:src="@{/src/main/webapp/assets/js/home.js} + '?20180508'"></script>
