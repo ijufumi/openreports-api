@@ -1,16 +1,11 @@
 package jp.ijufumi.openreports.controller.settings
 
-import jp.ijufumi.openreports.controller.common.{
-  ApplicationController,
-  I18nFeature
-}
+import jp.ijufumi.openreports.controller.common.{ApplicationController, I18nFeature}
 import jp.ijufumi.openreports.service.settings.ReportTemplateSettingsService
 import skinny.SkinnyServlet
-import skinny.controller.feature.{
-  FileUploadFeature,
-  ThymeleafTemplateEngineFeature
-}
+import skinny.controller.feature.{FileUploadFeature, ThymeleafTemplateEngineFeature}
 import skinny.filter.{ErrorPageFilter, SkinnySessionFilter}
+import skinny.micro.SkinnyMicroFilterBase
 
 class ReportTemplateSettingsController
     extends SkinnyServlet
