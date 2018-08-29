@@ -9,7 +9,7 @@ class TopController extends ApplicationController {
 
   override val activeMenu = "top"
   val path = PublicPath
-  val viewPath = ViewPublicPath + "/top"
+  val viewPath = PublicPath + "/top"
 
   def toTop = redirect(PublicPath)
 

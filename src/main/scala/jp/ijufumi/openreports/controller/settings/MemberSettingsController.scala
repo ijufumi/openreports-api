@@ -11,7 +11,7 @@ class MemberSettingsController extends ApplicationController {
   override val activeMenu = "settings/member"
   override val requiredMemberInfo = true
   val path = RootPath + "/member"
-  val viewPath = ViewRootPath + "/member"
+  val viewPath = RootPath + "/member"
 
   def requestParams = Params(params)
 

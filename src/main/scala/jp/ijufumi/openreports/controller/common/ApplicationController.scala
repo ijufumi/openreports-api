@@ -3,7 +3,7 @@ package jp.ijufumi.openreports.controller.common
 import java.io.{BufferedInputStream, FileInputStream, InputStream}
 import java.time.{LocalDateTime, ZoneOffset}
 
-import jp.ijufumi.openreports.controller.PublicPath
+import jp.ijufumi.openreports.controller.{PublicPath, ViewRootPath}
 import skinny._
 import skinny.controller.feature.ThymeleafTemplateEngineFeature
 import skinny.filter._
@@ -22,6 +22,13 @@ trait ApplicationController
     with ErrorPageFilter
     with I18nFeature
     with ThymeleafTemplateEngineFeature {
+
+  /**
+    * Resolver template prefix.
+    */
+  override lazy val thymeleafResolverPrefix: String = {
+    ViewRootPath
+  }
 
   val activeMenu = ""
 

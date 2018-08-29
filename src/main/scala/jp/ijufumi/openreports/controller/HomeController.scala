@@ -6,7 +6,7 @@ class HomeController extends ApplicationController {
   override val activeMenu = "home"
   override val requiredMemberInfo = true
   val path = PrivatePath + "/home"
-  val viewPath = ViewPrivatePath + "/home"
+  val viewPath = PrivatePath + "/home"
 
   def index = {
     render(viewPath + "/index")

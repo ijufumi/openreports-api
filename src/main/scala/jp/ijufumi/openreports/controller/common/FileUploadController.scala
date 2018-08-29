@@ -3,8 +3,8 @@ package jp.ijufumi.openreports.controller.common
 import java.io.{BufferedInputStream, FileInputStream, InputStream}
 import java.time.{LocalDateTime, ZoneOffset}
 
-import jp.ijufumi.openreports.controller.PublicPath
-import skinny.{SkinnyEnv, SkinnyServlet}
+import jp.ijufumi.openreports.controller.{PublicPath, ViewRootPath}
+import skinny.SkinnyServlet
 import skinny.controller.feature.{FileUploadFeature, ThymeleafTemplateEngineFeature}
 import skinny.filter.{ErrorPageFilter, SkinnySessionFilter}
 
@@ -17,6 +17,13 @@ trait FileUploadController
     with I18nFeature
     with ThymeleafTemplateEngineFeature
     with FileUploadFeature {
+
+  /**
+    * Resolver template prefix.
+    */
+  override lazy val thymeleafResolverPrefix: String = {
+    ViewRootPath
+  }
 
   val activeMenu = ""
 

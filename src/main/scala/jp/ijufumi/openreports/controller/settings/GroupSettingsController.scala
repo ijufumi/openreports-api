@@ -10,7 +10,7 @@ class GroupSettingsController extends ApplicationController {
   override val activeMenu = "settings/group"
   override val requiredMemberInfo = true
   val path = RootPath + "/group"
-  val viewPath = ViewRootPath + "/group"
+  val viewPath = RootPath + "/group"
 
   def requestParams = Params(params)
 
