@@ -8,6 +8,9 @@ import skinny.validator.{maxLength, numeric, paramKey, required}
 
 class ReportParamSettingsController extends ApplicationController {
 
+  override val activeMenu = "settings/report-param"
+  override val requiredMemberInfo = true
+
   val path = RootPath + "/report-param"
   val viewPath = RootPath + "/report-param"
 

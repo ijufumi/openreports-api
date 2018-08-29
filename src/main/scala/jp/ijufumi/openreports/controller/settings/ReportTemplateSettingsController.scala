@@ -1,19 +1,12 @@
 package jp.ijufumi.openreports.controller.settings
 
-import jp.ijufumi.openreports.controller.common.{ApplicationController, I18nFeature}
+import jp.ijufumi.openreports.controller.common.{ApplicationController, FileUploadController, I18nFeature}
 import jp.ijufumi.openreports.service.settings.ReportTemplateSettingsService
-import skinny.SkinnyServlet
-import skinny.controller.feature.{FileUploadFeature, ThymeleafTemplateEngineFeature}
-import skinny.filter.{ErrorPageFilter, SkinnySessionFilter}
-import skinny.micro.SkinnyMicroFilterBase
 
-class ReportTemplateSettingsController
-    extends SkinnyServlet
-    with SkinnySessionFilter
-    with ErrorPageFilter
-    with I18nFeature
-    with ThymeleafTemplateEngineFeature
-    with FileUploadFeature {
+class ReportTemplateSettingsController extends FileUploadController {
+
+  override val activeMenu = "settings/report-template"
+  override val requiredMemberInfo = true
 
   val path = RootPath + "/report-template"
   val viewPath = RootPath + "/report-template"
@@ -29,16 +22,10 @@ class ReportTemplateSettingsController
   }
 
   def upload = {
-    fileParams
-      .get("uploadFile") match {
+    fileParams.get("uploadFile") match {
       case Some(file) =>
-        logger
-          .info(
-            new String(
-              file
-                .get()))
-        new ReportTemplateSettingsService()
-          .uploadFile(file)
+        logger.info(new String(file.get()))
+        new ReportTemplateSettingsService().uploadFile(file)
       case None =>
         logger.info("file not found")
     }

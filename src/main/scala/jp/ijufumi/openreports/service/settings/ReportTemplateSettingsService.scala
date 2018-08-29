@@ -26,7 +26,7 @@ class ReportTemplateSettingsService extends Logging {
 
   def uploadFile(file: FileItem): Unit = {
     val templates = TReportTemplate
-      .where('fileNme -> file.name)
+      .where('fileName -> file.name)
       .apply()
 
     val filePath =
@@ -71,11 +71,9 @@ class ReportTemplateSettingsService extends Logging {
     val fullPath = FileSystems.getDefault.getPath(TemplatePath, filePath)
     var fullPathString = fullPath.toString
     if (fullPathString.startsWith(PrefixClassPath)) {
-      fullPathString = getClass.getClassLoader
-        .getResource(
+      fullPathString = getClass.getClassLoader.getResource(
           fullPathString.substring(PrefixClassPath.length)
-        )
-        .getPath
+        ).getPath
     }
     // TODO: Add error handling.
     file.write(fullPathString)
