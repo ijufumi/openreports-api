@@ -13,7 +13,7 @@ import skinny.validator.{longValue, maxLength, paramKey, required}
 class ReportSettingsController extends ApplicationController {
 
   val path = RootPath + "/report"
-  val viewPath = RootPath + "/report"
+  val viewPath = ViewRootPath + "/report"
 
   def requestParams = Params(params)
 
@@ -108,8 +108,7 @@ class ReportSettingsController extends ApplicationController {
         statusCode match {
           case StatusCode.OK => redirect(path + "/registerCompleted")
           case StatusCode.DUPLICATE_ERR =>
-            set("customErrorMessages",
-                Seq(i18n.get("warning.duplicateRegister")))
+            set("customErrorMessages", Seq(i18n.get("warning.duplicateRegister")))
           case _ =>
             set("customErrorMessages", Seq(i18n.get("error.systemError")))
         }

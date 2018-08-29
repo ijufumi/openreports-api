@@ -23,11 +23,6 @@ trait ApplicationController
     with I18nFeature
     with ThymeleafTemplateEngineFeature {
 
-  // override def defaultLocale = Some(new java.util.Locale("ja"))
-  override lazy val thymeleafResolverPrefix: String = {
-    if (SkinnyEnv.isTest()) "views/"
-    else "/views/"
-  }
   val activeMenu = ""
 
   beforeAction() {

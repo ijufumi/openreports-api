@@ -18,11 +18,6 @@ trait FileUploadController
     with ThymeleafTemplateEngineFeature
     with FileUploadFeature {
 
-  // override def defaultLocale = Some(new java.util.Locale("ja"))
-  override lazy val thymeleafResolverPrefix: String = {
-    if (SkinnyEnv.isTest()) "views/"
-    else "/views/"
-  }
   val activeMenu = ""
 
   beforeAction() {

@@ -10,7 +10,7 @@ class ReportGroupSettingsController extends ApplicationController {
   override val activeMenu = "settings/report-group"
   override val requiredMemberInfo = true
   val path = RootPath + "/report-group"
-  val viewPath = RootPath + "/report-group"
+  val viewPath = ViewRootPath + "/report-group"
 
   def requestParams = Params(params)
 

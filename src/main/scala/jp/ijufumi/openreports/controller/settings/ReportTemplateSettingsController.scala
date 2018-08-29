@@ -16,7 +16,7 @@ class ReportTemplateSettingsController
     with FileUploadFeature {
 
   val path = RootPath + "/report-template"
-  val viewPath = RootPath + "/report-template"
+  val viewPath = ViewRootPath + "/report-template"
 
   def index = {
     val templates = new ReportTemplateSettingsService().getReportTemplates
