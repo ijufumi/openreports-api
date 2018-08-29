@@ -5,7 +5,7 @@
       layout:decorator="layouts/default">
 <head>
   <meta charset="UTF-8">
-  <title>設定 - レポートテンプレート一覧</title>
+  <title>設定 - レポートテンプレート履歴一覧</title>
   <!-- Font Awesome -->
   <link rel="stylesheet" href="../../../../assets/library/fontawesome/css/fa-svg-with-js.css">
   <!-- Bootstrap core CSS -->
@@ -21,17 +21,17 @@
 <div>
   <div class="container">
     <div class="row title">
-      <h2 layout:fragment="title">設定 - レポートテンプレート一覧</h2>
+      <h2 layout:fragment="title">設定 - レポートテンプレート履歴一覧</h2>
     </div>
     <div class="row">
       <div class="private-setting-report" layout:fragment="content">
         <div class="col-md-4 pl-0 mb-4 offset-md-8">
-          <a class="btn btn-block btn-lg btn-primary" href="/private/settings/report-template/register">レポート登録</a>
+          <a class="btn btn-block btn-lg btn-primary" href="/private/settings/report-template">レポート一覧</a>
         </div>
         <div class="list-group">
-          <a th:each="t : ${templates}"
-             th:text="${t.fileName}"
-             th:href="'/private/settings/report-template/history/' + ${t.templateId}" class="list-group-item list-group-item-action">
+          <a th:each="h : ${histories}"
+             th:text="${h.fileName} + '( ' + ${h.createdAt} + ' )'"
+             href="#" class="list-group-item list-group-item-action">
             aaaaa
           </a>
           <a th:remove="all" href="#" class="list-group-item list-group-item-action">

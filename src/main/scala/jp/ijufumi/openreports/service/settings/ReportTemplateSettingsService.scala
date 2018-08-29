@@ -4,7 +4,7 @@ import java.nio.file.FileSystems
 
 import jp.ijufumi.openreports.model.{TReportTemplate, TReportTemplateHistory}
 import jp.ijufumi.openreports.service.support.ConnectionFactory
-import jp.ijufumi.openreports.vo.ReportTemplateInfo
+import jp.ijufumi.openreports.vo.{ReportTemplateHistoryInfo, ReportTemplateInfo}
 import jp.ijufumi.openreports.service.{PrefixClassPath, TemplatePath}
 import org.joda.time.DateTime
 import scalikejdbc.{DB, SQLExecution}
@@ -16,6 +16,12 @@ class ReportTemplateSettingsService extends Logging {
     TReportTemplate
       .findAll()
       .map(r => ReportTemplateInfo(r.templateId, r.fileName))
+  }
+
+  def getHistories(templateId:Long): Seq[ReportTemplateHistoryInfo] = {
+    TReportTemplateHistory.where('templateId -> templateId).apply()
+      .sortBy(_.historyId)
+      .map(r => ReportTemplateHistoryInfo(r.historyId, r.templateId, r.fileName, r.createdAt))
   }
 
   def uploadFile(file: FileItem): Unit = {

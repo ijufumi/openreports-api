@@ -56,6 +56,8 @@ object Controllers {
   object reportTemplateSettings extends ReportTemplateSettingsController with Routes {
     val indexUrl = get(path + "/?")(index).as('index)
 
+    val showHistoryUrl = get(path + "/history/:id")(showHistory).as('showHistory)
+
     val showUploadUrl = get(path + "/upload")(showUpload).as('showUpload)
 
     val uploaderUrl = post(path + "/upload")(upload).as('upload)

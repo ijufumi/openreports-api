@@ -40,10 +40,17 @@ class ReportTemplateSettingsController
         new ReportTemplateSettingsService()
           .uploadFile(file)
       case None =>
-        logger
-          .info("file not found")
+        logger.info("file not found")
     }
 
     redirect(url(Controllers.reportTemplateSettings.showUploadUrl))
+  }
+
+  def showHistory = {
+    params.getAs[Long]("id").map { id =>
+      val histories = new ReportTemplateSettingsService().getHistories(id)
+      set("histories", histories)
+      render(viewPath + "/history")
+    } getOrElse haltWithBody(404)
   }
 }
