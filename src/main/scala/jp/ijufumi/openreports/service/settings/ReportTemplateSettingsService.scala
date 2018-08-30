@@ -46,8 +46,7 @@ class ReportTemplateSettingsService extends Logging {
           .withAttributes(
             'fileName -> file.name,
             'filePath -> filePath,
-            'updatedAt -> DateTime.now(),
-            'versions -> (template.versions + 1)
+            'updatedAt -> DateTime.now()
           )
 
         TReportTemplateHistory
