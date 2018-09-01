@@ -68,9 +68,9 @@ case class ReportingOutputService() extends LoggerProvider {
 
   def toInputStream(templateFile: String): InputStream = {
     val fullPath = FileSystems.getDefault.getPath(TemplatePath, templateFile)
-    if (fullPath.toString.startsWith(PrefixClassPath)) {
+    if (!fullPath.toString.startsWith("/")) {
       getClass.getClassLoader.getResourceAsStream(
-        fullPath.toString.substring(PrefixClassPath.length)
+        fullPath.toString
       )
     } else {
       Files.newInputStream(fullPath)
