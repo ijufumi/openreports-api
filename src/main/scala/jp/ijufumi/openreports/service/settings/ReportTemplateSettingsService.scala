@@ -1,9 +1,9 @@
 package jp.ijufumi.openreports.service.settings
 
-import java.nio.file.FileSystems
+import java.nio.file.{FileSystems, Files}
 
 import jp.ijufumi.openreports.model.{TReportTemplate, TReportTemplateHistory}
-import jp.ijufumi.openreports.service.TemplatePath
+import jp.ijufumi.openreports.service.OutputFilePath
 import jp.ijufumi.openreports.service.support.ConnectionFactory
 import jp.ijufumi.openreports.vo.{ReportTemplateHistoryInfo, ReportTemplateInfo}
 import org.joda.time.DateTime
@@ -67,17 +67,17 @@ class ReportTemplateSettingsService extends Logging {
           )
       }
 
+      val fullPath = FileSystems.getDefault.getPath(OutputFilePath, filePath)
+      if (!Files.exists(fullPath.getParent)) {
+        Files.createDirectories(fullPath.getParent)
+      }
+      logger.debug("filePath:%s".format(fullPath.toString))
+      file.write(fullPath.toString)
     } catch {
       case e: Throwable => {
         db.rollback()
         throw e
       }
     }
-
-    val fullPath = FileSystems.getDefault.getPath(TemplatePath, filePath)
-    logger.debug("filePath:%s".format(fullPath.toString))
-    // TODO: Add error handling.
-    file
-      .write(fullPath.toString)
   }
 }
