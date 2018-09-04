@@ -3,7 +3,7 @@ package jp.ijufumi.openreports.service.settings
 import java.sql.SQLException
 
 import jp.ijufumi.openreports.model.{RMemberGroup, TGroup, TMember}
-import jp.ijufumi.openreports.service.Hashedkey
+import jp.ijufumi.openreports.service.HashKey
 import jp.ijufumi.openreports.service.enums.StatusCode
 import jp.ijufumi.openreports.service.support.{ConnectionFactory, Hash}
 import jp.ijufumi.openreports.vo.{GroupInfo, MemberInfo}
@@ -58,7 +58,7 @@ class MemberSettingsService extends Logging {
       db.begin()
       val id = TMember.createWithAttributes(
         'emailAddress -> emailAddress,
-        'password -> Hash.hmacSha256(Hashedkey, password),
+        'password -> Hash.hmacSha256(HashKey, password),
         'name -> name
       )
       groups.foreach(
@@ -103,7 +103,7 @@ class MemberSettingsService extends Logging {
         )
 
       if (password.length != 0) {
-        val hashedPassword = Hash.hmacSha256(Hashedkey, password)
+        val hashedPassword = Hash.hmacSha256(HashKey, password)
         updateBuilder.addAttributeToBeUpdated(
           (TMember.column.field("password"), hashedPassword)
         )

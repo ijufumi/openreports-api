@@ -27,16 +27,9 @@ class ReportTemplateSettingsService extends Logging {
   }
 
   def uploadFile(file: FileItem): Unit = {
-    val templates = TReportTemplate
-      .where('fileName -> file.name)
-      .apply()
+    val templates = TReportTemplate.where('fileName -> file.name).apply()
 
-    val filePath =
-      "%s_%s"
-        .format(DateTime
-                  .now()
-                  .toString("yyyyMMddHHmmss"),
-                file.name)
+    val filePath = "%s_%s".format(DateTime.now().toString("yyyyMMddHHmmss"), file.name)
 
     val db = DB(ConnectionFactory.getConnection)
     try {
