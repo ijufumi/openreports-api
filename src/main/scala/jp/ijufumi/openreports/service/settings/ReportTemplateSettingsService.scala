@@ -65,7 +65,7 @@ class ReportTemplateSettingsService extends Logging {
         Files.createDirectories(fullPath.getParent)
       }
       logger.debug("filePath:%s".format(fullPath.toString))
-      file.write(fullPath.toString)
+      file.write(fullPath.toFile)
     } catch {
       case e: Throwable => {
         db.rollback()
