@@ -24,7 +24,6 @@ class ReportTemplateSettingsController extends FileUploadController {
   def upload = {
     fileParams.get("uploadFile") match {
       case Some(file) =>
-        logger.info(new String(file.get()))
         new ReportTemplateSettingsService().uploadFile(file)
       case None =>
         logger.info("file not found")
