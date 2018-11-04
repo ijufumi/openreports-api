@@ -67,7 +67,7 @@ class MemberSettingsController extends ApplicationController {
         )
 
       statusCode match {
-        case StatusCode.OK => redirect(path + "/registerCompleted")
+        case StatusCode.OK => redirect(url(Controllers.memberSettings.registerCompletedUrl))
         case StatusCode.DUPLICATE_ERR =>
           set("customErrorMessages", Seq(i18n.get("warning.duplicateRegister")))
         case _ =>
@@ -128,7 +128,7 @@ class MemberSettingsController extends ApplicationController {
           )
 
         statusCode match {
-          case StatusCode.OK => redirect(path + "/updateCompleted")
+          case StatusCode.OK => redirect(url(Controllers.memberSettings.updateCompletedUrl))
           case _ =>
             set("customErrorMessages", Seq(i18n.get("error.systemError")))
         }

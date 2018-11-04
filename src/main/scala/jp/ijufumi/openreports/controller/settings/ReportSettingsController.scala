@@ -63,7 +63,7 @@ class ReportSettingsController extends ApplicationController {
       )
 
       statusCode match {
-        case StatusCode.OK => redirect(path + "/registerCompleted")
+        case StatusCode.OK => redirect(url(Controllers.reportSettings.registerCompletedUrl))
         case StatusCode.DUPLICATE_ERR =>
           set("customErrorMessages", Seq(i18n.get("warning.duplicateRegister")))
         case _ =>
@@ -109,7 +109,7 @@ class ReportSettingsController extends ApplicationController {
         )
 
         statusCode match {
-          case StatusCode.OK => redirect(path + "/registerCompleted")
+          case StatusCode.OK => redirect(url(Controllers.reportSettings.updateCompletedUrl))
           case StatusCode.DUPLICATE_ERR =>
             set("customErrorMessages", Seq(i18n.get("warning.duplicateRegister")))
           case _ =>

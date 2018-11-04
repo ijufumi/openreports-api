@@ -41,7 +41,7 @@ class ReportGroupSettingsController extends ApplicationController {
       val statusCode =
         new ReportGroupSettingsService().registerGroup(reportGroupName)
       statusCode match {
-        case StatusCode.OK => redirect(path + "/registerCompleted")
+        case StatusCode.OK => redirect(url(Controllers.reportGroupSettings.registerCompletedUrl))
         case _ =>
           set("customErrorMessages", Seq(i18n.get("error.systemError")))
       }
@@ -78,7 +78,7 @@ class ReportGroupSettingsController extends ApplicationController {
         val statusCode =
           new ReportGroupSettingsService().updateGroup(id, groupName, versions)
         statusCode match {
-          case StatusCode.OK => redirect(path + "/updateCompleted")
+          case StatusCode.OK => redirect(url(Controllers.reportGroupSettings.updateCompletedUrl))
           case _ =>
             set("customErrorMessages", Seq(i18n.get("error.systemError")))
         }

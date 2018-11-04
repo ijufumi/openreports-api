@@ -41,7 +41,7 @@ class GroupSettingsController extends ApplicationController {
       val statusCode = new GroupSettingsService().registerGroup(groupName)
 
       statusCode match {
-        case StatusCode.OK => redirect(path + "/registerCompleted")
+        case StatusCode.OK => redirect(url(Controllers.groupSettings.registerCompletedUrl))
         case _ =>
           set("customErrorMessages", Seq(i18n.get("error.systemError")))
       }
@@ -81,7 +81,7 @@ class GroupSettingsController extends ApplicationController {
         logger.debug("update group result:%s".format(statusCode))
 
         statusCode match {
-          case StatusCode.OK => redirect(path + "/updateCompleted")
+          case StatusCode.OK => redirect(url(Controllers.groupSettings.updateCompletedUrl))
           case _ =>
             set("customErrorMessages", Seq(i18n.get("error.systemError")))
         }

@@ -14,6 +14,6 @@ class HomeController extends ApplicationController {
 
   def logout = {
     skinnySession.removeAttribute("memberInfo");
-    redirect(PublicPath)
+    redirect(url(Controllers.top.indexUrl))
   }
 }

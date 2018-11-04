@@ -60,7 +60,7 @@ class ReportParamSettingsController extends ApplicationController {
         paramValues
       )
       statusCode match {
-        case StatusCode.OK => redirect(path + "/registerCompleted")
+        case StatusCode.OK => redirect(url(Controllers.reportParamSettings.registerCompletedUrl))
         case StatusCode.DUPLICATE_ERR =>
           set("customErrorMessages", Seq(i18n.get("warning.duplicateRegister")))
         case _ =>
@@ -108,7 +108,7 @@ class ReportParamSettingsController extends ApplicationController {
           versions
         )
         statusCode match {
-          case StatusCode.OK => redirect(path + "/updateCompleted")
+          case StatusCode.OK => redirect(url(Controllers.reportParamSettings.updateCompletedUrl))
           case _ =>
             set("customErrorMessages", Seq(i18n.get("error.systemError")))
         }
