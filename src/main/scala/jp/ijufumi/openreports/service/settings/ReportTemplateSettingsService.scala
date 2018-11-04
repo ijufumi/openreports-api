@@ -4,6 +4,7 @@ import java.nio.file.{FileSystems, Files}
 
 import jp.ijufumi.openreports.model.{TReportTemplate, TReportTemplateHistory}
 import jp.ijufumi.openreports.service.OutputFilePath
+import jp.ijufumi.openreports.service.enums.StatusCode
 import jp.ijufumi.openreports.service.support.ConnectionFactory
 import jp.ijufumi.openreports.vo.{ReportTemplateHistoryInfo, ReportTemplateInfo}
 import org.joda.time.DateTime
@@ -26,7 +27,7 @@ class ReportTemplateSettingsService extends Logging {
       .map(r => ReportTemplateHistoryInfo(r.historyId, r.templateId, r.fileName, r.createdAt))
   }
 
-  def uploadFile(file: FileItem): Unit = {
+  def uploadFile(file: FileItem): StatusCode.Value = {
     val templates = TReportTemplate.where('fileName -> file.name).apply()
 
     val filePath = "%s_%s".format(DateTime.now().toString("yyyyMMddHHmmss"), file.name)
@@ -66,10 +67,12 @@ class ReportTemplateSettingsService extends Logging {
       }
       logger.debug("filePath:%s".format(fullPath.toString))
       file.write(fullPath.toFile)
+      StatusCode.OK
     } catch {
       case e: Throwable => {
         db.rollback()
-        throw e
+        logger.error("file upload failed.", e)
+        StatusCode.OTHER_ERROR
       }
     }
   }

@@ -1,6 +1,7 @@
 package jp.ijufumi.openreports.controller.settings
 
 import jp.ijufumi.openreports.controller.common.{ApplicationController, FileUploadController, I18nFeature}
+import jp.ijufumi.openreports.service.enums.StatusCode
 import jp.ijufumi.openreports.service.settings.ReportTemplateSettingsService
 
 class ReportTemplateSettingsController extends FileUploadController {
@@ -24,9 +25,14 @@ class ReportTemplateSettingsController extends FileUploadController {
   def upload = {
     fileParams.get("uploadFile") match {
       case Some(file) =>
-        new ReportTemplateSettingsService().uploadFile(file)
+        val statusCode = new ReportTemplateSettingsService().uploadFile(file)
+        statusCode match {
+          case StatusCode.OK => redirect(url(Controllers.reportTemplateSettings.indexUrl))
+        }
+        set("customErrorMessages", Seq(i18n.get("error.fileUploadError")))
       case None =>
         logger.info("file not found")
+        set("customErrorMessages", Seq(i18n.get("warning.requiredUploadFile")))
     }
 
     redirect(url(Controllers.reportTemplateSettings.showUploadUrl))
