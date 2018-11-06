@@ -1,6 +1,6 @@
 package jp.ijufumi.openreports.service.support
 
-import scalikejdbc.{Commons2ConnectionPoolFactory, ConnectionPool}
+import scalikejdbc.ConnectionPool
 
 object ConnectionFactory {
   def getConnection: java.sql.Connection = {
@@ -16,14 +16,9 @@ object ConnectionFactory {
     user: String,
     password: String
   ): java.sql.Connection = {
-    getConnectionPool(url, user, password).borrow()
-  }
-
-  def getConnectionPool(
-    url: String,
-    user: String,
-    password: String
-  ): ConnectionPool = {
-    Commons2ConnectionPoolFactory(url, user, password)
+    if (!ConnectionPool.isInitialized(ConnectionPool.DEFAULT_NAME)) {
+      ConnectionPool.add(ConnectionPool.DEFAULT_NAME, url, user, password)
+    }
+    ConnectionPool.get().borrow()
   }
 }
