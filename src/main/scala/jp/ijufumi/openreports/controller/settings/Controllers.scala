@@ -15,7 +15,7 @@ object Controllers {
   }
 
   object reportSettings extends ReportSettingsController with Routes {
-    val indexUrl = get(path + "/?")(index).as('index)
+    val indexUrl = get(path)(index).as('index)
 
     val showRegisterUrl =
       get(path + "/register")(showRegister).as('showRegister)
@@ -34,7 +34,7 @@ object Controllers {
   }
 
   object reportGroupSettings extends ReportGroupSettingsController with Routes {
-    val indexUrl = get(path + "/?")(index).as('index)
+    val indexUrl = get(path)(index).as('index)
 
     val showRegisterUrl =
       get(path + "/register")(showRegister).as('showRegister)
@@ -54,7 +54,7 @@ object Controllers {
   }
 
   object reportTemplateSettings extends ReportTemplateSettingsController with Routes {
-    val indexUrl = get(path + "/?")(index).as('index)
+    val indexUrl = get(path)(index).as('index)
 
     val showHistoryUrl = get(path + "/history/:id")(showHistory).as('showHistory)
 
@@ -64,7 +64,7 @@ object Controllers {
   }
 
   object reportParamSettings extends ReportParamSettingsController with Routes {
-    val indexUrl = get(path + "/?")(index).as('index)
+    val indexUrl = get(path)(index).as('index)
 
     val showRegisterUrl =
       get(path + "/register")(showRegister).as('showRegister)
@@ -85,7 +85,7 @@ object Controllers {
   }
 
   object memberSettings extends MemberSettingsController with Routes {
-    val indexUrl = get(path + "/?")(index).as('index)
+    val indexUrl = get(path)(index).as('index)
 
     val showRegisterUrl =
       get(path + "/register")(showRegister).as('showRegister)
@@ -104,7 +104,7 @@ object Controllers {
   }
 
   object groupSettings extends GroupSettingsController with Routes {
-    val indexUrl = get(path + "/?")(index).as('index)
+    val indexUrl = get(path)(index).as('index)
 
     val showRegisterUrl =
       get(path + "/register")(showRegister).as('showRegister)
