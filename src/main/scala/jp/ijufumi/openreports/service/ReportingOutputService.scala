@@ -37,11 +37,7 @@ case class ReportingOutputService() extends LoggerProvider {
 
     var con: java.sql.Connection = null
     try {
-      con = ConnectionFactory.getConnection(
-        "jdbc:postgresql://localhost:5432/openreports",
-        "postgres",
-        "password"
-      )
+      con = ConnectionFactory.getConnection
       val jdbcHelper = new JdbcHelper(con)
       val context = new Context()
       context.putVar("conn", con)
