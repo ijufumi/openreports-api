@@ -71,3 +71,8 @@
   - report_param_config
 - Others
   - functions
+
+### TODO list
+- make relation report and params
+- add return button 
+- add scheduling function
