@@ -34,9 +34,6 @@
               <input type="text" class="form-control" id="reportName" name="reportName" placeholder="Enter name">
             </div>
           </div>
-          <div class="col-md-4 pl-0">
-            <button type="submit" class="btn btn-block btn-lg btn-primary">登録</button>
-          </div>
           <div class="form-group row">
             <div class="col-md-2">
               <label for="description" class="col-form-label">Description</label>
@@ -47,18 +44,22 @@
           </div>
           <div class="form-group row">
             <div class="col-md-2">
-              <label for="template" class="form-check-label">Template</label>
+              <label for="templateId" class="form-check-label">Template</label>
             </div>
             <div class="col-md-8">
-              <select class="custom-select" id="template" name="template">
+              <select class="custom-select" id="templateId" name="templateId">
                 <option value=""></option>
-                <option value="1" th:each="t : ${templates}" th:vavlue="${t.templateId}" th:text="${t.templateName}">テスト</option>
+                <option value="1" th:each="t : ${templates}" th:vavlue="${t.templateId}" th:text="${t.fileName}">テスト</option>
               </select>
             </div>
           </div>
-
-          <div class="col-md-4 pl-0">
-            <button type="submit" class="btn btn-block btn-lg btn-primary">登録</button>
+          <div class="form-group row">
+            <div class="col-md-2 pl-0">
+              <a href="/private/settings/report" class="btn btn-block btn-lg btn-secondary">一覧</a>
+            </div>
+            <div class="col-md-2 pl-0">
+              <button type="submit" class="btn btn-block btn-lg btn-primary">登録</button>
+            </div>
           </div>
         </form>
       </div>
