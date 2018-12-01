@@ -11,7 +11,7 @@ postgres:
     TZ: "Asia/Tokyo"
   container_name: openreports-db
 
-libreoffice:
-  build: ./docker/libreoffice
-  environment:
-    TZ: "Asia/Tokyo"
+#libreoffice:
+#  build: ./docker/libreoffice
+#  environment:
+#    TZ: "Asia/Tokyo"
