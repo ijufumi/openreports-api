@@ -29,14 +29,19 @@
           <input type="hidden" name="versions" th:value="${group.versions}" />
           <div class="form-group row">
             <div class="col-md-2">
-              <label for="name" class="col-form-label">Name</label>
+              <label for="groupName" class="col-form-label">Name</label>
             </div>
             <div class="col-md-8">
               <input type="text" class="form-control" id="groupName" name="groupName" placeholder="Enter name" th:value="${group.groupName}">
             </div>
           </div>
-          <div class="col-md-4 pl-0">
-            <button type="submit" class="btn btn-block btn-lg btn-primary">変更</button>
+          <div class="form-group row">
+            <div class="col-md-2 pl-0">
+              <a href="/private/settings/group" class="btn btn-block btn-lg btn-secondary">一覧</a>
+            </div>
+            <div class="col-md-2 pl-0">
+              <button type="submit" class="btn btn-block btn-lg btn-primary">変更</button>
+            </div>
           </div>
         </form>
       </div>
