@@ -24,9 +24,9 @@
       <h2 layout:fragment="title">設定 - レポートテンプレート一覧</h2>
     </div>
     <div class="row">
-      <div class="private-setting-report" layout:fragment="content">
-        <div class="col-md-6 pl-0 mb-6 offset-md-7">
-          <a class="btn btn-block btn-lg btn-primary" href="/private/settings/report-template/upload">テンプレート登録</a>
+      <div class="private-setting-report col" layout:fragment="content">
+        <div class="col-md-2 pl-0 mb-4">
+          <a class="btn btn-block btn-lg btn-primary" href="/private/settings/report-template/upload">登録</a>
         </div>
         <div class="list-group">
           <a th:each="t : ${templates}"

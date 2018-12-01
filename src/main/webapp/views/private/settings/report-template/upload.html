@@ -23,19 +23,24 @@
     <div class="row title">
       <h2 layout:fragment="title">設定 - レポートテンプレート登録</h2>
     </div>
-    <div class="row main-contents">
+    <div class="row">
       <div class="private-setting-report col" layout:fragment="content">
         <form method="post" action="/private/settings/report-template/upload" enctype="multipart/form-data">
           <div class="form-group row">
-            <div class="col-md-2">
+            <div class="col-md-3">
               <label for="uploadFile" class="col-form-label">テンプレートファイル</label>
             </div>
             <div class="col-md-8">
               <input type="file" class="form-control" id="uploadFile" name="uploadFile">
             </div>
           </div>
-          <div class="col-md-4 pl-0">
-            <button type="submit" class="btn btn-block btn-lg btn-primary">アップロード</button>
+          <div class="form-group row">
+            <div class="col-md-2 pl-0">
+              <a href="/private/settings/report-template" class="btn btn-block btn-lg btn-secondary">一覧</a>
+            </div>
+            <div class="col-md-2 pl-0">
+              <button type="submit" class="btn btn-block btn-lg btn-primary">アップロード</button>
+            </div>
           </div>
         </form>
       </div>
