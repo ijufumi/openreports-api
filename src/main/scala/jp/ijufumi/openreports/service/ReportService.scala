@@ -33,7 +33,7 @@ class ReportService extends Logging {
 
     reportGroups.toSeq
       .sortBy(_.reportGroupId)
-      .map(r => ReportGroupInfo(r.reportGroupId, r.reportGroupName))
+      .map(r => ReportGroupInfo(r.reportGroupId, r.reportGroupName, r.createdAt, r.updatedAt, r.versions))
   }
 
   def reportList(groupId: Long): Seq[ReportInfo] = {

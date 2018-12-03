@@ -1,6 +1,7 @@
 package jp.ijufumi.openreports.model
 
-import org.joda.time.DateTime
+import java.time.LocalDateTime
+
 import scalikejdbc.{ResultName, WrappedResultSet}
 import skinny.orm.feature.OptimisticLockWithVersionFeature
 import skinny.orm.{Alias, SkinnyCRUDMapper}
@@ -11,8 +12,8 @@ case class TReportParam(paramId: Long,
                         description: String,
                         paramType: String,
                         paramValues: String,
-                        createdAt: DateTime,
-                        updatedAt: DateTime,
+                        createdAt: LocalDateTime,
+                        updatedAt: LocalDateTime,
                         versions: Long,
                         reports: Seq[TReport] = Nil)
 

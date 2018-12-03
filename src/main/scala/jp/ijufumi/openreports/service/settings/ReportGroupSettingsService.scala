@@ -12,13 +12,13 @@ class ReportGroupSettingsService extends Logging {
   def getGroups: Seq[ReportGroupInfo] = {
     TReportGroup
       .findAll()
-      .map(r => ReportGroupInfo(r.reportGroupId, r.reportGroupName, r.versions))
+      .map(r => ReportGroupInfo(r.reportGroupId, r.reportGroupName, r.createdAt, r.updatedAt, r.versions))
   }
 
   def getGroup(reportGroupId: Long): Option[ReportGroupInfo] = {
     TReportGroup
       .findById(reportGroupId)
-      .map(r => ReportGroupInfo(r.reportGroupId, r.reportGroupName, r.versions))
+      .map(r => ReportGroupInfo(r.reportGroupId, r.reportGroupName, r.createdAt, r.updatedAt, r.versions))
   }
 
   def registerGroup(reportGroupName: String): StatusCode.Value = {

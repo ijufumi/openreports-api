@@ -1,7 +1,7 @@
 package jp.ijufumi.openreports.model
 
-import jp.ijufumi.openreports.model.TReportTemplate.createAlias
-import org.joda.time.DateTime
+import java.time.LocalDateTime
+
 import scalikejdbc.WrappedResultSet
 import skinny.orm.SkinnyCRUDMapper
 
@@ -10,8 +10,8 @@ case class TReportTemplateHistory(
     templateId: Long,
     fileName: String,
     filePath: String,
-    createdAt: DateTime,
-    updatedAt: DateTime,
+    createdAt: LocalDateTime,
+    updatedAt: LocalDateTime,
     versions: Long
 )
 

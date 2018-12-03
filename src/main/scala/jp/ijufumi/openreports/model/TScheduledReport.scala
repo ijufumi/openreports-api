@@ -1,6 +1,7 @@
 package jp.ijufumi.openreports.model
 
-import org.joda.time.DateTime
+import java.time.LocalDateTime
+
 import scalikejdbc.WrappedResultSet
 import skinny.orm.SkinnyCRUDMapper
 import skinny.orm.feature.OptimisticLockWithVersionFeature
@@ -8,8 +9,8 @@ import skinny.orm.feature.OptimisticLockWithVersionFeature
 case class TScheduledReport(scheduleId: Long,
                             reportId: Long,
                             cronExpression: String,
-                            createdAt: DateTime,
-                            updatedAt: DateTime,
+                            createdAt: LocalDateTime,
+                            updatedAt: LocalDateTime,
                             versions: Long)
 
 object TScheduledReport

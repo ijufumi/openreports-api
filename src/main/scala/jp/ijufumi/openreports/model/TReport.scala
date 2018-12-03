@@ -1,6 +1,7 @@
 package jp.ijufumi.openreports.model
 
-import org.joda.time.DateTime
+import java.time.LocalDateTime
+
 import scalikejdbc.WrappedResultSet
 import scalikejdbc.interpolation.SQLSyntax
 import skinny.orm.SkinnyCRUDMapper
@@ -10,8 +11,8 @@ case class TReport(reportId: Long,
                    reportName: String,
                    description: String,
                    templateId: Long,
-                   createdAt: DateTime,
-                   updatedAt: DateTime,
+                   createdAt: LocalDateTime,
+                   updatedAt: LocalDateTime,
                    versions: Long,
                    params: Seq[TReportParamConfig] = Nil,
                    groups: Seq[TReportGroup] = Nil)

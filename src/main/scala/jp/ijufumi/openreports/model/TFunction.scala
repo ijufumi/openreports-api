@@ -1,13 +1,14 @@
 package jp.ijufumi.openreports.model
 
-import org.joda.time.DateTime
+import java.time.LocalDateTime
+
 import scalikejdbc.{ResultName, WrappedResultSet}
 import skinny.orm.SkinnyCRUDMapper
 
 case class TFunction(functionId: Long,
                      functionName: String,
-                     createdAt: DateTime,
-                     updatedAt: DateTime,
+                     createdAt: LocalDateTime,
+                     updatedAt: LocalDateTime,
                      groups: Seq[TGroup] = Nil)
 
 object TFunction extends SkinnyCRUDMapper[TFunction] {

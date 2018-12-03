@@ -1,14 +1,15 @@
 package jp.ijufumi.openreports.model
 
-import org.joda.time.DateTime
+import java.time.LocalDateTime
+
 import scalikejdbc.{ResultName, WrappedResultSet}
 import skinny.orm.SkinnyCRUDMapper
 import skinny.orm.feature.OptimisticLockWithVersionFeature
 
 case class TGroup(groupId: Long,
                   groupName: String,
-                  createdAt: DateTime,
-                  updatedAt: DateTime,
+                  createdAt: LocalDateTime,
+                  updatedAt: LocalDateTime,
                   versions: Long,
                   members: Seq[TMember] = Nil,
                   functions: Seq[TFunction] = Nil,

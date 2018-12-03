@@ -1,6 +1,7 @@
 package jp.ijufumi.openreports.model
 
-import org.joda.time.DateTime
+import java.time.LocalDateTime
+
 import scalikejdbc.{ResultName, WrappedResultSet}
 import skinny.orm.SkinnyCRUDMapper
 import skinny.orm.feature.OptimisticLockWithVersionFeature
@@ -10,8 +11,8 @@ case class TMember(memberId: Long = 0,
                    password: String,
                    name: String,
                    isAdmin: String = "0",
-                   createdAt: DateTime = DateTime.now(),
-                   updatedAt: DateTime = DateTime.now(),
+                   createdAt: LocalDateTime = LocalDateTime.now(),
+                   updatedAt: LocalDateTime = LocalDateTime.now(),
                    versions: Long,
                    groups: Seq[TGroup] = Nil)
 
