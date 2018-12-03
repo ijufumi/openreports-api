@@ -12,6 +12,7 @@ case class TReport(reportId: Long,
                    templateId: Long,
                    createdAt: DateTime,
                    updatedAt: DateTime,
+                   versions: Long,
                    params: Seq[TReportParamConfig] = Nil,
                    groups: Seq[TReportGroup] = Nil)
 
@@ -46,7 +47,8 @@ object TReport
       description = rs.get(n.description),
       templateId = rs.get(n.templateId),
       createdAt = rs.get(n.createdAt),
-      updatedAt = rs.get(n.updatedAt)
+      updatedAt = rs.get(n.updatedAt),
+      versions = rs.get(n.versions)
     )
 
   hasManyThroughWithFk[TReportGroup](

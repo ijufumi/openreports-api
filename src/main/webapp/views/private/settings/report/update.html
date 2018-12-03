@@ -45,13 +45,29 @@
           </div>
           <div class="form-group row">
             <div class="col-md-2">
-              <label for="template" class="form-check-label">Template</label>
+              <label for="templateId" class="form-check-label">Template</label>
             </div>
             <div class="col-md-8">
-              <select class="custom-select" id="template" name="template">
+              <select class="custom-select" id="templateId" name="templateId">
                 <option value=""></option>
-                <option value="1" th:each="t : ${templates}" th:vavlue="${t.templateId}" th:text="${t.templateName}" th:selected="${t.templateId} == ${report.templateId}">テスト</option>
+                <option value="1" th:each="t : ${templates}" th:vavlue="${t.templateId}" th:text="${t.fileName}" th:selected="${t.templateId} == ${report.templateId}">テスト</option>
               </select>
+            </div>
+          </div>
+          <div class="form-group row">
+            <div class="col-md-2">
+              <label for="createdAt" class="col-form-label">Created</label>
+            </div>
+            <div class="col-md-8">
+              <input type="text" readonly class="form-control" id="createdAt" th:value="${report.createdAt}">
+            </div>
+          </div>
+          <div class="form-group row">
+            <div class="col-md-2">
+              <label for="updatedAt" class="col-form-label">Updated</label>
+            </div>
+            <div class="col-md-8">
+              <input type="text" readonly class="form-control" id="updatedAt" th:value="${report.updatedAt}">
             </div>
           </div>
           <div class="form-group row">

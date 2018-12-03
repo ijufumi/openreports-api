@@ -2,9 +2,9 @@ package jp.ijufumi.openreports.service.settings
 
 import java.sql.SQLException
 
-import jp.ijufumi.openreports.model.{TReport, TReportParamConfig}
+import jp.ijufumi.openreports.model.{TReport, TReportParamConfig, TReportTemplate}
 import jp.ijufumi.openreports.service.enums.StatusCode
-import jp.ijufumi.openreports.vo.{ReportInfo, ReportParamConfigInfo}
+import jp.ijufumi.openreports.vo.{ReportInfo, ReportParamConfigInfo, ReportTemplateInfo}
 import org.joda.time.DateTime
 import skinny.Logging
 
@@ -12,13 +12,21 @@ class ReportSettingsService extends Logging {
   def getReports: Seq[ReportInfo] = {
     TReport
       .findAll()
-      .map(r => ReportInfo(r.reportId, r.reportName, r.description))
+      .map(r => {
+        val template = TReportTemplate.findById(r.templateId)
+        ReportInfo(r.reportId, r.reportName, r.description, r.templateId, r.createdAt, r.updatedAt, r.versions,
+          ReportTemplateInfo(r.templateId, template.get.fileName))
+      })
   }
 
   def getReport(reportId: Long): Option[ReportInfo] = {
     TReport
       .findById(reportId)
-      .map(r => ReportInfo(r.reportId, r.reportName, r.description))
+      .map(r => {
+        val template = TReportTemplate.findById(r.templateId)
+        ReportInfo(r.reportId, r.reportName, r.description, r.templateId, r.createdAt, r.updatedAt, r.versions,
+          ReportTemplateInfo(r.templateId, template.get.fileName))
+      })
   }
 
   def getReportParamConfig: Seq[ReportParamConfigInfo] = {
@@ -65,15 +73,19 @@ class ReportSettingsService extends Logging {
           'reportName -> reportName,
           'description -> description,
           'templateId -> templateId,
-          'updateAt -> DateTime.now(),
-          'versions -> versions
+          'updatedAt -> DateTime.now()
         )
       if (count != 1) {
         return StatusCode.ALREADY_UPDATED
       }
     } catch {
-      case e: SQLException => return StatusCode.of(e)
-      case _: Throwable    => return StatusCode.OTHER_ERROR
+      case e: SQLException => {
+        logger.error("update report error", e)
+        return StatusCode.of(e)}
+      case e: Throwable    => {
+        logger.error("update report error", e)
+        return StatusCode.OTHER_ERROR
+      }
     }
     StatusCode.OK
   }

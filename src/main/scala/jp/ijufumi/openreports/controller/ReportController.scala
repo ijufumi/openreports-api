@@ -102,7 +102,7 @@ class ReportController extends ApplicationController {
       .map {
         _.templateFile
       }
-      .map { _.map(t => t.fileName).getOrElse("") }
+      .map {_.fileName}
       .getOrElse("")
 
     if (templateFile.isEmpty) {

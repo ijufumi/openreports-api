@@ -69,12 +69,12 @@ class ReportSettingsController extends ApplicationController {
         case _ =>
           set("customErrorMessages", Seq(i18n.get("error.systemError")))
       }
-      render(viewPath + "/register")
-
     } else {
       logger.info("invalid params:%s".format(params))
-      render(viewPath + "/register")
     }
+    val templates = new ReportTemplateSettingsService().getReportTemplates
+    set("templates", templates)
+    render(viewPath + "/register")
   }
 
   def registerCompleted = {
@@ -87,6 +87,8 @@ class ReportSettingsController extends ApplicationController {
       if (reportOpt.isEmpty) {
         haltWithBody(404)
       }
+      val templates = new ReportTemplateSettingsService().getReportTemplates
+      set("templates", templates)
       set("report", reportOpt.get)
       render(viewPath + "/update")
     } getOrElse haltWithBody(404)
@@ -108,6 +110,8 @@ class ReportSettingsController extends ApplicationController {
           versions
         )
 
+        logger.info("updateReport result:%s".format(statusCode))
+
         statusCode match {
           case StatusCode.OK => redirect(url(Controllers.reportSettings.updateCompletedUrl))
           case StatusCode.DUPLICATE_ERR =>
@@ -115,12 +119,17 @@ class ReportSettingsController extends ApplicationController {
           case _ =>
             set("customErrorMessages", Seq(i18n.get("error.systemError")))
         }
-        render(viewPath + "/update")
-
       } else {
         logger.info("invalid params:%s".format(params))
-        render(viewPath + "/update")
       }
+      val reportOpt = new ReportSettingsService().getReport(id)
+      if (reportOpt.isEmpty) {
+        haltWithBody(404)
+      }
+      set("report", reportOpt.get)
+      val templates = new ReportTemplateSettingsService().getReportTemplates
+      set("templates", templates)
+      render(viewPath + "/update")
     } getOrElse haltWithBody(404)
   }
 

@@ -1,10 +1,14 @@
 package jp.ijufumi.openreports.vo
 
+import org.joda.time.DateTime
+
 import scala.beans.BeanProperty
 
 case class ReportInfo(@BeanProperty reportId: Long,
                       @BeanProperty reportName: String,
                       @BeanProperty description: String,
-                      @BeanProperty versions: Long = 0,
-                      @BeanProperty templateFile: Option[ReportTemplateInfo] =
-                        Option.empty)
+                      @BeanProperty templateId: Long,
+                      @BeanProperty createdAt: DateTime,
+                      @BeanProperty updatedAt: DateTime,
+                      @BeanProperty versions: Long,
+                      @BeanProperty templateFile: ReportTemplateInfo)

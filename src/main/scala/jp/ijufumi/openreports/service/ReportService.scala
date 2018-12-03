@@ -2,6 +2,7 @@ package jp.ijufumi.openreports.service
 
 import jp.ijufumi.openreports.model._
 import jp.ijufumi.openreports.service.enums.ReportParamType._
+import jp.ijufumi.openreports.service.settings.ReportSettingsService
 import jp.ijufumi.openreports.vo.{ReportGroupInfo, ReportInfo, ReportParamInfo}
 import skinny.logging.Logging
 
@@ -9,11 +10,7 @@ import scala.collection.mutable
 
 class ReportService extends Logging {
   def report(reportId: Long): Option[ReportInfo] = {
-    val report = TReport.findById(reportId)
-
-    report.map { r =>
-      Option(ReportInfo(r.reportId, r.reportName, r.description))
-    } getOrElse Option.empty
+    new ReportSettingsService().getReport(reportId)
   }
 
   def groupList(groupId: Seq[Long]): Seq[ReportGroupInfo] = {
@@ -43,13 +40,13 @@ class ReportService extends Logging {
     val reportGroup =
       TReportGroup.includes(TReportGroup.reports).findById(groupId)
 
+    val service = new ReportSettingsService()
     reportGroup
       .map(
         rg =>
           rg.reports
             .sortBy(_.reportId)
-            .map { r =>
-              ReportInfo(r.reportId, r.reportName, r.description)
+            .map { r => service.getReport(r.reportId).get
           })
       .getOrElse(Seq.empty)
   }
