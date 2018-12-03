@@ -4,6 +4,9 @@ import java.io.{BufferedInputStream, FileInputStream, InputStream}
 import java.time.{LocalDateTime, ZoneOffset}
 
 import jp.ijufumi.openreports.controller.{PublicPath, ViewRootPath}
+import nz.net.ultraq.thymeleaf.LayoutDialect
+import org.thymeleaf.dialect.IDialect
+import org.thymeleaf.extras.java8time.dialect.Java8TimeDialect
 import skinny._
 import skinny.controller.feature.ThymeleafTemplateEngineFeature
 import skinny.filter._
@@ -29,6 +32,8 @@ trait ApplicationController
   override lazy val thymeleafResolverPrefix: String = {
     ViewRootPath
   }
+
+  override lazy val thymeleafDialects: Set[_ <: IDialect] = Set(new LayoutDialect, new Java8TimeDialect)
 
   val activeMenu = ""
 

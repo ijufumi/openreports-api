@@ -28,7 +28,8 @@ lazy val baseSettings = servletSettings ++ Seq(
     "org.scala-lang"         %  "scala-compiler"           % scalaVersion.value,
     "org.scala-lang.modules" %% "scala-xml"                % "1.1.0",
     "org.scala-lang.modules" %% "scala-parser-combinators" % "1.1.0",
-    "org.slf4j"              %  "slf4j-api"                % "1.7.25"
+    "org.slf4j"              %  "slf4j-api"                % "1.7.25",
+    "org.thymeleaf"          %  "thymeleaf"                % "2.1.6.RELEASE"
   ),
   libraryDependencies ++= Seq(
     "org.skinny-framework"    %% "skinny-framework"     % skinnyVersion,
@@ -47,9 +48,10 @@ lazy val baseSettings = servletSettings ++ Seq(
     "org.jxls"                %  "jxls"                 % "2.4.4",
     "org.jxls"                %  "jxls-poi"             % "1.0.14",
     "org.jodconverter"        %  "jodconverter-core"    % "4.2.0"
-
   ),
   libraryDependencies += "org.skinny-framework" %% "skinny-thymeleaf" % skinnyVersion,
+  // https://mvnrepository.com/artifact/org.thymeleaf.extras/thymeleaf-extras-java8time
+  libraryDependencies += "org.thymeleaf.extras" % "thymeleaf-extras-java8time" % "2.1.0.RELEASE",
   // ------------------------------
   // for ./skinnny console
   initialCommands := """
