@@ -1,5 +1,7 @@
 package jp.ijufumi.openreports.vo
 
+import java.time.LocalDateTime
+
 import jp.ijufumi.openreports.model.TReportParam
 
 import scala.beans.BeanProperty
@@ -9,6 +11,8 @@ case class ReportParamInfo(@BeanProperty paramId: Long,
                            @BeanProperty paramName: String,
                            @BeanProperty paramType: String,
                            @BeanProperty description: String,
+                           @BeanProperty createdAt: LocalDateTime,
+                           @BeanProperty updatedAt: LocalDateTime,
                            @BeanProperty versions: Long,
                            @BeanProperty paramValues: Seq[Map[String, String]] = Seq.empty)
 
@@ -20,6 +24,8 @@ object ReportParamInfo {
       param.paramName,
       param.paramType,
       param.description,
+      param.createdAt,
+      param.updatedAt,
       param.versions
     )
   }
@@ -31,6 +37,8 @@ object ReportParamInfo {
       param.paramName,
       param.paramType,
       param.description,
+      param.createdAt,
+      param.updatedAt,
       param.versions,
       values
     )
