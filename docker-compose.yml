@@ -1,17 +1,24 @@
-postgres:
-  build: ./docker/postgres
-  volumes:
-    - "./src/main/resources/db:/docker-entrypoint-initdb.d"
-    - ./var/lib/postgresql:/var/lib/postgresql
-    # - ./docker/postgres/postgresql.conf:/var/lib/postgresql/data/postgresql.conf
-  ports:
-    - "5432:5432"
-  environment:
-    POSTGRES_PASSWORD: password
-    TZ: "Asia/Tokyo"
-  container_name: openreports-db
-
-#libreoffice:
-#  build: ./docker/libreoffice
-#  environment:
-#    TZ: "Asia/Tokyo"
+version: '3'
+services:
+  postgres:
+    build: ./docker/postgres
+    volumes:
+      - "./src/main/resources/db:/docker-entrypoint-initdb.d"
+      - ./var/lib/postgresql:/var/lib/postgresql
+#      - ./docker/postgres/postgresql.conf:/var/lib/postgresql/data/postgresql.conf
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_PASSWORD: password
+      TZ: "Asia/Tokyo"
+    container_name: openreports-db
+    networks:
+      openreports:
+        aliases:
+          - db
+#   libreoffice:
+#     build: ./docker/libreoffice
+#     environment:
+#       TZ: "Asia/Tokyo"
+networks:
+  openreports:
