@@ -74,6 +74,5 @@
 
 ### TODO list
 - make relation report and params
-- add return button 
 - add scheduling function
 - add credit to layout.html
