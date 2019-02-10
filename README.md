@@ -4,7 +4,7 @@
 | Name | Version | Notes |
 | --- | --- | --- |
 | Scala | 2.12.6 | - |
-| Skinny Framework | 2.6.0 | All of them. |
+| Skinny Framework | 3.0.1 | All of them. |
 | Servlet API | 3.1.0 | Web API |
 | Skinny Logback | 1.0.14 | Logging |
 | SLF4J | 1.7.25 | Logging |
@@ -13,11 +13,11 @@
 | JODConverter | 4.2.0 | PDF output |
 
 ### Features (not implemented yet)
-- [ ] Output reporting.
+- [x] Output reporting.
 - [ ] Output scheduled reporting.
-- [ ] Supporting template format are xls, xlsx.
+- [x] Supporting template format are xls, xlsx.
 - [ ] Supporting output format are xls, xlsx, pdf.
-- [ ] Manage users and groups.
+- [x] Manage users and groups.
 - [ ] Send report mail.
 
 ## Developer's memo.
@@ -76,3 +76,5 @@
 - make relation report and params
 - add scheduling function
 - add credit to layout.html
+- execute on docker image
+- 
