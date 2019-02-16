@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layouts/default">
+<head>
+  <meta charset="UTF-8">
+  <title>設定 - レポートパラメータ設定</title>
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="../../../../assets/library/fontawesome/css/fa-svg-with-js.css">
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="../../../../assets/library/bootstrap/v411/css/bootstrap.min.css"/>
+  <link rel="stylesheet"
+        href="../../../../assets/library/bootstrap-datepicker/bootstrap-datepicker.standalone.min.css"/>
+  <link rel="stylesheet"
+        href="../../../../assets/library/bootstrap-datepicker/bootstrap-datepicker3.standalone.min.css"/>
+
+  <link rel="stylesheet" href="../../../../assets/css/layout.css">
+  <script defer src="https://use.fontawesome.com/releases/v5.7.2/js/all.js" integrity="sha384-0pzryjIRos8mFBWMzSSZApWtPl/5++eIfzYmTgBBmXYdhvxPc+XcFEk+zJwDgWbP" crossorigin="anonymous"></script>
+</head>
+<body>
+<div>
+  <div class="container">
+    <div class="row title">
+      <h2 layout:fragment="title">設定 - レポートパラメータ設定</h2>
+    </div>
+    <div class="row main-contents">
+      <div class="private-setting-report-group col" layout:fragment="content">
+        <form method="post" th:action="'/private/settings/report/update/' + ${report.reportId}">
+          <input type="hidden" name="versions" th:value="${report.versions}" />
+
+          <div class="form-group row">
+            <table class="table table-bordered">
+              <thead class="thead-light">
+                <tr>
+                  <th scope="col" style="width: 100px">ページ</th>
+                  <th scope="col" style="width: 100px">順番</th>
+                  <th scope="col">パラメータ</th>
+                  <th scope="col" style="width: 100px"></th>
+                </tr>
+              </thead>
+              <tbody>
+              <tr>
+                <td>
+                  <input type="number" class="form-control" name="pageNo">
+                </td>
+                <td>
+                  <input type="number" class="form-control" name="order">
+                </td>
+                <td>
+                  <select class="custom-select" name="paramId">
+                    <option value=""></option>
+                    <option value="1" th:each="t : ${templates}" th:vavlue="${t.templateId}" th:text="${t.fileName}" th:selected="${t.templateId} == ${report.templateId}">テスト</option>
+                  </select>
+                </td>
+                <td>
+                  <span><i class="fas fa-plus fa-2x"></i></span>
+                  <span><i class="fas fa-times fa-2x"></i></span>
+                </td>
+              </tr>
+            </table>
+          </div>
+
+          <!-- Buttons here -->
+          <div class="form-group row">
+            <div class="col-md-2 pl-0">
+              <a href="/private/settings/report" class="btn btn-block btn-lg btn-secondary">キャンセル</a>
+            </div>
+            <div class="col-md-2 pl-0">
+              <button type="submit" class="btn btn-block btn-lg btn-primary">更新</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- JQuery -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<!-- Bootstrap tooltips -->
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.13.0/umd/popper.min.js"></script>
+<!-- Bootstrap core JavaScript -->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"
+        integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T"
+        crossorigin="anonymous"></script>
+<script type="text/javascript"
+        src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/js/bootstrap-datepicker.min.js"></script>
+<script type="text/javascript"
+        src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/locales/bootstrap-datepicker.ja.min.js"></script>
+<th:block layout:fragment="page_scripts">
+</th:block>
+</body>
+</html>
