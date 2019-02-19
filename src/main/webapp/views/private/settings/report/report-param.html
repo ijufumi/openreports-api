@@ -25,7 +25,7 @@
       <h2 layout:fragment="title">設定 - レポートパラメータ設定</h2>
     </div>
     <div class="row main-contents">
-      <div class="private-setting-report-group col" layout:fragment="content">
+      <div class="private-setting-report-param-rel col" layout:fragment="content">
         <form method="post" th:action="'/private/settings/report/update/' + ${report.reportId}">
           <input type="hidden" name="versions" th:value="${report.versions}" />
 
@@ -40,24 +40,47 @@
                 </tr>
               </thead>
               <tbody>
-              <tr>
-                <td>
-                  <input type="number" class="form-control" name="pageNo">
-                </td>
-                <td>
-                  <input type="number" class="form-control" name="order">
-                </td>
-                <td>
-                  <select class="custom-select" name="paramId">
-                    <option value=""></option>
-                    <option value="1" th:each="t : ${templates}" th:vavlue="${t.templateId}" th:text="${t.fileName}" th:selected="${t.templateId} == ${report.templateId}">テスト</option>
-                  </select>
-                </td>
-                <td>
-                  <span><i class="fas fa-plus fa-2x"></i></span>
-                  <span><i class="fas fa-times fa-2x"></i></span>
-                </td>
-              </tr>
+                <tr>
+                  <td>
+                    <input type="number" class="form-control" name="pageNo">
+                  </td>
+                  <td>
+                    <input type="number" class="form-control" name="order">
+                  </td>
+                  <td>
+                    <select class="custom-select" name="paramId">
+                      <option value=""></option>
+                      <option value="1" th:each="t : ${templates}" th:vavlue="${t.templateId}" th:text="${t.fileName}" th:selected="${t.templateId} == ${report.templateId}">テスト</option>
+                    </select>
+                  </td>
+                  <td>
+                    <div class="row actions">
+                      <span class="col-md-5"><i class="fas fa-plus fa-2x"></i></span>
+                      <span class="col-md-5"><i class="fas fa-minus fa-2x"></i></span>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <input type="number" class="form-control" name="pageNo">
+                  </td>
+                  <td>
+                    <input type="number" class="form-control" name="order">
+                  </td>
+                  <td>
+                    <select class="custom-select" name="paramId">
+                      <option value=""></option>
+                      <option value="1" th:each="t : ${templates}" th:vavlue="${t.templateId}" th:text="${t.fileName}" th:selected="${t.templateId} == ${report.templateId}">テスト</option>
+                    </select>
+                  </td>
+                  <td>
+                    <div class="row actions">
+                      <span class="col-md-5"><i class="fas fa-plus fa-2x"></i></span>
+                      <span class="col-md-5"><i class="fas fa-minus fa-2x"></i></span>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
             </table>
           </div>
 
@@ -87,6 +110,8 @@
         src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/js/bootstrap-datepicker.min.js"></script>
 <script type="text/javascript"
         src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/locales/bootstrap-datepicker.ja.min.js"></script>
+<script type="text/javascript"
+        src="../../../../assets/js/setting/report/report.js"></script>
 <th:block layout:fragment="page_scripts">
 </th:block>
 </body>
