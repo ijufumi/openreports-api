@@ -136,4 +136,48 @@ class ReportSettingsController extends ApplicationController {
   def updateCompleted = {
     render(viewPath + "/update-completed")
   }
+
+  def showUpdateParams = {
+    params.getAs[Long]("id").map { id =>
+      val reportOpt = new ReportSettingsService().getReport(id)
+      if (reportOpt.isEmpty) {
+        haltWithBody(404)
+      }
+      val templates = new ReportTemplateSettingsService().getReportTemplates
+      set("report", reportOpt.get)
+      render(viewPath + "/report-param")
+    } getOrElse haltWithBody(404)
+  }
+
+  def doUpdateParams = {
+    params.getAs[Long]("id").map { id =>
+      if (validateUpdateParams.validate) {
+        // TODO:getting parameter values.
+        val versions = params.getAs[Long]("versions").getOrElse(0L)
+
+        val statusCode = new ReportSettingsService().updateReportParam(
+          id,
+          versions
+        )
+
+        logger.info("updateReport result:%s".format(statusCode))
+
+        statusCode match {
+          case StatusCode.OK => redirect(url(Controllers.reportSettings.updateCompletedUrl))
+          case StatusCode.DUPLICATE_ERR =>
+            set("customErrorMessages", Seq(i18n.get("warning.duplicateRegister")))
+          case _ =>
+            set("customErrorMessages", Seq(i18n.get("error.systemError")))
+        }
+      } else {
+        logger.info("invalid params:%s".format(params))
+      }
+      val reportOpt = new ReportSettingsService().getReport(id)
+      if (reportOpt.isEmpty) {
+        haltWithBody(404)
+      }
+      set("report", reportOpt.get)
+      render(viewPath + "/report-param")
+    } getOrElse haltWithBody(404)
+  }
 }

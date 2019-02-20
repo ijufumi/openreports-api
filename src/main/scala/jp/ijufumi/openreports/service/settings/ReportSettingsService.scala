@@ -89,4 +89,35 @@ class ReportSettingsService extends Logging {
     }
     StatusCode.OK
   }
+
+  def updateReportParam(
+    reportId: Long,
+    versions: Long
+  ): StatusCode.Value = {
+    try {
+      val reportOpt = TReport.findById(reportId)
+      if (reportOpt.isEmpty) {
+        return StatusCode.DATA_NOT_FOUND
+      }
+
+      val count = TReport
+        .updateByIdAndVersion(reportId, versions)
+        .withAttributes(
+          'updatedAt -> DateTime.now()
+        )
+      if (count != 1) {
+        return StatusCode.ALREADY_UPDATED
+      }
+    } catch {
+      case e: SQLException => {
+        logger.error("update report error", e)
+        return StatusCode.of(e)}
+      case e: Throwable    => {
+        logger.error("update report error", e)
+        return StatusCode.OTHER_ERROR
+      }
+    }
+    StatusCode.OK
+  }
+
 }
