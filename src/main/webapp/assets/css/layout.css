@@ -56,3 +56,7 @@
 .container .row .private-report input {
   width: 200px;
 }
+
+.is-hidden {
+  display: none;
+}
