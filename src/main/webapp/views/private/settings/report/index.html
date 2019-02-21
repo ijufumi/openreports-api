@@ -7,13 +7,9 @@
   <meta charset="UTF-8">
   <title>設定 - レポート一覧</title>
   <!-- Font Awesome -->
-  <link rel="stylesheet" href="../../../../assets/library/fontawesome/css/fa-svg-with-js.css">
+  <script defer src="https://use.fontawesome.com/releases/v5.7.2/js/all.js" integrity="sha384-0pzryjIRos8mFBWMzSSZApWtPl/5++eIfzYmTgBBmXYdhvxPc+XcFEk+zJwDgWbP" crossorigin="anonymous"></script>
   <!-- Bootstrap core CSS -->
-  <link rel="stylesheet" href="../../../../assets/library/bootstrap/v411/css/bootstrap.min.css"/>
-  <link rel="stylesheet"
-        href="../../../../assets/library/bootstrap-datepicker/bootstrap-datepicker.standalone.min.css"/>
-  <link rel="stylesheet"
-        href="../../../../assets/library/bootstrap-datepicker/bootstrap-datepicker3.standalone.min.css"/>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
   <link rel="stylesheet" href="../../../../assets/css/layout.css">
 </head>
@@ -29,24 +25,74 @@
           <a class="btn btn-block btn-lg btn-primary" href="/private/settings/report/register">登録</a>
         </div>
         <div class="list-group">
-          <a th:each="r : ${reports}"
+          <div th:each="r : ${reports}"
              th:href="@{'/private/settings/report/update/'} + ${r.reportId}"
              th:text="${r.reportName}"
-             href="#" class="list-group-item list-group-item-action">
-            aaaaa
-          </a>
-          <a th:remove="all" href="#" class="list-group-item list-group-item-action">
-            bbbbb
-          </a>
-          <a th:remove="all" href="#" class="list-group-item list-group-item-action">
-            ccccc
-          </a>
-          <a th:remove="all" href="#" class="list-group-item list-group-item-action">
-            ddddd
-          </a>
-          <a th:remove="all" href="#" class="list-group-item list-group-item-action">
-            eeeee
-          </a>
+             href="#" class="list-group-item">
+            <div class="row">
+              <div class="col-md-8">
+                aaaaa
+              </div>
+              <div class="col-md-2">
+                <a class="btn btn-block btn-primary" href="#" th:href="@{'/private/settings/report/update/'} + ${r.reportId}">変更</a>
+              </div>
+              <div class="col-md-2">
+                <a class="btn btn-block btn-primary" href="#" th:href="@{'/private/settings/report/params/'} + ${r.reportId}">パラメータ</a>
+              </div>
+            </div>
+          </div>
+          <div th:remove="all" href="#" class="list-group-item">
+            <div class="row">
+              <div class="col-md-8">
+                bbbbb
+              </div>
+              <div class="col-md-2">
+                <a class="btn btn-block btn-primary" href="#">変更</a>
+              </div>
+              <div class="col-md-2">
+                <a class="btn btn-block btn-primary" href="#">パラメータ</a>
+              </div>
+            </div>
+          </div>
+          <div th:remove="all" href="#" class="list-group-item">
+            <div class="row">
+              <div class="col-md-8">
+                ccccc
+              </div>
+              <div class="col-md-2">
+                <a class="btn btn-block btn-primary" href="#">変更</a>
+              </div>
+              <div class="col-md-2">
+                <a class="btn btn-block btn-primary" href="#">パラメータ</a>
+              </div>
+            </div>
+          </div>
+          <div th:remove="all" href="#" class="list-group-item">
+            <div class="row">
+              <div class="col-md-8">
+                ddddd
+              </div>
+              <div class="col-md-2">
+                <a class="btn btn-block btn-primary" href="#">変更</a>
+              </div>
+              <div class="col-md-2">
+                <a class="btn btn-block btn-primary" href="#">パラメータ</a>
+              </div>
+            </div>
+          </div>
+          <div th:remove="all" href="#" class="list-group-item">
+            <div class="row">
+              <div class="col-md-8">
+                eeeee
+              </div>
+              <div class="col-md-2">
+                <a class="btn btn-block btn-primary" href="#">変更</a>
+              </div>
+              <div class="col-md-2">
+                <a class="btn btn-block btn-primary" href="#">パラメータ</a>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -54,16 +100,8 @@
 </div>
 <!-- JQuery -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<!-- Bootstrap tooltips -->
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.13.0/umd/popper.min.js"></script>
 <!-- Bootstrap core JavaScript -->
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"
-        integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T"
-        crossorigin="anonymous"></script>
-<script type="text/javascript"
-        src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/js/bootstrap-datepicker.min.js"></script>
-<script type="text/javascript"
-        src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/locales/bootstrap-datepicker.ja.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 <th:block layout:fragment="page_scripts">
 </th:block>
 </body>

@@ -32,9 +32,9 @@ object Controllers {
     val updateCompletedUrl =
       get(path + "/updateCompleted")(updateCompleted).as('updateCompleted)
 
-    val showUpdateParamsUrl = get(path + "/updateParams/:id")(showUpdateParams).as('showUpdateParams)
+    val showUpdateParamsUrl = get(path + "/params/:id")(showUpdateParams).as('showUpdateParams)
 
-    val doUpdateParamsUrl = post(path + "/updateParams/:id")(doUpdateParams).as('doUpdateParams)
+    val doUpdateParamsUrl = post(path + "/params/:id")(doUpdateParams).as('doUpdateParams)
   }
 
   object reportGroupSettings extends ReportGroupSettingsController with Routes {
