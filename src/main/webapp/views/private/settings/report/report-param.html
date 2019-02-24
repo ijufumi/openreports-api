@@ -20,7 +20,7 @@
     </div>
     <div class="row main-contents">
       <div class="private-setting-report-param-rel col" layout:fragment="content">
-        <form method="post" th:action="'/private/settings/report/updateParams/' + ${report.reportId}">
+        <form method="post" id="paramsForm" th:action="'/private/settings/report/params/' + ${report.reportId}">
           <input type="hidden" name="versions" th:value="${report.versions}" />
 
           <div class="form-group row">
@@ -36,10 +36,10 @@
               <tbody id="params">
                 <tr class="is-hidden" id="tr-template">
                   <td>
-                    <input type="number" class="form-control" name="pageNo">
+                    <input type="number" class="form-control" min="0" name="pageNo">
                   </td>
                   <td>
-                    <input type="number" class="form-control" name="order">
+                    <input type="number" class="form-control" min="1" name="seq">
                   </td>
                   <td>
                     <select class="custom-select" name="paramId">
@@ -56,10 +56,10 @@
                 </tr>
                 <tr>
                   <td>
-                    <input type="number" class="form-control" name="pageNo">
+                    <input type="number" class="form-control" min="0" name="pageNo">
                   </td>
                   <td>
-                    <input type="number" class="form-control" name="order">
+                    <input type="number" class="form-control" min="1" name="seq">
                   </td>
                   <td>
                     <select class="custom-select" name="paramId">
@@ -84,7 +84,7 @@
               <a href="/private/settings/report" class="btn btn-block btn-lg btn-secondary">キャンセル</a>
             </div>
             <div class="col-md-2 pl-0">
-              <button type="submit" class="btn btn-block btn-lg btn-primary">更新</button>
+              <button type="button" id="submitBtn" class="btn btn-block btn-lg btn-primary">更新</button>
             </div>
           </div>
         </form>

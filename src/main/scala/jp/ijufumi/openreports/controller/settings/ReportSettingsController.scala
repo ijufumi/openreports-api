@@ -20,18 +20,24 @@ class ReportSettingsController extends ApplicationController {
 
   def requestParams = Params(params)
 
-  def validateRegisterParams = validation(
+  def validate4Register = validation(
     requestParams,
     paramKey("reportName") is required & maxLength(250),
     paramKey("description") is maxLength(250),
     paramKey("templateId") is required
   )
 
-  def validateUpdateParams = validation(
+  def validate4Update = validation(
     requestParams,
     paramKey("reportName") is required & maxLength(250),
     paramKey("description") is maxLength(250),
     paramKey("templateId") is required,
+    paramKey("versions") is required & longValue
+  )
+
+  def validate4UpdatePrams = validation(
+    requestParams,
+    paramKey("params") is required,
     paramKey("versions") is required & longValue
   )
 
@@ -51,7 +57,7 @@ class ReportSettingsController extends ApplicationController {
   }
 
   def doRegister = {
-    if (validateRegisterParams.validate) {
+    if (validate4Register.validate) {
       val reportName = params.getAs[String]("reportName").get
       val description = params.getAs[String]("description").getOrElse("")
       val templateId = params.getAs[Long]("templateId").getOrElse(0L)
@@ -96,7 +102,7 @@ class ReportSettingsController extends ApplicationController {
 
   def doUpdate = {
     params.getAs[Long]("id").map { id =>
-      if (validateUpdateParams.validate) {
+      if (validate4Update.validate) {
         val reportName = params.getAs[String]("reportName").get
         val description = params.getAs[String]("description").getOrElse("")
         val templateId = params.getAs[Long]("templateId").getOrElse(0L)
@@ -151,7 +157,7 @@ class ReportSettingsController extends ApplicationController {
 
   def doUpdateParams = {
     params.getAs[Long]("id").map { id =>
-      if (validateUpdateParams.validate) {
+      if (validate4UpdatePrams.validate) {
         // TODO:getting parameter values.
         val versions = params.getAs[Long]("versions").getOrElse(0L)
 
