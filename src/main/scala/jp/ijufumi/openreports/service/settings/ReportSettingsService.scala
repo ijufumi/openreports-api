@@ -4,8 +4,9 @@ import java.sql.SQLException
 
 import jp.ijufumi.openreports.model.{TReport, TReportParamConfig, TReportTemplate}
 import jp.ijufumi.openreports.service.enums.StatusCode
-import jp.ijufumi.openreports.vo.{ReportInfo, ReportParamConfigInfo, ReportTemplateInfo}
+import jp.ijufumi.openreports.vo.{ReportInfo, ReportParamConfig, ReportParamConfigInfo, ReportTemplateInfo}
 import org.joda.time.DateTime
+import scalikejdbc.interpolation.SQLSyntax
 import skinny.Logging
 
 class ReportSettingsService extends Logging {
@@ -92,6 +93,7 @@ class ReportSettingsService extends Logging {
 
   def updateReportParam(
     reportId: Long,
+    params: List[ReportParamConfig],
     versions: Long
   ): StatusCode.Value = {
     try {
@@ -105,6 +107,11 @@ class ReportSettingsService extends Logging {
         .withAttributes(
           'updatedAt -> DateTime.now()
         )
+
+        TReportParamConfig.deleteBy(SQLSyntax.eq(TReportParamConfig.column.column("reportId"), reportId))
+
+        // TODO:insert
+        //params.foreach()
       if (count != 1) {
         return StatusCode.ALREADY_UPDATED
       }

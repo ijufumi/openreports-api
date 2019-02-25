@@ -2,13 +2,13 @@ package jp.ijufumi.openreports.controller.settings
 
 import jp.ijufumi.openreports.controller.common.ApplicationController
 import jp.ijufumi.openreports.service.enums.StatusCode
-import jp.ijufumi.openreports.service.settings.{
-  ReportParamSettingsService,
-  ReportSettingsService,
-  ReportTemplateSettingsService
-}
+import jp.ijufumi.openreports.service.settings.{ReportParamSettingsService, ReportSettingsService, ReportTemplateSettingsService}
+import jp.ijufumi.openreports.vo.ReportParamConfig
 import skinny.controller.Params
 import skinny.validator.{longValue, maxLength, paramKey, required}
+import org.json4s._
+import org.json4s.jackson.JsonMethods._
+import org.json4s.jackson.Serialization.read
 
 class ReportSettingsController extends ApplicationController {
 
@@ -159,10 +159,14 @@ class ReportSettingsController extends ApplicationController {
     params.getAs[Long]("id").map { id =>
       if (validate4UpdatePrams.validate) {
         // TODO:getting parameter values.
+        val reportParams = params.getAs[String]("params").getOrElse("")
         val versions = params.getAs[Long]("versions").getOrElse(0L)
+        //val reportParamsObj = parse(reportParams)
+        val reportParamList = read[List[ReportParamConfig]](reportParams)
 
         val statusCode = new ReportSettingsService().updateReportParam(
           id,
+          reportParamList,
           versions
         )
 
