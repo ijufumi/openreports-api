@@ -1,18 +1,15 @@
 $(function () {
-  $(".private-setting-report-param-rel div.actions").each(function(idx){
-    if (idx === 1) {
-      $("span:eq(1)", this).hide();
-    } else {
-      $("span:eq(1)", this).on("click", function(e){
-        $(this).parent().parent().parent().remove();
-      });
-    }
-    $("span:eq(0)", this).on("click", function(e){
-      var row = $("#tr-template").clone(true);
-      row.removeClass("is-hidden");
-      //$("#params").append(row);
-      $(this).parent().parent().parent().after(row);
+  $(".private-setting-report-param-rel div.actions button").each(function(idx){
+    $(this).on("click", function(e){
+      $(this).parent().parent().parent().parent().remove();
     });
+  });
+
+  $("#addParamBtn").on("click", function(e) {
+    var row = $("#tr-template").clone(true);
+    row.removeClass("is-hidden");
+    //$("#params").append(row);
+    $("#params").append(row);
   });
 
   $("#submitBtn").on("click", function (e) {
@@ -32,8 +29,8 @@ $(function () {
     var form = $("#paramsForm");
 
     $("<input>", {
-      type: "text",
-      id: "params",
+      type: "hidden",
+      name: "params",
       value: JSON.stringify(params)
     }).appendTo(form);
 

@@ -105,16 +105,21 @@ class ReportSettingsService extends Logging {
       val count = TReport
         .updateByIdAndVersion(reportId, versions)
         .withAttributes(
-          'updatedAt -> DateTime.now()
+          'updatedAt -> DateTime.now
         )
 
-        TReportParamConfig.deleteBy(SQLSyntax.eq(TReportParamConfig.column.column("reportId"), reportId))
-
-        // TODO:insert
-        //params.foreach()
       if (count != 1) {
         return StatusCode.ALREADY_UPDATED
       }
+      TReportParamConfig.deleteBy(SQLSyntax.eq(TReportParamConfig.column.column("reportId"), reportId))
+
+      params.foreach(x =>
+        TReportParamConfig.createWithAttributes('reportId -> reportId,
+          'paramId -> x.paramId,
+          'pageNo -> x.pageNo,
+          'seq -> x.seq,
+          'createdAt -> DateTime.now,
+          'updatedAt -> DateTime.now))
     } catch {
       case e: SQLException => {
         logger.error("update report error", e)

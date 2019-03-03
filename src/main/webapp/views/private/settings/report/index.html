@@ -26,11 +26,9 @@
         </div>
         <div class="list-group">
           <div th:each="r : ${reports}"
-             th:href="@{'/private/settings/report/update/'} + ${r.reportId}"
-             th:text="${r.reportName}"
-             href="#" class="list-group-item">
+             class="list-group-item">
             <div class="row">
-              <div class="col-md-8">
+              <div class="col-md-8" th:text="${r.reportName}">
                 aaaaa
               </div>
               <div class="col-md-2">
