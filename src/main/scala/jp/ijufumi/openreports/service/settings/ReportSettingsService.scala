@@ -47,10 +47,17 @@ class ReportSettingsService extends Logging {
       })
   }
 
-  def getReportParamConfig: Seq[ReportParamConfigInfo] = {
+  def getReportParamConfig(reportId: Long): Seq[ReportParamConfigInfo] = {
     TReportParamConfig
-      .findAll()
+      .findAllBy(sqls.eq(TReportParamConfig.column.field("reportId"), reportId))
       .map(p => ReportParamConfigInfo(p.paramId, p.pageNo, p.seq))
+      .sortWith((x, y) => {
+        if (x.pageNo == y.pageNo) {
+           x.seq < y.seq
+        } else {
+          x.pageNo < y.pageNo
+        }
+      })
   }
 
   def registerReport(
@@ -135,16 +142,15 @@ class ReportSettingsService extends Logging {
 
       if (current.nonEmpty) {
         TReportParamConfig.deleteBy(condition)
-
-        params.foreach(
-          x =>
-            TReportParamConfig.createWithAttributes('reportId -> reportId,
-              'paramId -> x.paramId,
-              'pageNo -> x.pageNo,
-              'seq -> x.seq,
-              'createdAt -> DateTime.now,
-              'updatedAt -> DateTime.now))
       }
+      params.foreach(
+        x =>
+          TReportParamConfig.createWithAttributes('reportId -> reportId,
+            'paramId -> x.paramId,
+            'pageNo -> x.pageNo,
+            'seq -> x.seq,
+            'createdAt -> DateTime.now,
+            'updatedAt -> DateTime.now))
     } catch {
       case e: SQLException => {
         logger.error("update report error", e)

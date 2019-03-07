@@ -149,8 +149,11 @@ class ReportSettingsController extends ApplicationController {
       if (reportOpt.isEmpty) {
         haltWithBody(404)
       }
-      val templates = new ReportTemplateSettingsService().getReportTemplates
       set("report", reportOpt.get)
+      val reportParams = new ReportParamSettingsService().getParams
+      set("reportParams", reportParams)
+      val paramsConfig = new ReportSettingsService().getReportParamConfig(id)
+      set("paramsConfig", paramsConfig)
       render(viewPath + "/report-param")
     } getOrElse haltWithBody(404)
   }
@@ -185,6 +188,10 @@ class ReportSettingsController extends ApplicationController {
         haltWithBody(404)
       }
       set("report", reportOpt.get)
+      val reportParams = new ReportParamSettingsService().getParams
+      set("reportParams", reportParams)
+      val paramsConfig = new ReportSettingsService().getReportParamConfig(id)
+      set("paramsConfig", paramsConfig)
       render(viewPath + "/report-param")
     } getOrElse haltWithBody(404)
   }

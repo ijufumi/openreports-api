@@ -1,7 +1,8 @@
 package jp.ijufumi.openreports.vo
+import scala.beans.BeanProperty
 
 case class ReportParamConfigInfo(
-  paramId: Long,
-  pageNo: Int,
-  seq: Int
+  @BeanProperty paramId: Long,
+  @BeanProperty pageNo: Int,
+  @BeanProperty seq: Int
 )

@@ -44,7 +44,7 @@
                   <td>
                     <select class="custom-select" name="paramId">
                       <option value=""></option>
-                      <option value="1" th:each="t : ${templates}" th:vavlue="${t.templateId}" th:text="${t.fileName}" th:selected="${t.templateId} == ${report.templateId}">テスト</option>
+                      <option value="1" th:each="p : ${reportParams}" th:vavlue="${p.paramId}" th:text="${p.paramName}">テスト</option>
                     </select>
                   </td>
                   <td>
@@ -55,17 +55,17 @@
                     </div>
                   </td>
                 </tr>
-                <tr>
+                <tr th:each="c : ${paramsConfig}">
                   <td>
-                    <input type="number" class="form-control" min="0" name="pageNo">
+                    <input type="number" class="form-control" min="0" name="pageNo" th:value="${c.pageNo}">
                   </td>
                   <td>
-                    <input type="number" class="form-control" min="1" name="seq">
+                    <input type="number" class="form-control" min="1" name="seq" th:value="${c.seq}">
                   </td>
                   <td>
                     <select class="custom-select" name="paramId">
                       <option value=""></option>
-                      <option value="1" th:each="t : ${templates}" th:vavlue="${t.templateId}" th:text="${t.fileName}" th:selected="${t.templateId} == ${report.templateId}">テスト</option>
+                      <option value="1" th:each="p : ${reportParams}" th:value="${p.paramId}" th:text="${p.paramName}" th:selected="${p.paramId} == ${c.paramId}">テスト</option>
                     </select>
                   </td>
                   <td>
