@@ -13,7 +13,7 @@ class TopService extends LoggerProvider {
     val hashedPassword = Hash.hmacSha256(HashKey, password)
     val members: Seq[TMember] = TMember
       .where('emailAddress -> emailAddress, 'password -> hashedPassword)
-      .apply();
+      .apply()
 
     if (members.isEmpty) {
       logger.info(

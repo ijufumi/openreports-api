@@ -4,9 +4,14 @@ import java.sql.SQLException
 
 import jp.ijufumi.openreports.model.{TReport, TReportParamConfig, TReportTemplate}
 import jp.ijufumi.openreports.service.enums.StatusCode
-import jp.ijufumi.openreports.vo.{ReportInfo, ReportParamConfig, ReportParamConfigInfo, ReportTemplateInfo}
+import jp.ijufumi.openreports.vo.{
+  ReportInfo,
+  ReportParamConfig,
+  ReportParamConfigInfo,
+  ReportTemplateInfo
+}
 import org.joda.time.DateTime
-import scalikejdbc.interpolation.SQLSyntax
+import scalikejdbc.sqls
 import skinny.Logging
 
 class ReportSettingsService extends Logging {
@@ -15,8 +20,14 @@ class ReportSettingsService extends Logging {
       .findAll()
       .map(r => {
         val template = TReportTemplate.findById(r.templateId)
-        ReportInfo(r.reportId, r.reportName, r.description, r.templateId, r.createdAt, r.updatedAt, r.versions,
-          ReportTemplateInfo(r.templateId, template.get.fileName))
+        ReportInfo(r.reportId,
+                   r.reportName,
+                   r.description,
+                   r.templateId,
+                   r.createdAt,
+                   r.updatedAt,
+                   r.versions,
+                   ReportTemplateInfo(r.templateId, template.get.fileName))
       })
   }
 
@@ -25,8 +36,14 @@ class ReportSettingsService extends Logging {
       .findById(reportId)
       .map(r => {
         val template = TReportTemplate.findById(r.templateId)
-        ReportInfo(r.reportId, r.reportName, r.description, r.templateId, r.createdAt, r.updatedAt, r.versions,
-          ReportTemplateInfo(r.templateId, template.get.fileName))
+        ReportInfo(r.reportId,
+                   r.reportName,
+                   r.description,
+                   r.templateId,
+                   r.createdAt,
+                   r.updatedAt,
+                   r.versions,
+                   ReportTemplateInfo(r.templateId, template.get.fileName))
       })
   }
 
@@ -82,8 +99,9 @@ class ReportSettingsService extends Logging {
     } catch {
       case e: SQLException => {
         logger.error("update report error", e)
-        return StatusCode.of(e)}
-      case e: Throwable    => {
+        return StatusCode.of(e)
+      }
+      case e: Throwable => {
         logger.error("update report error", e)
         return StatusCode.OTHER_ERROR
       }
@@ -92,9 +110,9 @@ class ReportSettingsService extends Logging {
   }
 
   def updateReportParam(
-    reportId: Long,
-    params: List[ReportParamConfig],
-    versions: Long
+      reportId: Long,
+      params: List[ReportParamConfig],
+      versions: Long
   ): StatusCode.Value = {
     try {
       val reportOpt = TReport.findById(reportId)
@@ -111,20 +129,28 @@ class ReportSettingsService extends Logging {
       if (count != 1) {
         return StatusCode.ALREADY_UPDATED
       }
-      TReportParamConfig.deleteBy(SQLSyntax.eq(TReportParamConfig.column.column("reportId"), reportId))
 
-      params.foreach(x =>
-        TReportParamConfig.createWithAttributes('reportId -> reportId,
-          'paramId -> x.paramId,
-          'pageNo -> x.pageNo,
-          'seq -> x.seq,
-          'createdAt -> DateTime.now,
-          'updatedAt -> DateTime.now))
+      val condition = sqls.eq(TReportParamConfig.column.field("reportId"), reportId)
+      val current = TReportParamConfig.findAllBy(condition)
+
+      if (current.nonEmpty) {
+        TReportParamConfig.deleteBy(condition)
+
+        params.foreach(
+          x =>
+            TReportParamConfig.createWithAttributes('reportId -> reportId,
+              'paramId -> x.paramId,
+              'pageNo -> x.pageNo,
+              'seq -> x.seq,
+              'createdAt -> DateTime.now,
+              'updatedAt -> DateTime.now))
+      }
     } catch {
       case e: SQLException => {
         logger.error("update report error", e)
-        return StatusCode.of(e)}
-      case e: Throwable    => {
+        return StatusCode.of(e)
+      }
+      case e: Throwable => {
         logger.error("update report error", e)
         return StatusCode.OTHER_ERROR
       }

@@ -19,9 +19,9 @@ $(function () {
       var seq = $("input[name=seq]", this).val();
       var paramId = $("select[name=paramId]", this).val();
       var param = {
-        pageNo: pageNo,
-        seq: seq,
-        paramId: paramId,
+        pageNo: Number(pageNo),
+        seq: Number(seq),
+        paramId: Number(paramId),
       };
       params.push(param)
     });
