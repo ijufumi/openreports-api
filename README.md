@@ -3,8 +3,8 @@
 
 | Name | Version | Notes |
 | --- | --- | --- |
-| Scala | 2.12.6 | - |
-| Skinny Framework | 3.0.1 | All of them. |
+| Scala | 2.12.8 | - |
+| Skinny Framework | 3.0.2 | All of them. |
 | Servlet API | 3.1.0 | Web API |
 | Skinny Logback | 1.0.14 | Logging |
 | SLF4J | 1.7.25 | Logging |

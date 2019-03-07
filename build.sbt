@@ -13,8 +13,8 @@ val appOrganization = "jp.ijufumi"
 val appName = "openreports"
 val appVersion = "0.0.1-SNAPSHOT"
 
-val skinnyVersion = "3.0.1"
-val theScalaVersion = "2.12.7"
+val skinnyVersion = "3.0.2"
+val theScalaVersion = "2.12.8"
 val jettyVersion = "9.4.14.v20181114"
 
 lazy val baseSettings = servletSettings ++ Seq(
