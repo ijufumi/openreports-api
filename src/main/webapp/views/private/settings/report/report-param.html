@@ -20,9 +20,6 @@
     </div>
     <div class="row main-contents">
       <div class="private-setting-report-param-rel col" layout:fragment="content">
-        <form method="post" id="paramsForm" th:action="'/private/settings/report/params/' + ${report.reportId}">
-          <input type="hidden" name="versions" th:value="${report.versions}" />
-
           <div class="form-group row">
             <table class="table table-bordered">
               <thead class="thead-light">
@@ -92,6 +89,8 @@
               <button type="button" id="submitBtn" class="btn btn-block btn-lg btn-primary">更新</button>
             </div>
           </div>
+        <form method="post" id="paramsForm" th:action="'/private/settings/report/params/' + ${report.reportId}">
+          <input type="hidden" name="versions" th:value="${report.versions}" />
         </form>
       </div>
     </div>
