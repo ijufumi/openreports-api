@@ -6,6 +6,9 @@ sbt_config=${current_dir}/.sbtconfig
 if [ ! -f "${sbt_config}" ]; then
   echo "#!/bin/bash
 java_major_version=\$(java -version 2>&1 | awk -F '\"' '/version/ {print \$2}' | awk -F'.' '{ print \$2 }')
+if [ $java_major_version -eq 0 ]; then
+  java_major_version=$(java -version 2>&1 | awk -F '"' '/version/ {print $2}' | awk -F'.' '{ print $1 }')
+fi
 if [ \$java_major_version -ge 8 ]; then
   PERM_OPT=\"-XX:MaxMetaspaceSize=386M\"
 else
