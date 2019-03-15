@@ -60,3 +60,13 @@
 .is-hidden {
   display: none;
 }
+
+.checkbox-list {
+  width: 100%;
+  height: 200px;
+  border-color: rgb(206, 212, 218);
+  border-style: solid;
+  border-width: 1px;
+  overflow: auto;
+  padding-left: 5px;
+}
