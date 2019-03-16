@@ -54,9 +54,9 @@
             </div>
             <div class="col-md-8">
               <div class="checkbox-list">
-                <div th:remove="all">
-                  <input type="checkbox" name="group" id="group1"/>
-                  <label for="group1">グループ1</label>
+                <div th:each="g : ${groups}">
+                  <input type="checkbox" name="group" id="group1" th:id="'group' + ${g.reportGroupId}"/>
+                  <label for="group1" th:for="'group' + ${g.reportGroupId}" th:text="${g.reportGroupName}">グループ1</label>
                 </div>
                 <div th:remove="all">
                   <input type="checkbox" name="group" id="group2"/>

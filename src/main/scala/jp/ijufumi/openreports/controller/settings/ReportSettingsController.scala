@@ -2,12 +2,10 @@ package jp.ijufumi.openreports.controller.settings
 
 import jp.ijufumi.openreports.controller.common.ApplicationController
 import jp.ijufumi.openreports.service.enums.StatusCode
-import jp.ijufumi.openreports.service.settings.{ReportParamSettingsService, ReportSettingsService, ReportTemplateSettingsService}
-import jp.ijufumi.openreports.vo.ReportParamConfig
+import jp.ijufumi.openreports.service.settings.{ReportGroupSettingsService, ReportParamSettingsService, ReportSettingsService, ReportTemplateSettingsService}
+import jp.ijufumi.openreports.vo.{ReportInfo, ReportParamConfig}
 import skinny.controller.Params
 import skinny.validator.{longValue, maxLength, paramKey, required}
-import org.json4s._
-import org.json4s.jackson.JsonMethods._
 import org.json4s.jackson.Serialization.read
 
 class ReportSettingsController extends ApplicationController {
@@ -50,14 +48,16 @@ class ReportSettingsController extends ApplicationController {
   def showRegister = {
     val templates = new ReportTemplateSettingsService().getReportTemplates
     val params = new ReportParamSettingsService().getParams
-
+    val groups = new ReportGroupSettingsService().getGroups
     set("templates", templates)
     set("params", params)
+    set("groups", groups)
     render(viewPath + "/register")
   }
 
   def doRegister = {
     if (validate4Register.validate) {
+      val reportInfo = params.getAs[ReportInfo]("reportInfo").get
       val reportName = params.getAs[String]("reportName").get
       val description = params.getAs[String]("description").getOrElse("")
       val templateId = params.getAs[Long]("templateId").getOrElse(0L)

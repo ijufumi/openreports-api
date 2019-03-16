@@ -12,6 +12,7 @@ class ReportGroupSettingsService extends Logging {
   def getGroups: Seq[ReportGroupInfo] = {
     TReportGroup
       .findAll()
+      .sortBy(_.reportGroupId)
       .map(r => ReportGroupInfo(r.reportGroupId, r.reportGroupName, r.createdAt, r.updatedAt, r.versions))
   }
 

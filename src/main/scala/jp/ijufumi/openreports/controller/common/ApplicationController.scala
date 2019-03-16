@@ -4,6 +4,7 @@ import java.io.{BufferedInputStream, FileInputStream, InputStream}
 import java.time.{LocalDateTime, ZoneOffset}
 
 import jp.ijufumi.openreports.controller.{PublicPath, ViewRootPath}
+import jp.ijufumi.openreports.vo.Converters
 import nz.net.ultraq.thymeleaf.LayoutDialect
 import org.thymeleaf.dialect.IDialect
 import org.thymeleaf.extras.java8time.dialect.Java8TimeDialect
@@ -24,6 +25,7 @@ trait ApplicationController
     with SkinnySessionFilter
     with ErrorPageFilter
     with I18nFeature
+    with Converters
     with ThymeleafTemplateEngineFeature {
 
   /**

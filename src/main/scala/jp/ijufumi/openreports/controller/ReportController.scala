@@ -1,9 +1,9 @@
 package jp.ijufumi.openreports.controller
 
 import jp.ijufumi.openreports.controller.common.ApplicationController
+import jp.ijufumi.openreports.service.settings.ReportTemplateSettingsService
 import jp.ijufumi.openreports.service.{ReportService, ReportingOutputService}
 import jp.ijufumi.openreports.vo.{ApiResponse, MemberInfo}
-import org.apache.commons.lang3.StringUtils
 import skinny.Params
 import skinny.validator.{paramKey, required}
 
@@ -100,7 +100,7 @@ class ReportController extends ApplicationController {
     val templateFile = ReportService()
       .report(reportId)
       .map {
-        _.templateFile
+        x => new ReportTemplateSettingsService().getReportTemplate(x.templateId)
       }
       .map {_.fileName}
       .getOrElse("")

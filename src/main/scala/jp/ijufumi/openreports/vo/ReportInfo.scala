@@ -10,5 +10,4 @@ case class ReportInfo(@BeanProperty reportId: Long,
                       @BeanProperty templateId: Long,
                       @BeanProperty createdAt: LocalDateTime,
                       @BeanProperty updatedAt: LocalDateTime,
-                      @BeanProperty versions: Long,
-                      @BeanProperty templateFile: ReportTemplateInfo)
+                      @BeanProperty versions: Long)

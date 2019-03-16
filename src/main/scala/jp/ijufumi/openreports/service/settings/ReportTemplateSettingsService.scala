@@ -13,10 +13,18 @@ import skinny.Logging
 import skinny.micro.multipart.FileItem
 
 class ReportTemplateSettingsService extends Logging {
+  val blankTemplate = new ReportTemplateInfo(0L, "")
+
   def getReportTemplates: Seq[ReportTemplateInfo] = {
     TReportTemplate
       .findAll()
       .map(r => ReportTemplateInfo(r.templateId, r.fileName))
+  }
+
+  def getReportTemplate(templateId: Long): ReportTemplateInfo = {
+    TReportTemplate
+      .findById(templateId)
+      .map(r => ReportTemplateInfo(r.templateId, r.fileName)).getOrElse(blankTemplate)
   }
 
   def getHistories(templateId: Long): Seq[ReportTemplateHistoryInfo] = {
