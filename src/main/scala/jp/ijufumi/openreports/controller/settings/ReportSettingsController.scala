@@ -56,27 +56,16 @@ class ReportSettingsController extends ApplicationController {
   }
 
   def doRegister = {
-    if (validate4Register.validate) {
-      val reportInfo = params.getAs[ReportInfo]("reportInfo").get
-      val reportName = params.getAs[String]("reportName").get
-      val description = params.getAs[String]("description").getOrElse("")
-      val templateId = params.getAs[Long]("templateId").getOrElse(0L)
+    val reportInfo = params.getAs[ReportInfo]("reportInfo").get
+    // TODO:validation
+    val statusCode = new ReportSettingsService().registerReport(reportInfo)
 
-      val statusCode = new ReportSettingsService().registerReport(
-        reportName,
-        description,
-        templateId
-      )
-
-      statusCode match {
-        case StatusCode.OK => redirect(url(Controllers.reportSettings.registerCompletedUrl))
-        case StatusCode.DUPLICATE_ERR =>
-          set("customErrorMessages", Seq(i18n.get("warning.duplicateRegister")))
-        case _ =>
-          set("customErrorMessages", Seq(i18n.get("error.systemError")))
-      }
-    } else {
-      logger.info("invalid params:%s".format(params))
+    statusCode match {
+      case StatusCode.OK => redirect(url(Controllers.reportSettings.registerCompletedUrl))
+      case StatusCode.DUPLICATE_ERR =>
+        set("customErrorMessages", Seq(i18n.get("warning.duplicateRegister")))
+      case _ =>
+        set("customErrorMessages", Seq(i18n.get("error.systemError")))
     }
     val templates = new ReportTemplateSettingsService().getReportTemplates
     set("templates", templates)
@@ -94,48 +83,32 @@ class ReportSettingsController extends ApplicationController {
         haltWithBody(404)
       }
       val templates = new ReportTemplateSettingsService().getReportTemplates
+      val groups = new ReportGroupSettingsService().getGroups
       set("templates", templates)
       set("report", reportOpt.get)
+      set("groups", groups)
       render(viewPath + "/update")
     } getOrElse haltWithBody(404)
   }
 
   def doUpdate = {
     params.getAs[Long]("id").map { id =>
-      if (validate4Update.validate) {
-        val reportName = params.getAs[String]("reportName").get
-        val description = params.getAs[String]("description").getOrElse("")
-        val templateId = params.getAs[Long]("templateId").getOrElse(0L)
-        val versions = params.getAs[Long]("versions").getOrElse(0L)
+      val reportInfo = params.getAs[ReportInfo]("reportInfo").get
 
-        val statusCode = new ReportSettingsService().updateReport(
-          id,
-          reportName,
-          description,
-          templateId,
-          versions
-        )
+      val statusCode = new ReportSettingsService().updateReport(
+        id,
+        reportInfo
+      )
 
-        logger.info("updateReport result:%s".format(statusCode))
+      logger.info("updateReport result:%s".format(statusCode))
 
-        statusCode match {
-          case StatusCode.OK => redirect(url(Controllers.reportSettings.updateCompletedUrl))
-          case StatusCode.DUPLICATE_ERR =>
-            set("customErrorMessages", Seq(i18n.get("warning.duplicateRegister")))
-          case _ =>
-            set("customErrorMessages", Seq(i18n.get("error.systemError")))
-        }
-      } else {
-        logger.info("invalid params:%s".format(params))
+      statusCode match {
+        case StatusCode.OK => redirect(url(Controllers.reportSettings.updateCompletedUrl))
+        case StatusCode.DUPLICATE_ERR =>
+          set("customErrorMessages", Seq(i18n.get("warning.duplicateRegister")))
+        case _ =>
+          set("customErrorMessages", Seq(i18n.get("error.systemError")))
       }
-      val reportOpt = new ReportSettingsService().getReport(id)
-      if (reportOpt.isEmpty) {
-        haltWithBody(404)
-      }
-      set("report", reportOpt.get)
-      val templates = new ReportTemplateSettingsService().getReportTemplates
-      set("templates", templates)
-      render(viewPath + "/update")
     } getOrElse haltWithBody(404)
   }
 

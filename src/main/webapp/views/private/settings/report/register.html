@@ -19,8 +19,7 @@
       <h2 layout:fragment="title">設定 - レポート登録</h2>
     </div>
     <div class="row main-contents">
-      <div class="private-setting-report col" layout:fragment="content">
-        <form method="post" action="/private/settings/report/register">
+      <div class="private-setting-report-register col" layout:fragment="content">
           <div class="form-group row">
             <div class="col-md-2">
               <label for="reportName" class="col-form-label">名前</label>
@@ -55,7 +54,7 @@
             <div class="col-md-8">
               <div class="checkbox-list">
                 <div th:each="g : ${groups}">
-                  <input type="checkbox" name="group" id="group1" th:id="'group' + ${g.reportGroupId}"/>
+                  <input type="checkbox" name="group" id="group1" th:id="'group' + ${g.reportGroupId}" th:value="${g.reportGroupId}"/>
                   <label for="group1" th:for="'group' + ${g.reportGroupId}" th:text="${g.reportGroupName}">グループ1</label>
                 </div>
                 <div th:remove="all">
@@ -82,9 +81,10 @@
               <a href="/private/settings/report" class="btn btn-block btn-lg btn-secondary">キャンセル</a>
             </div>
             <div class="col-md-2 pl-0">
-              <button type="submit" class="btn btn-block btn-lg btn-primary">登録</button>
+              <button type="button" id="submitBtn" class="btn btn-block btn-lg btn-primary">登録</button>
             </div>
           </div>
+        <form method="post" id="reportForm" action="/private/settings/report/register">
         </form>
       </div>
     </div>
@@ -97,6 +97,8 @@
 <script type="text/javascript"
         src="../../../../assets/js/setting/report/report.js"></script>
 <th:block layout:fragment="page_scripts">
+  <script type="text/javascript"
+          th:src="@{/assets/js/setting/report/report.js} + '?' + ${timeStamp}"></script>
 </th:block>
 </body>
 </html>

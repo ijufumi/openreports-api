@@ -2,14 +2,9 @@ package jp.ijufumi.openreports.service.settings
 
 import java.sql.SQLException
 
-import jp.ijufumi.openreports.model.{TReport, TReportParamConfig, TReportTemplate}
+import jp.ijufumi.openreports.model.{RReportReportGroup, TReport, TReportParamConfig, TReportTemplate}
 import jp.ijufumi.openreports.service.enums.StatusCode
-import jp.ijufumi.openreports.vo.{
-  ReportInfo,
-  ReportParamConfig,
-  ReportParamConfigInfo,
-  ReportTemplateInfo
-}
+import jp.ijufumi.openreports.vo.{ReportInfo, ReportParamConfig, ReportParamConfigInfo, ReportTemplateInfo}
 import org.joda.time.DateTime
 import scalikejdbc.sqls
 import skinny.Logging
@@ -19,15 +14,15 @@ class ReportSettingsService extends Logging {
     TReport
       .findAll()
       .map(r => {
-        val template = TReportTemplate.findById(r.templateId)
+        val groups = r.groups.map(_.reportGroupId).seq
         ReportInfo(r.reportId,
                    r.reportName,
                    r.description,
                    r.templateId,
+                   groups,
                    r.createdAt,
                    r.updatedAt,
-                   r.versions,
-                   ReportTemplateInfo(r.templateId, template.get.fileName))
+                   r.versions)
       })
   }
 
@@ -35,15 +30,15 @@ class ReportSettingsService extends Logging {
     TReport
       .findById(reportId)
       .map(r => {
-        val template = TReportTemplate.findById(r.templateId)
+        val groups = r.groups.map(_.reportGroupId).seq
         ReportInfo(r.reportId,
                    r.reportName,
                    r.description,
                    r.templateId,
+                   groups,
                    r.createdAt,
                    r.updatedAt,
-                   r.versions,
-                   ReportTemplateInfo(r.templateId, template.get.fileName))
+                   r.versions)
       })
   }
 
@@ -61,17 +56,23 @@ class ReportSettingsService extends Logging {
   }
 
   def registerReport(
-      reportName: String,
-      description: String,
-      templateId: Long
+      reportInfo: ReportInfo
   ): StatusCode.Value = {
     try {
-      TReport.createWithAttributes(
-        'reportName -> reportName,
-        'description -> description,
-        'templateId -> templateId
+      val reportId = TReport.createWithAttributes(
+        'reportName -> reportInfo.reportName,
+        'description -> reportInfo.description,
+        'templateId -> reportInfo.templateId,
+        'createdAt -> DateTime.now,
+        'updatedAt -> DateTime.now
       )
 
+      reportInfo.groups.foreach(x => {
+        RReportReportGroup.createWithAttributes(
+          'reportId -> reportId,
+          'reportGroupId -> x
+        )
+      })
     } catch {
       case e: SQLException => return StatusCode.of(e)
       case _: Throwable    => return StatusCode.OTHER_ERROR
@@ -81,10 +82,7 @@ class ReportSettingsService extends Logging {
 
   def updateReport(
       reportId: Long,
-      reportName: String,
-      description: String,
-      templateId: Long,
-      versions: Long
+    reportInfo: ReportInfo
   ): StatusCode.Value = {
     try {
       val reportOpt = TReport.findById(reportId)
@@ -93,16 +91,30 @@ class ReportSettingsService extends Logging {
       }
 
       val count = TReport
-        .updateByIdAndVersion(reportId, versions)
+        .updateByIdAndVersion(reportId, reportInfo.versions)
         .withAttributes(
-          'reportName -> reportName,
-          'description -> description,
-          'templateId -> templateId,
-          'updatedAt -> DateTime.now()
+          'reportName -> reportInfo.reportName,
+          'description -> reportInfo.description,
+          'templateId -> reportInfo.templateId,
+          'updatedAt -> DateTime.now
         )
       if (count != 1) {
         return StatusCode.ALREADY_UPDATED
       }
+
+      val condition = sqls.eq(RReportReportGroup.column.field("reportId"), reportId)
+      val current = RReportReportGroup.findAllBy(condition)
+
+      if (current.nonEmpty) {
+        RReportReportGroup.deleteBy(condition)
+      }
+
+      reportInfo.groups.foreach(x => {
+        RReportReportGroup.createWithAttributes(
+          'reportId -> reportId,
+          'reportGroupId -> x
+        )
+      })
     } catch {
       case e: SQLException => {
         logger.error("update report error", e)

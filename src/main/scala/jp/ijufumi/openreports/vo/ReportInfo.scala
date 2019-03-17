@@ -4,10 +4,11 @@ import java.time.LocalDateTime
 
 import scala.beans.BeanProperty
 
-case class ReportInfo(@BeanProperty reportId: Long,
+case class ReportInfo(@BeanProperty reportId: Long = 0,
                       @BeanProperty reportName: String,
                       @BeanProperty description: String,
                       @BeanProperty templateId: Long,
-                      @BeanProperty createdAt: LocalDateTime,
-                      @BeanProperty updatedAt: LocalDateTime,
-                      @BeanProperty versions: Long)
+                      @BeanProperty groups: Seq[Long],
+                      @BeanProperty createdAt: LocalDateTime = LocalDateTime.now,
+                      @BeanProperty updatedAt: LocalDateTime = LocalDateTime.now,
+                      @BeanProperty versions: Long = 0)
