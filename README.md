@@ -78,3 +78,5 @@
 - [ ] add scheduling function
 - [ ] add credit to layout.html
 - [ ] execute on docker image
+- [ ] modify to RESTful application such as SPA 
+- [ ] add validation for json value
