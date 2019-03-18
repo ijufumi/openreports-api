@@ -56,8 +56,9 @@ class ReportSettingsController extends ApplicationController {
   }
 
   def doRegister = {
-    val reportInfo = params.getAs[ReportInfo]("reportInfo").get
-    // TODO:validation
+    // TODO:must use in implicit.
+    // TODO:add validation
+    val reportInfo = stringToReportInfo(skinnyContext.request.body).get
     val statusCode = new ReportSettingsService().registerReport(reportInfo)
 
     statusCode match {
@@ -93,7 +94,9 @@ class ReportSettingsController extends ApplicationController {
 
   def doUpdate = {
     params.getAs[Long]("id").map { id =>
-      val reportInfo = params.getAs[ReportInfo]("reportInfo").get
+      // TODO:must use in implicit.
+      // TODO:add validation
+      val reportInfo = stringToReportInfo(skinnyContext.request.body).get
 
       val statusCode = new ReportSettingsService().updateReport(
         id,

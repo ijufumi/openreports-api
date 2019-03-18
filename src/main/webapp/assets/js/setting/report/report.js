@@ -17,19 +17,26 @@ $(function () {
       groups: groups
     };
 
-    var form = $("#reportForm");
-
-    $("<input>", {
-      type: "hidden",
-      name: "reportInfo",
-      value: JSON.stringify(reportInfo)
-    }).appendTo(form);
-
-    form.submit();
+    $.ajax({
+      url: "/private/settings/report/register",
+      method: "post",
+      data: JSON.stringify(reportInfo),
+      contentType: "application/json; charset=UTF-8",
+      complete: function(jqXHR, textStatus){
+        console.log("complete:" + jqXHR);
+      },
+      success: function(data, textStatus, jqXHR) {
+        console.log("success:" + jqXHR);
+      },
+      error: function(jqXHR, textStatus, errorThrown){
+        console.log("error:" + textStatus);
+      }
+    });
   });
 
   // レポート更新画面
   $(".private-setting-report-update #submitBtn").on("click", function (e) {
+    var reportId = $("#reportId").val();
     var reportName = $("#reportName").val();
     var description = $("#description").val();
     var templateId = $("#templateId").val();
@@ -48,15 +55,21 @@ $(function () {
       groups: groups
     };
 
-    var form = $("#reportForm");
-
-    $("<input>", {
-      type: "hidden",
-      name: "reportInfo",
-      value: JSON.stringify(reportInfo)
-    }).appendTo(form);
-
-    form.submit();
+    $.ajax({
+      url: "/private/settings/report/update/" + reportId,
+      method: "post",
+      data: JSON.stringify(reportInfo),
+      contentType: "application/json; charset=UTF-8",
+      complete: function(jqXHR, textStatus){
+        console.log("complete:" + jqXHR);
+      },
+      success: function(data, textStatus, jqXHR) {
+        console.log("success:" + jqXHR);
+      },
+      error: function(jqXHR, textStatus, errorThrown){
+        console.log("error:" + textStatus);
+      }
+    });
   });
 
   // レポートパラメータ設定

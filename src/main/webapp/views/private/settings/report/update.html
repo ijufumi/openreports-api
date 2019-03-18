@@ -21,6 +21,7 @@
     <div class="row main-contents">
       <div class="private-setting-report-update col" layout:fragment="content">
           <input type="hidden" id="versions" name="versions" th:value="${report.versions}" />
+          <input type="hidden" id="reportId" name="reportId" th:value="${report.reportId}" />
           <div class="form-group row">
             <div class="col-md-2">
               <label for="reportName" class="col-form-label">Name</label>
@@ -101,8 +102,6 @@
               <button type="button" id="submitBtn" class="btn btn-block btn-lg btn-primary">更新</button>
             </div>
           </div>
-        <form method="post" id="reportForm" th:action="'/private/settings/report/update/' + ${report.reportId}">
-        </form>
       </div>
     </div>
   </div>

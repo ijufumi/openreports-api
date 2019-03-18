@@ -9,7 +9,7 @@ import nz.net.ultraq.thymeleaf.LayoutDialect
 import org.thymeleaf.dialect.IDialect
 import org.thymeleaf.extras.java8time.dialect.Java8TimeDialect
 import skinny._
-import skinny.controller.feature.ThymeleafTemplateEngineFeature
+import skinny.controller.feature.{JSONFeature, ThymeleafTemplateEngineFeature}
 import skinny.filter._
 
 import scala.util.control.Breaks
@@ -26,6 +26,7 @@ trait ApplicationController
     with ErrorPageFilter
     with I18nFeature
     with Converters
+    with JSONFeature
     with ThymeleafTemplateEngineFeature {
 
   /**
