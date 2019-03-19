@@ -53,6 +53,8 @@ trait ApplicationController
   }
   val requiredMemberInfo = false
 
+  def getBodyAs[T <: Any](implicit tc: TypeConverter[String, T]): Option[T] = tc(skinnyContext.request.body)
+
   def fileDownload(in: String,
                    fileName: String,
                    contentType: String,
