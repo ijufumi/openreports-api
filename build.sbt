@@ -1,7 +1,6 @@
 import sbt._, Keys._
-import skinny.scalate.ScalatePlugin._, ScalateKeys._
+import org.fusesource.scalate.ScalatePlugin._, ScalateKeys._
 import skinny.servlet._, ServletPlugin._, ServletKeys._
-import org.sbtidea.SbtIdeaPlugin._
 
 import scala.language.postfixOps
 
@@ -22,7 +21,7 @@ lazy val baseSettings = servletSettings ++ Seq(
   name         := appName,
   version      := appVersion,
   scalaVersion := theScalaVersion,
-  dependencyOverrides := Set(
+  dependencyOverrides := Seq(
     "org.scala-lang"         %  "scala-library"            % scalaVersion.value,
     "org.scala-lang"         %  "scala-reflect"            % scalaVersion.value,
     "org.scala-lang"         %  "scala-compiler"           % scalaVersion.value,
@@ -70,13 +69,12 @@ DBSettings.initialize()
   // Faster "./skinny idea"
   transitiveClassifiers in Global := Seq(Artifact.SourceClassifier),
   // the name-hashing algorithm for the incremental compiler.
-  incOptions := incOptions.value.withNameHashing(true),
   updateOptions := updateOptions.value.withCachedResolution(true),
   logBuffered in Test := false,
   javaOptions in Test ++= Seq("-Dskinny.env=test"),
   fork in Test := true,
+  suppressSbtShellNotification := true,
   scalacOptions ++= Seq("-unchecked", "-deprecation", "-feature"),
-  ideaExcludeFolders := Seq(".idea", ".idea_modules", "db", "target", "task/target", "build", "standalone-build", "node_modules")
 )
 
 lazy val scalatePrecompileSettings = scalateSettings ++ Seq(
@@ -139,11 +137,9 @@ lazy val packagingBaseSettings = baseSettings ++ scalatePrecompileSettings ++ Se
 )
 lazy val build = (project in file("build")).settings(packagingBaseSettings).settings(
   name := appName,
-  ideaIgnoreModule := true
 )
 lazy val standaloneBuild = (project in file("standalone-build")).settings(packagingBaseSettings).settings(
   name := appName + "-standalone",
   libraryDependencies += "org.skinny-framework" %% "skinny-standalone" % skinnyVersion,
-  ideaIgnoreModule := true,
   ivyXML := <dependencies><exclude org="org.eclipse.jetty.orbit" /></dependencies>
 )
