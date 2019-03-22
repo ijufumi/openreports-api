@@ -1,3 +1,6 @@
 package jp.ijufumi.openreports.vo
 
-case class ApiResponse(result: String)
+case class ApiResponse(
+  status: Boolean = true,
+  message: String = ""
+)

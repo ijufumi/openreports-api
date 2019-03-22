@@ -71,7 +71,7 @@ class ReportController extends ApplicationController {
 
         skinnySession.setAttribute("paramMap", paramMap)
         status = 200
-        toPrettyJSONString(ApiResponse("OK"))
+        toPrettyJSONString(ApiResponse(message = "OK"))
       } getOrElse halt(status = 400, body = "pageNo is missing.")
     } getOrElse halt(status = 400, body = "reportId is missing.")
 

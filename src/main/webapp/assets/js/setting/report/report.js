@@ -26,9 +26,15 @@ $(function () {
         console.log("complete:" + jqXHR);
       },
       success: function(data, textStatus, jqXHR) {
-        console.log("success:" + jqXHR);
+        $("#messageModal #messages").val(data.message)
+        $("#messageModal #messageOkButton").click(function(){
+          window.location.href = "/private/settings/report";
+        });
+        $("#messageModal").show();
       },
       error: function(jqXHR, textStatus, errorThrown){
+        $("#messageModal #messages").val(data.message)
+        $("#messageModal").show();
         console.log("error:" + textStatus);
       }
     });

@@ -3,10 +3,11 @@ package jp.ijufumi.openreports.controller.settings
 import jp.ijufumi.openreports.controller.common.ApplicationController
 import jp.ijufumi.openreports.service.enums.StatusCode
 import jp.ijufumi.openreports.service.settings.{ReportGroupSettingsService, ReportParamSettingsService, ReportSettingsService, ReportTemplateSettingsService}
-import jp.ijufumi.openreports.vo.{ReportInfo, ReportParamConfig}
+import jp.ijufumi.openreports.vo.{ApiResponse, ReportInfo, ReportParamConfig}
 import skinny.controller.Params
 import skinny.validator.{longValue, maxLength, paramKey, required}
 import org.json4s.jackson.Serialization.read
+import skinny.micro.Format
 
 class ReportSettingsController extends ApplicationController {
 
@@ -56,20 +57,20 @@ class ReportSettingsController extends ApplicationController {
   }
 
   def doRegister = {
+    implicit val response = Format.JSON
     // TODO:add validation
     val reportInfo = getBodyAs[ReportInfo].get
     val statusCode = new ReportSettingsService().registerReport(reportInfo)
 
     statusCode match {
-      case StatusCode.OK => redirect(url(Controllers.reportSettings.registerCompletedUrl))
+      case StatusCode.OK => renderWithFormat(ApiResponse())
       case StatusCode.DUPLICATE_ERR =>
-        set("customErrorMessages", Seq(i18n.get("warning.duplicateRegister")))
+        status = 400
+        renderWithFormat(ApiResponse(status = false, message = i18n.get("warning.duplicateRegister").getOrElse("")))
       case _ =>
-        set("customErrorMessages", Seq(i18n.get("error.systemError")))
+        status = 400
+        renderWithFormat(ApiResponse(status = false, message = i18n.get("werror.systemErrorr").getOrElse("")))
     }
-    val templates = new ReportTemplateSettingsService().getReportTemplates
-    set("templates", templates)
-    render(viewPath + "/register")
   }
 
   def registerCompleted = {
@@ -92,6 +93,7 @@ class ReportSettingsController extends ApplicationController {
   }
 
   def doUpdate = {
+    implicit val response = Format.JSON
     params.getAs[Long]("id").map { id =>
       // TODO:add validation
       val reportInfo = getBodyAs[ReportInfo].get
@@ -104,13 +106,15 @@ class ReportSettingsController extends ApplicationController {
       logger.info("updateReport result:%s".format(statusCode))
 
       statusCode match {
-        case StatusCode.OK => redirect(url(Controllers.reportSettings.updateCompletedUrl))
+        case StatusCode.OK => renderWithFormat(ApiResponse())
         case StatusCode.DUPLICATE_ERR =>
-          set("customErrorMessages", Seq(i18n.get("warning.duplicateRegister")))
+          status = 400
+          renderWithFormat(ApiResponse(status = false, message = i18n.get("warning.duplicateRegister").getOrElse("")))
         case _ =>
-          set("customErrorMessages", Seq(i18n.get("error.systemError")))
+          status = 400
+          renderWithFormat(ApiResponse(status = false, message = i18n.get("werror.systemErrorr").getOrElse("")))
       }
-    } getOrElse haltWithBody(404)
+    } getOrElse haltWithBody[String](404)
   }
 
   def updateCompleted = {
