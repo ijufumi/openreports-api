@@ -30,11 +30,11 @@ $(function () {
         $("#messageModal #messageOkButton").click(function(){
           window.location.href = "/private/settings/report";
         });
-        $("#messageModal").show();
+        $("#messageModal").modal('toggle');
       },
       error: function(jqXHR, textStatus, errorThrown){
         $("#messageModal #messages").val(data.message)
-        $("#messageModal").show();
+        $("#messageModal").modal('toggle');
         console.log("error:" + textStatus);
       }
     });
