@@ -75,7 +75,7 @@
 ### TODO list
 - [x] make relation report and params
 - [x] make relation report and report-group
-- [ ] make relation group and report-group
+- [x] make relation group and report-group
 - [ ] add scheduling function
 - [ ] add credit to layout.html
 - [ ] execute on docker image
