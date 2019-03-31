@@ -9,11 +9,11 @@ import org.joda.time.DateTime
 import skinny.logging.Logging
 
 class ReportGroupSettingsService extends Logging {
-  def getGroups: Seq[ReportGroupInfo] = {
+  def getGroups: Array[ReportGroupInfo] = {
     TReportGroup
       .findAll()
       .sortBy(_.reportGroupId)
-      .map(r => ReportGroupInfo(r.reportGroupId, r.reportGroupName, r.createdAt, r.updatedAt, r.versions))
+      .map(r => ReportGroupInfo(r.reportGroupId, r.reportGroupName, r.createdAt, r.updatedAt, r.versions)).toArray
   }
 
   def getGroup(reportGroupId: Long): Option[ReportGroupInfo] = {

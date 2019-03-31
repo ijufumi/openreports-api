@@ -15,10 +15,10 @@ import skinny.micro.multipart.FileItem
 class ReportTemplateSettingsService extends Logging {
   val blankTemplate = new ReportTemplateInfo(0L, "")
 
-  def getReportTemplates: Seq[ReportTemplateInfo] = {
+  def getReportTemplates: Array[ReportTemplateInfo] = {
     TReportTemplate
       .findAll()
-      .map(r => ReportTemplateInfo(r.templateId, r.fileName))
+      .map(r => ReportTemplateInfo(r.templateId, r.fileName)).toArray
   }
 
   def getReportTemplate(templateId: Long): ReportTemplateInfo = {
@@ -27,12 +27,12 @@ class ReportTemplateSettingsService extends Logging {
       .map(r => ReportTemplateInfo(r.templateId, r.fileName)).getOrElse(blankTemplate)
   }
 
-  def getHistories(templateId: Long): Seq[ReportTemplateHistoryInfo] = {
+  def getHistories(templateId: Long): Array[ReportTemplateHistoryInfo] = {
     TReportTemplateHistory
       .where('templateId -> templateId)
       .apply()
       .sortBy(_.historyId)
-      .map(r => ReportTemplateHistoryInfo(r.historyId, r.templateId, r.fileName, r.createdAt))
+      .map(r => ReportTemplateHistoryInfo(r.historyId, r.templateId, r.fileName, r.createdAt)).toArray
   }
 
   def uploadFile(file: FileItem): StatusCode.Value = {

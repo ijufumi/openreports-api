@@ -9,10 +9,10 @@ import org.joda.time.DateTime
 import skinny.Logging
 
 class ReportParamSettingsService extends Logging {
-  def getParams: Seq[ReportParamInfo] = {
+  def getParams: Array[ReportParamInfo] = {
     TReportParam
       .findAll()
-      .map(p => ReportParamInfo(p))
+      .map(p => ReportParamInfo(p)).toArray
   }
 
   def getParam(paramId: Long): Option[ReportParamInfo] = {

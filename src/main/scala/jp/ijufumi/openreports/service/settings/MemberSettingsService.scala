@@ -14,8 +14,8 @@ import skinny.Logging
 import scala.collection.mutable
 
 class MemberSettingsService extends Logging {
-  def getMembers(): Seq[MemberInfo] = {
-    TMember.findAll().map(m => MemberInfo(m))
+  def getMembers(): Array[MemberInfo] = {
+    TMember.findAll().map(m => MemberInfo(m)).toArray
   }
 
   def getMember(memberId: Long): Option[MemberInfo] = {

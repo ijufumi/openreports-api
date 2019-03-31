@@ -13,7 +13,7 @@ class ReportService extends Logging {
     new ReportSettingsService().getReport(reportId)
   }
 
-  def groupList(groupId: Seq[Long]): Seq[ReportGroupInfo] = {
+  def groupList(groupId: Seq[Long]): Array[ReportGroupInfo] = {
 
     val groups =
       TGroup.includes(TGroup.reportGroups).where('groupId -> groupId).apply()
@@ -33,10 +33,10 @@ class ReportService extends Logging {
 
     reportGroups.toSeq
       .sortBy(_.reportGroupId)
-      .map(r => ReportGroupInfo(r.reportGroupId, r.reportGroupName, r.createdAt, r.updatedAt, r.versions))
+      .map(r => ReportGroupInfo(r.reportGroupId, r.reportGroupName, r.createdAt, r.updatedAt, r.versions)).toArray
   }
 
-  def reportList(groupId: Long): Seq[ReportInfo] = {
+  def reportList(groupId: Long): Array[ReportInfo] = {
     val reportGroup =
       TReportGroup.includes(TReportGroup.reports).findById(groupId)
 
@@ -48,10 +48,10 @@ class ReportService extends Logging {
             .sortBy(_.reportId)
             .map { r => service.getReport(r.reportId).get
           })
-      .getOrElse(Seq.empty)
+      .getOrElse(Seq.empty).toArray
   }
 
-  def paramInfo(reportId: Long, pageNo: Int): (Seq[ReportParamInfo], Int) = {
+  def paramInfo(reportId: Long, pageNo: Int): (Array[ReportParamInfo], Int) = {
     val report = TReport.includes(TReport.params).findById(reportId)
 
     if (report.isEmpty) {
@@ -88,7 +88,7 @@ class ReportService extends Logging {
         .map(_.pageNo)
         .getOrElse(-1)
 
-    (infos, nextPageNo)
+    (infos.toArray, nextPageNo)
   }
 }
 

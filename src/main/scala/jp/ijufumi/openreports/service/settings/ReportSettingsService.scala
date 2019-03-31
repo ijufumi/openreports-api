@@ -10,7 +10,7 @@ import scalikejdbc.sqls
 import skinny.Logging
 
 class ReportSettingsService extends Logging {
-  def getReports: Seq[ReportInfo] = {
+  def getReports: Array[ReportInfo] = {
     TReport
       .findAll()
       .map(r => {
@@ -23,7 +23,7 @@ class ReportSettingsService extends Logging {
                    r.createdAt,
                    r.updatedAt,
                    r.versions)
-      })
+      }).toArray
   }
 
   def getReport(reportId: Long): Option[ReportInfo] = {
@@ -42,7 +42,7 @@ class ReportSettingsService extends Logging {
       })
   }
 
-  def getReportParamConfig(reportId: Long): Seq[ReportParamConfigInfo] = {
+  def getReportParamConfig(reportId: Long): Array[ReportParamConfigInfo] = {
     TReportParamConfig
       .findAllBy(sqls.eq(TReportParamConfig.column.field("reportId"), reportId))
       .map(p => ReportParamConfigInfo(p.paramId, p.pageNo, p.seq))
@@ -52,7 +52,7 @@ class ReportSettingsService extends Logging {
         } else {
           x.pageNo < y.pageNo
         }
-      })
+      }).toArray
   }
 
   def registerReport(
