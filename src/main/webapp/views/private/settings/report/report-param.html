@@ -47,7 +47,7 @@
                   <td>
                     <div class="row actions">
                       <div class="pl-0 offset-md-3">
-                        <button type="button" class="btn btn-block btn-secondary">削除</button>
+                        <button type="button" class="btn btn-block btn-sm btn-secondary">削除</button>
                       </div>
                     </div>
                   </td>
@@ -68,7 +68,7 @@
                   <td>
                     <div class="row actions">
                       <div class="pl-0 offset-md-3">
-                        <button type="button" class="btn btn-block btn-secondary">削除</button>
+                        <button type="button" class="btn btn-block btn-sm btn-secondary">削除</button>
                       </div>
                     </div>
                   </td>
@@ -76,17 +76,17 @@
               </tbody>
             </table>
             <div class="col-md-1 pl-0 offset-md-11">
-              <button id="addParamBtn" type="button" class="btn btn-block btn-primary">追加</button>
+              <button id="addParamBtn" type="button" class="btn btn-block btn-sm btn-primary">追加</button>
             </div>
           </div>
 
           <!-- Buttons here -->
           <div class="form-group row">
-            <div class="col-md-3 pl-0">
-              <a href="/private/settings/report" class="btn btn-block btn-lg btn-secondary">キャンセル</a>
+            <div class="col-md-2 pl-0">
+              <a href="/private/settings/report" class="btn btn-block btn-secondary">キャンセル</a>
             </div>
             <div class="col-md-2 pl-0">
-              <button type="button" id="submitBtn" class="btn btn-block btn-lg btn-primary">更新</button>
+              <button type="button" id="submitBtn" class="btn btn-block btn-primary">更新</button>
             </div>
           </div>
         <form method="post" id="paramsForm" th:action="'/private/settings/report/params/' + ${report.reportId}">
