@@ -25,7 +25,7 @@ object ReportParamType extends Enumeration {
     }
   }
 
-  def list(): Seq[ReportParamType] = {
-    values.map(v => new ReportParamType(v.paramId, v.paramName)).toSeq
+  def list(): Array[ReportParamType] = {
+    values.map(v => new ReportParamType(v.paramId, v.paramName)).toArray
   }
 }
