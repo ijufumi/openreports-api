@@ -5,6 +5,9 @@
   "repository": "git@github.com:ijufumi/openreports_scala.git",
   "author": "Takafumi Iju <ijufumi@gmail.com>",
   "license": "MIT",
+  "scripts": {
+    "start": "./node_modules/.bin/webpack-dev-server"
+  },
   "dependencies": {
     "babel-core": "^6.26.3",
     "babel-loader": "^8.0.5",

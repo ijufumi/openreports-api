@@ -1,12 +1,12 @@
-var publicDir = __dirname + '/public';
+var outputDir = __dirname + '/src/main/webapp';
 module.exports = [{
   entry: [
     './websrc/index.js'
   ],
   output: {
-    path: publicDir,
+    path: outputDir,
     publicPath: '/',
-    filename: './src/main/webapp/index.js'
+    filename: 'index.js'
   },
   module: {
     rules: [{
@@ -17,6 +17,7 @@ module.exports = [{
     extensions: ['.js', '.jsx']
   },
   devServer: {
-    historyApiFallback: true
+    historyApiFallback: true,
+    contentBase: outputDir
   }
 }];
