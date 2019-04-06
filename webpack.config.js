@@ -1,12 +1,12 @@
 var publicDir = __dirname + '/public';
 module.exports = [{
   entry: [
-    './src/main/webapp/index.js'
+    './websrc/index.js'
   ],
   output: {
     path: publicDir,
     publicPath: '/',
-    filename: 'bundle.js'
+    filename: './src/main/webapp/index.js'
   },
   module: {
     rules: [{
