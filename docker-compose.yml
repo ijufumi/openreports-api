@@ -1,7 +1,11 @@
 version: '3'
 services:
-  postgres:
+  api:
+    container_name: api
+    build: ./docker/api
+  db:
     build: ./docker/postgres
+    container_name: db
     volumes:
       - "./src/main/resources/db:/docker-entrypoint-initdb.d"
       - ./var/lib/postgresql:/var/lib/postgresql
@@ -11,7 +15,6 @@ services:
     environment:
       POSTGRES_PASSWORD: password
       TZ: "Asia/Tokyo"
-    container_name: openreports-db
     networks:
       openreports:
         aliases:
@@ -22,3 +25,4 @@ services:
 #       TZ: "Asia/Tokyo"
 networks:
   openreports:
+
