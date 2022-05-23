@@ -12,9 +12,9 @@ val appOrganization = "jp.ijufumi"
 val appName = "openreports"
 val appVersion = "0.0.1-SNAPSHOT"
 
-val skinnyVersion = "3.0.2"
-val theScalaVersion = "2.12.8"
-val jettyVersion = "9.4.14.v20181114"
+val skinnyVersion = "4.0.0"
+val theScalaVersion = "2.13.8"
+val jettyVersion = "9.4.45.v20220203"
 
 lazy val baseSettings = servletSettings ++ Seq(
   organization := appOrganization,
@@ -25,9 +25,9 @@ lazy val baseSettings = servletSettings ++ Seq(
     "org.scala-lang"         %  "scala-library"            % scalaVersion.value,
     "org.scala-lang"         %  "scala-reflect"            % scalaVersion.value,
     "org.scala-lang"         %  "scala-compiler"           % scalaVersion.value,
-    "org.scala-lang.modules" %% "scala-xml"                % "1.1.0",
-    "org.scala-lang.modules" %% "scala-parser-combinators" % "1.1.0",
-    "org.slf4j"              %  "slf4j-api"                % "1.7.25",
+    "org.scala-lang.modules" %% "scala-xml"                % "1.2.0",
+    "org.scala-lang.modules" %% "scala-parser-combinators" % "1.2.0",
+    "org.slf4j"              %  "slf4j-api"                % "1.7.36",
     "org.thymeleaf"          %  "thymeleaf"                % "2.1.6.RELEASE"
   ),
   libraryDependencies ++= Seq(
