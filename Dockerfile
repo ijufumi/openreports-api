@@ -9,4 +9,6 @@ RUN apt-get update && apt-get -y install sbt
 
 COPY . .
 
-ENTRYPOINT ["/bin/bash", "./skinny"]
+RUN /bin/bash ./skinny run -precompile
+
+ENTRYPOINT ["/bin/bash", "./skinny", "run"]

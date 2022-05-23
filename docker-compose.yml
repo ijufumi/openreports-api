@@ -2,7 +2,7 @@ version: '3'
 services:
   api:
     container_name: api
-    build: ./docker/api
+    build: ./
   db:
     build: ./docker/postgres
     container_name: db
