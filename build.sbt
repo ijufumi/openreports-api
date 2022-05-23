@@ -26,7 +26,7 @@ lazy val baseSettings = servletSettings ++ Seq(
     "org.scala-lang"         %  "scala-reflect"            % scalaVersion.value,
     "org.scala-lang"         %  "scala-compiler"           % scalaVersion.value,
     "org.scala-lang.modules" %% "scala-xml"                % "1.2.0",
-    "org.scala-lang.modules" %% "scala-parser-combinators" % "1.2.0",
+    "org.scala-lang.modules" %% "scala-parser-combinators" % "2.1.1",
     "org.slf4j"              %  "slf4j-api"                % "1.7.36",
     "org.thymeleaf"          %  "thymeleaf"                % "2.1.6.RELEASE"
   ),
