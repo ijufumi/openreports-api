@@ -74,7 +74,7 @@ DBSettings.initialize()
   javaOptions in Test ++= Seq("-Dskinny.env=test"),
   fork in Test := true,
   suppressSbtShellNotification := true,
-  scalacOptions ++= Seq("-unchecked", "-deprecation", "-feature"),
+  scalacOptions ++= Seq("-unchecked", "-deprecation", "-feature")
 )
 
 lazy val scalatePrecompileSettings = scalateSettings ++ Seq(
