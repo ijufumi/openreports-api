@@ -16,7 +16,7 @@ class ReportService extends Logging {
   def groupList(groupId: Seq[Long]): Array[ReportGroupInfo] = {
 
     val groups =
-      TGroup.includes(TGroup.reportGroups).where('groupId -> groupId).apply()
+      TGroup.includes(TGroup.reportGroups).where("groupId" -> groupId).apply()
 
     if (logger.isDebugEnabled) {
       logger.debug("groups:%s".format(groups))

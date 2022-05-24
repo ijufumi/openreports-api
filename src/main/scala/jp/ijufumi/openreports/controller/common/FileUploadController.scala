@@ -5,7 +5,7 @@ import java.time.{LocalDateTime, ZoneOffset}
 
 import jp.ijufumi.openreports.controller.{PublicPath, ViewRootPath}
 import skinny.SkinnyServlet
-import skinny.controller.feature.{FileUploadFeature, ThymeleafTemplateEngineFeature}
+import skinny.controller.feature.{FileUploadFeature}
 import skinny.filter.{ErrorPageFilter, SkinnySessionFilter}
 
 import scala.util.control.Breaks
@@ -15,15 +15,7 @@ trait FileUploadController
     with SkinnySessionFilter
     with ErrorPageFilter
     with I18nFeature
-    with ThymeleafTemplateEngineFeature
     with FileUploadFeature {
-
-  /**
-    * Resolver template prefix.
-    */
-  override lazy val thymeleafResolverPrefix: String = {
-    ViewRootPath
-  }
 
   val activeMenu = ""
 

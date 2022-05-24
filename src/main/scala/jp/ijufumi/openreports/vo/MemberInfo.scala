@@ -3,6 +3,7 @@ package jp.ijufumi.openreports.vo
 import jp.ijufumi.openreports.model.TMember
 
 import scala.beans.BeanProperty
+import scala.collection.Seq
 
 case class MemberInfo(@BeanProperty memberId: Long,
                       @BeanProperty name: String,

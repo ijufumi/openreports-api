@@ -31,11 +31,11 @@ class ReportParamSettingsService extends Logging {
     try {
       TReportParam
         .createWithAttributes(
-          'paramKey -> paramKey,
-          'paramName -> paramName,
-          'description -> description,
-          'paramType -> paramType,
-          'paramValues -> paramValues
+          "paramKey" -> paramKey,
+          "paramName" -> paramName,
+          "description" -> description,
+          "paramType" -> paramType,
+          "paramValues" -> paramValues
         )
     } catch {
       case e: SQLException =>
@@ -66,11 +66,11 @@ class ReportParamSettingsService extends Logging {
       TReportParam
         .updateByIdAndVersion(paramId, versions)
         .withAttributes(
-          'paramKey -> paramKey,
-          'paramName -> paramName,
-          'description -> description,
-          'paramType -> paramType,
-          'updatedAt -> DateTime.now()
+          "paramKey" -> paramKey,
+          "paramName" -> paramName,
+          "description" -> description,
+          "paramType" -> paramType,
+          "updatedAt" -> DateTime.now()
         )
     } catch {
       case e: SQLException =>

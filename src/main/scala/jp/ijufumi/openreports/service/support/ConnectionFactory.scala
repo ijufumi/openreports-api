@@ -13,7 +13,7 @@ object ConnectionFactory {
   }
 
   def getConnection(
-    name: Symbol,
+    name: String,
     url: String,
     user: String,
     password: String

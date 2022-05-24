@@ -29,14 +29,14 @@ class ReportTemplateSettingsService extends Logging {
 
   def getHistories(templateId: Long): Array[ReportTemplateHistoryInfo] = {
     TReportTemplateHistory
-      .where('templateId -> templateId)
+      .where("templateId" -> templateId)
       .apply()
       .sortBy(_.historyId)
       .map(r => ReportTemplateHistoryInfo(r.historyId, r.templateId, r.fileName, r.createdAt)).toArray
   }
 
   def uploadFile(file: FileItem): StatusCode.Value = {
-    val templates = TReportTemplate.where('fileName -> file.name).apply()
+    val templates = TReportTemplate.where("fileName" -> file.name).apply()
 
     val filePath = "%s_%s".format(DateTime.now().toString("yyyyMMddHHmmss"), file.name)
 
@@ -45,27 +45,27 @@ class ReportTemplateSettingsService extends Logging {
       db.begin()
       if (templates.isEmpty) {
         TReportTemplate
-          .createWithAttributes('fileName -> file.name, 'filePath -> filePath)
+          .createWithAttributes("fileName" -> file.name, "filePath" -> filePath)
       } else {
         val template = templates.head
 
         TReportTemplate
           .updateByIdAndVersion(template.templateId, template.versions)
           .withAttributes(
-            'fileName -> file.name,
-            'filePath -> filePath,
-            'updatedAt -> DateTime
+            "fileName" -> file.name,
+            "filePath" -> filePath,
+            "updatedAt" -> DateTime
               .now()
           )
 
         TReportTemplateHistory
           .createWithAttributes(
-            'templateId -> template.templateId,
-            'fileName -> template.fileName,
-            'filePath -> template.filePath,
-            'createdAt -> template.createdAt,
-            'updatedAt -> template.updatedAt,
-            'versions -> template.versions
+            "templateId" -> template.templateId,
+            "fileName" -> template.fileName,
+            "filePath" -> template.filePath,
+            "createdAt" -> template.createdAt,
+            "updatedAt" -> template.updatedAt,
+            "versions" -> template.versions
           )
       }
 

@@ -40,7 +40,7 @@ class MemberSettingsService extends Logging {
         mem.memberId,
         mem.name,
         mem.emailAddress,
-        newGroups,
+        newGroups.map(g => g),
         mem.menus,
         mem.versions
       )
@@ -57,12 +57,12 @@ class MemberSettingsService extends Logging {
     try {
       db.begin()
       val id = TMember.createWithAttributes(
-        'emailAddress -> emailAddress,
-        'password -> Hash.hmacSha256(HashKey, password),
-        'name -> name
+        "emailAddress" -> emailAddress,
+        "password" -> Hash.hmacSha256(HashKey, password),
+        "name" -> name
       )
       groups.foreach(
-        s => RMemberGroup.createWithAttributes('memberId -> id, 'groupId -> s)
+        s => RMemberGroup.createWithAttributes("memberId" -> id, "groupId" -> s)
       )
       db.commit()
     } catch {
@@ -109,7 +109,7 @@ class MemberSettingsService extends Logging {
         )
       }
 
-      updateBuilder.withAttributes('updatedAt -> DateTime.now)
+      updateBuilder.withAttributes("updatedAt" -> DateTime.now)
 
       RMemberGroup.deleteBy(
         SQLSyntax.eq(RMemberGroup.column.field("memberId"), memberId)
@@ -118,7 +118,7 @@ class MemberSettingsService extends Logging {
       groups.foreach(
         s =>
           RMemberGroup
-            .createWithAttributes('memberId -> memberId, 'groupId -> s)
+            .createWithAttributes("memberId" -> memberId, "groupId" -> s)
       )
       db.commit()
     } catch {

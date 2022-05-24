@@ -20,7 +20,7 @@ class GroupSettingsService extends Logging {
   }
 
   def registerGroup(groupName: String): StatusCode.Value = {
-    TGroup.createWithAttributes('groupName -> groupName)
+    TGroup.createWithAttributes("groupName" -> groupName)
     StatusCode.OK
   }
 
@@ -35,8 +35,8 @@ class GroupSettingsService extends Logging {
     try {
       TGroup.updateByIdAndVersion(groupId, versions)
         .withAttributes(
-          'groupName -> groupName,
-          'updatedAt -> DateTime.now
+          "groupName" -> groupName,
+          "updatedAt" -> DateTime.now
         )
     } catch {
       case e: SQLException =>

@@ -24,7 +24,7 @@ class ReportGroupSettingsService extends Logging {
 
   def registerGroup(reportGroupName: String): StatusCode.Value = {
     try {
-      TReportGroup.createWithAttributes('reportGroupName -> reportGroupName)
+      TReportGroup.createWithAttributes("reportGroupName" -> reportGroupName)
     } catch {
       case e: SQLException => return StatusCode.of(e)
       case _: Throwable    => return StatusCode.OTHER_ERROR
@@ -46,8 +46,8 @@ class ReportGroupSettingsService extends Logging {
 
       val count = TReportGroup
         .updateByIdAndVersion(reportGroupId, versions)
-        .withAttributes('reportGroupName -> reportGroupName,
-                        'updatedAt -> DateTime.now())
+        .withAttributes("reportGroupName" -> reportGroupName,
+                        "updatedAt" -> DateTime.now())
 
       if (count != 1) {
         return StatusCode.ALREADY_UPDATED

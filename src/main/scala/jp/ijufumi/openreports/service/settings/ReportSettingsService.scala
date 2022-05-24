@@ -60,17 +60,17 @@ class ReportSettingsService extends Logging {
   ): StatusCode.Value = {
     try {
       val reportId = TReport.createWithAttributes(
-        'reportName -> reportInfo.reportName,
-        'description -> reportInfo.description,
-        'templateId -> reportInfo.templateId,
-        'createdAt -> DateTime.now,
-        'updatedAt -> DateTime.now
+        "reportName" -> reportInfo.reportName,
+        "description" -> reportInfo.description,
+        "templateId" -> reportInfo.templateId,
+        "createdAt" -> DateTime.now,
+        "updatedAt" -> DateTime.now
       )
 
       reportInfo.groups.foreach(x => {
         RReportReportGroup.createWithAttributes(
-          'reportId -> reportId,
-          'reportGroupId -> x
+          "reportId" -> reportId,
+          "reportGroupId" -> x
         )
       })
     } catch {
@@ -93,10 +93,10 @@ class ReportSettingsService extends Logging {
       val count = TReport
         .updateByIdAndVersion(reportId, reportInfo.versions)
         .withAttributes(
-          'reportName -> reportInfo.reportName,
-          'description -> reportInfo.description,
-          'templateId -> reportInfo.templateId,
-          'updatedAt -> DateTime.now
+          "reportName" -> reportInfo.reportName,
+          "description" -> reportInfo.description,
+          "templateId" -> reportInfo.templateId,
+          "updatedAt" -> DateTime.now
         )
       if (count != 1) {
         return StatusCode.ALREADY_UPDATED
@@ -111,8 +111,8 @@ class ReportSettingsService extends Logging {
 
       reportInfo.groups.foreach(x => {
         RReportReportGroup.createWithAttributes(
-          'reportId -> reportId,
-          'reportGroupId -> x
+          "reportId" -> reportId,
+          "reportGroupId" -> x
         )
       })
     } catch {
@@ -142,7 +142,7 @@ class ReportSettingsService extends Logging {
       val count = TReport
         .updateByIdAndVersion(reportId, versions)
         .withAttributes(
-          'updatedAt -> DateTime.now
+          "updatedAt" -> DateTime.now
         )
 
       if (count != 1) {
@@ -157,12 +157,12 @@ class ReportSettingsService extends Logging {
       }
       params.foreach(
         x =>
-          TReportParamConfig.createWithAttributes('reportId -> reportId,
-            'paramId -> x.paramId,
-            'pageNo -> x.pageNo,
-            'seq -> x.seq,
-            'createdAt -> DateTime.now,
-            'updatedAt -> DateTime.now))
+          TReportParamConfig.createWithAttributes("reportId" -> reportId,
+            "paramId" -> x.paramId,
+            "pageNo" -> x.pageNo,
+            "seq" -> x.seq,
+            "createdAt" -> DateTime.now,
+            "updatedAt" -> DateTime.now))
     } catch {
       case e: SQLException => {
         logger.error("update report error", e)

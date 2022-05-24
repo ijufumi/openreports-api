@@ -5,11 +5,8 @@ import java.time.{LocalDateTime, ZoneOffset}
 
 import jp.ijufumi.openreports.controller.{PublicPath, ViewRootPath}
 import jp.ijufumi.openreports.vo.Converters
-import nz.net.ultraq.thymeleaf.LayoutDialect
-import org.thymeleaf.dialect.IDialect
-import org.thymeleaf.extras.java8time.dialect.Java8TimeDialect
 import skinny._
-import skinny.controller.feature.{JSONFeature, ThymeleafTemplateEngineFeature}
+import skinny.controller.feature.{JSONFeature}
 import skinny.filter._
 
 import scala.util.control.Breaks
@@ -26,17 +23,7 @@ trait ApplicationController
     with ErrorPageFilter
     with I18nFeature
     with Converters
-    with JSONFeature
-    with ThymeleafTemplateEngineFeature {
-
-  /**
-    * Resolver template prefix.
-    */
-  override lazy val thymeleafResolverPrefix: String = {
-    ViewRootPath
-  }
-
-  override lazy val thymeleafDialects: Set[_ <: IDialect] = Set(new LayoutDialect, new Java8TimeDialect)
+    with JSONFeature {
 
   val activeMenu = ""
 
