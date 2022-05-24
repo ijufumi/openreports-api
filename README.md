@@ -1,18 +1,18 @@
-## OpenReports powered by Skinny Framework
-### Frameworks and libraries.
+# OpenReports powered by Skinny Framework
+## Frameworks and libraries.
 
 | Name | Version | Notes |
-| --- | --- | --- |
-| Scala | 2.12.8 | - |
-| Skinny Framework | 3.0.2 | All of them. |
-| Servlet API | 3.1.0 | Web API |
-| Skinny Logback | 1.0.14 | Logging |
-| SLF4J | 1.7.25 | Logging |
-| jXls | 2.4.4 | Reporting |
-| jXls POI | 1.0.14 | Reporting |
-| JODConverter | 4.2.0 | PDF output |
+| --- |---------| --- |
+| Scala | 2.13.8  | - |
+| Skinny Framework | 4.0.0   | All of them. |
+| Servlet API | 3.1.0   | Web API |
+| Skinny Logback | 1.0.14  | Logging |
+| SLF4J | 1.7.25  | Logging |
+| jXls | 2.4.4   | Reporting |
+| jXls POI | 1.0.14  | Reporting |
+| JODConverter | 4.2.0   | PDF output |
 
-### Features (not implemented yet)
+## Features (not implemented yet)
 - [x] Output reporting.
 - [ ] Output scheduled reporting.
 - [x] Supporting template format are xls, xlsx.
@@ -79,5 +79,5 @@
 - [ ] add scheduling function
 - [ ] add credit to layout.html
 - [ ] execute on docker image
-- [ ] modify to RESTful application such as SPA 
+- [ ] modify to RESTful application such as SPA
 - [ ] add validation for json value
