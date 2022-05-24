@@ -3,6 +3,7 @@ services:
   api:
     container_name: api
     build: ./
+    platform: linux/x86_64
   db:
     build: ./docker/postgres
     container_name: db
@@ -15,14 +16,9 @@ services:
     environment:
       POSTGRES_PASSWORD: password
       TZ: "Asia/Tokyo"
-    networks:
-      openreports:
-        aliases:
-          - db
+    platform: linux/x86_64
 #   libreoffice:
 #     build: ./docker/libreoffice
 #     environment:
 #       TZ: "Asia/Tokyo"
-networks:
-  openreports:
 
