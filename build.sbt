@@ -27,8 +27,7 @@ lazy val baseSettings = servletSettings ++ Seq(
     "org.scala-lang"         %  "scala-compiler"           % scalaVersion.value,
     "org.scala-lang.modules" %% "scala-xml"                % "1.2.0",
     "org.scala-lang.modules" %% "scala-parser-combinators" % "2.1.1",
-    "org.slf4j"              %  "slf4j-api"                % "1.7.36",
-    "org.thymeleaf"          %  "thymeleaf"                % "2.1.6.RELEASE"
+    "org.slf4j"              %  "slf4j-api"                % "1.7.36"
   ),
   libraryDependencies ++= Seq(
     "org.skinny-framework"    %% "skinny-framework"     % skinnyVersion,
@@ -48,9 +47,6 @@ lazy val baseSettings = servletSettings ++ Seq(
     "org.jxls"                %  "jxls-poi"             % "1.0.14",
     "org.jodconverter"        %  "jodconverter-core"    % "4.2.0"
   ),
-  libraryDependencies += "org.skinny-framework" %% "skinny-thymeleaf" % skinnyVersion,
-  // https://mvnrepository.com/artifact/org.thymeleaf.extras/thymeleaf-extras-java8time
-  libraryDependencies += "org.thymeleaf.extras" % "thymeleaf-extras-java8time" % "2.1.0.RELEASE",
   // ------------------------------
   // for ./skinnny console
   initialCommands := """
@@ -75,6 +71,19 @@ DBSettings.initialize()
   fork in Test := true,
   suppressSbtShellNotification := true,
   scalacOptions ++= Seq("-unchecked", "-deprecation", "-feature")
+)
+
+lazy val fullExclusionRules = Seq(
+  ExclusionRule("org.slf4j", "slf4j-api"),
+  ExclusionRule("joda-time", "joda-time"),
+  ExclusionRule("org.joda", "joda-convert"),
+  ExclusionRule("log4j", "log4j"),
+  ExclusionRule("org.slf4j", "slf4j-log4j12")
+)
+
+lazy val compileScalateDependencies = Seq(
+  "org.scalatra.scalate" %% "scalamd"      % "1.7.3" % Compile,
+  "org.scalatra.scalate" %% "scalate-core" % "1.9.6" % Compile excludeAll (fullExclusionRules: _*)
 )
 
 lazy val scalatePrecompileSettings = scalateSettings ++ Seq(
