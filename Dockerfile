@@ -1,4 +1,4 @@
-FROM openjdk:19-slim-bullseye
+FROM openjdk:17-slim-bullseye
 
 RUN apt-get update && apt-get -y install curl gnupg
 
