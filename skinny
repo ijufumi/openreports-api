@@ -53,20 +53,19 @@ function copy_resources_to_task() {
 function setup_scalajs() {
   setting_file="${current_dir}/project/_skinny_scalajs.sbt"
   if [ ! -f "${setting_file}" ]; then
-    echo "resolvers += \"scala-js-release\" at \"http://dl.bintray.com/scala-js/scala-js-releases\"
-addSbtPlugin(\"org.scala-js\" % \"sbt-scalajs\" % \"0.6.24\")" > ${setting_file}
+    echo "resolvers += \"scala-js-release\" at \"https://dl.bintray.com/scala-js/scala-js-releases\"
+addSbtPlugin(\"org.scala-js\" % \"sbt-scalajs\" % \"1.9.0\")" > ${setting_file}
 
 echo "lazy val scalajs = (project in file(\"src/main/webapp/WEB-INF/assets\")).settings(
   name := \"application\", // JavaScript file name
-  scalaVersion := \"2.12.6\",
-  unmanagedSourceDirectories in Compile += baseDirectory(_ / \"scala\").value,
+  scalaVersion := \"2.13.1\",
+  Compile / unmanagedSourceDirectories += baseDirectory(_ / \"scala\").value,
   fullResolvers ~= { _.filterNot(_.name == \"jcenter\") },
   libraryDependencies ++= Seq(
-    \"org.scala-js\" %%% \"scalajs-dom\"    % \"0.9.6\",
-    \"be.doeraene\"  %%% \"scalajs-jquery\" % \"0.9.4\",
-    \"io.monix\"     %%  \"minitest\"       % \"2.1.1\" % \"test\"
+    \"org.scala-js\" %%% \"scalajs-dom\"    % \"1.0.0\",
+    \"be.doeraene\"  %%% \"scalajs-jquery\" % \"1.0.0\",
   ),
-  crossTarget in Compile := baseDirectory(_ / \"..\" / \"..\" / \"assets\" / \"js\").value
+  Compile / crossTarget := baseDirectory(_ / \"..\" / \"..\" / \"assets\" / \"js\").value
 ).enablePlugins(ScalaJSPlugin)" > ${current_dir}/_skinny_scalajs_settings.sbt
   fi
 }
@@ -204,13 +203,13 @@ elif [ "$command" == "package" ]; then
 elif [ "$command" == "package:standalone" ]; then
   setting_file="${current_dir}/project/_skinny_assembly.sbt"
   if [ ! -f "${setting_file}" ]; then
-    echo "addSbtPlugin(\"com.eed3si9n\" % \"sbt-assembly\" % \"0.14.7\")" > ${setting_file}
-    echo "mainClass in assembly := Some(\"skinny.standalone.JettyLauncher\")
-_root_.sbt.Keys.test in assembly := {}
-resourceGenerators in Compile += (Def.task {
+    echo "addSbtPlugin(\"com.eed3si9n\" % \"sbt-assembly\" % \"1.2.0\")" > ${setting_file}
+    echo "assembly / mainClass := Some(\"skinny.standalone.JettyLauncher\")
+assembly / _root_.sbt.Keys.test := {}
+Compile / resourceGenerators += (Def.task {
   val (managedBase, base) = (resourceManaged.value, baseDirectory.value)
   val webappBase = base / \"src\" / \"main\" / \"webapp\"
-  for ( (from, to) <- webappBase ** \"*\" \`pair\` rebase(webappBase, managedBase / \"main/\") )
+  for ( (from, to) <- webappBase ** \"*\" \`pair\` Path.rebase(webappBase, managedBase / \"main/\") )
     yield {
       Sync.copy(from, to)
       to
@@ -262,13 +261,13 @@ else
   echo "  task:clean    : will clean task project's target directory"
   echo "  task:run      : will run tasks"
   echo ""
-  echo "  g/generate jp.ijufumi.openreports.controller : will generate jp.ijufumi.openreports.controller"
-  echo "  g/generate jp.ijufumi.openreports.controller.model      : will generate jp.ijufumi.openreports.controller.model"
+  echo "  g/generate controller : will generate controller"
+  echo "  g/generate model      : will generate model"
   echo "  g/generate migration  : will generate db migration file"
   echo ""
-  echo "  g/generate scaffold       : will generate scaffold files with ssp jp.ijufumi.openreports.controller.templates"
-  echo "  g/generate scaffold:scaml : will generate scaffold files with scaml jp.ijufumi.openreports.controller.templates"
-  echo "  g/generate scaffold:jade  : will generate scaffold files with jade jp.ijufumi.openreports.controller.templates"
+  echo "  g/generate scaffold       : will generate scaffold files with ssp templates"
+  echo "  g/generate scaffold:scaml : will generate scaffold files with scaml templates"
+  echo "  g/generate scaffold:jade  : will generate scaffold files with jade templates"
   echo ""
   echo "  g/generate reverse-scaffold       : will generate scaffold from existing database"
   echo "  g/generate reverse-scaffold:scaml : will generate scaffold from existing database"
