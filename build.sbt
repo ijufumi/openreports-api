@@ -44,6 +44,7 @@ lazy val baseSettings = servletSettings ++ Seq(
     "org.jxls"                %  "jxls-poi"             % "1.0.14",
     "org.jodconverter"        %  "jodconverter-core"    % "4.2.0"
   ),
+  excludeDependencies += "commons-logging" % "commons-logging",
   // ------------------------------
   // for ./skinnny console
   initialCommands := """
