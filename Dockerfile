@@ -11,6 +11,8 @@ WORKDIR /app
 
 COPY . .
 
-RUN /bin/bash ./skinny package:standalone
+RUN chmod +x ./skinny
+RUN ./skinny package:standalone
+RUN chmod +s ./scripts/entrypoint.sh
 
-ENTRYPOINT ["/bin/bash", "java", "-jar", "standalone-build/target/scala-2.13/openreports-standalone-assembly-0.1.0-SNAPSHOT.jar"]
+ENTRYPOINT ["./scripts/entrypoint.sh"]

@@ -1,18 +1,22 @@
-version: '3'
+version: '3.8'
 services:
-  api:
-    container_name: api
+  openreports_api:
+    container_name: openreports_api
     build: ./
-  db:
+    ports:
+      - "8080:8080"
+    env_file:
+      - .env
+  openreports_db:
     build: ./docker/postgres
-    container_name: db
+    container_name: openreports_db
     volumes:
-      - "./src/main/resources/db:/docker-entrypoint-initdb.d"
-      - ./var/lib/postgresql:/var/lib/postgresql
-#      - ./docker/postgres/postgresql.conf:/var/lib/postgresql/data/postgresql.conf
+      - db-data:/var/lib/postgresql/data
     ports:
       - "5432:5432"
     environment:
+      POSTGRES_USER: openreports
+      POSTGRES_DB: openreports
       POSTGRES_PASSWORD: password
       TZ: "Asia/Tokyo"
 #   libreoffice:
@@ -20,3 +24,5 @@ services:
 #     environment:
 #       TZ: "Asia/Tokyo"
 
+volumes:
+  db-data:

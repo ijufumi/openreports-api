@@ -1,27 +1,3 @@
--- create session
--- H2 Database compatible
-create table skinny_sessions (
-  id bigserial not null primary key,
-  created_at timestamp not null,
-  expire_at timestamp not null
-);
-create table servlet_sessions (
-  jsession_id varchar(100) not null primary key,
-  skinny_session_id bigint not null,
-  created_at timestamp not null,
-  foreign key(skinny_session_id) references skinny_sessions(id)
-);
-create table skinny_session_attributes (
-  skinny_session_id bigint not null,
-  attribute_name varchar(128) not null,
-  attribute_value bytea,
-  foreign key(skinny_session_id) references skinny_sessions(id)
-);
-alter table skinny_session_attributes add constraint
-  skinny_session_attributes_unique_idx
-  unique(skinny_session_id, attribute_name);
-
-
 -- create t_member
 create table t_member (
   member_id serial primary key,
