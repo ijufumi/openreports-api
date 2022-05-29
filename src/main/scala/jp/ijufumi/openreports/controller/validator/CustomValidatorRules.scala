@@ -15,18 +15,18 @@ case class password(
 ) extends ValidationRule {
   def name = "password"
   override def messageParams = {
-    val list: mutable.ArraySeq[String] = mutable.ArraySeq.empty
+    val list = mutable.ArrayBuffer.empty[String]
     if (needsNumber) {
-      list + "0 - 9"
+      list += "0 - 9"
     }
     if (needsLowerAlpha) {
-      list + "a - z"
+      list += "a - z"
     }
     if (needsUpperAlpha) {
-      list + "a - Z"
+      list += "a - Z"
     }
     if (needsSymbol) {
-      list + "a - z"
+      list += "a - z"
     }
     Seq(minLength, list.mkString(","))
   }
