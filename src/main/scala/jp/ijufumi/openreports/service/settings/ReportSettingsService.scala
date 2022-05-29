@@ -14,7 +14,7 @@ class ReportSettingsService extends Logging {
     TReport
       .findAll()
       .map(r => {
-        val groups = r.groups.map(_.reportGroupId).seq
+        val groups = r.groups.map(_.reportGroupId)
         ReportInfo(r.reportId,
                    r.reportName,
                    r.description,
@@ -30,7 +30,7 @@ class ReportSettingsService extends Logging {
     TReport
       .findById(reportId)
       .map(r => {
-        val groups = r.groups.map(_.reportGroupId).seq
+        val groups = r.groups.map(_.reportGroupId)
         ReportInfo(r.reportId,
                    r.reportName,
                    r.description,
