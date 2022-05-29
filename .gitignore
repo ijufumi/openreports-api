@@ -73,3 +73,5 @@ var/
 
 # for Mac
 ._*
+
+sbt.json
