@@ -4,18 +4,18 @@ import scala.language.implicitConversions
 
 object OutputType extends Enumeration {
 
-  val XLS = Val("0")
-  val PDF = Val("1")
+  val XLS = NewVal("0")
+  val PDF = NewVal("1")
 
-  def of(value: String): OutputType.Val = {
+  def of(value: String): OutputType.NewVal = {
     values.find(_.value == value).getOrElse(XLS)
   }
 
-  implicit def valueToVal(x: Value): Val = x.asInstanceOf[Val]
+  implicit def valueToVal(x: Value): NewVal = x.asInstanceOf[NewVal]
 
-  protected case class Val(value: String) extends super.Val {
+  protected case class NewVal(value: String) extends super.Val {
     def equals(value: String): Boolean = {
-      Val.this == OutputType.of(value)
+      NewVal.this == OutputType.of(value)
     }
   }
 

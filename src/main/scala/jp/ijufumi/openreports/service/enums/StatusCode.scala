@@ -4,25 +4,25 @@ import scala.language.implicitConversions
 
 object StatusCode extends Enumeration {
 
-  val OK = Val("")
-  val DATA_NOT_FOUND = Val("not found")
-  val DUPLICATE_ERR = Val("duplicate key value violates")
-  val ALREADY_UPDATED = Val("already updated")
-  val OTHER_ERROR = Val("error")
+  val OK = NewVal("")
+  val DATA_NOT_FOUND = NewVal("not found")
+  val DUPLICATE_ERR = NewVal("duplicate key value violates")
+  val ALREADY_UPDATED = NewVal("already updated")
+  val OTHER_ERROR = NewVal("error")
 
-  def of(e: Exception): StatusCode.Val = {
+  def of(e: Exception): StatusCode.NewVal = {
     of(e.getMessage)
   }
 
-  implicit def valueToVal(x: Value): Val = x.asInstanceOf[Val]
+  implicit def valueToVal(x: Value): NewVal = x.asInstanceOf[NewVal]
 
-  def of(value: String): StatusCode.Val = {
+  def of(value: String): StatusCode.NewVal = {
     values.find(_.value.contains(value)).getOrElse(OTHER_ERROR)
   }
 
-  protected case class Val(value: String) extends super.Val {
+  protected case class NewVal(value: String) extends super.Val {
     def equals(value: String): Boolean = {
-      Val.this == StatusCode.of(value)
+      NewVal.this == StatusCode.of(value)
     }
   }
 
