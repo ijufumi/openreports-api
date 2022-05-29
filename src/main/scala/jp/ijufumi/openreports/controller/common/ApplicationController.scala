@@ -78,7 +78,7 @@ trait ApplicationController
             len = inputStream.read(buffer)
 
             if (len == -1) {
-              b.break
+              b.break()
             }
 
             writeChunk(buffer.slice(0, len))
