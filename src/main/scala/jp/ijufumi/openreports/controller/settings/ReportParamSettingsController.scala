@@ -45,7 +45,7 @@ class ReportParamSettingsController extends ApplicationController {
   }
 
   def doRegister = {
-    if (validateRegisterParams.validate) {
+    if (validateRegisterParams.validate()) {
       val paramKey = params.getAs[String]("paramKey").getOrElse("")
       val paramName = params.getAs[String]("paramName").getOrElse("")
       val description = params.getAs[String]("description").getOrElse("")
@@ -92,7 +92,7 @@ class ReportParamSettingsController extends ApplicationController {
 
   def doUpdate = {
     params.getAs[Long]("id").map { id =>
-      if (validateUpdateParams.validate) {
+      if (validateUpdateParams.validate()) {
         val paramKey = params.getAs[String]("paramKey").getOrElse("")
         val paramName = params.getAs[String]("paramName").getOrElse("")
         val description = params.getAs[String]("description").getOrElse("")

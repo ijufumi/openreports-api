@@ -36,7 +36,7 @@ class GroupSettingsController extends ApplicationController {
   }
 
   def doRegister = {
-    if (validateRegisterParams.validate) {
+    if (validateRegisterParams.validate()) {
       val groupName = params.getAs[String]("groupName").getOrElse("")
       val statusCode = new GroupSettingsService().registerGroup(groupName)
 
@@ -70,7 +70,7 @@ class GroupSettingsController extends ApplicationController {
   }
 
   def doUpdate =
-    if (validateUpdateParams.validate) {
+    if (validateUpdateParams.validate()) {
       params.getAs[Long]("id").map { id =>
         val groupName = params.getAs[String]("groupName").getOrElse("")
         val versions = params.getAs[Long]("versions").getOrElse(0L)

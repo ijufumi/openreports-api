@@ -41,7 +41,7 @@ class MemberSettingsController extends ApplicationController {
   }
 
   def doRegister = {
-    if (validateRegisterParams.validate) {
+    if (validateRegisterParams.validate()) {
       val password = params.getAs[String]("password").getOrElse("")
       val checkedPassword =
         params.getAs[String]("checkedPassword").getOrElse("")
@@ -99,7 +99,7 @@ class MemberSettingsController extends ApplicationController {
     params.getAs[Long]("id").map { id =>
       logger.info("[%d]params:%s".format(id, params))
 
-      if (validateUpdateParams.validate) {
+      if (validateUpdateParams.validate()) {
         val password = params.getAs[String]("password").getOrElse("")
         val checkedPassword =
           params.getAs[String]("checkedPassword").getOrElse("")

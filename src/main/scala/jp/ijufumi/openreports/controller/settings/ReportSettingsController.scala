@@ -138,7 +138,7 @@ class ReportSettingsController extends ApplicationController {
 
   def doUpdateParams = {
     params.getAs[Long]("id").map { id =>
-      if (validate4UpdatePrams.validate) {
+      if (validate4UpdatePrams.validate()) {
         val reportParams = params.getAs[String]("params").getOrElse("")
         val versions = params.getAs[Long]("versions").getOrElse(0L)
         val reportParamList = read[List[ReportParamConfig]](reportParams)
