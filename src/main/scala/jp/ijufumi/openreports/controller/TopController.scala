@@ -30,7 +30,7 @@ class TopController extends ApplicationController {
   def login = {
     val loginId = requestParams.getAs("loginId").getOrElse("")
     val password = requestParams.getAs("password").getOrElse("")
-    if (validateParams.validate) {
+    if (validateParams.validate()) {
       val memberInfoOpt = new TopService().login(loginId, password)
 
       if (memberInfoOpt.isEmpty) {
