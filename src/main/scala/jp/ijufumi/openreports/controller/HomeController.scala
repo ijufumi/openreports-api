@@ -1,19 +1,13 @@
 package jp.ijufumi.openreports.controller
 
-import jp.ijufumi.openreports.controller.common.ApplicationController
+import jp.ijufumi.openreports.controller.common.ApiController
 
-class HomeController extends ApplicationController {
-  override val activeMenu = "home"
-  override val requiredMemberInfo = true
-  val path = PrivatePath + "/home"
-  val viewPath = PrivatePath + "/home"
+class HomeController extends ApiController {
+  val path: String = PrivatePath + "/home"
 
   def index = {
-    render(viewPath + "/index")
   }
 
   def logout = {
-    skinnySession.removeAttribute("memberInfo");
-    redirect(url(Controllers.top.indexUrl))
   }
 }
