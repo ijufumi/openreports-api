@@ -1,11 +1,11 @@
 package jp.ijufumi.openreports.controller
 
 import jp.ijufumi.openreports.controller.common.ApiController
-import jp.ijufumi.openreports.service.TopService
+import jp.ijufumi.openreports.service.LoginService
 import skinny._
-import skinny.validator.{required, _}
+import skinny.validator._
 
-class TopController extends ApiController {
+class LoginController extends ApiController {
 
   val path: String = PublicPath
 
@@ -13,7 +13,7 @@ class TopController extends ApiController {
     val loginId = requestParams.getAs("loginId").getOrElse("")
     val password = requestParams.getAs("password").getOrElse("")
     if (validateParams.validate()) {
-      val memberInfoOpt = new TopService().login(loginId, password)
+      val memberInfoOpt = new LoginService().login(loginId, password)
 
       if (memberInfoOpt.isEmpty) {
         ngResponse(i18n.get("warning.loginFailure"))

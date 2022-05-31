@@ -1,23 +1,19 @@
 package jp.ijufumi.openreports.controller
 
 import skinny._
-import skinny.controller.AssetsController
+import skinny.micro.routing.Route
 
 object Controllers {
 
   def mount(ctx: ServletContext): Unit = {
-    top.mount(ctx)
+    login.mount(ctx)
     home.mount(ctx)
     report.mount(ctx)
     scheduledReport.mount(ctx)
   }
 
-  object top extends TopController with Routes {
-    val toTopUrl = get("/")(toTop).as("toTop")
-    val indexUrl = get(path)(index).as("index")
-    val indexUrl2 = get(path + "/login")(index).as("index")
-    val signUpUrl = get(path + "/signup")(signUp).as("signUp")
-    val loginUrl = post(path + "/login")(login).as("login")
+  object login extends LoginController with Routes {
+    val loginUrl: Route = post(path + "/login")(login).as("login")
   }
 
   object home extends HomeController with Routes {
@@ -38,5 +34,4 @@ object Controllers {
   object scheduledReport extends ScheduledReportController with Routes {
     val indexUrl = get(path)(index).as("index")
   }
-
 }
