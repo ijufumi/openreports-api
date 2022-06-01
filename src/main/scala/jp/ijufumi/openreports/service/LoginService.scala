@@ -7,8 +7,12 @@ import skinny.LoggerProvider
 
 import scala.collection.mutable
 
-class LoginService extends LoggerProvider {
-  def login(emailAddress: String, password: String): Option[MemberInfo] = {
+trait LoginService {
+  def login(emailAddress: String, password: String): Option[MemberInfo]
+}
+
+class LoginServiceImpl extends LoginService with LoggerProvider {
+  override def login(emailAddress: String, password: String): Option[MemberInfo] = {
     var member: MemberInfo = null
     val hashedPassword = Hash.hmacSha256(HashKey, password)
     val members: Seq[TMember] = TMember
