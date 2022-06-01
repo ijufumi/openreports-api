@@ -34,7 +34,6 @@ lazy val baseSettings = servletSettings ++ Seq(
     "org.skinny-framework" %% "skinny-assets" % skinnyVersion,
     "org.skinny-framework" %% "skinny-task" % skinnyVersion,
     "org.skinny-framework" % "skinny-logback" % "1.0.14",
-    "org.skinny-framework" %% "skinny-scaldi" % "4.0.0",
     "com.h2database" % "h2" % "1.4.200", // your own JDBC driver
     "org.skinny-framework" %% "skinny-factory-girl" % skinnyVersion % "test",
     "org.skinny-framework" %% "skinny-test" % skinnyVersion % "test",
@@ -43,7 +42,8 @@ lazy val baseSettings = servletSettings ++ Seq(
     "javax.servlet" % "javax.servlet-api" % "3.1.0" % "container;provided;test",
     "org.jxls"                %  "jxls"                 % "2.4.4",
     "org.jxls"                %  "jxls-poi"             % "1.0.14",
-    "org.jodconverter"        %  "jodconverter-core"    % "4.2.0"
+    "org.jodconverter"        %  "jodconverter-core"    % "4.2.0",
+    "com.google.inject" % "guice" % "5.1.0"
   ),
   excludeDependencies += "commons-logging" % "commons-logging",
   // ------------------------------
