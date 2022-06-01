@@ -34,6 +34,7 @@ lazy val baseSettings = servletSettings ++ Seq(
     "org.skinny-framework" %% "skinny-assets" % skinnyVersion,
     "org.skinny-framework" %% "skinny-task" % skinnyVersion,
     "org.skinny-framework" % "skinny-logback" % "1.0.14",
+    "org.skinny-framework" %% "skinny-scaldi" % "4.0.0",
     "com.h2database" % "h2" % "1.4.200", // your own JDBC driver
     "org.skinny-framework" %% "skinny-factory-girl" % skinnyVersion % "test",
     "org.skinny-framework" %% "skinny-test" % skinnyVersion % "test",
