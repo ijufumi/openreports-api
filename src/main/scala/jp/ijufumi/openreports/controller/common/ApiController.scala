@@ -16,7 +16,7 @@ trait ApiController extends SkinnyApiController with JSONFeature with I18nFeatur
     case e: Throwable =>
       // For example, logs a exception and responds with status 500.
       logger.error(e.getMessage, e)
-      haltWithBody(500)
+      ngResponse(e.getMessage)
   }
 
   def okResponse(entity: Any): String = {
@@ -24,6 +24,10 @@ trait ApiController extends SkinnyApiController with JSONFeature with I18nFeatur
   }
 
   def ngResponse(message: Option[String]): String = {
+    ngResponse(message.getOrElse("error"))
+  }
+
+  def ngResponse(message: String): String = {
     responseAsJSON(ApiResponse(status = false, message = message.getOrElse("error")))
   }
 }
