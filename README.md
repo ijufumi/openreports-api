@@ -21,38 +21,47 @@
 - [ ] Send report mail.
 
 ## Developer's memo.
-### Menu/Function tree
+### API list
 
 - public
-  - Top
-    - Login
-    - Sign Up
+  - login
 - private
-  - Home
-  - Report
-    - Reporting
-      - List(Search)
-      - Output
-    - Scheduled Reporting
-      - List(Search)
-      - Add
-      - Edit(or Show detail)
-  - Setting
-    - Report
-      - List(Search)
-      - Upload template file
-    - Report Parameters
-      - List(Search)
-      - Add
-      - Edit(or Show detail)
-    - Group
-      - List(Search)
-      - Add
-      - Edit(or Show detail)
-    - User
-      - List(Search)
-      - Add
-      - Edit(or Show detail)
+  - common
+    - logout
+    - status (including menus, groups)
+  - reports
+    - list
+    - output
+  - scheduled_reports
+    - list
+    - create
+    - update
+    - delete
+  - settings
+    - reports
+      - list
+      - create
+      - update
+      - delete
+      - templates
+        - list
+        - create
+        - delete
+      - parameters
+        - list
+        - create
+        - update
+        - delete
+      - users
+        - list
+        - create
+        - update
+        - delete
+        - groups
+          - list
+          - create
+          - update
+          - delete
 
 ### Table Structure
 
