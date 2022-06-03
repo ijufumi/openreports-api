@@ -18,6 +18,7 @@ services:
       POSTGRES_USER: openreports
       POSTGRES_DB: openreports
       POSTGRES_PASSWORD: password
+      PGDATA: /var/lib/postgresql/data/pgdata
       TZ: "Asia/Tokyo"
 #   libreoffice:
 #     build: ./docker/libreoffice
