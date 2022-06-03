@@ -40,6 +40,7 @@ object TMember
       versions = rs.get(n.versions)
     )
 
+  // TODO: change to lazy loading.
   hasManyThroughWithFk[TGroup](
     through = RMemberGroup,
     many = TGroup,
