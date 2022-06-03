@@ -1,7 +1,7 @@
 package jp.ijufumi.openreports.controller
 
 import jp.ijufumi.openreports.controller.common.ApiController
-import jp.ijufumi.openreports.service.LoginService
+import jp.ijufumi.openreports.service.LoginServiceImpl
 import skinny._
 import skinny.validator._
 
@@ -13,7 +13,7 @@ class LoginController extends ApiController {
     val loginId = requestParams.getAs("loginId").getOrElse("")
     val password = requestParams.getAs("password").getOrElse("")
     if (validateParams.validate()) {
-      val memberInfoOpt = new LoginService().login(loginId, password)
+      val memberInfoOpt = new LoginServiceImpl().login(loginId, password)
 
       if (memberInfoOpt.isEmpty) {
         ngResponse(i18n.get("warning.loginFailure"))
