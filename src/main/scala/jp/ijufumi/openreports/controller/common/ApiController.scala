@@ -28,6 +28,6 @@ trait ApiController extends SkinnyApiController with JSONFeature with I18nFeatur
   }
 
   def ngResponse(message: String): String = {
-    responseAsJSON(ApiResponse(status = false, message = message.getOrElse("error")))
+    responseAsJSON(ApiResponse(status = false, message = message))
   }
 }
