@@ -24,22 +24,11 @@ class LoginServiceImpl extends LoginService with LoggerProvider {
         "invalid id or password : [%s][%s]".format(emailAddress, hashedPassword)
       )
     } else {
-      val menus = mutable.Set[Long]()
-      val groups = mutable.Set[GroupInfo]()
       val m = members.head
-      for (g <- m.groups) {
-        val group = TGroup.includes(TGroup.functions).findById(g.groupId).get
-        logger.debug("Group:%s".format(group))
-        menus ++= group.functions.map(_.functionId).toSet
-        groups += GroupInfo(g.groupId, g.groupName, g.versions)
-      }
-
       member = MemberInfo(
         m.memberId,
         m.name,
         m.emailAddress,
-        Seq(groups.toSeq: _*),
-        Seq(menus.toSeq: _*),
         m.versions
       )
       logger.info("memberInfo:%s".format(member))

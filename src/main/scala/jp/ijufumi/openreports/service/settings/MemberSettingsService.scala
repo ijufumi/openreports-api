@@ -2,11 +2,11 @@ package jp.ijufumi.openreports.service.settings
 
 import java.sql.SQLException
 
-import jp.ijufumi.openreports.model.{RMemberGroup, TGroup, TMember}
+import jp.ijufumi.openreports.model.{RMemberGroup, TMember}
 import jp.ijufumi.openreports.service.HashKey
 import jp.ijufumi.openreports.service.enums.StatusCode
 import jp.ijufumi.openreports.service.support.{ConnectionFactory, Hash}
-import jp.ijufumi.openreports.vo.{GroupInfo, MemberInfo}
+import jp.ijufumi.openreports.vo.MemberInfo
 import org.joda.time.DateTime
 import scalikejdbc.{DB, SQLSyntax}
 import skinny.Logging
@@ -26,22 +26,11 @@ class MemberSettingsService extends Logging {
 
     val mem = memOpt.get
 
-    val newGroups = mutable.Seq[GroupInfo]()
-    // 所属しているグループを追加
-    newGroups ++ mem.groups
-    // 所属していないグループを追加
-    newGroups ++ TGroup
-      .findAll()
-      .find(g => !mem.groups.exists(_.groupId == g.groupId))
-      .map(g => GroupInfo(g.groupId, g.groupName, g.versions))
-
     Option.apply(
       new MemberInfo(
         mem.memberId,
         mem.name,
         mem.emailAddress,
-        newGroups.map(g => g),
-        mem.menus,
         mem.versions
       )
     )
