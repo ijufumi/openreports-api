@@ -36,11 +36,9 @@ class ReportController extends ApiController {
     okResponse()
   }
 
-  def setParams= {
+  def setParams = {
     okResponse()
   }
-
-
   //  def outputReport: Unit = {
   //    val reportFileOpt = ReportingSupportService("report/sample.xlsx").output()
   //    if (reportFileOpt.nonEmpty) {
