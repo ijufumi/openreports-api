@@ -4,9 +4,9 @@ import skinny.validator.ValidationRule
 
 import scala.collection.mutable
 
-object password extends password(10, true, true, true, true)
+object Password extends Password(10, true, true, true, true)
 
-case class password(
+case class Password(
     minLength: Int = 8,
     needsNumber: Boolean = true,
     needsLowerAlpha: Boolean = true,

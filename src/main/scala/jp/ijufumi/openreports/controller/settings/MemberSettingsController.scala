@@ -1,7 +1,7 @@
 package jp.ijufumi.openreports.controller.settings
 
 import jp.ijufumi.openreports.controller.common.ApplicationController
-import jp.ijufumi.openreports.controller.validator.password
+import jp.ijufumi.openreports.controller.validator.Password
 import jp.ijufumi.openreports.service.enums.StatusCode
 import jp.ijufumi.openreports.service.settings.{GroupSettingsService, MemberSettingsService}
 import skinny.Params
@@ -19,7 +19,7 @@ class MemberSettingsController extends ApplicationController {
     requestParams,
     paramKey("name") is required,
     paramKey("emailAddress") is required & email,
-    paramKey("password") is required & password,
+    paramKey("password") is required & Password,
     paramKey("checkedPassword") is required
   )
 
