@@ -5,8 +5,6 @@ import jp.ijufumi.openreports.service.support.Hash
 import jp.ijufumi.openreports.vo.{GroupInfo, MemberInfo}
 import skinny.LoggerProvider
 
-import scala.collection.mutable
-
 trait LoginService {
   def login(emailAddress: String, password: String): Option[MemberInfo]
 }
