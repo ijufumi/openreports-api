@@ -30,6 +30,7 @@ lazy val baseSettings = servletSettings ++ Seq(
     "org.slf4j" % "slf4j-api" % "1.7.36"
   ),
   libraryDependencies ++= Seq(
+    "org.scalameta" %% "scalafmt-cli" % "3.5.8",
     "org.skinny-framework" %% "skinny-framework" % skinnyVersion,
     "org.skinny-framework" %% "skinny-assets" % skinnyVersion,
     "org.skinny-framework" %% "skinny-task" % skinnyVersion,
@@ -40,10 +41,11 @@ lazy val baseSettings = servletSettings ++ Seq(
     "org.eclipse.jetty" % "jetty-webapp" % jettyVersion % "container",
     "org.eclipse.jetty" % "jetty-plus" % jettyVersion % "container",
     "javax.servlet" % "javax.servlet-api" % "3.1.0" % "container;provided;test",
-    "org.jxls"                %  "jxls"                 % "2.4.4",
-    "org.jxls"                %  "jxls-poi"             % "1.0.14",
-    "org.jodconverter"        %  "jodconverter-core"    % "4.2.0",
-    "com.google.inject" % "guice" % "5.1.0"
+    "org.jxls" % "jxls" % "2.4.4",
+    "org.jxls" % "jxls-poi" % "1.0.14",
+    "org.jodconverter" % "jodconverter-core" % "4.2.0",
+    "com.google.inject" % "guice" % "5.1.0",
+    "com.auth0" % "java-jwt" % "3.3.0"
   ),
   excludeDependencies += "commons-logging" % "commons-logging",
   // ------------------------------
@@ -79,11 +81,10 @@ lazy val scalatePrecompileSettings = scalateSettings ++ Seq(
         // These imports should be same as src/main/scala/templates/ScalatePackage.scala
         Seq("import controller._", "import model._"),
         Seq(
-          Binding(
-            "context",
-            "_root_.skinny.micro.contrib.scalate.SkinnyScalateRenderContext",
-            importMembers = true,
-            isImplicit = true)
+          Binding("context",
+                  "_root_.skinny.micro.contrib.scalate.SkinnyScalateRenderContext",
+                  importMembers = true,
+                  isImplicit = true)
         ),
         Some("templates")
       )
@@ -96,8 +97,7 @@ lazy val scalatePrecompileSettings = scalateSettings ++ Seq(
 // -------------------------------------------------------
 
 lazy val devBaseSettings = baseSettings ++ Seq(
-  Test / unmanagedClasspath += Attributed.blank(
-    baseDirectory.value / "src/main/webapp"),
+  Test / unmanagedClasspath += Attributed.blank(baseDirectory.value / "src/main/webapp"),
   // Integration tests become slower when multiple controller tests are loaded in the same time
   Test / parallelExecution := false,
   container.Configuration / port := 8080

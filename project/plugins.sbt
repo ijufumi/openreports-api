@@ -6,7 +6,6 @@ fullResolvers ~= { _.filterNot(_.name == "jcenter") }
 
 addSbtPlugin("org.scalatra.scalate" % "sbt-scalate-precompiler" % "1.9.7.0")
 addSbtPlugin("org.skinny-framework" % "sbt-servlet-plugin" % "3.0.11")
-addSbtPlugin("com.geirsson" % "sbt-scalafmt" % "3.5.8")
 addSbtPlugin("com.github.sbt" % "sbt-pgp" % "2.1.2")
 addSbtPlugin("net.virtual-void" % "sbt-dependency-graph" % "0.9.2")
 addSbtPlugin("com.timushev.sbt" % "sbt-updates" % "0.4.2")
