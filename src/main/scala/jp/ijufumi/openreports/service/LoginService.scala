@@ -1,8 +1,8 @@
 package jp.ijufumi.openreports.service
 
-import jp.ijufumi.openreports.model.{TGroup, TMember}
+import jp.ijufumi.openreports.model.TMember
 import jp.ijufumi.openreports.service.support.Hash
-import jp.ijufumi.openreports.vo.{GroupInfo, MemberInfo}
+import jp.ijufumi.openreports.vo.MemberInfo
 import skinny.LoggerProvider
 
 trait LoginService {
