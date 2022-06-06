@@ -3,14 +3,29 @@ package jp.ijufumi.openreports.service.support
 import javax.crypto.Mac
 import javax.crypto.spec.SecretKeySpec
 import org.apache.commons.codec.binary.Hex
+import com.auth0.jwt.JWT
+import com.auth0.jwt.algorithms.Algorithm
+import java.util.{Calendar, Date}
 
 object Hash {
-  def hmacSha256(salt: String, value: String) = {
+  def hmacSha256(salt: String, value: String): String = {
     val spec = new SecretKeySpec(salt.getBytes, "HmacSHA256")
     val mac = Mac.getInstance("HmacSHA256")
     mac.init(spec)
     val bytes = mac.doFinal(value.getBytes)
 
     Hex.encodeHexString(bytes)
+  }
+  def generateJWT(memberId: Long, expirationSeconds: Integer): String = {
+    val algorithm = Algorithm.HMAC512("secret")
+    val cal = Calendar.getInstance()
+    cal.add(Calendar.SECOND, expirationSeconds)
+    JWT
+      .create()
+      .withIssuer("openreports")
+      .withExpiresAt(new Date(cal.getTimeInMillis))
+      .withIssuedAt(new Date)
+      .withClaim("memberId", memberId.asInstanceOf[java.lang.Long])
+      .sign(algorithm)
   }
 }
