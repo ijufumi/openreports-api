@@ -2,6 +2,7 @@ package jp.ijufumi.openreports.service
 
 import jp.ijufumi.openreports.model.TMember
 import jp.ijufumi.openreports.service.support.Hash
+import jp.ijufumi.openreports.configs.Env
 import jp.ijufumi.openreports.vo.MemberInfo
 import skinny.LoggerProvider
 
@@ -23,10 +24,12 @@ class LoginServiceImpl extends LoginService with LoggerProvider {
       )
     } else {
       val m = members.head
+      val accessToken = Hash.generateJWT(m.memberId, Env.TOKEN_EXPIRED_SECONDS)
       member = MemberInfo(
         m.memberId,
         m.name,
         m.emailAddress,
+        accessToken,
         m.versions
       )
       logger.info("memberInfo:%s".format(member))
