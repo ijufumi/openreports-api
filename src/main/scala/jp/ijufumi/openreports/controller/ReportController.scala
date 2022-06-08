@@ -16,23 +16,23 @@ class ReportController extends ApiController {
   def requestParams = Params(params)
 
   def groupList = {
-    okResponse()
+    okResponse("not implemented")
   }
 
   def reportList = {
-    okResponse()
+    okResponse("not implemented")
   }
 
   def download = {
-    okResponse()
+    okResponse("not implemented")
   }
 
   def prepareReport = {
-    okResponse()
+    okResponse("not implemented")
   }
 
   def setParams = {
-    okResponse()
+    okResponse("not implemented")
   }
   //  def outputReport: Unit = {
   //    val reportFileOpt = ReportingSupportService("report/sample.xlsx").output()
