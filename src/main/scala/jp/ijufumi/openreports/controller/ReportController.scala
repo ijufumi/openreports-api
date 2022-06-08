@@ -1,13 +1,8 @@
 package jp.ijufumi.openreports.controller
 
 import jp.ijufumi.openreports.controller.common.ApiController
-import jp.ijufumi.openreports.service.settings.ReportTemplateSettingsService
-import jp.ijufumi.openreports.service.{ReportService, ReportingOutputService}
-import jp.ijufumi.openreports.vo.{ApiResponse, MemberInfo}
 import skinny.Params
 import skinny.validator.{paramKey, required}
-
-import scala.collection.mutable
 
 class ReportController extends ApiController {
   val path: String = PrivatePath + "/report"
