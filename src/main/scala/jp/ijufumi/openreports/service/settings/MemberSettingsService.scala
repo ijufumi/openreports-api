@@ -6,34 +6,30 @@ import jp.ijufumi.openreports.model.{RMemberGroup, TMember}
 import jp.ijufumi.openreports.service.HashKey
 import jp.ijufumi.openreports.service.enums.StatusCode
 import jp.ijufumi.openreports.service.support.{ConnectionFactory, Hash}
+import jp.ijufumi.openreports.configs.Env
 import jp.ijufumi.openreports.vo.MemberInfo
 import org.joda.time.DateTime
 import scalikejdbc.{DB, SQLSyntax}
 import skinny.Logging
 
-import scala.collection.mutable
-
 class MemberSettingsService extends Logging {
   def getMembers(): Array[MemberInfo] = {
-    TMember.findAll().map(m => MemberInfo(m)).toArray
+    TMember
+      .findAll()
+      .map(m => {
+        val accessToken = Hash.generateJWT(m.memberId, Env.TOKEN_EXPIRED_SECONDS)
+        MemberInfo(m, accessToken)
+      })
+      .toArray
   }
 
   def getMember(memberId: Long): Option[MemberInfo] = {
-    val memOpt = TMember.findById(memberId).map(m => MemberInfo(m))
-    if (memOpt.isEmpty) {
-      return memOpt
-    }
-
-    val mem = memOpt.get
-
-    Option.apply(
-      new MemberInfo(
-        mem.memberId,
-        mem.name,
-        mem.emailAddress,
-        mem.versions
-      )
-    )
+    TMember
+      .findById(memberId)
+      .map(m => {
+        val accessToken = Hash.generateJWT(m.memberId, Env.TOKEN_EXPIRED_SECONDS)
+        MemberInfo(m, accessToken)
+      })
   }
 
   def registerMember(name: String,
@@ -59,7 +55,7 @@ class MemberSettingsService extends Logging {
         db.rollback()
         return StatusCode.of(e)
       }
-      case _: Throwable    => {
+      case _: Throwable => {
         db.rollback()
         return StatusCode.OTHER_ERROR
       }
@@ -91,7 +87,7 @@ class MemberSettingsService extends Logging {
           (TMember.column.field("emailAddress"), emailAddress)
         )
 
-      if (password.length != 0) {
+      if (password.nonEmpty) {
         val hashedPassword = Hash.hmacSha256(HashKey, password)
         updateBuilder.addAttributeToBeUpdated(
           (TMember.column.field("password"), hashedPassword)
@@ -115,7 +111,7 @@ class MemberSettingsService extends Logging {
         db.rollback()
         return StatusCode.of(e)
       }
-      case _: Throwable    => {
+      case _: Throwable => {
         db.rollback()
         return StatusCode.OTHER_ERROR
       }
