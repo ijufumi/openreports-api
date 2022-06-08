@@ -1,7 +1,5 @@
 import jp.ijufumi.openreports.controller.Controllers
-import jp.ijufumi.openreports.controller.settings.{
-  Controllers => SettingsController
-}
+import jp.ijufumi.openreports.controller.settings.{Controllers => SettingsController}
 import skinny._
 import skinny.controller.AssetsController
 import skinny.session.SkinnySessionInitializer
@@ -10,10 +8,9 @@ class Bootstrap extends SkinnyLifeCycle {
 
   // If you prefer more logging, configure this settings
   // http://scalikejdbc.org/documentation/configuration.html
-  scalikejdbc.GlobalSettings.loggingSQLAndTime =
-    scalikejdbc.LoggingSQLAndTimeSettings(
-      singleLineMode = true
-    )
+  scalikejdbc.GlobalSettings.loggingSQLAndTime = scalikejdbc.LoggingSQLAndTimeSettings(
+    singleLineMode = true
+  )
 
   // simple jp.ijufumi.openreports.controller.worker example
   /*
