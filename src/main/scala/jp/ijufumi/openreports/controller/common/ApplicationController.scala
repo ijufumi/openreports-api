@@ -1,12 +1,9 @@
 package jp.ijufumi.openreports.controller.common
 
 import java.io.{BufferedInputStream, FileInputStream, InputStream}
-import java.time.{LocalDateTime, ZoneOffset}
-
-import jp.ijufumi.openreports.controller.{PublicPath, ViewRootPath}
 import jp.ijufumi.openreports.vo.Converters
 import skinny._
-import skinny.controller.feature.{JSONFeature}
+import skinny.controller.feature.JSONFeature
 import skinny.filter._
 
 import scala.util.control.Breaks
@@ -19,7 +16,6 @@ import scala.util.control.Breaks
 trait ApplicationController
     extends SkinnyController
     // with TxPerRequestFilter
-    with SkinnySessionFilter
     with ErrorPageFilter
     with I18nFeature
     with Converters
@@ -27,20 +23,11 @@ trait ApplicationController
 
   val activeMenu = ""
 
-  beforeAction() {
-    val memberInfo = skinnySession.getAs("memberInfo")
-    // logger.info("before called at " + getClass.getSimpleName + ":" + memberInfo.isDefined)
-    set("loggedIn", memberInfo.isDefined)
-    if (requiredMemberInfo && memberInfo.isEmpty) {
-      redirect(PublicPath)
-    }
-
-    set("activeMenu", activeMenu)
-    set("timeStamp", LocalDateTime.now().toEpochSecond(ZoneOffset.UTC))
-  }
+  beforeAction() {}
   val requiredMemberInfo = false
 
-  def getBodyAs[T <: Any](implicit tc: TypeConverter[String, T]): Option[T] = tc(skinnyContext.request.body)
+  def getBodyAs[T <: Any](implicit tc: TypeConverter[String, T]): Option[T] =
+    tc(skinnyContext.request.body)
 
   def fileDownload(in: String,
                    fileName: String,

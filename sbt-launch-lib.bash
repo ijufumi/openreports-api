@@ -12,7 +12,7 @@ declare -a scalac_args
 declare -a sbt_commands
 declare java_cmd=java
 declare java_version
-declare init_sbt_version="1.2.1"
+declare init_sbt_version="1.6.2"
 declare sbt_default_mem=1024
 
 declare SCRIPT=$0
