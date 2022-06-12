@@ -11,13 +11,12 @@ lazy val hello = (project in file("."))
       "org.scalatra" %% "scalatra" % ScalatraVersion,
       "org.scalatra" %% "scalatra-scalatest" % ScalatraVersion % "test",
       "ch.qos.logback" % "logback-classic" % "1.2.3" % "runtime",
-      "org.eclipse.jetty" % "jetty-webapp" % "9.4.35.v20201120" % "container",
+      "org.eclipse.jetty" % "jetty-webapp" % "9.4.35.v20201120" % "container;compile",
       "javax.servlet" % "javax.servlet-api" % "3.1.0" % "provided",
-      "org.liquibase" % "liquibase-core" % "4.11.0" % "provided"
+      "org.liquibase" % "liquibase-core" % "4.11.0" % "provided",
     ),
+    assembly / assemblyJarName := "open-report-api.jar",
+    assembly / mainClass := Some("JettyLauncher")
   )
 
 enablePlugins(JettyPlugin)
-
-lazy val hello2 = taskKey[Unit]("Prints 'Hello World'")
-hello2 := println("hello world!")
