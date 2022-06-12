@@ -18,3 +18,6 @@ lazy val hello = (project in file("."))
   )
 
 enablePlugins(JettyPlugin)
+
+lazy val hello2 = taskKey[Unit]("Prints 'Hello World'")
+hello2 := println("hello world!")
