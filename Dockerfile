@@ -11,8 +11,7 @@ WORKDIR /app
 
 COPY . .
 
-RUN chmod +x ./skinny
-RUN ./skinny package:standalone
+RUN sbt clean assembly
 RUN chmod +s ./scripts/entrypoint.sh
 
 ENTRYPOINT ["./scripts/entrypoint.sh"]

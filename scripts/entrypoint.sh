@@ -12,6 +12,7 @@ done
 
 echo "Postgres is up - executing command"
 
-./skinny db:migrate ${DB_ENV:-development}
+# TODO: Add db migration
 
-java -jar standalone-build/target/scala-2.13/openreports-standalone-assembly-0.1.0-SNAPSHOT.jar
+java -jar target/scala-2.13/open-report-api.jar
+
