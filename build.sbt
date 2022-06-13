@@ -3,7 +3,7 @@ val ScalatraVersion = "2.8.2"
 ThisBuild / scalaVersion := "2.13.8"
 ThisBuild / organization := "jp.ijufumi"
 
-lazy val hello = (project in file("."))
+lazy val root = (project in file("."))
   .settings(
     name := "Open Report API",
     version := "0.1.0-SNAPSHOT",
