@@ -14,9 +14,12 @@ lazy val root = (project in file("."))
       "org.eclipse.jetty" % "jetty-webapp" % "9.4.35.v20201120" % "container;compile",
       "javax.servlet" % "javax.servlet-api" % "3.1.0" % "provided",
       "org.liquibase" % "liquibase-core" % "4.11.0" % "provided",
+      // https://mvnrepository.com/artifact/org.postgresql/postgresql
+      "org.postgresql" % "postgresql" % "42.4.0",
     ),
     assembly / assemblyJarName := "open-report-api.jar",
     assembly / mainClass := Some("JettyLauncher")
   )
 
+lazy val migration = TaskKey
 enablePlugins(JettyPlugin)
