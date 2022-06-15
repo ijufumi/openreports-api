@@ -13,10 +13,21 @@ lazy val root = (project in file("."))
       "ch.qos.logback" % "logback-classic" % "1.2.3" % "runtime",
       "org.eclipse.jetty" % "jetty-webapp" % "9.4.35.v20201120" % "container;compile",
       "javax.servlet" % "javax.servlet-api" % "3.1.0" % "provided",
-      "org.postgresql" % "postgresql" % "42.4.0",
+      "org.postgresql" % "postgresql" % "42.4.0"
     ),
     assembly / assemblyJarName := "open-report-api.jar",
     assembly / mainClass := Some("JettyLauncher")
+  )
+
+lazy val migration = (project in file("migration"))
+  .enablePlugins(SbtPlugin)
+  .settings(
+    name := "LiquibasePlugin",
+    sbtPlugin := true,
+    version := "0.1.0-SNAPSHOT",
+    libraryDependencies ++= Seq(
+      "org.liquibase" % "liquibase-core" % "4.11.0"
+    )
   )
 
 enablePlugins(JettyPlugin)
