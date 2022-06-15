@@ -19,7 +19,7 @@ lazy val root = (project in file("."))
     assembly / mainClass := Some("JettyLauncher")
   )
 
-lazy val migration = (project in file("migration"))
+lazy val liquibasePlugin = (project in file("liquibasePlugin"))
   .enablePlugins(SbtPlugin)
   .settings(
     name := "LiquibasePlugin",
