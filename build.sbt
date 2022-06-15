@@ -30,4 +30,7 @@ lazy val liquibasePlugin = (project in file("liquibasePlugin"))
     )
   )
 
+// because scripted-sbt does not support scala 2.13
+liquibasePlugin / scalaVersion := "2.12.16"
+
 enablePlugins(JettyPlugin)
