@@ -21,6 +21,6 @@ COPY ./scripts/entrypoint.sh ./entrypoint.sh
 
 COPY --from=build /app/target/scala-2.13/open-report-api.jar open-report-api.jar
 
-RUN chmod +s ./entrypoint.sh
+RUN chmod +x ./entrypoint.sh
 
 ENTRYPOINT ["./entrypoint.sh"]
