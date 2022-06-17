@@ -14,5 +14,5 @@ echo "Postgres is up - executing command"
 
 # TODO: Add db migration
 
-java -jar target/scala-2.13/open-report-api.jar
+java -jar open-report-api.jar
 
