@@ -25,6 +25,11 @@ lazy val liquibasePlugin = (project in file("liquibasePlugin"))
     name := "LiquibasePlugin",
     sbtPlugin := true,
     version := "0.1.0-SNAPSHOT",
+    pluginCrossBuild / sbtVersion := {
+      scalaBinaryVersion.value match {
+        case "2.12" => "1.2.8" // set minimum sbt version
+      }
+    },
     libraryDependencies ++= Seq(
       "org.liquibase" % "liquibase-core" % "4.11.0"
     )
