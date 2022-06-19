@@ -23,5 +23,19 @@ object LiquibasePlugin extends AutoPlugin {
     liquibaseUrl := ""
   )
 
-  override lazy val projectSettings: Seq[Setting[_]] = Seq()
+  override lazy val projectSettings: Seq[Setting[_]] = Seq(
+    liquibaseUpdate := {
+      val parameters = Array[String]("update")
+      parameters ++ "--changelog-file"
+      parameters ++ liquibaseChangeLogFile.value
+      parameters ++ "--url"
+      parameters ++ liquibaseUrl.value
+      parameters ++ "--username"
+      parameters ++ liquibaseUsername.value
+      parameters ++ "--password"
+      parameters ++ liquibasePassword.value
+
+      LiquibaseCommandLine.main(parameters)
+    }
+  )
 }
