@@ -3,13 +3,13 @@ import liquibase.integration.commandline.LiquibaseCommandLine
 
 object Import {
   // settings
-  val liquibaseChangeLogFile = SettingKey[String]("Specifies the root changelog")
-  val liquibaseDatabaseClass = SettingKey[String]("Specifies the JDBC driver class")
-  val liquibaseUrl = SettingKey[String]("Specifies the JDBC database connection URL")
-  val liquibaseUsername = SettingKey[String]("Specifies the database username")
-  val liquibasePassword = SettingKey[String]("Specifies the database password")
+  val liquibaseChangeLogFile = settingKey[String]("Specifies the root changelog")
+  val liquibaseDatabaseClass = settingKey[String]("Specifies the JDBC driver class")
+  val liquibaseUrl = settingKey[String]("Specifies the JDBC database connection URL")
+  val liquibaseUsername = settingKey[String]("Specifies the database username")
+  val liquibasePassword = settingKey[String]("Specifies the database password")
   // tasks
-  val liquibaseUpdate = TaskKey[Unit]("liquibase-update", "Run a liquibase migration")
+  val liquibaseUpdate = taskKey[Unit]("Run a liquibase migration")
 }
 
 object LiquibasePlugin extends AutoPlugin {
