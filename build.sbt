@@ -4,6 +4,7 @@ ThisBuild / scalaVersion := "2.13.8"
 ThisBuild / organization := "jp.ijufumi"
 
 lazy val root = (project in file("."))
+  .enablePlugins(JettyPlugin, LiquibasePlugin)
   .settings(
     name := "Open Report API",
     version := "0.1.0-SNAPSHOT",
@@ -31,11 +32,10 @@ lazy val liquibasePlugin = (project in file("liquibasePlugin"))
       }
     },
     libraryDependencies ++= Seq(
-      "org.liquibase" % "liquibase-core" % "4.11.0"
+      "org.liquibase" % "liquibase-core" % "4.12.0",
+      "info.picocli" % "picocli" % "4.6.3"
     )
   )
 
 // because scripted-sbt does not support scala 2.13
 liquibasePlugin / scalaVersion := "2.12.16"
-
-enablePlugins(JettyPlugin)
