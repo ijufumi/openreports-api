@@ -2,6 +2,9 @@ val ScalatraVersion = "2.8.2"
 
 ThisBuild / scalaVersion := "2.13.8"
 ThisBuild / organization := "jp.ijufumi"
+ThisBuild / pomIncludeRepository := { _ =>
+  false
+}
 
 lazy val root = (project in file("."))
   .enablePlugins(JettyPlugin, LiquibasePlugin)
@@ -21,9 +24,9 @@ lazy val root = (project in file("."))
   )
 
 lazy val liquibasePlugin = (project in file("liquibasePlugin"))
-  .enablePlugins(SbtPlugin)
+  .enablePlugins(SbtPlugin, ContrabandPlugin)
   .settings(
-    name := "LiquibasePlugin",
+    name := "sbt-liquibase",
     sbtPlugin := true,
     version := "0.1.0-SNAPSHOT",
     pluginCrossBuild / sbtVersion := {
