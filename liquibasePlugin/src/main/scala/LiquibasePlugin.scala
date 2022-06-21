@@ -35,7 +35,7 @@ object LiquibasePlugin extends AutoPlugin {
       parameters ++ "--password"
       parameters ++ liquibasePassword.value
 
-      LiquibaseCommandLine.main(parameters)
+      new LiquibaseCommandLine().execute(parameters)
     }
   )
 }
