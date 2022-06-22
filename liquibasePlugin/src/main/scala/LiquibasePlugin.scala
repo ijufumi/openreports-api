@@ -1,5 +1,8 @@
 import sbt._
 import liquibase.integration.commandline.LiquibaseCommandLine
+import liquibase.Liquibase
+import liquibase.integration.commandline.CommandLineUtils
+import liquibase.resource.{ClassLoaderResourceAccessor, FileSystemResourceAccessor}
 
 object Import {
   // settings
@@ -10,6 +13,8 @@ object Import {
   val liquibasePassword = settingKey[String]("Specifies the database password")
   // tasks
   val liquibaseUpdate = taskKey[Unit]("Run a liquibase migration")
+
+  lazy val liquibaseInstance = taskKey[Liquibase]("liquibaseInstance")
 }
 
 object LiquibasePlugin extends AutoPlugin {
@@ -24,6 +29,30 @@ object LiquibasePlugin extends AutoPlugin {
   )
 
   override lazy val projectSettings: Seq[Setting[_]] = Seq(
+    liquibaseInstance := { () =>
+      val classpath = (dependencyClasspath in conf).value
+      val accessor =
+        new ClassLoaderResourceAccessor(ClasspathUtilities.toLoader(classpath.map(_.data)))
+      val database = CommandLineUtils.createDatabaseObject(
+        accessor,
+        liquibaseUrl.value,
+        liquibaseUsername.value,
+        liquibasePassword.value,
+        liquibaseDatabaseClass.value,
+        liquibaseDefaultCatalog.value.orNull,
+        liquibaseDefaultSchemaName.value.orNull,
+        false, // outputDefaultCatalog
+        true, // outputDefaultSchema
+        null, // databaseClass
+        null, // driverPropertiesFile
+        null, // propertyProviderClass
+        liquibaseChangelogCatalog.value.orNull,
+        liquibaseChangelogSchemaName.value.orNull,
+        null, // databaseChangeLogTableName
+        null // databaseChangeLogLockTableName
+      )
+      new Liquibase(liquibaseChangelog.value.absolutePath, new FileSystemResourceAccessor, database)
+    },
     liquibaseUpdate := {
       val parameters = Array[String]("update")
       parameters ++ "--changelog-file"
@@ -39,3 +68,5 @@ object LiquibasePlugin extends AutoPlugin {
     }
   )
 }
+
+https://github.com/sbtliquibase/sbt-liquibase-plugin/blob/master/src/main/scala/com/github/sbtliquibase/SbtLiquibase.scala
