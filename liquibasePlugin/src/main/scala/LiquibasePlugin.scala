@@ -1,4 +1,6 @@
-import sbt._
+import sbt.*
+import sbt.Keys.*
+import java.net.URLClassLoader
 import liquibase.integration.commandline.LiquibaseCommandLine
 import liquibase.Liquibase
 import liquibase.integration.commandline.CommandLineUtils
@@ -11,6 +13,11 @@ object Import {
   val liquibaseUrl = settingKey[String]("Specifies the JDBC database connection URL")
   val liquibaseUsername = settingKey[String]("Specifies the database username")
   val liquibasePassword = settingKey[String]("Specifies the database password")
+  val liquibaseDefaultCatalog = settingKey[Option[String]]("")
+  val liquibaseDefaultSchemaName = settingKey[Option[String]]("")
+  val liquibaseChangelogCatalog = settingKey[Option[String]]("")
+  val liquibaseChangelogSchemaName = settingKey[Option[String]]("")
+  val liquibaseChangelog = settingKey[File]("")
   // tasks
   val liquibaseUpdate = taskKey[Unit]("Run a liquibase migration")
 
@@ -28,11 +35,14 @@ object LiquibasePlugin extends AutoPlugin {
     liquibaseUrl := ""
   )
 
+  def toLoader(paths: Iterable[File]): ClassLoader = {
+    new URLClassLoader(paths.map(_.asURL).toSeq.toArray, getClass.getClassLoader)
+  }
   override lazy val projectSettings: Seq[Setting[_]] = Seq(
     liquibaseInstance := { () =>
-      val classpath = (dependencyClasspath in conf).value
+      val classpath = (dependencyClasspath in Compile).value
       val accessor =
-        new ClassLoaderResourceAccessor(ClasspathUtilities.toLoader(classpath.map(_.data)))
+        new ClassLoaderResourceAccessor(toLoader(classpath.map(_.data)))
       val database = CommandLineUtils.createDatabaseObject(
         accessor,
         liquibaseUrl.value,
@@ -69,4 +79,4 @@ object LiquibasePlugin extends AutoPlugin {
   )
 }
 
-https://github.com/sbtliquibase/sbt-liquibase-plugin/blob/master/src/main/scala/com/github/sbtliquibase/SbtLiquibase.scala
+// https://github.com/sbtliquibase/sbt-liquibase-plugin/blob/master/src/main/scala/com/github/sbtliquibase/SbtLiquibase.scala
