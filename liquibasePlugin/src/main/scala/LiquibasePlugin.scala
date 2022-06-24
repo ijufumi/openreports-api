@@ -1,5 +1,6 @@
-import sbt.*
-import sbt.Keys.*
+import sbt._
+import sbt.Keys._
+
 import java.net.URLClassLoader
 import liquibase.Liquibase
 import liquibase.integration.commandline.CommandLineUtils
@@ -27,14 +28,6 @@ object Import {
 object LiquibasePlugin extends AutoPlugin {
   import Import._
 
-  override lazy val globalSettings: Seq[Setting[_]] = Seq(
-    liquibaseChangeLogFile := "src/main/resources/migration",
-    liquibaseUsername := "root",
-    liquibasePassword := "password",
-    liquibaseDatabaseClass := "org.postgresql.Driver",
-    liquibaseUrl := ""
-  )
-
   def toLoader(paths: Iterable[File]): ClassLoader = {
     new URLClassLoader(paths.map(_.asURL).toSeq.toArray, getClass.getClassLoader)
   }
@@ -45,33 +38,44 @@ object LiquibasePlugin extends AutoPlugin {
     }
   }
 
-  override lazy val projectSettings: Seq[Setting[_]] = Seq(
-    liquibaseInstance := { () =>
-      val classpath = (dependencyClasspath in Compile).value
-      val accessor =
-        new ClassLoaderResourceAccessor(toLoader(classpath.map(_.data)))
-      val database = CommandLineUtils.createDatabaseObject(
-        accessor,
-        liquibaseUrl.value,
-        liquibaseUsername.value,
-        liquibasePassword.value,
-        liquibaseDatabaseClass.value,
-        liquibaseDefaultCatalog.value.orNull,
-        liquibaseDefaultSchemaName.value.orNull,
-        false, // outputDefaultCatalog
-        true, // outputDefaultSchema
-        null, // databaseClass
-        null, // driverPropertiesFile
-        null, // propertyProviderClass
-        liquibaseChangelogCatalog.value.orNull,
-        liquibaseChangelogSchemaName.value.orNull,
-        null, // databaseChangeLogTableName
-        null // databaseChangeLogLockTableName
-      )
-      new Liquibase(liquibaseChangelog.value.absolutePath, new FileSystemResourceAccessor, database)
-    },
-    liquibaseUpdate := liquibaseInstance.value().execAndClose(_.update(liquibaseContext.value))
-  )
+  def liquibaseBaseSettings(conf: Configuration): Seq[Setting[_]] = {
+    val classpath = (dependencyClasspath in conf).value
+    Seq[Setting[_]](
+      liquibaseChangeLogFile := "src/main/resources/migration",
+      liquibaseUsername := "root",
+      liquibasePassword := "password",
+      liquibaseDatabaseClass := "org.postgresql.Driver",
+      liquibaseUrl := "",
+      liquibaseInstance := { () =>
+        val accessor =
+          new ClassLoaderResourceAccessor(toLoader(classpath.map(_.data)))
+        val database = CommandLineUtils.createDatabaseObject(
+          accessor,
+          liquibaseUrl.value,
+          liquibaseUsername.value,
+          liquibasePassword.value,
+          liquibaseDatabaseClass.value,
+          liquibaseDefaultCatalog.value.orNull,
+          liquibaseDefaultSchemaName.value.orNull,
+          false, // outputDefaultCatalog
+          true, // outputDefaultSchema
+          null, // databaseClass
+          null, // driverPropertiesFile
+          null, // propertyProviderClass
+          liquibaseChangelogCatalog.value.orNull,
+          liquibaseChangelogSchemaName.value.orNull,
+          null, // databaseChangeLogTableName
+          null // databaseChangeLogLockTableName
+        )
+        new Liquibase(liquibaseChangelog.value.absolutePath,
+                      new FileSystemResourceAccessor,
+                      database)
+      },
+      liquibaseUpdate := liquibaseInstance.value().execAndClose(_.update(liquibaseContext.value))
+    )
+  }
+
+  override lazy val projectSettings: Seq[Setting[_]] = liquibaseBaseSettings(Compile)
 }
 
 // https://github.com/sbtliquibase/sbt-liquibase-plugin/blob/master/src/main/scala/com/github/sbtliquibase/SbtLiquibase.scala
