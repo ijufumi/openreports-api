@@ -1,7 +1,6 @@
 import sbt.*
 import sbt.Keys.*
 import java.net.URLClassLoader
-import liquibase.integration.commandline.LiquibaseCommandLine
 import liquibase.Liquibase
 import liquibase.integration.commandline.CommandLineUtils
 import liquibase.resource.{ClassLoaderResourceAccessor, FileSystemResourceAccessor}
@@ -18,10 +17,11 @@ object Import {
   val liquibaseChangelogCatalog = settingKey[Option[String]]("")
   val liquibaseChangelogSchemaName = settingKey[Option[String]]("")
   val liquibaseChangelog = settingKey[File]("")
+  val liquibaseContext = settingKey[String]("changeSet contexts to execute")
   // tasks
   val liquibaseUpdate = taskKey[Unit]("Run a liquibase migration")
 
-  lazy val liquibaseInstance = taskKey[Liquibase]("liquibaseInstance")
+  lazy val liquibaseInstance = taskKey[() => Liquibase]("liquibaseInstance")
 }
 
 object LiquibasePlugin extends AutoPlugin {
@@ -38,6 +38,13 @@ object LiquibasePlugin extends AutoPlugin {
   def toLoader(paths: Iterable[File]): ClassLoader = {
     new URLClassLoader(paths.map(_.asURL).toSeq.toArray, getClass.getClassLoader)
   }
+
+  implicit class LiquibaseWrapper(val liquibase: Liquibase) extends AnyVal {
+    def execAndClose(f: Liquibase => Unit): Unit = {
+      try { f(liquibase) } finally { liquibase.getDatabase.close() }
+    }
+  }
+
   override lazy val projectSettings: Seq[Setting[_]] = Seq(
     liquibaseInstance := { () =>
       val classpath = (dependencyClasspath in Compile).value
@@ -63,19 +70,7 @@ object LiquibasePlugin extends AutoPlugin {
       )
       new Liquibase(liquibaseChangelog.value.absolutePath, new FileSystemResourceAccessor, database)
     },
-    liquibaseUpdate := {
-      val parameters = Array[String]("update")
-      parameters ++ "--changelog-file"
-      parameters ++ liquibaseChangeLogFile.value
-      parameters ++ "--url"
-      parameters ++ liquibaseUrl.value
-      parameters ++ "--username"
-      parameters ++ liquibaseUsername.value
-      parameters ++ "--password"
-      parameters ++ liquibasePassword.value
-
-      new LiquibaseCommandLine().execute(parameters)
-    }
+    liquibaseUpdate := liquibaseInstance.value().execAndClose(_.update(liquibaseContext.value))
   )
 }
 
