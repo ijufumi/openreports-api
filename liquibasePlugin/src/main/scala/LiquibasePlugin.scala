@@ -8,21 +8,23 @@ import liquibase.resource.{ClassLoaderResourceAccessor, FileSystemResourceAccess
 
 object Import {
   // settings
-  val liquibaseChangeLogFile = settingKey[String]("Specifies the root changelog")
+  val liquibaseChangeLogFile = settingKey[File]("Specifies the root changelog")
   val liquibaseDatabaseClass = settingKey[String]("Specifies the JDBC driver class")
   val liquibaseUrl = settingKey[String]("Specifies the JDBC database connection URL")
   val liquibaseUsername = settingKey[String]("Specifies the database username")
   val liquibasePassword = settingKey[String]("Specifies the database password")
-  val liquibaseDefaultCatalog = settingKey[Option[String]]("")
-  val liquibaseDefaultSchemaName = settingKey[Option[String]]("")
-  val liquibaseChangelogCatalog = settingKey[Option[String]]("")
-  val liquibaseChangelogSchemaName = settingKey[Option[String]]("")
+  val liquibaseDefaultCatalog = settingKey[String]("")
+  val liquibaseDefaultSchemaName = settingKey[String]("")
+  val liquibaseChangelogCatalog = settingKey[String]("")
+  val liquibaseChangelogSchemaName = settingKey[String]("")
   val liquibaseChangelog = settingKey[File]("")
   val liquibaseContext = settingKey[String]("changeSet contexts to execute")
   // tasks
   val liquibaseUpdate = taskKey[Unit]("Run a liquibase migration")
 
   lazy val liquibaseInstance = taskKey[(Keys.Classpath) => Liquibase]("liquibaseInstance")
+
+  // global settings
   val compileClassPath = taskKey[Keys.Classpath]("")
 }
 
@@ -42,11 +44,16 @@ object LiquibasePlugin extends AutoPlugin {
   def liquibaseBaseSettings(conf: Configuration): Seq[Setting[_]] = {
     Seq[Setting[_]](
       compileClassPath := (dependencyClasspath in Compile).value,
-      liquibaseChangeLogFile := "src/main/resources/migration",
+      liquibaseChangeLogFile := file("src/main/resources/migration/changelog.xml"),
       liquibaseUsername := "root",
       liquibasePassword := "password",
       liquibaseDatabaseClass := "org.postgresql.Driver",
       liquibaseUrl := "",
+      liquibaseDefaultSchemaName := "",
+      liquibaseChangelogCatalog := "",
+      liquibaseChangelogSchemaName := "",
+      liquibaseDefaultCatalog := "",
+      liquibaseContext := "",
       liquibaseInstance := { (classpath: Keys.Classpath) =>
         val accessor =
           new ClassLoaderResourceAccessor(toLoader(classpath.map(_.data)))
@@ -56,19 +63,19 @@ object LiquibasePlugin extends AutoPlugin {
           liquibaseUsername.value,
           liquibasePassword.value,
           liquibaseDatabaseClass.value,
-          liquibaseDefaultCatalog.value.orNull,
-          liquibaseDefaultSchemaName.value.orNull,
-          false, // outputDefaultCatalog
+          liquibaseDefaultCatalog.value,
+          liquibaseDefaultSchemaName.value,
+          true, // outputDefaultCatalog
           true, // outputDefaultSchema
           null, // databaseClass
           null, // driverPropertiesFile
           null, // propertyProviderClass
-          liquibaseChangelogCatalog.value.orNull,
-          liquibaseChangelogSchemaName.value.orNull,
+          liquibaseChangelogCatalog.value,
+          liquibaseChangelogSchemaName.value,
           null, // databaseChangeLogTableName
           null // databaseChangeLogLockTableName
         )
-        new Liquibase(liquibaseChangelog.value.absolutePath,
+        new Liquibase(liquibaseChangeLogFile.value.absolutePath,
                       new FileSystemResourceAccessor,
                       database)
       },
