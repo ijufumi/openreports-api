@@ -22,7 +22,8 @@ object Import {
   // tasks
   val liquibaseUpdate = taskKey[Unit]("Run a liquibase migration")
 
-  lazy val liquibaseInstance = taskKey[() => Liquibase]("liquibaseInstance")
+  lazy val liquibaseInstance = taskKey[(Keys.Classpath) => Liquibase]("liquibaseInstance")
+  val compileClassPath = taskKey[Keys.Classpath]("")
 }
 
 object LiquibasePlugin extends AutoPlugin {
@@ -39,14 +40,14 @@ object LiquibasePlugin extends AutoPlugin {
   }
 
   def liquibaseBaseSettings(conf: Configuration): Seq[Setting[_]] = {
-    val classpath = (dependencyClasspath in conf).value
     Seq[Setting[_]](
+      compileClassPath := (dependencyClasspath in Compile).value,
       liquibaseChangeLogFile := "src/main/resources/migration",
       liquibaseUsername := "root",
       liquibasePassword := "password",
       liquibaseDatabaseClass := "org.postgresql.Driver",
       liquibaseUrl := "",
-      liquibaseInstance := { () =>
+      liquibaseInstance := { (classpath: Keys.Classpath) =>
         val accessor =
           new ClassLoaderResourceAccessor(toLoader(classpath.map(_.data)))
         val database = CommandLineUtils.createDatabaseObject(
@@ -71,7 +72,9 @@ object LiquibasePlugin extends AutoPlugin {
                       new FileSystemResourceAccessor,
                       database)
       },
-      liquibaseUpdate := liquibaseInstance.value().execAndClose(_.update(liquibaseContext.value))
+      liquibaseUpdate := liquibaseInstance
+        .value(compileClassPath.value)
+        .execAndClose(_.update(liquibaseContext.value))
     )
   }
 
