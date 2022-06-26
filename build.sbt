@@ -36,7 +36,6 @@ lazy val liquibasePlugin = (project in file("liquibasePlugin"))
     },
     libraryDependencies ++= Seq(
       "org.liquibase" % "liquibase-core" % "4.12.0",
-      "com.mattbertolini" % "liquibase-slf4j" % "4.1.0",
       "info.picocli" % "picocli" % "4.6.3"
     )
   )
