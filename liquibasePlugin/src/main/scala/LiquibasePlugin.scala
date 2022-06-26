@@ -1,8 +1,9 @@
-import sbt._
-import sbt.Keys._
+import sbt.*
+import sbt.Keys.*
 
 import java.net.URLClassLoader
 import liquibase.Liquibase
+import liquibase.Scope
 import liquibase.integration.commandline.CommandLineUtils
 import liquibase.resource.{ClassLoaderResourceAccessor, FileSystemResourceAccessor}
 
@@ -48,13 +49,21 @@ object LiquibasePlugin extends AutoPlugin {
       liquibaseUsername := "root",
       liquibasePassword := "password",
       liquibaseDatabaseClass := "org.postgresql.Driver",
-      liquibaseUrl := "",
+      liquibaseUrl := "jdbc:postgresql:database",
       liquibaseDefaultSchemaName := "",
       liquibaseChangelogCatalog := "",
       liquibaseChangelogSchemaName := "",
       liquibaseDefaultCatalog := "",
       liquibaseContext := "",
       liquibaseInstance := { (classpath: Keys.Classpath) =>
+        try {
+          Scope.getCurrentScope
+        } catch {
+          case e: Exception => {
+            e.printStackTrace()
+          }
+        }
+
         val accessor =
           new ClassLoaderResourceAccessor(toLoader(classpath.map(_.data)))
         val database = CommandLineUtils.createDatabaseObject(
