@@ -42,7 +42,7 @@ object LiquibasePlugin extends AutoPlugin {
     }
   }
 
-  def liquibaseBaseSettings(conf: Configuration): Seq[Setting[_]] = {
+  def liquibaseBaseSettings(): Seq[Setting[_]] = {
     Seq[Setting[_]](
       compileClassPath := (dependencyClasspath in Compile).value,
       liquibaseChangeLogFile := file("src/main/resources/migration/changelog.xml"),
@@ -94,7 +94,7 @@ object LiquibasePlugin extends AutoPlugin {
     )
   }
 
-  override lazy val projectSettings: Seq[Setting[_]] = liquibaseBaseSettings(Compile)
+  override lazy val projectSettings: Seq[Setting[_]] = liquibaseBaseSettings()
 }
 
 // https://github.com/sbtliquibase/sbt-liquibase-plugin/blob/master/src/main/scala/com/github/sbtliquibase/SbtLiquibase.scala
