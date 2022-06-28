@@ -1,7 +1,6 @@
 import sbt.*
 import sbt.Keys.*
 
-import java.net.URLClassLoader
 import liquibase.Liquibase
 import liquibase.Scope
 import liquibase.integration.commandline.CommandLineUtils
@@ -32,8 +31,12 @@ object Import {
 object LiquibasePlugin extends AutoPlugin {
   import Import._
 
-  def toLoader(paths: Iterable[File]): ClassLoader = {
-    new URLClassLoader(paths.map(_.asURL).toSeq.toArray, getClass.getClassLoader)
+  def toLoader(cp: Types.Id[Keys.Classpath]): ClassLoader = {
+    val classloader = sbt.internal.inc.classpath.ClasspathUtilities
+      .toLoader(cp.map(_.data), getClass.getClassLoader)
+
+    java.lang.Thread.currentThread.setContextClassLoader(classloader)
+    classloader
   }
 
   implicit class LiquibaseWrapper(val liquibase: Liquibase) extends AnyVal {
@@ -44,7 +47,7 @@ object LiquibasePlugin extends AutoPlugin {
 
   def liquibaseBaseSettings(): Seq[Setting[_]] = {
     Seq[Setting[_]](
-      compileClassPath := (dependencyClasspath in Compile).value,
+      compileClassPath := (fullClasspath in Compile).value,
       liquibaseChangeLogFile := file("src/main/resources/migration/changelog.xml"),
       liquibaseUsername := "root",
       liquibasePassword := "password",
@@ -55,7 +58,7 @@ object LiquibasePlugin extends AutoPlugin {
       liquibaseChangelogSchemaName := "",
       liquibaseDefaultCatalog := "",
       liquibaseContext := "",
-      liquibaseInstance := { (classpath: Keys.Classpath) =>
+      liquibaseInstance := { (cp: Types.Id[Keys.Classpath]) =>
         try {
           Scope.getCurrentScope
         } catch {
@@ -65,7 +68,7 @@ object LiquibasePlugin extends AutoPlugin {
         }
 
         val accessor =
-          new ClassLoaderResourceAccessor(toLoader(classpath.map(_.data)))
+          new ClassLoaderResourceAccessor(toLoader(cp))
         val database = CommandLineUtils.createDatabaseObject(
           accessor,
           liquibaseUrl.value,
