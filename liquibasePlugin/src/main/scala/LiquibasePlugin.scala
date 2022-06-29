@@ -2,7 +2,6 @@ import sbt.*
 import sbt.Keys.*
 
 import liquibase.Liquibase
-import liquibase.Scope
 import liquibase.integration.commandline.CommandLineUtils
 import liquibase.resource.{ClassLoaderResourceAccessor, FileSystemResourceAccessor}
 
@@ -29,9 +28,10 @@ object Import {
 }
 
 object LiquibasePlugin extends AutoPlugin {
-  import Import._
+  import Import.*
 
   def toLoader(cp: Types.Id[Keys.Classpath]): ClassLoader = {
+
     val classloader = sbt.internal.inc.classpath.ClasspathUtilities
       .toLoader(cp.map(_.data), getClass.getClassLoader)
 
@@ -59,14 +59,6 @@ object LiquibasePlugin extends AutoPlugin {
       liquibaseDefaultCatalog := "",
       liquibaseContext := "",
       liquibaseInstance := { (cp: Types.Id[Keys.Classpath]) =>
-        try {
-          Scope.getCurrentScope
-        } catch {
-          case e: Exception => {
-            e.printStackTrace()
-          }
-        }
-
         val accessor =
           new ClassLoaderResourceAccessor(toLoader(cp))
         val database = CommandLineUtils.createDatabaseObject(
