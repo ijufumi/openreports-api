@@ -31,7 +31,7 @@ object LiquibasePlugin extends AutoPlugin {
   import Import.*
 
   def toLoader(cp: Types.Id[Keys.Classpath]): ClassLoader = {
-
+    // TODO: Should change it to alternative ways because of internal class.
     val classloader = sbt.internal.inc.classpath.ClasspathUtilities
       .toLoader(cp.map(_.data), getClass.getClassLoader)
 
