@@ -1,3 +1,5 @@
+import Import._
+
 val ScalatraVersion = "2.8.2"
 
 ThisBuild / scalaVersion := "2.13.8"
@@ -20,8 +22,13 @@ lazy val root = (project in file("."))
       "org.postgresql" % "postgresql" % "42.4.0"
     ),
     assembly / assemblyJarName := "open-report-api.jar",
-    assembly / mainClass := Some("JettyLauncher")
+    assembly / mainClass := Some("JettyLauncher"),
   )
+
+liquibaseUsername := "openreports"
+liquibasePassword := "password"
+liquibaseUrl := "jdbc:postgresql:openreports"
+liquibaseChangeLogFile := "src/main/resources/migration/change-log.yaml"
 
 lazy val liquibasePlugin = (project in file("liquibasePlugin"))
   .enablePlugins(SbtPlugin, ContrabandPlugin)
