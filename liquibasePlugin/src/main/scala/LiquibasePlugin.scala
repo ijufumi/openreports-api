@@ -7,7 +7,7 @@ import liquibase.resource.{ClassLoaderResourceAccessor, FileSystemResourceAccess
 
 object Import {
   // settings
-  val liquibaseChangeLogFile = settingKey[File]("Specifies the root changelog")
+  val liquibaseChangeLogFile = settingKey[String]("Specifies the root changelog")
   val liquibaseDatabaseClass = settingKey[String]("Specifies the JDBC driver class")
   val liquibaseUrl = settingKey[String]("Specifies the JDBC database connection URL")
   val liquibaseUsername = settingKey[String]("Specifies the database username")
@@ -48,7 +48,7 @@ object LiquibasePlugin extends AutoPlugin {
   def liquibaseBaseSettings(): Seq[Setting[_]] = {
     Seq[Setting[_]](
       compileClassPath := (fullClasspath in Compile).value,
-      liquibaseChangeLogFile := file("src/main/resources/migration/changelog.xml"),
+      liquibaseChangeLogFile := "src/main/resources/migration/change-log.yaml",
       liquibaseUsername := "root",
       liquibasePassword := "password",
       liquibaseDatabaseClass := "org.postgresql.Driver",
@@ -79,9 +79,7 @@ object LiquibasePlugin extends AutoPlugin {
           null, // databaseChangeLogTableName
           null // databaseChangeLogLockTableName
         )
-        new Liquibase(liquibaseChangeLogFile.value.absolutePath,
-                      new FileSystemResourceAccessor,
-                      database)
+        new Liquibase((liquibaseChangeLogFile.value), new FileSystemResourceAccessor, database)
       },
       liquibaseUpdate := liquibaseInstance
         .value(compileClassPath.value)
