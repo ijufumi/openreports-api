@@ -1,5 +1,3 @@
-import Import._
-
 val ScalatraVersion = "2.8.2"
 
 ThisBuild / scalaVersion := "2.13.8"
@@ -9,7 +7,7 @@ ThisBuild / pomIncludeRepository := { _ =>
 }
 
 lazy val root = (project in file("."))
-  .enablePlugins(JettyPlugin, LiquibasePlugin)
+  .enablePlugins(JettyPlugin, FlywayPlugin)
   .settings(
     name := "Open Report API",
     version := "0.1.0-SNAPSHOT",
@@ -24,28 +22,3 @@ lazy val root = (project in file("."))
     assembly / assemblyJarName := "open-report-api.jar",
     assembly / mainClass := Some("JettyLauncher"),
   )
-
-liquibaseUsername := "openreports"
-liquibasePassword := "password"
-liquibaseUrl := "jdbc:postgresql:openreports"
-liquibaseChangeLogFile := "src/main/resources/migration/change-log.yaml"
-
-lazy val liquibasePlugin = (project in file("liquibasePlugin"))
-  .enablePlugins(SbtPlugin, ContrabandPlugin)
-  .settings(
-    name := "sbt-liquibase",
-    sbtPlugin := true,
-    version := "0.1.0-SNAPSHOT",
-    pluginCrossBuild / sbtVersion := {
-      scalaBinaryVersion.value match {
-        case "2.12" => "1.2.8" // set minimum sbt version
-      }
-    },
-    libraryDependencies ++= Seq(
-      "org.liquibase" % "liquibase-core" % "4.12.0",
-      "info.picocli" % "picocli" % "4.6.3"
-    )
-  )
-
-// because scripted-sbt does not support scala 2.13
-liquibasePlugin / scalaVersion := "2.12.16"
