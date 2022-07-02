@@ -26,12 +26,12 @@ lazy val root = (project in file("."))
   )
 
 val dbHost = sys.env.getOrElse("DB_HOST", "localhost")
-val dbSchemaName = sys.env.getOrElse("DB_SCHEMA", "openreports")
+val dbName = sys.env.getOrElse("DB_NAME", "openreports")
 val dbUser = sys.env.getOrElse("DB_USER", "postgres")
 val dbPassword = sys.env.getOrElse("DB_PASSWORD", "password")
 val dbPort = sys.env.getOrElse("DB_PORT", "5432")
 
-flywayUrl := f"jdbc:postgresql://$dbHost%s:$dbPort%s/openreports"
+flywayUrl := f"jdbc:postgresql://$dbHost%s:$dbPort%s/$dbName%s"
 flywayUser := dbUser
 flywayPassword := dbPassword
 flywayBaselineOnMigrate := true
