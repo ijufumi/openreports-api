@@ -1,18 +1,19 @@
 #!/bin/bash
 
-POSTGRES_USER=${DB_USER}
-POSTGRES_PASSWORD=${DB_PASS}
-POSTGRES_DB=${DB_NAME}
-PGPASSWORD=${DB_PASS}
-
-until psql -h ${DB_HOST} -U ${DB_USER} -c '\q'; do
+until psql -h ${DB_HOST} -U ${DB_USER} -p ${DB_PORT} -c "\l"; do
   echo "Postgres is unavailable - sleeping"
   sleep 1
 done
 
 echo "Postgres is up - executing command"
 
-# TODO: Add db migration
+# Create database if not exists
+psql -h ${DB_HOST} -U ${DB_USER} -p ${DB_PORT} -l | grep ${DB_NAME}; \
+if [ $? -ne 0 ]; then \
+  psql -h ${DB_HOST} -U ${DB_USER} -p ${DB_PORT} -c "CREATE DATABASE ${DB_NAME} ENCODING 'UTF8';"
+fi
 
-java -jar open-report-api.jar
+sbt flywayMigrate
+
+sbt run
 
