@@ -1,4 +1,4 @@
-FROM openjdk:17-slim-bullseye as build
+FROM openjdk:17-slim-bullseye
 
 RUN apt-get update && apt-get -y install curl gnupg
 
@@ -11,16 +11,8 @@ WORKDIR /app
 
 COPY . .
 
-RUN sbt clean assembly
+RUN sbt clean compile
 
-FROM openjdk:17-slim-bullseye as deploy
+RUN chmod +x ./scripts/entrypoint.sh
 
-WORKDIR /app
-
-COPY ./scripts/entrypoint.sh ./entrypoint.sh
-
-COPY --from=build /app/target/scala-2.13/open-report-api.jar open-report-api.jar
-
-RUN chmod +x ./entrypoint.sh
-
-ENTRYPOINT ["./entrypoint.sh"]
+ENTRYPOINT ["./scripts/entrypoint.sh"]
