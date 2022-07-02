@@ -1,6 +1,6 @@
 FROM openjdk:17-slim-bullseye
 
-RUN apt-get update && apt-get -y install curl gnupg
+RUN apt-get update && apt-get -y install curl gnupg postgresql-client
 
 RUN echo "deb https://repo.scala-sbt.org/scalasbt/debian all main" | tee /etc/apt/sources.list.d/sbt.list
 RUN echo "deb https://repo.scala-sbt.org/scalasbt/debian /" | tee /etc/apt/sources.list.d/sbt_old.list
