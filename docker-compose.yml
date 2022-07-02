@@ -15,8 +15,8 @@ services:
     ports:
       - "5432:5432"
     environment:
-      POSTGRES_USER: openreports
-      POSTGRES_DB: openreports
+      POSTGRES_USER: postgres
+      POSTGRES_DB: postgres
       POSTGRES_PASSWORD: password
       PGDATA: /var/lib/postgresql/data/pgdata
       TZ: "Asia/Tokyo"
