@@ -31,7 +31,7 @@ val dbUser = sys.env.getOrElse("DB_USER", "postgres")
 val dbPassword = sys.env.getOrElse("DB_PASSWORD", "password")
 val dbPort = sys.env.getOrElse("DB_PORT", "5432")
 
-flywayUrl := f"jdbc:postgresql://$dbHost%s:$dbPort%s/postgres"
+flywayUrl := f"jdbc:postgresql://$dbHost%s:$dbPort%s/openreports"
 flywayUser := dbUser
 flywayPassword := dbPassword
 flywayBaselineOnMigrate := true
