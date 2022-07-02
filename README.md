@@ -7,6 +7,7 @@
 | Scalatra | 2.8.2   | All of them. |
 | Servlet API | 3.1.0   | Web API |
 | logback | 1.2.3  | Logging |
+ | Flyway | 8.5.13 | Migration |
 
 ## Features (not implemented yet)
 - [ ] Output reporting.
@@ -15,6 +16,23 @@
 - [ ] Supporting output format are xls, xlsx, pdf.
 - [ ] Manage users and groups.
 - [ ] Send report mail.
+
+## How to set up
+
+### Starting up
+
+```shell
+COMPOSE_DOCKER_CLI_BUILD=1 DOCKER_BUILCDKIT=1 docker-compose up --build
+```
+
+### Migration
+
+Basically, migration will execute automatically when docker-compose starts.
+However, the below command makes you able to execute manually.
+
+```shell
+docker-compose exec api sbt flywayMigration
+```
 
 ## Developer's memo.
 ### API list
