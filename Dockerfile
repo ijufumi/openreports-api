@@ -11,7 +11,7 @@ WORKDIR /app
 
 COPY . .
 
-RUN sbt clean compile
+RUN sbt compile
 
 RUN chmod +x ./scripts/entrypoint.sh
 
