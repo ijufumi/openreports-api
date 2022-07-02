@@ -1,0 +1,9 @@
+.env*
+.editorconfig
+.gitignore
+.bsp
+.circleci
+.idea
+
+docker
+target
