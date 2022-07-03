@@ -7,6 +7,9 @@ services:
       - "8080:8080"
     env_file:
       - .env
+    working_dir: /app
+    volumes:
+      - ./src/main/resources/db/migration:/app/src/main/resources/db/migration
   db:
     build: ./docker/postgres
     container_name: db
