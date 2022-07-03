@@ -31,7 +31,7 @@ Basically, migration will execute automatically when docker-compose starts.
 However, the below command makes you able to execute manually.
 
 ```shell
-docker-compose exec api sbt flywayMigration
+docker-compose exec api sbt flywayMigrate
 ```
 
 ## Developer's memo.
