@@ -1,4 +1,4 @@
-package jp.ijufumi.openreports.app
+package jp.ijufumi.openreports.api
 
 import org.scalatra.test.scalatest._
 
@@ -8,7 +8,7 @@ class APIServletTests extends ScalatraFunSuite {
 
   test("GET / on APIServlet should return status 200") {
     get("/") {
-      status should equal (200)
+      status should equal(200)
     }
   }
 

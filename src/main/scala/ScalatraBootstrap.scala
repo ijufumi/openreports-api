@@ -1,4 +1,4 @@
-import jp.ijufumi.openreports.app._
+import jp.ijufumi.openreports.api._
 import org.scalatra._
 import javax.servlet.ServletContext
 

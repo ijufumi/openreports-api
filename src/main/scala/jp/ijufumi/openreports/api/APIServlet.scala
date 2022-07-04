@@ -1,4 +1,4 @@
-package jp.ijufumi.openreports.app
+package jp.ijufumi.openreports.api
 
 import org.scalatra._
 
