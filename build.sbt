@@ -20,7 +20,8 @@ lazy val root = (project in file("."))
       "org.eclipse.jetty" % "jetty-webapp" % "9.4.35.v20201120" % "container;compile",
       "javax.servlet" % "javax.servlet-api" % "3.1.0" % "provided",
       "org.postgresql" % "postgresql" % "42.4.0",
-      "com.google.inject" % "guice" % "5.1.0"
+      "com.google.inject" % "guice" % "5.1.0",
+      "com.typesafe.slick" %% "slick" % "3.3.3"
     ),
     assembly / assemblyJarName := "open-report-api.jar",
     assembly / mainClass := Some("JettyLauncher"),
