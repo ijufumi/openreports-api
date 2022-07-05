@@ -21,9 +21,9 @@ object Config {
         "connectionPool" -> "HikariCP",
         "numThreads" -> 5,
         "poolSize" -> 20,
-        "keepAliveConnection" -> true
-      ).asJava
-    ).asJava
+        "keepAliveConnection" -> true,
+      ).asJava,
+    ).asJava,
   )
 
   def createDatabase(name: String = "postgres"): Database = {
