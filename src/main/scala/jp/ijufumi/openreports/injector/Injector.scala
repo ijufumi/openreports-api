@@ -1,10 +1,9 @@
 package jp.ijufumi.openreports.injector
 
 import com.google.inject.Guice
-import org.scalatra.ScalatraServlet
 
 object Injector {
-  def createAndInject(clazz: Class[_ <: ScalatraServlet]): ScalatraServlet = {
+  def createAndInject[T](clazz: Class[_ <: T]): T = {
     val injector = Guice.createInjector(new DatabaseModule(), new ServiceModule())
     injector.getInstance(clazz)
   }
