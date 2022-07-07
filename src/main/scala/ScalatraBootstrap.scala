@@ -5,8 +5,10 @@ import jp.ijufumi.openreports.injector.Injector
 
 class ScalatraBootstrap extends LifeCycle {
   override def init(context: ServletContext) {
-    val servlet = new APIServlet
-    Injector.inject(servlet)
-    context.mount(servlet, "/*")
+    val apiServlet = new APIServlet
+    Injector.inject(apiServlet)
+    val loginServlet = Injector.createAndInject(classOf[LoginServlet])
+    context.mount(loginServlet, "/login")
+    context.mount(apiServlet, "/*")
   }
 }
