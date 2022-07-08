@@ -1,10 +1,10 @@
-package jp.ijufumi.openreports.repositories.database
+package jp.ijufumi.openreports.database
 
 import com.typesafe.config.ConfigFactory
 import slick.jdbc.JdbcBackend.Database
 import scala.jdk.CollectionConverters.MapHasAsJava
 
-object Config {
+object DatabaseFactory {
   private val dbHost: String = sys.env.getOrElse("DB_HOST", "localhost")
   private val dbName: String = sys.env.getOrElse("DB_NAME", "openreports")
   private val dbUser: String = sys.env.getOrElse("DB_USER", "postgres")
