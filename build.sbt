@@ -1,6 +1,7 @@
 import scala.sys
 
 val ScalatraVersion = "2.8.2"
+val SlickVersion = "3.3.3"
 
 ThisBuild / scalaVersion := "2.13.8"
 ThisBuild / organization := "jp.ijufumi"
@@ -21,8 +22,8 @@ lazy val root = (project in file("."))
       "javax.servlet" % "javax.servlet-api" % "3.1.0" % "provided",
       "org.postgresql" % "postgresql" % "42.4.0",
       "com.google.inject" % "guice" % "5.1.0",
-      "com.typesafe.slick" %% "slick" % "3.3.3",
-      "com.typesafe.slick" %% "slick-hikaricp" % "3.3.3"
+      "com.typesafe.slick" %% "slick" % SlickVersion,
+      "com.typesafe.slick" %% "slick-hikaricp" % SlickVersion,
     ),
     assembly / assemblyJarName := "open-report-api.jar",
     assembly / mainClass := Some("JettyLauncher"),
