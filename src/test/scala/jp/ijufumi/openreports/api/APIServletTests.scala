@@ -12,4 +12,5 @@ class APIServletTests extends ScalatraFunSuite {
     }
   }
 
+  override def header = ???
 }
