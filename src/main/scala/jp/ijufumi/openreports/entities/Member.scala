@@ -1,7 +1,6 @@
 package jp.ijufumi.openreports.entities
 
-import slick.lifted.Tag
-import slick.ast.ScalaBaseType.{intType, longType, stringType}
+import slick.lifted.{ProvenShape, Tag}
 import slick.jdbc.PostgresProfile.api._
 
 import java.sql.Timestamp
@@ -27,18 +26,9 @@ class Members(tag: Tag)
   def password = column[String]("password")
   def name = column[String]("name")
   def isAdmin = column[String]("is_admin")
-  def createdAt = column[Timestamp]("created_at")
-  def updatedAt = column[Timestamp]("updated_at")
+  def createdAt = column[Timestamp]("created_at")(timestampColumnType)
+  def updatedAt = column[Timestamp]("updated_at")(timestampColumnType)
   def version = column[Long]("version")
 
-  override def * = (
-    id,
-    emailAddress,
-    password,
-    name,
-    isAdmin,
-    createdAt,
-    updatedAt,
-    version,
-  ) <> (Member.tupled, Member.unapply)
+  override def * = ???
 }
