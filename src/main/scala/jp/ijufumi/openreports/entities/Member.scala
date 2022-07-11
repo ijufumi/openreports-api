@@ -1,13 +1,24 @@
 package jp.ijufumi.openreports.entities
 
-import slick.jdbc.PostgresProfile._
 import slick.lifted.Tag
 import slick.ast.ScalaBaseType.{intType, longType, stringType}
+import slick.jdbc.PostgresProfile.api._
 
 import java.sql.Timestamp
 
-class Member(tag: Tag)
-    extends Table[(Int, String, String, String, String, Timestamp, Timestamp, Long)](
+case class Member(
+    id: Int,
+    emailAddress: String,
+    password: String,
+    name: String,
+    isAdmin: String,
+    createdAt: Timestamp,
+    updatedAt: Timestamp,
+    version: Long,
+)
+
+class Members(tag: Tag)
+    extends Table[Member](
       tag,
       "members",
     ) {
@@ -20,7 +31,7 @@ class Member(tag: Tag)
   def updatedAt = column[Timestamp]("updated_at")
   def version = column[Long]("version")
 
-  def * = (
+  override def * = (
     id,
     emailAddress,
     password,
@@ -29,5 +40,5 @@ class Member(tag: Tag)
     createdAt,
     updatedAt,
     version,
-  )
+  ) <> (Member.tupled, Member.unapply)
 }
