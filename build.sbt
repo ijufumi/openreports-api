@@ -24,6 +24,7 @@ lazy val root = (project in file("."))
       "com.google.inject" % "guice" % "5.1.0",
       "com.typesafe.slick" %% "slick" % SlickVersion,
       "com.typesafe.slick" %% "slick-hikaricp" % SlickVersion,
+      "com.typesafe.slick" %% "slick-testkit" % SlickVersion % "test",
     ),
     assembly / assemblyJarName := "open-report-api.jar",
     assembly / mainClass := Some("JettyLauncher"),
