@@ -8,8 +8,7 @@ import slick.jdbc.PostgresProfile.api._
 
 import scala.concurrent.Future
 
-@Inject
-class MemberRepositoryImpl(db: Database) extends MemberRepository {
+class MemberRepositoryImpl @Inject() (db: Database) extends MemberRepository {
   private lazy val query = TableQuery[Members]
 
   def getMemberByEmail(emailAddress: String): Option[Member] = {
