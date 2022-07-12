@@ -1,3 +1,5 @@
 package jp.ijufumi.openreports.services
 
-trait LoginService {}
+trait LoginService {
+  def login(email: String, password: String)
+}

@@ -4,4 +4,6 @@ import jp.ijufumi.openreports.services.LoginService
 import com.google.inject.Singleton
 
 @Singleton
-class LoginServiceImpl extends LoginService {}
+class LoginServiceImpl extends LoginService {
+  override def login(email: String, password: String): Unit = {}
+}
