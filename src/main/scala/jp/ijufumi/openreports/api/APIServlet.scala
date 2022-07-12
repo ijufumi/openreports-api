@@ -2,8 +2,7 @@ package jp.ijufumi.openreports.api
 
 import org.scalatra._
 
-class APIServlet extends ScalatraServlet {
-
+class APIServlet extends APIServletBase {
   get("/") {
     Ok("hello")
   }
