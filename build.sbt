@@ -24,6 +24,8 @@ lazy val root = (project in file("."))
       "org.postgresql" % "postgresql" % "42.4.0",
       "com.google.inject" % "guice" % "5.1.0",
       "org.json4s" %% "json4s-jackson" % "4.0.5",
+      "commons-codec" % "commons-codec" % "1.15",
+      "com.auth0" % "auth0" % "1.42.0",
       "com.typesafe.slick" %% "slick" % SlickVersion,
       "com.typesafe.slick" %% "slick-hikaricp" % SlickVersion,
       "com.typesafe.slick" %% "slick-testkit" % SlickVersion % "test",
