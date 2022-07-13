@@ -6,9 +6,10 @@ import org.apache.commons.codec.binary.Hex
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
 import java.util.{Calendar, Date}
+import jp.ijufumi.openreports.config.Config.HASH_KEY
 
 object Hash {
-  def hmacSha256(salt: String, value: String): String = {
+  def hmacSha256(value: String, salt: String = HASH_KEY): String = {
     val spec = new SecretKeySpec(salt.getBytes, "HmacSHA256")
     val mac = Mac.getInstance("HmacSHA256")
     mac.init(spec)

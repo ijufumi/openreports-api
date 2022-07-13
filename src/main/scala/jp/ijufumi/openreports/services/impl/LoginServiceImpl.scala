@@ -1,9 +1,23 @@
 package jp.ijufumi.openreports.services.impl
 
 import jp.ijufumi.openreports.services.LoginService
-import com.google.inject.Singleton
+import jp.ijufumi.openreports.repositories._
+import com.google.inject.{Inject, Singleton}
+import jp.ijufumi.openreports.utils.Hash
+import jp.ijufumi.openreports.vo.response.MemberResponse
 
 @Singleton
-class LoginServiceImpl extends LoginService {
-  override def login(email: String, password: String): Unit = {}
+class LoginServiceImpl @Inject() (memberRepository: MemberRepository) extends LoginService {
+  override def login(email: String, password: String): Option[MemberResponse] = {
+    val memberOpt = memberRepository.getMemberByEmail(email)
+    if (memberOpt.isEmpty) {
+      return Option.empty[MemberResponse]
+    }
+    val hashedPassword = Hash.hmacSha256(password)
+    val member = memberOpt.get
+    if (hashedPassword != member.password) {
+      return Option.empty[MemberResponse]
+    }
+    Option.apply(MemberResponse(member.id, member.emailAddress, member.name, member.isAdmin))
+  }
 }
