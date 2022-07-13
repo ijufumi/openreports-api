@@ -3,21 +3,16 @@ package jp.ijufumi.openreports.database
 import com.typesafe.config.ConfigFactory
 import slick.jdbc.JdbcBackend.Database
 import scala.jdk.CollectionConverters.MapHasAsJava
+import jp.ijufumi.openreports.config.Config._
 
 object DatabaseFactory {
-  private val dbHost: String = sys.env.getOrElse("DB_HOST", "localhost")
-  private val dbName: String = sys.env.getOrElse("DB_NAME", "openreports")
-  private val dbUser: String = sys.env.getOrElse("DB_USER", "postgres")
-  private val dbPassword: String = sys.env.getOrElse("DB_PASSWORD", "password")
-  private val dbPort: String = sys.env.getOrElse("DB_PORT", "5432")
-
   private val config = ConfigFactory.parseMap(
     Map(
       "postgres" -> Map(
-        "url" -> f"jdbc:postgresql://$dbHost%s:$dbPort%s/$dbName%s",
+        "url" -> f"jdbc:postgresql://$DB_HOST%s:$DB_PORT%s/$DB_NAME%s",
         "driver" -> "org.postgresql.Driver",
-        "username" -> dbUser,
-        "password" -> dbPassword,
+        "username" -> DB_USER,
+        "password" -> DB_PASSWORD,
         "connectionPool" -> "HikariCP",
         "numThreads" -> 5,
         "poolSize" -> 20,
