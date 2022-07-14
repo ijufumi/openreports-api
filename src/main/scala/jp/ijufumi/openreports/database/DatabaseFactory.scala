@@ -2,8 +2,11 @@ package jp.ijufumi.openreports.database
 
 import com.typesafe.config.ConfigFactory
 import slick.jdbc.JdbcBackend.Database
+
 import scala.jdk.CollectionConverters.MapHasAsJava
 import jp.ijufumi.openreports.config.Config._
+import slick.basic.DatabaseConfig
+import slick.jdbc.JdbcProfile
 
 object DatabaseFactory {
   private val config = ConfigFactory.parseMap(
@@ -23,5 +26,9 @@ object DatabaseFactory {
 
   def createDatabase(name: String = "postgres"): Database = {
     Database.forConfig(name, config)
+  }
+
+  def createDatabaseConfig(name: String = "postgres"): DatabaseConfig[JdbcProfile] = {
+    DatabaseConfig.forConfig(name, config)
   }
 }
