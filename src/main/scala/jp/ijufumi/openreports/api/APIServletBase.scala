@@ -5,5 +5,5 @@ import org.scalatra.ScalatraServlet
 import org.scalatra.json.JacksonJsonSupport
 
 abstract class APIServletBase extends ScalatraServlet with JacksonJsonSupport {
-  override protected implicit def jsonFormats: Formats = DefaultFormats
+  override protected implicit lazy val jsonFormats: Formats = DefaultFormats
 }
