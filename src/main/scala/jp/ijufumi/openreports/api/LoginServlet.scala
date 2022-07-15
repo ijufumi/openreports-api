@@ -7,8 +7,8 @@ import org.scalatra._
 
 class LoginServlet @Inject() (loginService: LoginService) extends APIServletBase {
   post("/") {
-    val request = parsedBody.extract[LoginRequest]
-    val member = loginService.login(request.email, request.password)
+    val loginRequest = extractBody[LoginRequest]
+    val member = loginService.login(loginRequest.email, loginRequest.password)
     if (member.isEmpty) {
       Unauthorized("email or password or both are incorrect")
     } else {
