@@ -1,13 +1,16 @@
 # OpenReports API
 ## Frameworks and libraries.
 
-| Name | Version | Notes |
-| --- |---------| --- |
-| Scala | 2.13.8  | - |
-| Scalatra | 2.8.2   | All of them. |
-| Servlet API | 3.1.0   | Web API |
-| logback | 1.2.3  | Logging |
- | Flyway | 8.5.13 | Migration |
+| Name         | Version | Notes |
+|--------------|---------| --- |
+| Scala        | 2.13.8  | - |
+| Scalatra     | 2.8.2   | All of them. |
+| Servlet API  | 3.1.0   | Web API |
+| logback      | 1.2.3   | Logging |
+ | Flyway       | 8.5.13  | Migration |
+ | Slick | 3.3.3   | ORM |
+ | PostgresSQL | 42.4.0  | DB |
+ | Google Guice | 5.1.0   | DI |
 
 ## Features (not implemented yet)
 - [ ] Output reporting.
