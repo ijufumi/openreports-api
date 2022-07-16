@@ -3,6 +3,7 @@ package jp.ijufumi.openreports.services.impl
 import jp.ijufumi.openreports.services.LoginService
 import jp.ijufumi.openreports.repositories._
 import com.google.inject.{Inject, Singleton}
+import jp.ijufumi.openreports.config.Config
 import jp.ijufumi.openreports.utils.Hash
 import jp.ijufumi.openreports.vo.response.MemberResponse
 
@@ -18,6 +19,9 @@ class LoginServiceImpl @Inject() (memberRepository: MemberRepository) extends Lo
     if (hashedPassword != member.password) {
       return Option.empty[MemberResponse]
     }
-    Option.apply(MemberResponse(member.id, member.emailAddress, member.name, member.isAdmin))
+    val apiToken = Hash.generateJWT(member.id, Config.API_TOKEN_EXPIRATION_SEC)
+    Option.apply(
+      MemberResponse(member.id, member.emailAddress, member.name, member.isAdmin, apiToken),
+    )
   }
 }

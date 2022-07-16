@@ -5,4 +5,5 @@ case class MemberResponse(
     emailAddress: String,
     name: String,
     isAdmin: String,
+    apiToken: String,
 )

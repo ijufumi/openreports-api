@@ -9,4 +9,6 @@ object Config {
   val DB_PORT: String = sys.env.getOrElse("DB_PORT", "5432")
   // for hash
   val HASH_KEY: String = sys.env.getOrElse("HASH_KEY", "test")
+  val API_TOKEN_EXPIRATION_SEC: Integer =
+    Integer.parseInt(sys.env.getOrElse("API_TOKEN_EXPIRATION_SEC", "3600"))
 }
