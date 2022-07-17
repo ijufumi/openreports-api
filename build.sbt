@@ -2,6 +2,7 @@ import scala.sys
 
 val ScalatraVersion = "2.8.2"
 val SlickVersion = "3.3.3"
+val ScalaCacheVersion = "0.28.0"
 
 ThisBuild / scalaVersion := "2.13.8"
 ThisBuild / organization := "jp.ijufumi"
@@ -29,6 +30,9 @@ lazy val root = (project in file("."))
       "com.typesafe.slick" %% "slick" % SlickVersion,
       "com.typesafe.slick" %% "slick-hikaricp" % SlickVersion,
       "com.typesafe.slick" %% "slick-testkit" % SlickVersion % "test",
+      "com.github.cb372" %% "scalacache-core" % ScalaCacheVersion,
+      "com.github.cb372" %% "scalacache-caffeine" % ScalaCacheVersion,
+      "com.github.cb372" %% "scalacache-cats-effect" % ScalaCacheVersion,
     ),
     assembly / assemblyJarName := "open-report-api.jar",
     assembly / mainClass := Some("JettyLauncher"),
