@@ -27,4 +27,10 @@ class LoginServiceImpl @Inject() (cacheWrapper: CacheWrapper, memberRepository: 
       MemberResponse(member.id, member.emailAddress, member.name, member.isAdmin, apiToken),
     )
   }
+
+  override def verifyApiToken(apiToken: String): Boolean = {
+    val cachedApiToken = cacheWrapper.get[String](CacheKeys.ApiToken)
+
+    cachedApiToken.getOrElse("").equals(apiToken)
+  }
 }

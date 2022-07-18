@@ -13,4 +13,6 @@ object Config {
     Integer.parseInt(sys.env.getOrElse("API_TOKEN_EXPIRATION_SEC", "3600"))
   // for cache
   val CACHE_TTL_SEC: Integer = Integer.parseInt(sys.env.getOrElse("CACHE_TTL_SEC", "3600"))
+  // for api
+  val API_TOKEN_KEY = "x-api-token"
 }
