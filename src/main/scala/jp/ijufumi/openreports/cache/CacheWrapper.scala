@@ -6,10 +6,10 @@ import scalacache.caffeine.CaffeineCache
 import scalacache.modes.try_._
 
 class CacheWrapper {
-  private val ttl = Config.CACHE_TTL_SEC
+  private val defaultTtl = Config.CACHE_TTL_SEC
   private val cache: Cache[Any] = CaffeineCache[Any]
 
-  def put[T](key: CacheKey, value: T): Unit = {
+  def put[T](key: CacheKey, value: T, ttl: Integer = defaultTtl): Unit = {
     cache.put(key)(value, ttl = ttl)
   }
 
