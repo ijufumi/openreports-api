@@ -33,6 +33,7 @@ lazy val root = (project in file("."))
       "com.github.cb372" %% "scalacache-core" % ScalaCacheVersion,
       "com.github.cb372" %% "scalacache-caffeine" % ScalaCacheVersion,
       "com.github.cb372" %% "scalacache-cats-effect" % ScalaCacheVersion,
+      "com.softwaremill.sttp.client3" %% "core" % "3.7.0",
     ),
     assembly / assemblyJarName := "open-report-api.jar",
     assembly / mainClass := Some("JettyLauncher"),
