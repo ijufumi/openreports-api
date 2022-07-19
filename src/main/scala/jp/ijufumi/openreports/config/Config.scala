@@ -15,4 +15,10 @@ object Config {
   val CACHE_TTL_SEC: Integer = Integer.parseInt(sys.env.getOrElse("CACHE_TTL_SEC", "3600"))
   // for api
   val API_TOKEN_KEY = "x-api-token"
+  // for google auth
+  val GOOGLE_CLIENT_ID: String = sys.env.getOrElse("GOOGLE_CLIENT_ID", "")
+  val GOOGLE_CLIENT_SECRET: String = sys.env.getOrElse("GOOGLE_CLIENT_SECRET", "")
+
+  val GOOGLE_AUTH_STATE_CACHE_TTL_SEC: Integer =
+    Integer.parseInt(sys.env.getOrElse("CACHE_TTL_SEC", "3600"))
 }
