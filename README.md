@@ -12,6 +12,7 @@
  | PostgresSQL  | 42.4.0  | DB           |
  | Google Guice | 5.1.0   | DI           |
 | Scala Cache  | 0.28.0   | Cache        |
+| sttp client  | 3.7.0   | HTTP Client  |
 
 ## Features (not implemented yet)
 - [ ] Output reporting.
