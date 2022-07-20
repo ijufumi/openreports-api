@@ -35,4 +35,12 @@ object Strings {
     }
     baseArray.mkString
   }
+
+  def convertFromMap(values: mutable.Map[String, Any]): String = {
+    val builder = new StringBuilder
+    values.keys.foreach(k => {
+      builder + s"${k}=${values.get(k)}"
+    })
+    builder.mkString
+  }
 }

@@ -2,7 +2,11 @@ package jp.ijufumi.openreports.services.impl
 
 import com.google.inject.{Inject, Singleton}
 import jp.ijufumi.openreports.cache.CacheWrapper
+import jp.ijufumi.openreports.config.Config
 import jp.ijufumi.openreports.services.GoogleService
+import jp.ijufumi.openreports.utils.Strings
+
+import scala.collection.mutable
 
 @Singleton
 class GoogleServiceImpl @Inject() (cacheWrapper: CacheWrapper) extends GoogleService {
@@ -12,8 +16,12 @@ class GoogleServiceImpl @Inject() (cacheWrapper: CacheWrapper) extends GoogleSer
   private val SCOPES = Array("profile", "email")
 
   override def getAuthorizationUrl(): String = {
-
-    ""
+    val params = mutable.Map[String, Any]()
+    params + ("client_id" -> Config.GOOGLE_CLIENT_ID)
+    params + ("response_type" -> "code")
+    params + ("state" -> Strings.generateRandomSting(10))
+    params + ("scopes" -> SCOPES.mkString(","))
+    s"${OAUTH_URL}?${Strings.convertFromMap(params)}"
   }
 
   override def fetchToken(code: String): String = ???
