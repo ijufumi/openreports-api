@@ -43,44 +43,46 @@ docker-compose exec api sbt flywayMigrate
 ### API list
 
 - public
-  - [] login
+  - [ ] login
+    - [x] with ID / password
+    - [ ] Google login
 - private
   - common
-    - [] logout
-    - [] status (including menus, groups)
+    - [ ] logout
+    - [ ] status (including menus, groups)
   - reports
-    - [] list
-    - [] output
+    - [ ] list
+    - [ ] output
   - scheduled_reports
-    - [] list
-    - [] create
-    - [] update
-    - [] delete
+    - [ ] list
+    - [ ] create
+    - [ ] update
+    - [ ] delete
   - settings
     - reports
-      - [] list
-      - [] create
-      - [] update
-      - [] delete
+      - [ ] list
+      - [ ] create
+      - [ ] update
+      - [ ] delete
       - templates
-        - [] list
-        - [] create
-        - [] delete
+        - [ ] list
+        - [ ] create
+        - [ ] delete
       - parameters
-        - [] list
-        - [] create
-        - [] update
-        - [] delete
+        - [ ] list
+        - [ ] create
+        - [ ] update
+        - [ ] delete
       - users
-        - [] list
-        - [] create
-        - [] update
-        - [] delete
+        - [ ] list
+        - [ ] create
+        - [ ] update
+        - [ ] delete
         - groups
-          - [] list
-          - [] create
-          - [] update
-          - [] delete
+          - [ ] list
+          - [ ] create
+          - [ ] update
+          - [ ] delete
 
 ### Table Structure
 
