@@ -1,7 +1,7 @@
 package jp.ijufumi.openreports.services.impl
 
 import com.google.inject.{Inject, Singleton}
-import jp.ijufumi.openreports.cache.CacheWrapper
+import jp.ijufumi.openreports.cache.{CacheKeys, CacheWrapper}
 import jp.ijufumi.openreports.config.Config
 import jp.ijufumi.openreports.services.GoogleService
 import jp.ijufumi.openreports.utils.Strings
@@ -16,10 +16,13 @@ class GoogleServiceImpl @Inject() (cacheWrapper: CacheWrapper) extends GoogleSer
   private val SCOPES = Array("profile", "email")
 
   override def getAuthorizationUrl(): String = {
+    val state = Strings.generateRandomSting(10)
+    cacheWrapper.put(CacheKeys.GoogleAuthState, state)
+
     val params = mutable.Map[String, Any]()
     params + ("client_id" -> Config.GOOGLE_CLIENT_ID)
     params + ("response_type" -> "code")
-    params + ("state" -> Strings.generateRandomSting(10))
+    params + ("state" -> state)
     params + ("scopes" -> SCOPES.mkString(","))
     s"${OAUTH_URL}?${Strings.convertFromMap(params)}"
   }
