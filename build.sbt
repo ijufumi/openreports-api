@@ -3,6 +3,8 @@ import scala.sys
 val ScalatraVersion = "2.8.2"
 val SlickVersion = "3.3.3"
 val ScalaCacheVersion = "0.28.0"
+val SttpVersion = "3.7.1"
+val Json4sVersion = "4.0.5"
 
 ThisBuild / scalaVersion := "2.13.8"
 ThisBuild / organization := "jp.ijufumi"
@@ -24,7 +26,8 @@ lazy val root = (project in file("."))
       "javax.servlet" % "javax.servlet-api" % "3.1.0" % "provided",
       "org.postgresql" % "postgresql" % "42.4.0",
       "com.google.inject" % "guice" % "5.1.0",
-      "org.json4s" %% "json4s-jackson" % "4.0.5",
+      "org.json4s" %% "json4s-jackson" % Json4sVersion,
+      "org.json4s" %% "json4s-native" % Json4sVersion,
       "commons-codec" % "commons-codec" % "1.15",
       "com.auth0" % "auth0" % "1.42.0",
       "com.typesafe.slick" %% "slick" % SlickVersion,
@@ -33,7 +36,8 @@ lazy val root = (project in file("."))
       "com.github.cb372" %% "scalacache-core" % ScalaCacheVersion,
       "com.github.cb372" %% "scalacache-caffeine" % ScalaCacheVersion,
       "com.github.cb372" %% "scalacache-cats-effect" % ScalaCacheVersion,
-      "com.softwaremill.sttp.client3" %% "core" % "3.7.0",
+      "com.softwaremill.sttp.client3" %% "core" % SttpVersion,
+      "com.softwaremill.sttp.client3" %% "json4s" % SttpVersion,
     ),
     assembly / assemblyJarName := "open-report-api.jar",
     assembly / mainClass := Some("JettyLauncher"),
