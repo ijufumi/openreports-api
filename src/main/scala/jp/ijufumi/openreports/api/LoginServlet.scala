@@ -6,7 +6,7 @@ import jp.ijufumi.openreports.vo.request.LoginRequest
 import org.scalatra._
 
 class LoginServlet @Inject() (loginService: LoginService) extends APIServletBase {
-  post("/") {
+  post("/login") {
     val loginRequest = extractBody[LoginRequest]
     val member = loginService.login(loginRequest.email, loginRequest.password)
     if (member.isEmpty) {
