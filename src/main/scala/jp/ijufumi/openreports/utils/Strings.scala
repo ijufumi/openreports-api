@@ -3,6 +3,7 @@ package jp.ijufumi.openreports.utils
 import scala.collection.mutable
 import scala.util.Random
 import scala.collection.mutable.ArrayBuffer
+import org.apache.commons.codec.binary.Base64
 
 object Strings {
   private val LOWER_CASE = "abcdefghijklmnopqrstuvwxyz"
@@ -42,5 +43,13 @@ object Strings {
       builder + s"${k}=${values.get(k)}"
     })
     builder.mkString
+  }
+
+  def convertToBase64(value: String): String = {
+    Base64.encodeBase64String(value.getBytes())
+  }
+
+  def convertFromBase64(value: String): String = {
+    Base64.decodeBase64(value).toString
   }
 }
