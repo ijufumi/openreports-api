@@ -36,7 +36,13 @@ class GoogleLoginServiceImpl @Inject() (cacheWrapper: CacheWrapper) extends Goog
     s"${OAUTH_URL}?${Strings.convertFromMap(params)}"
   }
 
-  override def fetchToken(code: String): Option[String] = {
+  override def fetchToken(state: String, code: String): Option[String] = {
+    val cachedState = cacheWrapper.get[String](CacheKeys.ApiToken)
+    if (cachedState.getOrElse("") != state) {
+      return Option.empty
+    }
+    cacheWrapper.remove(CacheKeys.ApiToken)
+
     val basicAuth =
       Strings.convertToBase64(s"${Config.GOOGLE_CLIENT_ID}:${Config.GOOGLE_CLIENT_SECRET}")
 
