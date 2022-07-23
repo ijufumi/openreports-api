@@ -1,4 +1,4 @@
-package jp.ijufumi.openreports.api
+package jp.ijufumi.openreports.api.base
 
 import org.json4s.{DefaultFormats, Formats}
 import org.scalatra.ScalatraServlet
