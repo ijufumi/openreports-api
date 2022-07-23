@@ -9,7 +9,7 @@ class ServiceModule extends AbstractModule {
     super.configure()
     bind(classOf[LoginService])
       .to(classOf[LoginServiceImpl])
-    bind(classOf[GoogleService])
-      .to(classOf[GoogleServiceImpl])
+    bind(classOf[GoogleLoginService])
+      .to(classOf[GoogleLoginServiceImpl])
   }
 }

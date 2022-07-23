@@ -3,7 +3,7 @@ package jp.ijufumi.openreports.services.impl
 import com.google.inject.{Inject, Singleton}
 import jp.ijufumi.openreports.cache.{CacheKeys, CacheWrapper}
 import jp.ijufumi.openreports.config.Config
-import jp.ijufumi.openreports.services.GoogleService
+import jp.ijufumi.openreports.services.GoogleLoginService
 import jp.ijufumi.openreports.vo.response.google.{AccessTokenResponse, UserInfoResponse}
 import jp.ijufumi.openreports.utils.Strings
 import org.json4s.DefaultFormats
@@ -15,7 +15,7 @@ import sttp.model.Header
 import scala.collection.mutable
 
 @Singleton
-class GoogleServiceImpl @Inject() (cacheWrapper: CacheWrapper) extends GoogleService {
+class GoogleLoginServiceImpl @Inject() (cacheWrapper: CacheWrapper) extends GoogleLoginService {
   private implicit val formats: DefaultFormats.type = org.json4s.DefaultFormats
   private implicit val serialization: Serialization.type = org.json4s.native.Serialization
 
