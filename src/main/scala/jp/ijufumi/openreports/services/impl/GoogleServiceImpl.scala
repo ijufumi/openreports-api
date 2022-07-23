@@ -4,7 +4,7 @@ import com.google.inject.{Inject, Singleton}
 import jp.ijufumi.openreports.cache.{CacheKeys, CacheWrapper}
 import jp.ijufumi.openreports.config.Config
 import jp.ijufumi.openreports.services.GoogleService
-import jp.ijufumi.openreports.vo.response.google.AccessTokenResponse
+import jp.ijufumi.openreports.vo.response.google.{AccessTokenResponse, UserInfoResponse}
 import jp.ijufumi.openreports.utils.Strings
 import org.json4s.DefaultFormats
 import org.json4s.native.Serialization
@@ -36,7 +36,7 @@ class GoogleServiceImpl @Inject() (cacheWrapper: CacheWrapper) extends GoogleSer
     s"${OAUTH_URL}?${Strings.convertFromMap(params)}"
   }
 
-  override def fetchToken(code: String): String = {
+  override def fetchToken(code: String): Option[String] = {
     val basicAuth =
       Strings.convertToBase64(s"${Config.GOOGLE_CLIENT_ID}:${Config.GOOGLE_CLIENT_SECRET}")
 
@@ -53,10 +53,22 @@ class GoogleServiceImpl @Inject() (cacheWrapper: CacheWrapper) extends GoogleSer
     val response = request.send(backend)
     if (response.is200) {
       val accessToken = response.body.toOption.get
-      return accessToken.accessToken
+      return Option.apply(accessToken.accessToken)
     }
-    ""
+    Option.empty
   }
 
-  override def getUserInfo(accessToken: String): Unit = ???
+  override def getUserInfo(accessToken: String): Option[UserInfoResponse] = {
+    val backend = HttpClientSyncBackend()
+    val response =
+      basicRequest
+        .get(uri"${USER_INFO_URL}?access_token=${accessToken}")
+        .response(asJson[UserInfoResponse])
+        .send(backend)
+
+    if (response.is200) {
+      return response.body.toOption
+    }
+    Option.empty
+  }
 }
