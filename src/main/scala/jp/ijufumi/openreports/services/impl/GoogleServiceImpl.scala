@@ -44,9 +44,11 @@ class GoogleServiceImpl @Inject() (cacheWrapper: CacheWrapper) extends GoogleSer
     val request = basicRequest
       .post(uri"${TOKEN_URL}?grant_type=authorization_code&code=${code}")
       .response(asJson[AccessTokenResponse])
-    request.headers :+ Header("Authorization", s"Basic ${basicAuth}")
-    request.headers :+ Header("Accept", "application/json")
-    request.headers :+ Header("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8")
+    request.headers ++ Seq(
+      Header("Authorization", s"Basic ${basicAuth}"),
+      Header("Accept", "application/json"),
+      Header("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8"),
+    )
 
     val response = request.send(backend)
     if (response.is200) {
