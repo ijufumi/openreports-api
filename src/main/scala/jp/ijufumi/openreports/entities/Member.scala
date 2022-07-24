@@ -7,6 +7,7 @@ import java.sql.Timestamp
 
 case class Member(
     id: Int,
+    googleId: String,
     emailAddress: String,
     password: String,
     name: String,
@@ -22,6 +23,7 @@ class Members(tag: Tag)
       "members",
     ) {
   def id = column[Int]("id", O.PrimaryKey, O.AutoInc)
+  def googleId = column[String]("google_id", O.Unique)
   def emailAddress = column[String]("email_address", O.Unique)
   def password = column[String]("password")
   def name = column[String]("name")
