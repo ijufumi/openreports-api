@@ -7,6 +7,7 @@ import jp.ijufumi.openreports.config.Config
 import jp.ijufumi.openreports.utils.Hash
 import jp.ijufumi.openreports.vo.response.MemberResponse
 import jp.ijufumi.openreports.cache.{CacheKeys, CacheWrapper}
+import jp.ijufumi.openreports.repositories.db.MemberRepository
 
 @Singleton
 class LoginServiceImpl @Inject() (cacheWrapper: CacheWrapper, memberRepository: MemberRepository)

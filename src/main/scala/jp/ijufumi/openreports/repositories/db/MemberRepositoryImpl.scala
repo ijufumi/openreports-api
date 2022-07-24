@@ -1,8 +1,7 @@
-package jp.ijufumi.openreports.repositories.impl
+package jp.ijufumi.openreports.repositories.db
 
 import com.google.inject.Inject
 import jp.ijufumi.openreports.entities.{Member, Members}
-import jp.ijufumi.openreports.repositories._
 import slick.jdbc.JdbcBackend.Database
 import slick.jdbc.PostgresProfile.api._
 

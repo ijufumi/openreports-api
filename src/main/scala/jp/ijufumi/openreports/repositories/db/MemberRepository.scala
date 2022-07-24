@@ -1,4 +1,4 @@
-package jp.ijufumi.openreports.repositories
+package jp.ijufumi.openreports.repositories.db
 
 import jp.ijufumi.openreports.entities.Member
 
