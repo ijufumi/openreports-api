@@ -2,7 +2,7 @@ package jp.ijufumi.openreports.injector
 
 import com.google.inject.AbstractModule
 import jp.ijufumi.openreports.repositories._
-import jp.ijufumi.openreports.repositories.db.{MemberRepository, MemberRepositoryImpl}
+import jp.ijufumi.openreports.repositories.db.MemberRepository
 import jp.ijufumi.openreports.repositories.db.impl._
 
 class RepositoryModule extends AbstractModule {
