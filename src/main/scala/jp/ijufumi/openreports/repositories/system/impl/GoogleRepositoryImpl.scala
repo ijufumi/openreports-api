@@ -1,11 +1,11 @@
-package jp.ijufumi.openreports.services.impl
+package jp.ijufumi.openreports.repositories.system.impl
 
 import com.google.inject.{Inject, Singleton}
 import jp.ijufumi.openreports.cache.{CacheKeys, CacheWrapper}
 import jp.ijufumi.openreports.config.Config
-import jp.ijufumi.openreports.services.GoogleLoginService
-import jp.ijufumi.openreports.vo.response.google.{AccessTokenResponse, UserInfoResponse}
+import jp.ijufumi.openreports.repositories.system.GoogleRepository
 import jp.ijufumi.openreports.utils.Strings
+import jp.ijufumi.openreports.vo.response.google.{AccessTokenResponse, UserInfoResponse}
 import org.json4s.DefaultFormats
 import org.json4s.native.Serialization
 import sttp.client3._
@@ -15,7 +15,7 @@ import sttp.model.Header
 import scala.collection.mutable
 
 @Singleton
-class GoogleLoginServiceImpl @Inject() (cacheWrapper: CacheWrapper) extends GoogleLoginService {
+class GoogleRepositoryImpl @Inject() (cacheWrapper: CacheWrapper) extends GoogleRepository {
   private implicit val formats: DefaultFormats.type = org.json4s.DefaultFormats
   private implicit val serialization: Serialization.type = org.json4s.native.Serialization
 

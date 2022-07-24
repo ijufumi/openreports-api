@@ -1,8 +1,8 @@
-package jp.ijufumi.openreports.services
+package jp.ijufumi.openreports.repositories.system
 
 import jp.ijufumi.openreports.vo.response.google.UserInfoResponse
 
-trait GoogleLoginService {
+trait GoogleRepository {
   def getAuthorizationUrl(): String
 
   def fetchToken(state: String, code: String): Option[String]
