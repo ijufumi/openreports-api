@@ -7,6 +7,7 @@ import jp.ijufumi.openreports.config.Config
 import jp.ijufumi.openreports.utils.Hash
 import jp.ijufumi.openreports.vo.response.MemberResponse
 import jp.ijufumi.openreports.cache.{CacheKeys, CacheWrapper}
+import jp.ijufumi.openreports.entities.Member
 import jp.ijufumi.openreports.repositories.db._
 
 @Singleton
@@ -25,11 +26,7 @@ class LoginServiceImpl @Inject() (
     if (hashedPassword != member.password) {
       return Option.empty[MemberResponse]
     }
-    val apiToken = Hash.generateJWT(member.id, Config.API_TOKEN_EXPIRATION_SEC)
-    cacheWrapper.put(CacheKeys.ApiToken, apiToken)
-    Option.apply(
-      MemberResponse(member.id, member.emailAddress, member.name, member.isAdmin, apiToken),
-    )
+    makeResponse(member)
   }
 
   override def verifyApiToken(apiToken: String): Boolean = {
@@ -45,7 +42,25 @@ class LoginServiceImpl @Inject() (
     if (tokenOpt.isEmpty) {
       return Option.empty
     }
+    val userInfoOpt = googleRepository.getUserInfo(tokenOpt.get)
+    if (userInfoOpt.isEmpty) {
+      return Option.empty
+    }
+    val userInfo = userInfoOpt.get
+    val memberOpt = memberRepository.getMemberByEmail(userInfo.email)
+    if (memberOpt.isDefined) {
+      return makeResponse(memberOpt.get)
+    }
+
     // TODO: implements
     Option.empty
+  }
+
+  private def makeResponse(member: Member): Option[MemberResponse] = {
+    val apiToken = Hash.generateJWT(member.id, Config.API_TOKEN_EXPIRATION_SEC)
+    cacheWrapper.put(CacheKeys.ApiToken, apiToken)
+    Option.apply(
+      MemberResponse(member.id, member.emailAddress, member.name, member.isAdmin, apiToken),
+    )
   }
 }
