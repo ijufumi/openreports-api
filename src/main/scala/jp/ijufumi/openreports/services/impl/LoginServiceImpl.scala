@@ -46,14 +46,25 @@ class LoginServiceImpl @Inject() (
     if (userInfoOpt.isEmpty) {
       return Option.empty
     }
+
     val userInfo = userInfoOpt.get
-    val memberOpt = memberRepository.getMemberByEmail(userInfo.email)
-    if (memberOpt.isDefined) {
-      return makeResponse(memberOpt.get)
+
+    val memberOptById = memberRepository.getByGoogleId(userInfo.id)
+    if (memberOptById.isDefined) {
+      return makeResponse(memberOptById.get)
     }
 
-    // TODO: implements
-    Option.empty
+    val memberOptByEmail = memberRepository.getMemberByEmail(userInfo.email)
+    if (memberOptByEmail.isDefined) {
+      val member = memberOptByEmail.get
+      val newMember = member.copy(googleId = userInfo.id)
+      memberRepository.update(newMember)
+      return makeResponse(newMember)
+    }
+
+    val member = Member(googleId = userInfo.id, emailAddress = userInfo.email, name = userInfo.name)
+    val newMemberOpt = memberRepository.register(member)
+    makeResponse(newMemberOpt.get)
   }
 
   private def makeResponse(member: Member): Option[MemberResponse] = {
