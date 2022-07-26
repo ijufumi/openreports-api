@@ -4,17 +4,18 @@ import slick.lifted.Tag
 import slick.jdbc.PostgresProfile.api._
 
 import java.sql.Timestamp
+import java.time.LocalDateTime
 
 case class Member(
-    id: Int,
-    googleId: String,
+    id: Int = 0,
+    googleId: String = "",
     emailAddress: String,
-    password: String,
+    password: String = "",
     name: String,
-    isAdmin: String,
-    createdAt: Timestamp,
-    updatedAt: Timestamp,
-    version: Long,
+    isAdmin: String = "1",
+    createdAt: Timestamp = Timestamp.valueOf(LocalDateTime.now()),
+    updatedAt: Timestamp = Timestamp.valueOf(LocalDateTime.now()),
+    version: Long = 1,
 )
 
 class Members(tag: Tag)
