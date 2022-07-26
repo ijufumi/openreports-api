@@ -32,5 +32,16 @@ class Members(tag: Tag)
   def updatedAt = column[Timestamp]("updated_at")(timestampType)
   def version = column[Long]("version")
 
-  override def * = ???
+  override def * =
+    (
+      id,
+      googleId,
+      emailAddress,
+      password,
+      name,
+      isAdmin,
+      createdAt,
+      updatedAt,
+      version,
+    ) <> (Member.tupled, Member.unapply)
 }
