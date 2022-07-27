@@ -11,5 +11,5 @@ abstract class APIServletBase extends ScalatraServlet with JacksonJsonSupport {
     contentType = formats("json")
   }
 
-  def extractBody[T] = parse(request.body).extract[T]
+  def extractBody[T](): T = parse(request.body).extract[T]
 }
