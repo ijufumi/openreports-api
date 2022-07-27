@@ -1,6 +1,5 @@
 package jp.ijufumi.openreports.entities
 
-import slick.lifted.Tag
 import slick.jdbc.PostgresProfile.api._
 
 import java.sql.Timestamp
@@ -33,16 +32,5 @@ class Members(tag: Tag)
   def updatedAt = column[Timestamp]("updated_at")(timestampType)
   def version = column[Long]("version")
 
-  override def * =
-    (
-      id,
-      googleId,
-      emailAddress,
-      password,
-      name,
-      isAdmin,
-      createdAt,
-      updatedAt,
-      version,
-    ) <> (Member.tupled, Member.unapply)
+  override def * = ???
 }
