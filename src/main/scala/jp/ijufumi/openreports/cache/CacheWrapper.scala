@@ -5,12 +5,14 @@ import scalacache._
 import scalacache.caffeine.CaffeineCache
 import scalacache.modes.try_._
 
+import scala.concurrent.duration._
+
 class CacheWrapper {
   private val defaultTtl = Config.CACHE_TTL_SEC
   private val cache: Cache[Any] = CaffeineCache[Any]
 
-  def put[T](key: CacheKey, value: T, ttl: Integer = defaultTtl): Unit = {
-    cache.put(key)(value, ttl = ttl)
+  def put[T](key: CacheKey, value: T, ttl: Long = defaultTtl): Unit = {
+    cache.put(key)(value, ttl = Option(Duration(ttl, SECONDS)))
   }
 
   def get[T](key: CacheKey): Option[T] = {
