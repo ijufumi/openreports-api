@@ -11,12 +11,12 @@ class CacheWrapper {
   private val defaultTtl = Config.CACHE_TTL_SEC
   private val cache: Cache[Any] = CaffeineCache[Any]
 
-  def put[T](key: CacheKey, value: T, ttl: Long = defaultTtl): Unit = {
-    cache.put(key)(value, ttl = Option(Duration(ttl, SECONDS)))
+  def put[T](cacheKey: CacheKey, value: T, args: String*)(ttl: Long = defaultTtl): Unit = {
+    cache.put(cacheKey.key(args: _*))(value, ttl = Option(Duration(ttl, SECONDS)))
   }
 
-  def get[T](key: CacheKey): Option[T] = {
-    val value = cache.get(key)
+  def get[T](cacheKey: CacheKey, args: String*): Option[T] = {
+    val value = cache.get(cacheKey.key(args: _*))
     if (value.isFailure) {
       return None
     }
@@ -24,8 +24,8 @@ class CacheWrapper {
     Option(original.asInstanceOf[T])
   }
 
-  def remove(key: CacheKey): Unit = {
-    cache.remove(key)
+  def remove(cacheKey: CacheKey, args: String*): Unit = {
+    cache.remove(cacheKey.key(args: _*))
   }
 
   def removeAll(): Unit = {
