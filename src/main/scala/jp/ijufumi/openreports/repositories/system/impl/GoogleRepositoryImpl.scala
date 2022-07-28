@@ -59,7 +59,7 @@ class GoogleRepositoryImpl @Inject() (cacheWrapper: CacheWrapper) extends Google
     val response = request.send(backend)
     if (response.is200) {
       val accessToken = response.body.toOption.get
-      return Option.apply(accessToken.accessToken)
+      return Option(accessToken.accessToken)
     }
     Option.empty
   }

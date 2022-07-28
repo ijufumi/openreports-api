@@ -21,7 +21,7 @@ class CacheWrapper {
       return None
     }
     val original = value.get
-    Option.apply(original.asInstanceOf[T])
+    Option(original.asInstanceOf[T])
   }
 
   def remove(key: CacheKey): Unit = {

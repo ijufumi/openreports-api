@@ -28,7 +28,7 @@ class MemberRepositoryImpl @Inject() (db: Database) extends MemberRepository {
     if (members.isEmpty) {
       Option.empty[Member]
     }
-    Option.apply(members.head)
+    Option(members.head)
   }
 
   override def getMemberByEmail(emailAddress: String): Option[Member] = {
@@ -38,7 +38,7 @@ class MemberRepositoryImpl @Inject() (db: Database) extends MemberRepository {
     if (members.isEmpty) {
       Option.empty[Member]
     }
-    Option.apply(members.head)
+    Option(members.head)
   }
 
   override def register(member: Member): Option[Member] = {
