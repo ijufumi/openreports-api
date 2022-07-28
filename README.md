@@ -43,9 +43,9 @@ docker-compose exec api sbt flywayMigrate
 ### API list
 
 - public
-  - [ ] login
+  - [x] login
     - [x] with ID / password
-    - [ ] Google login
+    - [x] Google login
 - private
   - common
     - [ ] logout
