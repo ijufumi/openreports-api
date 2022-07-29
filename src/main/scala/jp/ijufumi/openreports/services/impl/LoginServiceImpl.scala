@@ -29,6 +29,15 @@ class LoginServiceImpl @Inject() (
     makeResponse(member)
   }
 
+  override def logout(apiToken: String): Unit = {
+    val memberId = Hash.extractIdFromJWT(apiToken);
+    if (memberId == -1) {
+      return;
+    }
+
+    cacheWrapper.remove(CacheKeys.ApiToken, memberId.toString)
+  }
+
   override def verifyApiToken(apiToken: String): Boolean = {
     val memberId = Hash.extractIdFromJWT(apiToken);
     if (memberId == -1) {
