@@ -5,6 +5,8 @@ import javax.crypto.spec.SecretKeySpec
 import org.apache.commons.codec.binary.Hex
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
+import com.auth0.jwt.exceptions.JWTDecodeException
+
 import java.util.{Calendar, Date}
 import jp.ijufumi.openreports.config.Config.HASH_KEY
 
@@ -17,7 +19,7 @@ object Hash {
 
     Hex.encodeHexString(bytes)
   }
-  def generateJWT(memberId: Long, expirationSeconds: Integer): String = {
+  def generateJWT(memberId: Integer, expirationSeconds: Integer): String = {
     val algorithm = Algorithm.HMAC512("secret")
     val cal = Calendar.getInstance()
     cal.add(Calendar.SECOND, expirationSeconds)
@@ -26,7 +28,16 @@ object Hash {
       .withIssuer("openreports")
       .withExpiresAt(new Date(cal.getTimeInMillis))
       .withIssuedAt(new Date)
-      .withClaim("memberId", memberId.asInstanceOf[java.lang.Long])
+      .withClaim("memberId", memberId.asInstanceOf[java.lang.Integer])
       .sign(algorithm)
+  }
+
+  def extractIdFromJWT(jwtString: String): Integer = {
+    try {
+      val decoded = JWT.decode(jwtString)
+      decoded.getClaim("memberId").asInt()
+    } catch {
+      case JWTDecodeException => return -1
+    }
   }
 }
