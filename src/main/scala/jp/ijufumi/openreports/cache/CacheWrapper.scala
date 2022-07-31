@@ -11,7 +11,7 @@ class CacheWrapper {
   private val defaultTtl = Config.CACHE_TTL_SEC
   private val cache: Cache[Any] = CaffeineCache[Any]
 
-  def put[T](cacheKey: CacheKey, value: T, args: String*)(ttl: Long = defaultTtl): Unit = {
+  def put[T](cacheKey: CacheKey, value: T, args: String*)(implicit ttl: Long = defaultTtl): Unit = {
     cache.put(cacheKey.key(args: _*))(value, ttl = Option(Duration(ttl, SECONDS)))
   }
 
