@@ -39,15 +39,12 @@ class LoginServiceImpl @Inject() (
   }
 
   override def verifyApiToken(apiToken: String): Boolean = {
-    val memberId = Hash.extractIdFromJWT(apiToken);
-    if (memberId == -1) {
-      return false
-    }
-    val memberOpt = memberRepository.getById(memberId)
+    val memberOpt = getMember(apiToken)
     if (memberOpt.isEmpty) {
       return false
     }
 
+    val memberId = memberOpt.get.id
     val cachedApiToken = cacheWrapper.get[String](CacheKeys.ApiToken, memberId.toString)
 
     cachedApiToken.getOrElse("").equals(apiToken)
@@ -85,11 +82,27 @@ class LoginServiceImpl @Inject() (
     makeResponse(newMemberOpt.get)
   }
 
+  def getMemberByToken(apiToken: String): Option[MemberResponse] = {
+    val memberOpt = getMember(apiToken)
+    if (memberOpt.isEmpty) {
+      return Option.empty
+    }
+    makeResponse(memberOpt.get)
+  }
+
   private def makeResponse(member: Member): Option[MemberResponse] = {
     val apiToken = Hash.generateJWT(member.id, Config.API_TOKEN_EXPIRATION_SEC)
-    cacheWrapper.put(CacheKeys.ApiToken, apiToken)
-    Option.apply(
+    cacheWrapper.put(CacheKeys.ApiToken, apiToken, member.id.toString)
+    Option(
       MemberResponse(member.id, member.emailAddress, member.name, member.isAdmin, apiToken),
     )
+  }
+
+  private def getMember(apiToken: String): Option[Member] = {
+    val memberId = Hash.extractIdFromJWT(apiToken);
+    if (memberId == -1) {
+      return Option.empty
+    }
+    memberRepository.getById(memberId)
   }
 }
