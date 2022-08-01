@@ -19,6 +19,6 @@ object Config {
   val GOOGLE_CLIENT_ID: String = sys.env.getOrElse("GOOGLE_CLIENT_ID", "")
   val GOOGLE_CLIENT_SECRET: String = sys.env.getOrElse("GOOGLE_CLIENT_SECRET", "")
 
-  val GOOGLE_AUTH_STATE_CACHE_TTL_SEC: Integer =
+  val GOOGLE_AUTH_STATE_CACHE_TTL_SEC: Long =
     Integer.parseInt(sys.env.getOrElse("CACHE_TTL_SEC", "3600"))
 }
