@@ -26,7 +26,7 @@ class GoogleRepositoryImpl @Inject() (cacheWrapper: CacheWrapper) extends Google
 
   override def getAuthorizationUrl(): String = {
     val state = Strings.generateRandomSting(10)
-    cacheWrapper.put(CacheKeys.GoogleAuthState, state)
+    cacheWrapper.put(CacheKeys.GoogleAuthState, state)(Config.GOOGLE_AUTH_STATE_CACHE_TTL_SEC)
 
     val params = mutable.Map[String, Any]()
     params + ("client_id" -> Config.GOOGLE_CLIENT_ID)
