@@ -37,7 +37,7 @@ object Hash {
       val decoded = JWT.decode(jwtString)
       decoded.getClaim("memberId").asInt()
     } catch {
-      case JWTDecodeException => return -1
+      case _: JWTDecodeException => return -1
     }
   }
 }
