@@ -38,7 +38,7 @@ object Strings {
   }
 
   def convertFromMap(values: mutable.Map[String, Any]): String = {
-    val builder = new StringBuilder
+    val builder = new mutable.StringBuilder
     values.keys.foreach(k => {
       builder + s"${k}=${values.get(k)}"
     })
@@ -50,6 +50,6 @@ object Strings {
   }
 
   def convertFromBase64(value: String): String = {
-    Base64.decodeBase64(value).toString
+    Base64.decodeBase64(value).mkString
   }
 }
