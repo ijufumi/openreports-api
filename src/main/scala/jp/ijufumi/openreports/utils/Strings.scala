@@ -19,7 +19,7 @@ object Strings {
       useUpper: Boolean = true,
       useNumeric: Boolean = true,
   ): String = {
-    val baseArray = ArrayBuffer()
+    val builder = new mutable.StringBuilder
     val baseStringBuilder = new mutable.StringBuilder()
     if (useLower) {
       baseStringBuilder ++= LOWER_CASE
@@ -35,9 +35,9 @@ object Strings {
     val baseString = baseStringBuilder.toString()
     for (i <- 0 until count) {
       val index = r.between(0, baseString.length())
-      baseArray + baseString.charAt(index).toString
+      builder ++= baseString.charAt(index).toString
     }
-    baseArray.mkString
+    builder.mkString
   }
 
   def generateQueryParamsFromMap(values: mutable.Map[String, Any]): String = {
