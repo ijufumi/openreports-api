@@ -1,13 +1,12 @@
 package jp.ijufumi.openreports.api.base
 
+import jp.ijufumi.openreports.utils.Logging
 import org.json4s.{DefaultFormats, Formats}
 import org.scalatra.ScalatraServlet
 import org.scalatra.json.JacksonJsonSupport
-import org.slf4j.{Logger, LoggerFactory}
 
-abstract class APIServletBase extends ScalatraServlet with JacksonJsonSupport {
+abstract class APIServletBase extends ScalatraServlet with JacksonJsonSupport with Logging {
   override protected implicit lazy val jsonFormats: Formats = DefaultFormats
-  protected val logger: Logger = LoggerFactory.getLogger(getClass);
 
   before() {
     contentType = formats("json")
