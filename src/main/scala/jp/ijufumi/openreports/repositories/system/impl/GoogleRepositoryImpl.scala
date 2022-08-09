@@ -4,7 +4,7 @@ import com.google.inject.{Inject, Singleton}
 import jp.ijufumi.openreports.cache.{CacheKeys, CacheWrapper}
 import jp.ijufumi.openreports.config.Config
 import jp.ijufumi.openreports.repositories.system.GoogleRepository
-import jp.ijufumi.openreports.utils.Strings
+import jp.ijufumi.openreports.utils.{Logging, Strings}
 import jp.ijufumi.openreports.vo.response.google.{AccessTokenResponse, UserInfoResponse}
 import org.json4s.DefaultFormats
 import org.json4s.native.Serialization
@@ -15,7 +15,9 @@ import sttp.model.Header
 import scala.collection.mutable
 
 @Singleton
-class GoogleRepositoryImpl @Inject() (cacheWrapper: CacheWrapper) extends GoogleRepository {
+class GoogleRepositoryImpl @Inject() (cacheWrapper: CacheWrapper)
+    extends GoogleRepository
+    with Logging {
   private implicit val formats: DefaultFormats.type = org.json4s.DefaultFormats
   private implicit val serialization: Serialization.type = org.json4s.native.Serialization
 
@@ -29,11 +31,12 @@ class GoogleRepositoryImpl @Inject() (cacheWrapper: CacheWrapper) extends Google
     cacheWrapper.put(CacheKeys.GoogleAuthState, state)(Config.GOOGLE_AUTH_STATE_CACHE_TTL_SEC)
 
     val params = mutable.Map[String, Any]()
-    params + ("client_id" -> Config.GOOGLE_CLIENT_ID)
-    params + ("response_type" -> "code")
-    params + ("state" -> state)
-    params + ("scopes" -> SCOPES.mkString(","))
-    s"${OAUTH_URL}?${Strings.convertFromMap(params)}"
+    params += ("client_id" -> Config.GOOGLE_CLIENT_ID)
+    params += ("response_type" -> "code")
+    params += ("state" -> state)
+    params += ("scopes" -> SCOPES.mkString(","))
+
+    s"${OAUTH_URL}?${Strings.generateQueryParamsFromMap(params)}"
   }
 
   override def fetchToken(state: String, code: String): Option[String] = {
