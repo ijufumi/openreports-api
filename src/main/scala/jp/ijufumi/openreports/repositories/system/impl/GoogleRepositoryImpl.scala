@@ -24,7 +24,7 @@ class GoogleRepositoryImpl @Inject() (cacheWrapper: CacheWrapper)
   private val OAUTH_URL = "https://accounts.google.com/o/oauth2/auth"
   private val TOKEN_URL = "https://oauth2.googleapis.com/token"
   private val USER_INFO_URL = "https://www.googleapis.com/oauth2/v1/userinfo"
-  private val REDIRECT_URL = s"${Config.FRONTEND_URL}/callback/google"
+  private val REDIRECT_URL = s"${Config.FRONTEND_URL}/google/callback"
   private val SCOPES = Array("profile", "email")
 
   override def getAuthorizationUrl(): String = {
