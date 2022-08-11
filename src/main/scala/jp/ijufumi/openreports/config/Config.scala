@@ -1,6 +1,8 @@
 package jp.ijufumi.openreports.config
 
 object Config {
+  val FRONTEND_URL = sys.env.getOrElse("FRONTEND_URL", "http://localhost:3000")
+
   // for database
   val DB_HOST: String = sys.env.getOrElse("DB_HOST", "localhost")
   val DB_NAME: String = sys.env.getOrElse("DB_NAME", "openreports")
@@ -18,7 +20,6 @@ object Config {
   // for google auth
   val GOOGLE_CLIENT_ID: String = sys.env.getOrElse("GOOGLE_CLIENT_ID", "")
   val GOOGLE_CLIENT_SECRET: String = sys.env.getOrElse("GOOGLE_CLIENT_SECRET", "")
-
   val GOOGLE_AUTH_STATE_CACHE_TTL_SEC: Long =
     Integer.parseInt(sys.env.getOrElse("GOOGLE_AUTH_STATE_CACHE_TTL_SEC", "60"))
 }
