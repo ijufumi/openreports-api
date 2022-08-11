@@ -77,6 +77,7 @@ var/
 sbt.json
 
 .env
+.env.compose
 ## generic files to ignore
 *~
 *.lock
