@@ -6,7 +6,7 @@ services:
     ports:
       - "8080:8080"
     env_file:
-      - .env
+      - .env.compose
     working_dir: /app
     volumes:
       - ./src/main/resources/db/migration:/app/src/main/resources/db/migration
