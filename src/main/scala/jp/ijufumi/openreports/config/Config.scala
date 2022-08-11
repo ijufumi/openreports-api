@@ -1,7 +1,7 @@
 package jp.ijufumi.openreports.config
 
 object Config {
-  val FRONTEND_URL = sys.env.getOrElse("FRONTEND_URL", "http://localhost:3000")
+  val FRONTEND_URL: String = sys.env.getOrElse("FRONTEND_URL", "http://localhost:3000")
 
   // for database
   val DB_HOST: String = sys.env.getOrElse("DB_HOST", "localhost")
