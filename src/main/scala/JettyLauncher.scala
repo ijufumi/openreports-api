@@ -14,6 +14,8 @@ object JettyLauncher {
     context.setInitParameter(ScalatraListener.LifeCycleKey, "ScalatraBootstrap")
     context.addEventListener(new ScalatraListener)
     context.addServlet(classOf[DefaultServlet], "/")
+    context.setInitParameter("org.scalatra.cors.allowedOrigins", "*")
+    context.setInitParameter("org.scalatra.cors.allowCredentials", "false")
 
     server.setHandler(context)
 
