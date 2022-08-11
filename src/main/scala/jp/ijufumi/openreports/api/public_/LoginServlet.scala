@@ -4,6 +4,7 @@ import com.google.inject.Inject
 import jp.ijufumi.openreports.api.base.APIServletBase
 import jp.ijufumi.openreports.services.LoginService
 import jp.ijufumi.openreports.vo.request.{GoogleLoginRequest, LoginRequest}
+import jp.ijufumi.openreports.vo.response.GoogleAuthUrlResponse
 import org.scalatra._
 
 class LoginServlet @Inject() (loginService: LoginService) extends APIServletBase {
@@ -17,7 +18,7 @@ class LoginServlet @Inject() (loginService: LoginService) extends APIServletBase
     }
   }
   get("/google/authorization_url") {
-    loginService.getAuthorizationUrl
+    Ok(GoogleAuthUrlResponse(loginService.getAuthorizationUrl))
   }
 
   post("/google") {
