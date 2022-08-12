@@ -48,7 +48,8 @@ docker-compose exec api sbt flywayMigrate
     - [x] Google login
 - private
   - common
-    - [ ] logout
+    - [x] logout
+  - members
     - [ ] status (including menus, groups)
   - reports
     - [ ] list
