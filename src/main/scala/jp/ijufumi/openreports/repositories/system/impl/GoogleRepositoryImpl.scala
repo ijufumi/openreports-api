@@ -36,7 +36,7 @@ class GoogleRepositoryImpl @Inject() (cacheWrapper: CacheWrapper)
     params += ("response_type" -> "code")
     params += ("state" -> state)
     params += ("scope" -> SCOPES.mkString(","))
-    params += ("redirect_url" -> REDIRECT_URL)
+    params += ("redirect_uri" -> REDIRECT_URL)
 
     s"${OAUTH_URL}?${Strings.generateQueryParamsFromMap(params)}"
   }
