@@ -8,6 +8,7 @@ import jp.ijufumi.openreports.utils.{Logging, Strings}
 import jp.ijufumi.openreports.vo.response.google.{AccessTokenResponse, UserInfoResponse}
 import org.json4s.DefaultFormats
 import org.json4s.native.Serialization
+import sttp.client3
 import sttp.client3._
 import sttp.client3.json4s._
 import sttp.model.Header
@@ -53,9 +54,18 @@ class GoogleRepositoryImpl @Inject() (cacheWrapper: CacheWrapper)
       Strings.convertToBase64(s"${Config.GOOGLE_CLIENT_ID}:${Config.GOOGLE_CLIENT_SECRET}")
 
     val backend = HttpClientSyncBackend()
+    val params = mutable.Map[String, Any]()
+    params += ("client_id" -> Config.GOOGLE_CLIENT_ID)
+    params += ("client_secret" -> Config.GOOGLE_CLIENT_SECRET)
+    params += ("grant_type" -> "authorization_code")
+    params += ("code" -> code)
+    params += ("redirect_uri" -> REDIRECT_URL)
+
     val request = basicRequest
-      .post(uri"${TOKEN_URL}?grant_type=authorization_code&code=${code}")
+      .body(params)
+      .post(uri"${TOKEN_URL}")
       .response(asJson[AccessTokenResponse])
+
     request.headers ++ Seq(
       Header("Authorization", s"Basic ${basicAuth}"),
       Header("Accept", "application/json"),
@@ -64,11 +74,18 @@ class GoogleRepositoryImpl @Inject() (cacheWrapper: CacheWrapper)
 
     val response = request.send(backend)
     if (!response.is200) {
-      logger.warn(s"Failed to fetch token: ${response.body}")
+      logger.warn(s"Failed to fetch token: ${response.statusText}")
       return Option.empty
     }
-    val accessToken = response.body.toOption.get
-    Option(accessToken.accessToken)
+    val responseBody = response.body
+    responseBody match {
+      case Left(error) =>
+        logger.warn(s"Failed to fetch token: ${error}")
+
+        Option.empty
+      case Right(accessToken) =>
+        Option(accessToken.access_token)
+    }
   }
 
   override def getUserInfo(accessToken: String): Option[UserInfoResponse] = {

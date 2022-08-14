@@ -1,3 +1,4 @@
 package jp.ijufumi.openreports.vo.response.google
 
-case class AccessTokenResponse(accessToken: String)
+
+case class AccessTokenResponse(access_token: String)
