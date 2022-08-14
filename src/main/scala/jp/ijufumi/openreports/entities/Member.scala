@@ -20,7 +20,7 @@ case class Member(
 class Members(tag: Tag)
     extends Table[Member](
       tag,
-      "MEMBERS",
+      "t_member",
     ) {
   def id = column[Int]("id", O.PrimaryKey, O.AutoInc)
   def googleId = column[String]("google_id", O.Unique)
@@ -28,8 +28,8 @@ class Members(tag: Tag)
   def password = column[String]("password")
   def name = column[String]("name")
   def isAdmin = column[String]("is_admin")
-  def createdAt = column[Timestamp]("created_at")(timestampType)
-  def updatedAt = column[Timestamp]("updated_at")(timestampType)
+  def createdAt = column[Timestamp]("created_at")
+  def updatedAt = column[Timestamp]("updated_at")
   def version = column[Long]("version")
 
   override def * =
