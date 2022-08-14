@@ -6,7 +6,7 @@ import java.sql.Timestamp
 import java.time.LocalDateTime
 
 case class Member(
-    id: Int = 0,
+    id: Option[Int] = None,
     googleId: String = "",
     emailAddress: String,
     password: String = "",
@@ -32,5 +32,16 @@ class Members(tag: Tag)
   def updatedAt = column[Timestamp]("updated_at")(timestampType)
   def version = column[Long]("version")
 
-  override def * = ???
+  def * =
+    (
+      id.?,
+      googleId,
+      emailAddress,
+      password,
+      name,
+      isAdmin,
+      createdAt,
+      updatedAt,
+      version,
+    ) <> (Member.tupled, Member.unapply)
 }

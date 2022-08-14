@@ -94,10 +94,10 @@ class LoginServiceImpl @Inject() (
   }
 
   private def makeResponse(member: Member): Option[MemberResponse] = {
-    val apiToken = Hash.generateJWT(member.id, Config.API_TOKEN_EXPIRATION_SEC)
+    val apiToken = Hash.generateJWT(member.id.get, Config.API_TOKEN_EXPIRATION_SEC)
     cacheWrapper.put(CacheKeys.ApiToken, apiToken, member.id.toString)
     Option(
-      MemberResponse(member.id, member.emailAddress, member.name, member.isAdmin, apiToken),
+      MemberResponse(member.id.get, member.emailAddress, member.name, member.isAdmin, apiToken),
     )
   }
 
