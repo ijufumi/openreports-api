@@ -20,7 +20,7 @@ class CacheWrapper {
     if (value.isFailure) {
       return None
     }
-    val original = value.get
+    val original = value.get.get
     Option(original.asInstanceOf[T])
   }
 

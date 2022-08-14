@@ -42,11 +42,12 @@ class GoogleRepositoryImpl @Inject() (cacheWrapper: CacheWrapper)
   }
 
   override def fetchToken(state: String, code: String): Option[String] = {
-    val cachedState = cacheWrapper.get[String](CacheKeys.ApiToken)
-    if (cachedState.getOrElse("") != state) {
+    val cachedState = cacheWrapper.get[String](CacheKeys.GoogleAuthState)
+    if (!cachedState.getOrElse("").equals(state)) {
+      logger.warn("Mismatch state")
       return Option.empty
     }
-    cacheWrapper.remove(CacheKeys.ApiToken)
+    cacheWrapper.remove(CacheKeys.GoogleAuthState)
 
     val basicAuth =
       Strings.convertToBase64(s"${Config.GOOGLE_CLIENT_ID}:${Config.GOOGLE_CLIENT_SECRET}")
@@ -62,11 +63,12 @@ class GoogleRepositoryImpl @Inject() (cacheWrapper: CacheWrapper)
     )
 
     val response = request.send(backend)
-    if (response.is200) {
-      val accessToken = response.body.toOption.get
-      return Option(accessToken.accessToken)
+    if (!response.is200) {
+      logger.warn(s"Failed to fetch token: ${response.body}")
+      return Option.empty
     }
-    Option.empty
+    val accessToken = response.body.toOption.get
+    Option(accessToken.accessToken)
   }
 
   override def getUserInfo(accessToken: String): Option[UserInfoResponse] = {
