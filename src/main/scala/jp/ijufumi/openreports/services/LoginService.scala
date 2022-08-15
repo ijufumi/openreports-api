@@ -11,7 +11,7 @@ trait LoginService {
 
   def getAuthorizationUrl: String
 
-  def loginWithGoogle(state: String, code: String): Option[MemberResponse]
+  def loginWithGoogle(code: String): Option[MemberResponse]
 
   def getMemberByToken(apiToken: String): Option[MemberResponse]
 }

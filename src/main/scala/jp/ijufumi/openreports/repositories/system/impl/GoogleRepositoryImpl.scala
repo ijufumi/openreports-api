@@ -1,14 +1,12 @@
 package jp.ijufumi.openreports.repositories.system.impl
 
-import com.google.inject.{Inject, Singleton}
-import jp.ijufumi.openreports.cache.{CacheKeys, CacheWrapper}
+import com.google.inject.Singleton
 import jp.ijufumi.openreports.config.Config
 import jp.ijufumi.openreports.repositories.system.GoogleRepository
 import jp.ijufumi.openreports.utils.{Logging, Strings}
 import jp.ijufumi.openreports.vo.response.google.{AccessTokenResponse, UserInfoResponse}
 import org.json4s.DefaultFormats
 import org.json4s.native.Serialization
-import sttp.client3
 import sttp.client3._
 import sttp.client3.json4s._
 import sttp.model.Header
@@ -16,8 +14,7 @@ import sttp.model.Header
 import scala.collection.mutable
 
 @Singleton
-class GoogleRepositoryImpl @Inject() (cacheWrapper: CacheWrapper)
-    extends GoogleRepository
+class GoogleRepositoryImpl extends GoogleRepository
     with Logging {
   private implicit val formats: DefaultFormats.type = org.json4s.DefaultFormats
   private implicit val serialization: Serialization.type = org.json4s.native.Serialization
@@ -30,7 +27,6 @@ class GoogleRepositoryImpl @Inject() (cacheWrapper: CacheWrapper)
 
   override def getAuthorizationUrl(): String = {
     val state = Strings.generateRandomSting(10)
-    cacheWrapper.put(CacheKeys.GoogleAuthState, state)(Config.GOOGLE_AUTH_STATE_CACHE_TTL_SEC)
 
     val params = mutable.Map[String, Any]()
     params += ("client_id" -> Config.GOOGLE_CLIENT_ID)
@@ -42,14 +38,7 @@ class GoogleRepositoryImpl @Inject() (cacheWrapper: CacheWrapper)
     s"${OAUTH_URL}?${Strings.generateQueryParamsFromMap(params)}"
   }
 
-  override def fetchToken(state: String, code: String): Option[String] = {
-    val cachedState = cacheWrapper.get[String](CacheKeys.GoogleAuthState)
-    if (!cachedState.getOrElse("").equals(state)) {
-      logger.warn("Mismatch state")
-      return Option.empty
-    }
-    cacheWrapper.remove(CacheKeys.GoogleAuthState)
-
+  override def fetchToken(code: String): Option[String] = {
     val basicAuth =
       Strings.convertToBase64(s"${Config.GOOGLE_CLIENT_ID}:${Config.GOOGLE_CLIENT_SECRET}")
 

@@ -53,8 +53,8 @@ class LoginServiceImpl @Inject() (
 
   override def getAuthorizationUrl: String = googleRepository.getAuthorizationUrl()
 
-  override def loginWithGoogle(state: String, code: String): Option[MemberResponse] = {
-    val tokenOpt = googleRepository.fetchToken(state, code)
+  override def loginWithGoogle(code: String): Option[MemberResponse] = {
+    val tokenOpt = googleRepository.fetchToken(code)
     if (tokenOpt.isEmpty) {
       logger.info("Missing token")
       return Option.empty
