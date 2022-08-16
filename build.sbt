@@ -25,6 +25,7 @@ lazy val root = (project in file("."))
       "org.eclipse.jetty" % "jetty-webapp" % "9.4.35.v20201120" % "container;compile",
       "javax.servlet" % "javax.servlet-api" % "3.1.0" % "provided",
       "org.postgresql" % "postgresql" % "42.4.0",
+      "org.flywaydb" % "flyway-core" % "9.1.3",
       "com.google.inject" % "guice" % "5.1.0",
       "org.json4s" %% "json4s-jackson" % Json4sVersion,
       "org.json4s" %% "json4s-native" % Json4sVersion,
