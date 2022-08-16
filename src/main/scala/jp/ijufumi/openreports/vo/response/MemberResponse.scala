@@ -2,8 +2,7 @@ package jp.ijufumi.openreports.vo.response
 
 case class MemberResponse(
     id: Int,
-    emailAddress: String,
+    email: String,
     name: String,
-    isAdmin: String,
     apiToken: String = "",
 )

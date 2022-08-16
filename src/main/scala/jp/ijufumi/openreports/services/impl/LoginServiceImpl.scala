@@ -75,12 +75,12 @@ class LoginServiceImpl @Inject() (
     val memberOptByEmail = memberRepository.getMemberByEmail(userInfo.email)
     if (memberOptByEmail.isDefined) {
       val member = memberOptByEmail.get
-      val newMember = member.copy(googleId = userInfo.id)
+      val newMember = member.copy(googleId = Some(userInfo.id))
       memberRepository.update(newMember)
       return makeResponse(newMember)
     }
 
-    val member = Member(googleId = userInfo.id, emailAddress = userInfo.email, name = userInfo.name)
+    val member = Member(googleId = Some(userInfo.id), email = userInfo.email, name = userInfo.name)
     val newMemberOpt = memberRepository.register(member)
     makeResponse(newMemberOpt.get)
   }
@@ -97,7 +97,7 @@ class LoginServiceImpl @Inject() (
     val apiToken = Hash.generateJWT(member.id.get, Config.API_TOKEN_EXPIRATION_SEC)
     cacheWrapper.put(CacheKeys.ApiToken, apiToken, member.id.toString)
     Option(
-      MemberResponse(member.id.get, member.emailAddress, member.name, member.isAdmin, apiToken),
+      MemberResponse(member.id.get, member.email, member.name, apiToken),
     )
   }
 

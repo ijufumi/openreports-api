@@ -7,11 +7,10 @@ import java.time.LocalDateTime
 
 case class Member(
     id: Option[Int] = None,
-    googleId: String = "",
-    emailAddress: String,
+    googleId: Option[String] = None,
+    email: String,
     password: String = "",
     name: String,
-    isAdmin: String = "1",
     createdAt: Timestamp = Timestamp.valueOf(LocalDateTime.now()),
     updatedAt: Timestamp = Timestamp.valueOf(LocalDateTime.now()),
     version: Long = 1,
@@ -20,14 +19,13 @@ case class Member(
 class Members(tag: Tag)
     extends Table[Member](
       tag,
-      "t_member",
+      "member",
     ) {
   def id = column[Int]("id", O.PrimaryKey, O.AutoInc)
   def googleId = column[String]("google_id", O.Unique)
-  def emailAddress = column[String]("email_address", O.Unique)
+  def email = column[String]("email", O.Unique)
   def password = column[String]("password")
   def name = column[String]("name")
-  def isAdmin = column[String]("is_admin")
   def createdAt = column[Timestamp]("created_at")
   def updatedAt = column[Timestamp]("updated_at")
   def version = column[Long]("version")
@@ -35,11 +33,10 @@ class Members(tag: Tag)
   override def * =
     (
       id.?,
-      googleId,
-      emailAddress,
+      googleId.?,
+      email,
       password,
       name,
-      isAdmin,
       createdAt,
       updatedAt,
       version,
