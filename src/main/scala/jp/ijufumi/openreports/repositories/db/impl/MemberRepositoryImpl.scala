@@ -16,9 +16,9 @@ class MemberRepositoryImpl @Inject() (db: Database) extends MemberRepository {
       .filter(_.id === id)
     val members = Await.result(db.run(getMembers.result), Duration("10s"))
     if (members.isEmpty) {
-      Option.empty[Member]
+      return None
     }
-    Option.apply(members.head)
+    Option(members.head)
   }
 
   override def getByGoogleId(googleId: String): Option[Member] = {
@@ -26,7 +26,7 @@ class MemberRepositoryImpl @Inject() (db: Database) extends MemberRepository {
       .filter(_.googleId === googleId)
     val members = Await.result(db.run(getMembers.result), Duration("10s"))
     if (members.isEmpty) {
-      Option.empty[Member]
+      return None
     }
     Option(members.head)
   }
@@ -36,7 +36,7 @@ class MemberRepositoryImpl @Inject() (db: Database) extends MemberRepository {
       .filter(_.email === email)
     val members = Await.result(db.run(getMembers.result), Duration("10s"))
     if (members.isEmpty) {
-      Option.empty[Member]
+      return None
     }
     Option(members.head)
   }
