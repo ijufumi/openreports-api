@@ -31,9 +31,9 @@ class MemberRepositoryImpl @Inject() (db: Database) extends MemberRepository {
     Option(members.head)
   }
 
-  override def getMemberByEmail(emailAddress: String): Option[Member] = {
+  override def getMemberByEmail(email: String): Option[Member] = {
     val getMembers = query
-      .filter(_.emailAddress === emailAddress)
+      .filter(_.email === email)
     val members = Await.result(db.run(getMembers.result), Duration("10s"))
     if (members.isEmpty) {
       Option.empty[Member]
