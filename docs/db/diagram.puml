@@ -1,0 +1,13 @@
+@startuml
+
+entity member {
+ * id
+ * email
+ * name
+ * password
+   google_id
+ * created_at
+ * updated_at
+}
+
+@enduml
