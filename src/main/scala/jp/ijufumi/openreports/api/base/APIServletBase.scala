@@ -21,16 +21,22 @@ abstract class APIServletBase
   }
 
   after() {
-    val statusCode = response.getStatus
     val servletPath = request.getServletPath
     val pathInfo = request.getPathInfo
     val requestPath = servletPath + pathInfo
     val requestMethod = request.getMethod
-    val message = s"${requestMethod} ${requestPath} ${statusCode}"
-    statusCode match {
-      case n if n < 400 => logger.info(message)
-      case n if n < 500 => logger.warn(message)
-      case _            => logger.error(message)
+    val message = s"${requestMethod} ${requestPath} ${status}"
+    status match {
+      case n if 400 <= n && n < 500 => logger.warn(message)
+      case n if 500 <= n            => logger.error(message)
+      case _                        => logger.info(message)
+    }
+  }
+
+  error {
+    case t => {
+      logger.error(t.getStackTrace.mkString("\n"))
+      throw t
     }
   }
 
