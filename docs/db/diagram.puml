@@ -1,6 +1,6 @@
 @startuml
 
-entity member {
+entity members {
  * id
  * email
  * name

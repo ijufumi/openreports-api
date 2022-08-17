@@ -19,7 +19,7 @@ case class Member(
 class Members(tag: Tag)
     extends Table[Member](
       tag,
-      "member",
+      "members",
     ) {
   def id = column[Int]("id", O.PrimaryKey, O.AutoInc)
   def googleId = column[String]("google_id", O.Unique)
