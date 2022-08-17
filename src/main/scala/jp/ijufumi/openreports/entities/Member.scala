@@ -13,7 +13,7 @@ case class Member(
     name: String,
     createdAt: Timestamp = Timestamp.valueOf(LocalDateTime.now()),
     updatedAt: Timestamp = Timestamp.valueOf(LocalDateTime.now()),
-    version: Long = 1,
+    versions: Long = 1,
 )
 
 class Members(tag: Tag)
@@ -28,7 +28,7 @@ class Members(tag: Tag)
   def name = column[String]("name")
   def createdAt = column[Timestamp]("created_at")
   def updatedAt = column[Timestamp]("updated_at")
-  def version = column[Long]("version")
+  def versions = column[Long]("versions")
 
   override def * =
     (
@@ -39,6 +39,6 @@ class Members(tag: Tag)
       name,
       createdAt,
       updatedAt,
-      version,
+      versions,
     ) <> (Member.tupled, Member.unapply)
 }
