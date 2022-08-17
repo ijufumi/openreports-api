@@ -1,5 +1,5 @@
 -- create member
-create table member
+create table members
 (
   id         serial primary key,
   google_id  varchar(255) null,
@@ -11,5 +11,5 @@ create table member
   versions   bigint       not null default 0
 );
 
-create unique index member_IX1 on member (email);
-create unique index member_IX2 on member (google_id);
+create unique index member_IX1 on members (email);
+create unique index member_IX2 on members (google_id);
