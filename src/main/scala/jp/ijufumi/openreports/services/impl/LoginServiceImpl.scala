@@ -20,12 +20,14 @@ class LoginServiceImpl @Inject() (
   override def login(email: String, password: String): Option[MemberResponse] = {
     val memberOpt = memberRepository.getMemberByEmail(email)
     if (memberOpt.isEmpty) {
-      return Option.empty[MemberResponse]
+      logger.info(s"${email} does not exist")
+      return None
     }
     val hashedPassword = Hash.hmacSha256(password)
     val member = memberOpt.get
     if (hashedPassword != member.password) {
-      return Option.empty[MemberResponse]
+      logger.info(s"${email}'s password does not match")
+      return None
     }
     makeResponse(member)
   }
