@@ -35,7 +35,7 @@ abstract class APIServletBase
 
   error {
     case t => {
-      logger.error(t.getStackTrace.mkString("\n"))
+      logger.error(t.getMessage, t)
       throw t
     }
   }
