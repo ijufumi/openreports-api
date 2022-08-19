@@ -7,7 +7,7 @@ import jp.ijufumi.openreports.utils.Hash
 class V000001_01__Create_user extends BaseJavaMigration {
   override def migrate(context: Context): Unit = {
     try {
-      val email = "root@9jufumi.jp"
+      val email = "root@jufumi.jp"
       val password = Hash.hmacSha256("password")
       val name = "Root User"
       val statement: java.sql.PreparedStatement = {
