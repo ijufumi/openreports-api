@@ -11,9 +11,9 @@ class StatusServlet @Inject() (loginService: LoginService)
     val apiToken = getApiToken()
     val member = loginService.getMemberByToken(apiToken)
     if (member.isEmpty) {
-      Unauthorized("Invalid api token")
+      hookResult(Unauthorized("Invalid api token"))
     } else {
-      Ok(member.get)
+      hookResult(Ok(member.get))
     }
   }
 }

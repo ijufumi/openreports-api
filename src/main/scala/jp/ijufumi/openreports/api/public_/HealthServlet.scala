@@ -4,7 +4,7 @@ import jp.ijufumi.openreports.api.base.APIServletBase
 import org.scalatra._
 
 class HealthServlet extends APIServletBase {
-  get("/health") {
-    Ok("hello")
+  get("/") {
+    hookResult(Ok("hello"))
   }
 }
