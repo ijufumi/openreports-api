@@ -4,7 +4,7 @@ import org.flywaydb.core.api.migration.BaseJavaMigration
 import org.flywaydb.core.api.migration.Context
 import jp.ijufumi.openreports.utils.Hash
 
-class V000001_01__Create_user extends BaseJavaMigration {
+class V000001_01__Create_root_user extends BaseJavaMigration {
   override def migrate(context: Context): Unit = {
     val email = "root@ijufumi.jp"
     val password = Hash.hmacSha256("password")
