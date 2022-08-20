@@ -1,14 +1,27 @@
 @startuml
 
 entity members {
- * id
- * email
- * name
- * password
-   google_id
- * created_at
- * updated_at
- * versions
+  * id
+  * email
+  * name
+  * password
+    google_id
+  * created_at
+  * updated_at
+  * versions
+}
+
+entity workspaces {
+  * id
+  * name 
+  * created_at
+  * updated_at
+  * versions
+}
+
+entity workspace_members {
+  * workspace_id
+  * member_id
 }
 
 @enduml
