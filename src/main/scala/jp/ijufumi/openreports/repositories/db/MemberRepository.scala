@@ -3,7 +3,7 @@ package jp.ijufumi.openreports.repositories.db
 import jp.ijufumi.openreports.entities.Member
 
 trait MemberRepository {
-  def getById(id: Int): Option[Member]
+  def getById(id: String): Option[Member]
 
   def getByGoogleId(googleId: String): Option[Member]
 

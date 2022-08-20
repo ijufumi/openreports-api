@@ -19,7 +19,7 @@ object Hash {
 
     Hex.encodeHexString(bytes)
   }
-  def generateJWT(memberId: Integer, expirationSeconds: Integer): String = {
+  def generateJWT(id: String, expirationSeconds: Integer): String = {
     val algorithm = Algorithm.HMAC512("secret")
     val cal = Calendar.getInstance()
     cal.add(Calendar.SECOND, expirationSeconds)
@@ -28,16 +28,16 @@ object Hash {
       .withIssuer("openreports")
       .withExpiresAt(new Date(cal.getTimeInMillis))
       .withIssuedAt(new Date)
-      .withClaim("memberId", memberId.asInstanceOf[java.lang.Integer])
+      .withClaim("id", id)
       .sign(algorithm)
   }
 
-  def extractIdFromJWT(jwtString: String): Integer = {
+  def extractIdFromJWT(jwtString: String): String = {
     try {
       val decoded = JWT.decode(jwtString)
-      decoded.getClaim("memberId").asInt()
+      decoded.getClaim("id").asString()
     } catch {
-      case _: JWTDecodeException => return -1
+      case _: JWTDecodeException => return ""
     }
   }
 }

@@ -11,7 +11,7 @@ import slick.jdbc.PostgresProfile.api._
 class MemberRepositoryImpl @Inject() (db: Database) extends MemberRepository {
   private lazy val query = TableQuery[Members]
 
-  override def getById(id: Int): Option[Member] = {
+  override def getById(id: String): Option[Member] = {
     val getMembers = query
       .filter(_.id === id)
     val members = Await.result(db.run(getMembers.result), Duration("10s"))
@@ -42,8 +42,8 @@ class MemberRepositoryImpl @Inject() (db: Database) extends MemberRepository {
   }
 
   override def register(member: Member): Option[Member] = {
-    val id = Await.result(db.run(query += member), Duration("1m"))
-    getById(id)
+    Await.result(db.run(query += member), Duration("1m"))
+    getById(member.id)
   }
 
   override def update(member: Member): Unit = {

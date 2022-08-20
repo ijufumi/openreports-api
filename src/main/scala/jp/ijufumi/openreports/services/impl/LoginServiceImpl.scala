@@ -4,7 +4,7 @@ import jp.ijufumi.openreports.services.LoginService
 import jp.ijufumi.openreports.repositories.system._
 import com.google.inject.{Inject, Singleton}
 import jp.ijufumi.openreports.config.Config
-import jp.ijufumi.openreports.utils.{Hash, Logging}
+import jp.ijufumi.openreports.utils.{Hash, ID, Logging}
 import jp.ijufumi.openreports.vo.response.MemberResponse
 import jp.ijufumi.openreports.cache.{CacheKeys, CacheWrapper}
 import jp.ijufumi.openreports.entities.Member
@@ -82,7 +82,7 @@ class LoginServiceImpl @Inject() (
       return makeResponse(newMember)
     }
 
-    val member = Member(googleId = Some(userInfo.id), email = userInfo.email, name = userInfo.name)
+    val member = Member(id=ID.ulid(), googleId = Some(userInfo.id), email = userInfo.email, name = userInfo.name)
     val newMemberOpt = memberRepository.register(member)
     makeResponse(newMemberOpt.get)
   }
@@ -96,10 +96,10 @@ class LoginServiceImpl @Inject() (
   }
 
   private def makeResponse(member: Member): Option[MemberResponse] = {
-    val apiToken = Hash.generateJWT(member.id.get, Config.API_TOKEN_EXPIRATION_SEC)
+    val apiToken = Hash.generateJWT(member.id, Config.API_TOKEN_EXPIRATION_SEC)
     cacheWrapper.put(CacheKeys.ApiToken, apiToken, member.id.toString)
     Option(
-      MemberResponse(member.id.get, member.email, member.name, apiToken),
+      MemberResponse(member.id, member.email, member.name, apiToken),
     )
   }
 

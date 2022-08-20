@@ -6,7 +6,7 @@ import java.sql.Timestamp
 import java.time.LocalDateTime
 
 case class Member(
-    id: Option[Int] = None,
+    id: String,
     googleId: Option[String] = None,
     email: String,
     password: String = "",
@@ -21,7 +21,7 @@ class Members(tag: Tag)
       tag,
       "members",
     ) {
-  def id = column[Int]("id", O.PrimaryKey, O.AutoInc)
+  def id = column[String]("id", O.PrimaryKey)
   def googleId = column[String]("google_id", O.Unique)
   def email = column[String]("email", O.Unique)
   def password = column[String]("password")
@@ -32,7 +32,7 @@ class Members(tag: Tag)
 
   override def * =
     (
-      id.?,
+      id,
       googleId.?,
       email,
       password,
