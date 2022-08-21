@@ -18,7 +18,7 @@ object Strings {
       useLower: Boolean = true,
       useUpper: Boolean = true,
       useNumeric: Boolean = true,
-  ): String = {
+  )(extraCharacters: String*): String = {
     val builder = new mutable.StringBuilder
     val baseStringBuilder = new mutable.StringBuilder()
     if (useLower) {
@@ -29,6 +29,9 @@ object Strings {
     }
     if (useNumeric) {
       baseStringBuilder ++= NUMERIC
+    }
+    if (extraCharacters.nonEmpty) {
+      baseStringBuilder ++= extraCharacters
     }
 
     val r = new Random()
@@ -59,5 +62,9 @@ object Strings {
 
   def convertFromBase64(value: String): String = {
     Base64.decodeBase64(value).mkString
+  }
+
+  def generateSlug(): String = {
+    generateRandomSting(10, useUpper = false)("-", "_")
   }
 }
