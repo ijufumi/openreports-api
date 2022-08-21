@@ -13,5 +13,9 @@ class RepositoryModule extends AbstractModule {
       .to(classOf[MemberRepositoryImpl])
     bind(classOf[GoogleRepository])
       .to(classOf[GoogleRepositoryImpl])
+    bind(classOf[WorkspaceRepository])
+      .to(classOf[WorkspaceRepositoryImpl])
+    bind(classOf[WorkspaceMemberRepository])
+      .to(classOf[WorkspaceMemberRepositoryImpl])
   }
 }
