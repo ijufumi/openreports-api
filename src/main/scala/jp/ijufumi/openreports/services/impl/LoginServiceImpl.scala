@@ -34,7 +34,7 @@ class LoginServiceImpl @Inject() (
 
   override def logout(apiToken: String): Unit = {
     val memberId = Hash.extractIdFromJWT(apiToken);
-    if (memberId == -1) {
+    if (memberId == "") {
       return;
     }
 
