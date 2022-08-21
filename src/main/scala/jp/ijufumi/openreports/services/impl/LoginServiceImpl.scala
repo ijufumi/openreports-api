@@ -82,7 +82,12 @@ class LoginServiceImpl @Inject() (
       return makeResponse(newMember)
     }
 
-    val member = Member(id=ID.ulid(), googleId = Some(userInfo.id), email = userInfo.email, name = userInfo.name)
+    val member = Member(
+      id = ID.ulid(),
+      googleId = Some(userInfo.id),
+      email = userInfo.email,
+      name = userInfo.name,
+    )
     val newMemberOpt = memberRepository.register(member)
     makeResponse(newMemberOpt.get)
   }
@@ -105,7 +110,7 @@ class LoginServiceImpl @Inject() (
 
   private def getMember(apiToken: String): Option[Member] = {
     val memberId = Hash.extractIdFromJWT(apiToken);
-    if (memberId == -1) {
+    if (memberId == "") {
       return Option.empty
     }
     memberRepository.getById(memberId)
