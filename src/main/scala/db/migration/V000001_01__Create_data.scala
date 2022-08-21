@@ -41,13 +41,15 @@ class V000001_01__Create_data extends BaseJavaMigration {
   def workspace(context: Context): String = {
     val id = ID.ulid()
     val name = "Root Workspace"
+    val slug = "root"
     val statement = {
       context.getConnection.prepareStatement(
-        s"INSERT INTO workspaces (id, name) VALUES (?, ?)",
+        s"INSERT INTO workspaces (id, name, slug) VALUES (?, ?, ?)",
       )
     }
     statement.setString(1, id)
     statement.setString(2, name)
+    statement.setString(3, slug)
     try statement.execute
     finally if (statement != null) statement.close()
     id

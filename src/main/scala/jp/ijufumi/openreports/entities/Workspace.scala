@@ -8,6 +8,7 @@ import java.time.LocalDateTime
 case class Workspace(
     id: String,
     name: String,
+    slug: String,
     createdAt: Timestamp = Timestamp.valueOf(LocalDateTime.now()),
     updatedAt: Timestamp = Timestamp.valueOf(LocalDateTime.now()),
     versions: Long = 1,
@@ -22,6 +23,8 @@ class Workspaces(tag: Tag)
 
   def name = column[String]("name")
 
+  def slug = column[String]("slug")
+
   def createdAt = column[Timestamp]("created_at")
 
   def updatedAt = column[Timestamp]("updated_at")
@@ -32,6 +35,7 @@ class Workspaces(tag: Tag)
     (
       id,
       name,
+      slug,
       createdAt,
       updatedAt,
       versions,
