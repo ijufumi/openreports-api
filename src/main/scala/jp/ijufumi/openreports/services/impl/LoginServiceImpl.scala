@@ -4,16 +4,18 @@ import jp.ijufumi.openreports.services.LoginService
 import jp.ijufumi.openreports.repositories.system._
 import com.google.inject.{Inject, Singleton}
 import jp.ijufumi.openreports.config.Config
-import jp.ijufumi.openreports.utils.{Hash, ID, Logging}
+import jp.ijufumi.openreports.utils.{Hash, ID, Logging, Strings}
 import jp.ijufumi.openreports.vo.response.MemberResponse
 import jp.ijufumi.openreports.cache.{CacheKeys, CacheWrapper}
-import jp.ijufumi.openreports.entities.Member
+import jp.ijufumi.openreports.entities._
 import jp.ijufumi.openreports.repositories.db._
 
 @Singleton
 class LoginServiceImpl @Inject() (
     cacheWrapper: CacheWrapper,
     memberRepository: MemberRepository,
+    workspaceRepository: WorkspaceRepository,
+    workspaceMemberRepository: WorkspaceMemberRepository,
     googleRepository: GoogleRepository,
 ) extends LoginService
     with Logging {
@@ -89,6 +91,13 @@ class LoginServiceImpl @Inject() (
       name = userInfo.name,
     )
     val newMemberOpt = memberRepository.register(member)
+
+    val workspaceName = Strings.nameFromEmail(userInfo.email) + "'s workspace"
+    val workspace = Workspace(ID.ulid(), workspaceName, Strings.generateSlug())
+    workspaceRepository.register(workspace)
+    val workspaceMember = WorkspaceMember(workspace.id, member.id)
+    workspaceMemberRepository.register(workspaceMember)
+
     makeResponse(newMemberOpt.get)
   }
 
