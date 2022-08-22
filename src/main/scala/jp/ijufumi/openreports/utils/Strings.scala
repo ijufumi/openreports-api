@@ -13,6 +13,8 @@ object Strings {
 
   private val urlCodec = new URLCodec()
 
+  private val emailMatcher = """([^@]*)@.*""".r
+
   def generateRandomSting(
       count: Int,
       useLower: Boolean = true,
@@ -66,5 +68,13 @@ object Strings {
 
   def generateSlug(): String = {
     generateRandomSting(10, useUpper = false)("-", "_")
+  }
+
+  def nameFromEmail(email: String): String = {
+    val result = emailMatcher.findFirstMatchIn(email)
+    if (result.isEmpty) {
+      return email
+    }
+    result.get.group(1)
   }
 }
