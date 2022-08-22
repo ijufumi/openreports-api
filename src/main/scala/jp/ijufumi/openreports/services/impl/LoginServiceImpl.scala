@@ -20,25 +20,25 @@ class LoginServiceImpl @Inject() (
   override def login(email: String, password: String): Option[MemberResponse] = {
     val memberOpt = memberRepository.getMemberByEmail(email)
     if (memberOpt.isEmpty) {
-      logger.info(s"${email} does not exist")
+      logger.info(s"$email does not exist")
       return None
     }
     val hashedPassword = Hash.hmacSha256(password)
     val member = memberOpt.get
     if (hashedPassword != member.password) {
-      logger.info(s"${email}'s password does not match")
+      logger.info(s"$email's password does not match")
       return None
     }
     makeResponse(member)
   }
 
   override def logout(apiToken: String): Unit = {
-    val memberId = Hash.extractIdFromJWT(apiToken);
+    val memberId = Hash.extractIdFromJWT(apiToken)
     if (memberId == "") {
-      return;
+      return
     }
 
-    cacheWrapper.remove(CacheKeys.ApiToken, memberId.toString)
+    cacheWrapper.remove(CacheKeys.ApiToken, memberId)
   }
 
   override def verifyApiToken(apiToken: String): Boolean = {
@@ -48,7 +48,7 @@ class LoginServiceImpl @Inject() (
     }
 
     val memberId = memberOpt.get.id
-    val cachedApiToken = cacheWrapper.get[String](CacheKeys.ApiToken, memberId.toString)
+    val cachedApiToken = cacheWrapper.get[String](CacheKeys.ApiToken, memberId)
 
     cachedApiToken.getOrElse("").equals(apiToken)
   }
@@ -59,12 +59,12 @@ class LoginServiceImpl @Inject() (
     val tokenOpt = googleRepository.fetchToken(code)
     if (tokenOpt.isEmpty) {
       logger.info("Missing token")
-      return Option.empty
+      return None
     }
     val userInfoOpt = googleRepository.getUserInfo(tokenOpt.get)
     if (userInfoOpt.isEmpty) {
       logger.info("Missing userInfo")
-      return Option.empty
+      return None
     }
 
     val userInfo = userInfoOpt.get
@@ -95,23 +95,23 @@ class LoginServiceImpl @Inject() (
   def getMemberByToken(apiToken: String): Option[MemberResponse] = {
     val memberOpt = getMember(apiToken)
     if (memberOpt.isEmpty) {
-      return Option.empty
+      return None
     }
     makeResponse(memberOpt.get)
   }
 
   private def makeResponse(member: Member): Option[MemberResponse] = {
     val apiToken = Hash.generateJWT(member.id, Config.API_TOKEN_EXPIRATION_SEC)
-    cacheWrapper.put(CacheKeys.ApiToken, apiToken, member.id.toString)
-    Option(
+    cacheWrapper.put(CacheKeys.ApiToken, apiToken, member.id)
+    Some(
       MemberResponse(member.id, member.email, member.name, apiToken),
     )
   }
 
   private def getMember(apiToken: String): Option[Member] = {
-    val memberId = Hash.extractIdFromJWT(apiToken);
+    val memberId = Hash.extractIdFromJWT(apiToken)
     if (memberId == "") {
-      return Option.empty
+      return None
     }
     memberRepository.getById(memberId)
   }
