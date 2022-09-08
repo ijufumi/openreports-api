@@ -24,7 +24,7 @@ entity workspace_members {
   * member_id
 }
 
-entity datasources {
+entity data_sources {
   * id
   * name
   * url
