@@ -13,7 +13,7 @@ entity members {
 
 entity workspaces {
   * id
-  * name 
+  * name
   * created_at
   * updated_at
   * versions
@@ -22,6 +22,19 @@ entity workspaces {
 entity workspace_members {
   * workspace_id
   * member_id
+}
+
+entity datasources {
+  * id
+  * name
+  * url
+  * driver_type_id
+}
+
+entity driver_type {
+  * id
+  * name
+  * jdbc_driver_class
 }
 
 @enduml
