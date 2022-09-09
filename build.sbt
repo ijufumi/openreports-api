@@ -1,7 +1,7 @@
 import scala.sys
 
 val ScalatraVersion = "2.8.2"
-val SlickVersion = "3.3.3"
+val SlickVersion = "3.4.0"
 val ScalaCacheVersion = "0.28.0"
 val SttpVersion = "3.7.1"
 val Json4sVersion = "4.0.5"
