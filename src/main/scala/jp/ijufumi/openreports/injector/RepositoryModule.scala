@@ -17,5 +17,7 @@ class RepositoryModule extends AbstractModule {
       .to(classOf[WorkspaceRepositoryImpl])
     bind(classOf[WorkspaceMemberRepository])
       .to(classOf[WorkspaceMemberRepositoryImpl])
+    bind(classOf[DataSourceRepository])
+      .to(classOf[DataSourceRepositoryImpl])
   }
 }
