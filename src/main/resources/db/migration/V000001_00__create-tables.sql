@@ -34,7 +34,32 @@ create table workspace_members
   updated_at   timestamp not null default now(),
   versions     bigint    not null default 0,
 
-  primary key(workspace_id, member_id),
-  foreign key (workspace_id) references workspaces(id),
-  foreign key (member_id) references members(id)
+  primary key (workspace_id, member_id),
+  foreign key (workspace_id) references workspaces (id),
+  foreign key (member_id) references members (id)
 );
+
+-- create driver_types
+create table driver_types
+(
+  id                varchar(40) primary key,
+  name              varchar(250) not null,
+  jdbc_driver_class varchar(250) not null,
+  created_at        timestamp    not null default now(),
+  updated_at        timestamp    not null default now(),
+  versions          bigint       not null default 0
+)
+
+-- create data_sources
+create table data_sources
+(
+  id             varchar(40) primary key,
+  name           varchar(250) not null,
+  url            varchar(250) not null,
+  driver_type_id varchar(40),
+  created_at     timestamp    not null default now(),
+  updated_at     timestamp    not null default now(),
+  versions       bigint       not null default 0,
+
+  foreign key (driver_type_id) references driver_types (id),
+)
