@@ -7,3 +7,8 @@ workflows:
     jobs:
       - sbt/build:
           context: scx-credentials
+          filters:
+            tags:
+              only: /.*/
+            branches:
+              only: /.*/
