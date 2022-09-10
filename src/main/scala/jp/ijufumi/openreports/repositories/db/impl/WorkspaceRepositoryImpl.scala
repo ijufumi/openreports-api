@@ -27,4 +27,9 @@ class WorkspaceRepositoryImpl @Inject() (db: Database) extends WorkspaceReposito
     Await.result(db.run(query += workspace), Duration("1m"))
     getById(workspace.id)
   }
+
+  override def registerTransactional(workspace: Workspace): DBIOAction[Int, NoStream, Effect.Write] = {
+    val register = query += workspace
+    register
+  }
 }

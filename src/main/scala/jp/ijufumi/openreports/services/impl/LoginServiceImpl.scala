@@ -9,6 +9,8 @@ import jp.ijufumi.openreports.vo.response.MemberResponse
 import jp.ijufumi.openreports.cache.{CacheKeys, CacheWrapper}
 import jp.ijufumi.openreports.entities._
 import jp.ijufumi.openreports.repositories.db._
+import slick.jdbc.JdbcBackend.Database
+import slick.jdbc.PostgresProfile.api._
 
 @Singleton
 class LoginServiceImpl @Inject() (
@@ -17,6 +19,7 @@ class LoginServiceImpl @Inject() (
     workspaceRepository: WorkspaceRepository,
     workspaceMemberRepository: WorkspaceMemberRepository,
     googleRepository: GoogleRepository,
+    db: Database,
 ) extends LoginService
     with Logging {
   override def login(email: String, password: String): Option[MemberResponse] = {
@@ -58,6 +61,7 @@ class LoginServiceImpl @Inject() (
   override def getAuthorizationUrl: String = googleRepository.getAuthorizationUrl()
 
   override def loginWithGoogle(code: String): Option[MemberResponse] = {
+
     val tokenOpt = googleRepository.fetchToken(code)
     if (tokenOpt.isEmpty) {
       logger.info("Missing token")
@@ -90,15 +94,18 @@ class LoginServiceImpl @Inject() (
       email = userInfo.email,
       name = userInfo.name,
     )
-    val newMemberOpt = memberRepository.register(member)
 
-    val workspaceName = Strings.nameFromEmail(userInfo.email) + "'s workspace"
-    val workspace = Workspace(ID.ulid(), workspaceName, Strings.generateSlug())
-    workspaceRepository.register(workspace)
-    val workspaceMember = WorkspaceMember(workspace.id, member.id)
-    workspaceMemberRepository.register(workspaceMember)
+    val tx = (for {
+      newMemberOpt <- memberRepository.registerTransactional(member)
+      workspaceName = Strings.nameFromEmail(userInfo.email) + "'s workspace"
+      workspace = Workspace(ID.ulid(), workspaceName, Strings.generateSlug())
+      _ <- workspaceRepository.registerTransactional(workspace)
+      workspaceMember = WorkspaceMember(workspace.id, member.id)
+      _ <- workspaceMemberRepository.registerTransactional(workspaceMember)
+    } yield ()).transactionally
 
-    makeResponse(newMemberOpt.get)
+    db.run(tx)
+    tx.makeResponse(newMemberOpt.get)
   }
 
   def getMemberByToken(apiToken: String): Option[MemberResponse] = {

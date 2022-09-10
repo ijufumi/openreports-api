@@ -46,6 +46,11 @@ class MemberRepositoryImpl @Inject() (db: Database) extends MemberRepository {
     getById(member.id)
   }
 
+  override def registerTransactional(member: Member): DBIOAction[Int, NoStream, Effect.Write] = {
+    val register = query += member
+    register
+  }
+
   override def update(member: Member): Unit = {
     query.insertOrUpdate(member)
   }
