@@ -95,17 +95,19 @@ class LoginServiceImpl @Inject() (
       name = userInfo.name,
     )
 
-    val tx = (for {
-      newMemberOpt <- memberRepository.registerTransactional(member)
-      workspaceName = Strings.nameFromEmail(userInfo.email) + "'s workspace"
-      workspace = Workspace(ID.ulid(), workspaceName, Strings.generateSlug())
-      _ <- workspaceRepository.registerTransactional(workspace)
-      workspaceMember = WorkspaceMember(workspace.id, member.id)
-      _ <- workspaceMemberRepository.registerTransactional(workspaceMember)
-    } yield ()).transactionally
-
-    db.run(tx)
-    tx.makeResponse(newMemberOpt.get)
+    try {
+      val newMemberOpt = memberRepository.register(member)
+      val workspaceName = Strings.nameFromEmail(userInfo.email) + "'s workspace"
+      val workspace = Workspace(ID.ulid(), workspaceName, Strings.generateSlug())
+      workspaceRepository.register(workspace)
+      val workspaceMember = WorkspaceMember(workspace.id, member.id)
+      workspaceMemberRepository.register(workspaceMember)
+      makeResponse(newMemberOpt.get)
+    } catch {
+      case e: Throwable =>
+        SimpleDBIO(_.connection.rollback()).withPinnedSession
+        throw e
+    }
   }
 
   def getMemberByToken(apiToken: String): Option[MemberResponse] = {

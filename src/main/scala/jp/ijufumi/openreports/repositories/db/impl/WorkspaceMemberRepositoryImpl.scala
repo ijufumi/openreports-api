@@ -26,15 +26,8 @@ class WorkspaceMemberRepositoryImpl @Inject() (db: Database) extends WorkspaceMe
   }
 
   override def register(workspaceMember: WorkspaceMember): Option[WorkspaceMember] = {
-    Await.result(db.run(query += workspaceMember), Duration("1m"))
+    val register = (query += workspaceMember).withPinnedSession
+    Await.result(db.run(register), Duration("1m"))
     getById(workspaceMember.workspaceId, workspaceMember.memberId)
   }
-
-  override def registerTransactional(
-      workspaceMember: WorkspaceMember,
-  ): DBIOAction[Int, NoStream, Effect.Write] = {
-    val register = query += workspaceMember
-    register
-  }
-
 }

@@ -12,7 +12,5 @@ trait MemberRepository {
 
   def register(member: Member): Option[Member]
 
-  def registerTransactional(member: Member): DBIOAction[Int, NoStream, Effect.Write]
-
   def update(member: Member): Unit
 }

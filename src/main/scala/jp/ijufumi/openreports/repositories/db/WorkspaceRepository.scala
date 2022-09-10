@@ -8,6 +8,4 @@ trait WorkspaceRepository {
   def getById(id: String): Option[Workspace]
 
   def register(workspace: Workspace): Option[Workspace]
-
-  def registerTransactional(workspace: Workspace): DBIOAction[Int, NoStream, Effect.Write]
 }
