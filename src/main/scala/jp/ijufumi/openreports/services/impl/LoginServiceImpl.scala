@@ -9,7 +9,6 @@ import jp.ijufumi.openreports.vo.response.MemberResponse
 import jp.ijufumi.openreports.cache.{CacheKeys, CacheWrapper}
 import jp.ijufumi.openreports.entities._
 import jp.ijufumi.openreports.repositories.db._
-import slick.jdbc.JdbcBackend.Database
 import slick.jdbc.PostgresProfile.api._
 
 @Singleton
@@ -19,7 +18,6 @@ class LoginServiceImpl @Inject() (
     workspaceRepository: WorkspaceRepository,
     workspaceMemberRepository: WorkspaceMemberRepository,
     googleRepository: GoogleRepository,
-    db: Database,
 ) extends LoginService
     with Logging {
   override def login(email: String, password: String): Option[MemberResponse] = {
