@@ -1,3 +1,4 @@
+import jp.ijufumi.openreports.api.private_.{LogoutServlet, StatusServlet}
 import jp.ijufumi.openreports.api.public_.{HealthServlet, LoginServlet}
 import org.scalatra._
 
@@ -5,9 +6,13 @@ import javax.servlet.ServletContext
 import jp.ijufumi.openreports.injector.Injector
 
 class ScalatraBootstrap extends LifeCycle {
-  override def init(context: ServletContext) {
+  override def init(context: ServletContext): Unit = {
+    // public endpoints
     mount(context, classOf[HealthServlet], "/health")
     mount(context, classOf[LoginServlet], "/login")
+    // private endpoints
+    mount(context, classOf[LogoutServlet], "/logout")
+    mount(context, classOf[StatusServlet], "/status")
   }
 
   def mount(
