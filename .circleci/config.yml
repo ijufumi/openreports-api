@@ -4,6 +4,9 @@ jobs:
   build:
     docker:
       - image: cimg/openjdk:18.0.2
+        auth:
+          username: $DOCKERHUB_USER
+          password: $DOCKERHUB_PASSWORD
     steps:
       - checkout
       - restore_cache:
