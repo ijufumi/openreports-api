@@ -33,7 +33,7 @@ object Strings {
       baseStringBuilder ++= NUMERIC
     }
     if (extraCharacters.nonEmpty) {
-      baseStringBuilder ++= extraCharacters
+      baseStringBuilder ++= extraCharacters.mkString
     }
 
     val r = new Random()

@@ -14,8 +14,7 @@ import sttp.model.Header
 import scala.collection.mutable
 
 @Singleton
-class GoogleRepositoryImpl extends GoogleRepository
-    with Logging {
+class GoogleRepositoryImpl extends GoogleRepository with Logging {
   private implicit val formats: DefaultFormats.type = org.json4s.DefaultFormats
   private implicit val serialization: Serialization.type = org.json4s.native.Serialization
 
@@ -26,7 +25,7 @@ class GoogleRepositoryImpl extends GoogleRepository
   private val SCOPES = Array("profile", "email")
 
   override def getAuthorizationUrl(): String = {
-    val state = Strings.generateRandomSting(10)
+    val state = Strings.generateRandomSting(10)()
 
     val params = mutable.Map[String, Any]()
     params += ("client_id" -> Config.GOOGLE_CLIENT_ID)
