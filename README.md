@@ -93,6 +93,7 @@ docker-compose exec api sbt flywayMigrate
 ### Table Structure
 
 - Users
+  - workspaces
   - member
   - group
   - member/group relation
@@ -105,6 +106,7 @@ docker-compose exec api sbt flywayMigrate
   - report/report_group relation
   - report_param
   - report_param_config
+  - data_sources
 - Others
   - functions
 
