@@ -1,14 +1,9 @@
 version: 2.1
-orbs:
-  sbt: scx/sbt@6
 
-workflows:
-  build_test_publish:
-    jobs:
-      - sbt/build:
-          context: scx-credentials
-          filters:
-            tags:
-              only: /.*/
-            branches:
-              only: /.*/
+jobs:
+  build:
+    docker:
+      - image: cimg/openjdk:18.0.2
+    steps:
+      - checkout
+      - run: java --version
