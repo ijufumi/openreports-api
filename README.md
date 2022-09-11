@@ -84,6 +84,11 @@ docker-compose exec api sbt flywayMigrate
           - [ ] create
           - [ ] update
           - [ ] delete
+    - data_sources
+      - [ ] list
+      - [ ] create
+      - [ ] update
+      - [ ] delete
 
 ### Table Structure
 
