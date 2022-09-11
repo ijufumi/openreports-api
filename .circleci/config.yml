@@ -1,6 +1,6 @@
 version: 2.1
 orbs:
-  sbt: scx/sbt@6.0.3
+  sbt: scx/sbt@6
 
 workflows:
   build_test_publish:
