@@ -28,4 +28,8 @@ class WorkspaceRepositoryImpl @Inject() (db: Database) extends WorkspaceReposito
     Await.result(db.run(register), Duration("1m"))
     getById(workspace.id)
   }
+
+  override def update(workspace: Workspace): Unit = {
+    query.insertOrUpdate(workspace).withPinnedSession
+  }
 }
