@@ -50,6 +50,7 @@ docker-compose exec api sbt flywayMigrate
   - common
     - [x] logout
   - members
+    - [x] status (member info only)
     - [ ] status (including menus, groups)
   - reports
     - [ ] list
