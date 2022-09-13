@@ -31,10 +31,22 @@ entity data_sources {
   * driver_type_id
 }
 
-entity driver_type {
+entity driver_types {
   * id
   * name
   * jdbc_driver_class
+}
+
+entity reports {
+  * id
+  * name
+
+}
+
+entity report_templates {
+  * id
+  * name
+
 }
 
 @enduml
