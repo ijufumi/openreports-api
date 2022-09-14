@@ -40,13 +40,13 @@ entity driver_types {
 entity reports {
   * id
   * name
-
+  * report_template_id
 }
 
 entity report_templates {
   * id
   * name
-
+  * file_path
 }
 
 @enduml
