@@ -63,3 +63,27 @@ create table data_sources
 
   foreign key (driver_type_id) references driver_types (id),
 )
+
+-- create reports
+create table reports
+(
+  id                 varchar(40) primary key,
+  name               varchar(250) not null,
+  report_template_id varchar(40)  not null,
+  created_at         timestamp    not null default now(),
+  updated_at         timestamp    not null default now(),
+  versions           bigint       not null default 0,
+
+  foreign key (report_template_id) references report_templates (id),
+)
+
+-- create report_templates
+create table report_templates
+(
+  id         varchar(40) primary key,
+  name       varchar(250) not null,
+  file_path  varchar(250) not null,
+  created_at timestamp    not null default now(),
+  updated_at timestamp    not null default now(),
+  versions   bigint       not null default 0
+)
