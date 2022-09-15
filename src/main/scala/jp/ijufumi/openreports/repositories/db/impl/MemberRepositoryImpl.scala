@@ -3,14 +3,13 @@ package jp.ijufumi.openreports.repositories.db.impl
 import com.google.inject.Inject
 import scala.concurrent.Await
 import scala.concurrent.duration.Duration
-import jp.ijufumi.openreports.entities.{Member, Members}
+import jp.ijufumi.openreports.entities.Member
+import jp.ijufumi.openreports.entities.queries.{memberQuery => query}
 import jp.ijufumi.openreports.repositories.db.MemberRepository
 import slick.jdbc.JdbcBackend.Database
 import slick.jdbc.PostgresProfile.api._
 
 class MemberRepositoryImpl @Inject() (db: Database) extends MemberRepository {
-  private lazy val query = TableQuery[Members]
-
   override def getById(id: String): Option[Member] = {
     val getMembers = query
       .filter(_.id === id)
@@ -46,7 +45,6 @@ class MemberRepositoryImpl @Inject() (db: Database) extends MemberRepository {
     Await.result(db.run(register), Duration("1m"))
     getById(member.id)
   }
-
 
   override def update(member: Member): Unit = {
     query.insertOrUpdate(member).withPinnedSession
