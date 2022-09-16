@@ -1,6 +1,6 @@
 package jp.ijufumi.openreports.vo.response
 
-case class MemberResponse(
+case class Member(
     id: String,
     email: String,
     name: String,

@@ -5,7 +5,7 @@ import jp.ijufumi.openreports.repositories.system._
 import com.google.inject.{Inject, Singleton}
 import jp.ijufumi.openreports.config.Config
 import jp.ijufumi.openreports.utils.{Hash, ID, Logging, Strings}
-import jp.ijufumi.openreports.vo.response.MemberResponse
+import jp.ijufumi.openreports.vo.response.Member
 import jp.ijufumi.openreports.cache.{CacheKeys, CacheWrapper}
 import jp.ijufumi.openreports.entities._
 import jp.ijufumi.openreports.repositories.db._
@@ -20,7 +20,7 @@ class LoginServiceImpl @Inject() (
     googleRepository: GoogleRepository,
 ) extends LoginService
     with Logging {
-  override def login(email: String, password: String): Option[MemberResponse] = {
+  override def login(email: String, password: String): Option[Member] = {
     val memberOpt = memberRepository.getMemberByEmail(email)
     if (memberOpt.isEmpty) {
       logger.info(s"$email does not exist")
@@ -58,7 +58,7 @@ class LoginServiceImpl @Inject() (
 
   override def getAuthorizationUrl: String = googleRepository.getAuthorizationUrl()
 
-  override def loginWithGoogle(code: String): Option[MemberResponse] = {
+  override def loginWithGoogle(code: String): Option[Member] = {
 
     val tokenOpt = googleRepository.fetchToken(code)
     if (tokenOpt.isEmpty) {
@@ -108,7 +108,7 @@ class LoginServiceImpl @Inject() (
     }
   }
 
-  def getMemberByToken(apiToken: String): Option[MemberResponse] = {
+  def getMemberByToken(apiToken: String): Option[Member] = {
     val memberOpt = getMember(apiToken)
     if (memberOpt.isEmpty) {
       return None
@@ -116,11 +116,11 @@ class LoginServiceImpl @Inject() (
     makeResponse(memberOpt.get)
   }
 
-  private def makeResponse(member: Member): Option[MemberResponse] = {
+  private def makeResponse(member: Member): Option[Member] = {
     val apiToken = Hash.generateJWT(member.id, Config.API_TOKEN_EXPIRATION_SEC)
     cacheWrapper.put(CacheKeys.ApiToken, apiToken, member.id)
     Some(
-      MemberResponse(member.id, member.email, member.name, apiToken),
+      Member(member.id, member.email, member.name, apiToken),
     )
   }
 

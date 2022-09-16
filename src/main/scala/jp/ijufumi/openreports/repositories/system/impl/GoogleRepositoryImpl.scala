@@ -4,7 +4,7 @@ import com.google.inject.Singleton
 import jp.ijufumi.openreports.config.Config
 import jp.ijufumi.openreports.repositories.system.GoogleRepository
 import jp.ijufumi.openreports.utils.{Logging, Strings}
-import jp.ijufumi.openreports.vo.response.google.{AccessTokenResponse, UserInfoResponse}
+import jp.ijufumi.openreports.vo.response.google.{AccessToken, UserInfo}
 import org.json4s.DefaultFormats
 import org.json4s.native.Serialization
 import sttp.client3._
@@ -52,7 +52,7 @@ class GoogleRepositoryImpl extends GoogleRepository with Logging {
     val request = basicRequest
       .body(params)
       .post(uri"${TOKEN_URL}")
-      .response(asJson[AccessTokenResponse])
+      .response(asJson[AccessToken])
 
     request.headers ++ Seq(
       Header("Authorization", s"Basic ${basicAuth}"),
@@ -76,12 +76,12 @@ class GoogleRepositoryImpl extends GoogleRepository with Logging {
     }
   }
 
-  override def getUserInfo(accessToken: String): Option[UserInfoResponse] = {
+  override def getUserInfo(accessToken: String): Option[UserInfo] = {
     val backend = HttpClientSyncBackend()
     val response =
       basicRequest
         .get(uri"${USER_INFO_URL}?access_token=${accessToken}")
-        .response(asJson[UserInfoResponse])
+        .response(asJson[UserInfo])
         .send(backend)
 
     if (response.is200) {
