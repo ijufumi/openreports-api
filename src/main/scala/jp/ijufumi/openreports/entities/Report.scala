@@ -1,6 +1,7 @@
 package jp.ijufumi.openreports.entities
 
 import slick.jdbc.PostgresProfile.api._
+import jp.ijufumi.openreports.entities.queries.reportTemplateQuery
 
 import java.sql.Timestamp
 import java.time.LocalDateTime
@@ -25,6 +26,8 @@ class Reports(tag: Tag)
   def createdAt = column[Timestamp]("created_at")
   def updatedAt = column[Timestamp]("updated_at")
   def versions = column[Long]("versions")
+
+  def template = foreignKey("report_templates", reportTemplateId, reportTemplateQuery)(_.id)
 
   override def * =
     (
