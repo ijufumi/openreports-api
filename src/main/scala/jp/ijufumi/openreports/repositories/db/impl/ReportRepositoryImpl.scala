@@ -25,7 +25,7 @@ class ReportRepositoryImpl @Inject() (db: Database) extends ReportRepository {
     val getById = query
       .filter(_.id === id)
       .join(reportTemplateQuery)
-      .on(_.reportTemplateId == _.id)
+      .on(_.reportTemplateId === _.id)
     val models = Await.result(db.run(getById.result), Duration("10s"))
     if (models.isEmpty) {
       return None
