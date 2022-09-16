@@ -18,7 +18,7 @@ class WorkspaceRepositoryImpl @Inject() (db: Database) extends WorkspaceReposito
     if (workspaces.isEmpty) {
       return None
     }
-    Option(workspaces.head)
+    Some(workspaces.head)
 
   }
 

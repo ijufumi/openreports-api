@@ -18,7 +18,7 @@ class ReportTemplateRepositoryImpl @Inject() (db: Database) extends ReportTempla
     if (models.isEmpty) {
       return None
     }
-    Option(models.head)
+    Some(models.head)
 
   }
 

@@ -19,7 +19,7 @@ class WorkspaceMemberRepositoryImpl @Inject() (db: Database) extends WorkspaceMe
     if (workspaceMembers.isEmpty) {
       return None
     }
-    Option(workspaceMembers.head)
+    Some(workspaceMembers.head)
 
   }
 

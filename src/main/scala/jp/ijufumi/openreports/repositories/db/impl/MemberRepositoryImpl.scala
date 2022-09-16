@@ -17,7 +17,7 @@ class MemberRepositoryImpl @Inject() (db: Database) extends MemberRepository {
     if (members.isEmpty) {
       return None
     }
-    Option(members.head)
+    Some(members.head)
   }
 
   override def getByGoogleId(googleId: String): Option[Member] = {
@@ -27,7 +27,7 @@ class MemberRepositoryImpl @Inject() (db: Database) extends MemberRepository {
     if (members.isEmpty) {
       return None
     }
-    Option(members.head)
+    Some(members.head)
   }
 
   override def getMemberByEmail(email: String): Option[Member] = {
@@ -37,7 +37,7 @@ class MemberRepositoryImpl @Inject() (db: Database) extends MemberRepository {
     if (members.isEmpty) {
       return None
     }
-    Option(members.head)
+    Some(members.head)
   }
 
   override def register(member: Member): Option[Member] = {
