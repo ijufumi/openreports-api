@@ -5,7 +5,7 @@ import jp.ijufumi.openreports.repositories.system._
 import com.google.inject.{Inject, Singleton}
 import jp.ijufumi.openreports.config.Config
 import jp.ijufumi.openreports.utils.{Hash, ID, Logging, Strings}
-import jp.ijufumi.openreports.vo.response.Member
+import jp.ijufumi.openreports.vo.response.{Member => MemberReponse}
 import jp.ijufumi.openreports.cache.{CacheKeys, CacheWrapper}
 import jp.ijufumi.openreports.entities._
 import jp.ijufumi.openreports.repositories.db._
@@ -58,7 +58,7 @@ class LoginServiceImpl @Inject() (
 
   override def getAuthorizationUrl: String = googleRepository.getAuthorizationUrl()
 
-  override def loginWithGoogle(code: String): Option[Member] = {
+  override def loginWithGoogle(code: String): Option[MemberReponse] = {
 
     val tokenOpt = googleRepository.fetchToken(code)
     if (tokenOpt.isEmpty) {
@@ -108,7 +108,7 @@ class LoginServiceImpl @Inject() (
     }
   }
 
-  def getMemberByToken(apiToken: String): Option[Member] = {
+  def getMemberByToken(apiToken: String): Option[MemberReponse] = {
     val memberOpt = getMember(apiToken)
     if (memberOpt.isEmpty) {
       return None
@@ -116,11 +116,11 @@ class LoginServiceImpl @Inject() (
     makeResponse(memberOpt.get)
   }
 
-  private def makeResponse(member: Member): Option[Member] = {
+  private def makeResponse(member: Member): Option[MemberReponse] = {
     val apiToken = Hash.generateJWT(member.id, Config.API_TOKEN_EXPIRATION_SEC)
     cacheWrapper.put(CacheKeys.ApiToken, apiToken, member.id)
     Some(
-      Member(member.id, member.email, member.name, apiToken),
+      MemberReponse(member.id, member.email, member.name, apiToken),
     )
   }
 
