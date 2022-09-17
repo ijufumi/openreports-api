@@ -10,6 +10,7 @@ case class Report(
     id: String,
     name: String,
     reportTemplateId: String,
+    dataSourceId: String,
     createdAt: Timestamp = Timestamp.valueOf(LocalDateTime.now()),
     updatedAt: Timestamp = Timestamp.valueOf(LocalDateTime.now()),
     versions: Long = 1,
@@ -23,6 +24,7 @@ class Reports(tag: Tag)
   def id = column[String]("id", O.PrimaryKey)
   def name = column[String]("name")
   def reportTemplateId = column[String]("report_template_id")
+  def dataSourceId = column[String]("data_source_id")
   def createdAt = column[Timestamp]("created_at")
   def updatedAt = column[Timestamp]("updated_at")
   def versions = column[Long]("versions")
@@ -34,6 +36,7 @@ class Reports(tag: Tag)
       id,
       name,
       reportTemplateId,
+      dataSourceId,
       createdAt,
       updatedAt,
       versions,
