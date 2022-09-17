@@ -1,5 +1,9 @@
 package jp.ijufumi.openreports.services
 
+import jp.ijufumi.openreports.vo.response.{Report, Reports}
+
 trait ReportService {
-  def getReports(): Unit
+  def getReports(): Reports
+
+  def getReport(id: String): Option[Report]
 }

@@ -15,9 +15,28 @@ class ReportRepositoryImpl @Inject() (db: Database) extends ReportRepository {
     Await.result(db.run(query.result), Duration("10s"))
   }
 
+  override def getsWithTemplate(): Seq[(Report, ReportTemplate)] = {
+    val getById = query
+      .join(reportTemplateQuery)
+      .on(_.reportTemplateId === _.id)
+    Await.result(db.run(getById.result), Duration("10s"))
+  }
+
   override def getById(id: String): Option[Report] = {
     val getById = query
       .filter(_.id === id)
+    val models = Await.result(db.run(getById.result), Duration("10s"))
+    if (models.isEmpty) {
+      return None
+    }
+    Some(models.head)
+  }
+
+  override def getWithTemplateById(id: String): Option[(Report, ReportTemplate)] = {
+    val getById = query
+      .filter(_.id === id)
+      .join(reportTemplateQuery)
+      .on(_.reportTemplateId === _.id)
     val models = Await.result(db.run(getById.result), Duration("10s"))
     if (models.isEmpty) {
       return None

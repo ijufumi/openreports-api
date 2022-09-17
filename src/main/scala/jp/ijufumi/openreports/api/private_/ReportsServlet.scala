@@ -2,14 +2,26 @@ package jp.ijufumi.openreports.api.private_
 
 import com.google.inject.Inject
 import jp.ijufumi.openreports.api.base.PrivateAPIServletBase
-import jp.ijufumi.openreports.services.LoginService
+import jp.ijufumi.openreports.services.{LoginService, ReportService}
+import org.scalatra.{NotFound, Ok}
 
-class ReportsServlet @Inject() (loginService: LoginService)
+class ReportsServlet @Inject() (loginService: LoginService, reportService: ReportService)
     extends PrivateAPIServletBase(loginService) {
 
-  get("/") {}
+  get("/") {
+    Ok(reportService.getReports())
+  }
 
   post("/") {}
+
+  get("/:id") {
+    val report = reportService.getReport(params("id"))
+    if (report.isEmpty) {
+      NotFound("report not found")
+    } else {
+      Ok(report.get)
+    }
+  }
 
   put("/:id") {}
 

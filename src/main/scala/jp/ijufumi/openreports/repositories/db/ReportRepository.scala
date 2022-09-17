@@ -6,7 +6,11 @@ trait ReportRepository {
 
   def gets(): Seq[Report]
 
+  def getsWithTemplate: Seq[(Report, ReportTemplate)]
+
   def getById(id: String): Option[Report]
+
+  def getWithTemplateById(id: String): Option[(Report, ReportTemplate)]
 
   def register(model: Report): Option[Report]
 
