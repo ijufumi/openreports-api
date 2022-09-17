@@ -20,7 +20,7 @@ class LoginServiceImpl @Inject() (
     googleRepository: GoogleRepository,
 ) extends LoginService
     with Logging {
-  override def login(email: String, password: String): Option[Member] = {
+  override def login(email: String, password: String): Option[MemberReponse] = {
     val memberOpt = memberRepository.getMemberByEmail(email)
     if (memberOpt.isEmpty) {
       logger.info(s"$email does not exist")
