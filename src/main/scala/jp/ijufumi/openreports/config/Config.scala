@@ -30,4 +30,8 @@ object Config {
   val GOOGLE_CLIENT_SECRET: String = getEnvValue("GOOGLE_CLIENT_SECRET", "")
   val GOOGLE_AUTH_STATE_CACHE_TTL_SEC: Long =
     Integer.parseInt(getEnvValue("GOOGLE_AUTH_STATE_CACHE_TTL_SEC", "60"))
+
+  // for report
+  val TEMPLATE_PATH: String = getEnvValue("TEMPLATE_PATH", "report")
+  val OUTPUT_FILE_PATH: String = getEnvValue("OUTPUT_FILE_PATH", "/tmp/report/outputz1")
 }

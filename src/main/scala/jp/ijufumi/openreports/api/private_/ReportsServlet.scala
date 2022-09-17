@@ -23,6 +23,8 @@ class ReportsServlet @Inject() (loginService: LoginService, reportService: Repor
     }
   }
 
+  get("/output/:id") {}
+
   put("/:id") {}
 
   delete("/:id") {}
