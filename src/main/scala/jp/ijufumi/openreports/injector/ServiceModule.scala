@@ -11,5 +11,9 @@ class ServiceModule extends AbstractModule {
       .to(classOf[LoginServiceImpl])
     bind(classOf[ReportService])
       .to(classOf[ReportServiceImpl])
+    bind(classOf[OutputService])
+      .to(classOf[OutputServiceImpl])
+    bind(classOf[DataSourceService])
+      .to(classOf[DataSourceServiceImpl])
   }
 }
