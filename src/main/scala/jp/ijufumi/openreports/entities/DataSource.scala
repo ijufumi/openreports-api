@@ -9,6 +9,8 @@ case class DataSource(
     id: String,
     name: String,
     url: String,
+    username: String,
+    password: String,
     driverTypeId: String,
     createdAt: Timestamp = Timestamp.valueOf(LocalDateTime.now()),
     updatedAt: Timestamp = Timestamp.valueOf(LocalDateTime.now()),
@@ -23,6 +25,8 @@ class DataSources(tag: Tag)
   def id = column[String]("id", O.PrimaryKey)
   def name = column[String]("name")
   def url = column[String]("url")
+  def username = column[String]("username")
+  def password = column[String]("password")
   def driver_type_id = column[String]("driver_type_id")
   def createdAt = column[Timestamp]("created_at")
   def updatedAt = column[Timestamp]("updated_at")
@@ -33,6 +37,8 @@ class DataSources(tag: Tag)
       id,
       name,
       url,
+      username,
+      password,
       driver_type_id,
       createdAt,
       updatedAt,

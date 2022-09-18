@@ -56,6 +56,8 @@ create table data_sources
   id             varchar(40) primary key,
   name           varchar(250) not null,
   url            varchar(250) not null,
+  username       varchar(250) not null,
+  password       varchar(250) not null,
   driver_type_id varchar(40),
   created_at     timestamp    not null default now(),
   updated_at     timestamp    not null default now(),
