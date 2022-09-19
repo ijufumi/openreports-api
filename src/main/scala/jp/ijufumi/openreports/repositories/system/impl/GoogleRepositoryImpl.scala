@@ -1,6 +1,5 @@
 package jp.ijufumi.openreports.repositories.system.impl
 
-import com.google.inject.Singleton
 import jp.ijufumi.openreports.config.Config
 import jp.ijufumi.openreports.repositories.system.GoogleRepository
 import jp.ijufumi.openreports.utils.{Logging, Strings}
@@ -13,7 +12,6 @@ import sttp.model.Header
 
 import scala.collection.mutable
 
-@Singleton
 class GoogleRepositoryImpl extends GoogleRepository with Logging {
   private implicit val formats: DefaultFormats.type = org.json4s.DefaultFormats
   private implicit val serialization: Serialization.type = org.json4s.native.Serialization
