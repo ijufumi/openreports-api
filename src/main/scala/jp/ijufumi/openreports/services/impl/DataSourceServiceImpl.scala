@@ -3,7 +3,6 @@ package jp.ijufumi.openreports.services.impl
 import com.google.inject.Inject
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.pool.HikariPool
-import jp.ijufumi.openreports.exceptions.NotFoundException
 import jp.ijufumi.openreports.repositories.db.DataSourceRepository
 import jp.ijufumi.openreports.services.DataSourceService
 
@@ -15,7 +14,7 @@ class DataSourceServiceImpl @Inject() (dataSourceRepository: DataSourceRepositor
   def connection(dataSourceId: String): Option[Connection] = {
     val dataSourceOpt = dataSourceRepository.getById(dataSourceId)
     if (dataSourceOpt.isEmpty) {
-      throw new NotFoundException()
+      return None
     }
     val (dataSource, driverType) = dataSourceOpt.get
     if (!DataSourcePool.has(dataSource.name)) {
