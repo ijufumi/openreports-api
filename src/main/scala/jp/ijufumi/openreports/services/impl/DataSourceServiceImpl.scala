@@ -38,7 +38,7 @@ private object DataSourcePool {
   private val pool = mutable.Map.empty[String, HikariPool]
 
   def addPool(name: String, config: HikariConfig): Unit = {
-    pool ++ (name -> new HikariPool(config))
+    pool += (name -> new HikariPool(config))
   }
 
   def connection(name: String): Option[Connection] = {
