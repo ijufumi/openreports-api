@@ -3,6 +3,7 @@ package jp.ijufumi.openreports.services.impl
 import com.google.inject.Inject
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.pool.HikariPool
+import jp.ijufumi.openreports.exceptions.NotFoundException
 import jp.ijufumi.openreports.repositories.db.DataSourceRepository
 import jp.ijufumi.openreports.services.DataSourceService
 
@@ -11,10 +12,10 @@ import scala.collection.mutable
 
 class DataSourceServiceImpl @Inject() (dataSourceRepository: DataSourceRepository)
     extends DataSourceService {
-  def connection(dataSourceId: String): Option[Connection] = {
+  def connection(dataSourceId: String): Connection = {
     val dataSourceOpt = dataSourceRepository.getById(dataSourceId)
     if (dataSourceOpt.isEmpty) {
-      return None
+      throw new NotFoundException()
     }
     val (dataSource, driverType) = dataSourceOpt.get
     if (!DataSourcePool.has(dataSource.name)) {
@@ -25,9 +26,9 @@ class DataSourceServiceImpl @Inject() (dataSourceRepository: DataSourceRepositor
       config.setAutoCommit(false)
       config.setDriverClassName(driverType.jdbcDriverClass)
       DataSourcePool.add(dataSource.name, config)
-      return DataSourcePool.connection(dataSource.name)
+      return DataSourcePool.connection(dataSource.name).get
     }
-    DataSourcePool.connection(dataSource.name)
+    DataSourcePool.connection(dataSource.name).get
   }
 }
 
