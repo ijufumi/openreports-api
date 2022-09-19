@@ -28,6 +28,8 @@ entity data_sources {
   * id
   * name
   * url
+  * username
+  * password
   * driver_type_id
 }
 
@@ -41,6 +43,7 @@ entity reports {
   * id
   * name
   * report_template_id
+  * data_source_id
 }
 
 entity report_templates {
