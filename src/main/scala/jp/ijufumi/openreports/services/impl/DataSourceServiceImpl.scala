@@ -7,7 +7,6 @@ import jp.ijufumi.openreports.exceptions.NotFoundException
 import jp.ijufumi.openreports.repositories.db.DataSourceRepository
 import jp.ijufumi.openreports.services.DataSourceService
 
-import scala.collection.mutable.Map
 import java.sql.Connection
 import scala.collection.mutable
 
