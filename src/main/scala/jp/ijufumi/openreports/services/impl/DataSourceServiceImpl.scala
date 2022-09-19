@@ -12,32 +12,35 @@ import scala.collection.mutable
 
 class DataSourceServiceImpl @Inject() (dataSourceRepository: DataSourceRepository)
     extends DataSourceService {
-  def connection(dataSourceId: String): Connection = {
+  def connection(dataSourceId: String): Option[Connection] = {
     val dataSourceOpt = dataSourceRepository.getById(dataSourceId)
     if (dataSourceOpt.isEmpty) {
       throw new NotFoundException()
     }
     val (dataSource, driverType) = dataSourceOpt.get
-    val connection = DataSourcePool.connection(dataSource.name)
-    if (connection.isEmpty) {
+    if (!DataSourcePool.has(dataSource.name)) {
       val config = new HikariConfig()
       config.setUsername(dataSource.username)
       config.setPassword(dataSource.password)
       config.setJdbcUrl(dataSource.url)
       config.setAutoCommit(false)
       config.setDriverClassName(driverType.jdbcDriverClass)
-      DataSourcePool.addPool(dataSource.name, config)
-      return DataSourcePool.connection(dataSource.name).get
+      DataSourcePool.add(dataSource.name, config)
+      return DataSourcePool.connection(dataSource.name)
     }
-    connection.get
+    DataSourcePool.connection(dataSource.name)
   }
 }
 
 private object DataSourcePool {
   private val pool = mutable.Map.empty[String, HikariPool]
 
-  def addPool(name: String, config: HikariConfig): Unit = {
+  def add(name: String, config: HikariConfig): Unit = {
     pool += (name -> new HikariPool(config))
+  }
+
+  def has(name: String): Boolean = {
+    pool.contains(name)
   }
 
   def connection(name: String): Option[Connection] = {
