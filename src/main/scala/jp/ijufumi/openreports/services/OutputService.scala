@@ -1,3 +1,7 @@
 package jp.ijufumi.openreports.services
 
-trait OutputService {}
+import scala.reflect.io.File
+
+trait OutputService {
+  def output(filePath: String, dataSourceId: String): Option[File]
+}
