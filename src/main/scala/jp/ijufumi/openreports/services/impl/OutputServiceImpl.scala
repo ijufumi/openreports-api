@@ -24,8 +24,7 @@ class OutputServiceImpl @Inject() (dataSourceService: DataSourceService)
     val timeStamp = Dates.format(LocalDateTime.now(), "yyyyMMddHHMMss")
     val outputFile = FileSystems.getDefault.getPath(
       Config.OUTPUT_FILE_PATH,
-      "/tmp/%s_%s%s"
-        .format(inputFileName.substring(0, dotIndex), timeStamp, suffix),
+      s"/tmp/${inputFileName.substring(0, dotIndex)}_${timeStamp}${suffix}",
     )
 
     val outputDirectory = outputFile.getParent
