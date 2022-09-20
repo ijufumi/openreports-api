@@ -8,7 +8,7 @@ object Dates {
     date.toInstant.atZone(ZoneId.systemDefault()).toLocalDateTime
   }
 
-  def format(dateTime: LocalDateTime, pattern: String): String = {
+  def format(dateTime: LocalDateTime, pattern: String = "yyyyMMddHHMMss"): String = {
     DateTimeFormatter.ofPattern(pattern).format(dateTime)
   }
 }

@@ -21,7 +21,7 @@ class OutputServiceImpl @Inject() (dataSourceService: DataSourceService)
     val inputFileName = new File(filePath).getName
     val dotIndex = inputFileName.lastIndexOf('.')
     val suffix = if (dotIndex != -1) inputFileName.substring(dotIndex) else ""
-    val timeStamp = Dates.format(LocalDateTime.now(), "yyyyMMddHHMMss")
+    val timeStamp = Dates.format(LocalDateTime.now())
     val outputFile = FileSystems.getDefault.getPath(
       Config.OUTPUT_FILE_PATH,
       s"/tmp/${inputFileName.substring(0, dotIndex)}_${timeStamp}${suffix}",
