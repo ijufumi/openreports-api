@@ -23,7 +23,9 @@ class ReportsServlet @Inject() (loginService: LoginService, reportService: Repor
     }
   }
 
-  get("/output/:id") {}
+  get("/output/:id") {
+    reportService.outputReport(params("id"))
+  }
 
   put("/:id") {}
 

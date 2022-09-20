@@ -1,12 +1,8 @@
 package jp.ijufumi.openreports.repositories.db.impl
 
 import com.google.inject.Inject
-import jp.ijufumi.openreports.entities.{DataSource, Report, ReportTemplate}
-import jp.ijufumi.openreports.entities.queries.{
-  dataSourceQuery,
-  reportQuery => query,
-  reportTemplateQuery,
-}
+import jp.ijufumi.openreports.entities.{Report, ReportTemplate}
+import jp.ijufumi.openreports.entities.queries.{reportQuery => query, reportTemplateQuery}
 import slick.jdbc.PostgresProfile.api._
 import jp.ijufumi.openreports.repositories.db.ReportRepository
 import slick.jdbc.JdbcBackend.Database
@@ -19,14 +15,11 @@ class ReportRepositoryImpl @Inject() (db: Database) extends ReportRepository {
     Await.result(db.run(query.result), Duration("10s"))
   }
 
-  override def getsWithTemplate(): Seq[(Report, ReportTemplate, DataSource)] = {
+  override def getsWithTemplate(): Seq[(Report, ReportTemplate)] = {
     val getById = query
       .join(reportTemplateQuery)
       .on(_.reportTemplateId === _.id)
-      .join(dataSourceQuery)
-      .on(_._1.dataSourceId === _.id)
-    val models = Await.result(db.run(getById.result), Duration("10s"))
-    models.map(m => (m._1._1, m._1._2, m._2))
+    Await.result(db.run(getById.result), Duration("10s"))
   }
 
   override def getById(id: String): Option[Report] = {
@@ -39,20 +32,16 @@ class ReportRepositoryImpl @Inject() (db: Database) extends ReportRepository {
     Some(models.head)
   }
 
-  override def getWithTemplateById(id: String): Option[(Report, ReportTemplate, DataSource)] = {
+  override def getByIdWithTemplate(id: String): Option[(Report, ReportTemplate)] = {
     val getById = query
       .filter(_.id === id)
       .join(reportTemplateQuery)
       .on(_.reportTemplateId === _.id)
-      .join(dataSourceQuery)
-      .on(_._1.dataSourceId === _.id)
     val models = Await.result(db.run(getById.result), Duration("10s"))
     if (models.isEmpty) {
       return None
     }
-    val result = models.head
-
-    Some((result._1._1, result._1._2, result._2))
+    Some(models.head)
   }
 
   override def register(model: Report): Option[Report] = {
