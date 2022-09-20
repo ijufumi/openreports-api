@@ -9,7 +9,7 @@ class ReportsServlet @Inject() (loginService: LoginService, reportService: Repor
     extends PrivateAPIServletBase(loginService) {
 
   get("/") {
-    Ok(reportService.getReports())
+    hookResult(Ok(reportService.getReports()))
   }
 
   post("/") {}
@@ -17,18 +17,18 @@ class ReportsServlet @Inject() (loginService: LoginService, reportService: Repor
   get("/:id") {
     val report = reportService.getReport(params("id"))
     if (report.isEmpty) {
-      NotFound("report not found")
+      hookResult(NotFound("report not found"))
     } else {
-      Ok(report.get)
+      hookResult(Ok(report.get))
     }
   }
 
   get("/output/:id") {
     val file = reportService.outputReport(params("id"))
     if (file.isEmpty) {
-      NotFound("report not found")
+      hookResult(NotFound("report not found"))
     } else {
-      Ok(file.get)
+      hookResult(Ok(file.get))
     }
   }
 
