@@ -24,7 +24,12 @@ class ReportsServlet @Inject() (loginService: LoginService, reportService: Repor
   }
 
   get("/output/:id") {
-    reportService.outputReport(params("id"))
+    val file = reportService.outputReport(params("id"))
+    if (file.isEmpty) {
+      NotFound("report not found")
+    } else {
+      Ok(file.get)
+    }
   }
 
   put("/:id") {}
