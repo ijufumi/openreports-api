@@ -13,6 +13,7 @@
  | Google Guice | 5.1.0   | DI           |
 | Scala Cache  | 0.28.0   | Cache        |
 | sttp client  | 3.7.0   | HTTP Client  |
+ | jXls        | 2.12.0 | Reporting |
 
 ## Features (not implemented yet)
 - [ ] Output reporting.
