@@ -1,26 +1,61 @@
 package jp.ijufumi.openreports.services.impl
 
 import com.google.inject.Inject
+import jp.ijufumi.openreports.config.Config
 import jp.ijufumi.openreports.services.{DataSourceService, OutputService}
-import jp.ijufumi.openreports.utils.Logging
+import jp.ijufumi.openreports.utils.{Dates, Logging}
 
-import scala.reflect.io.File
 import scala.util.Using
 import org.jxls.common.Context
 import org.jxls.jdbc.JdbcHelper
 import org.jxls.util.JxlsHelper
 
+import java.io.{File, InputStream}
+import java.nio.file.{Files, FileSystems}
+import java.time.LocalDateTime
+
 class OutputServiceImpl @Inject() (dataSourceService: DataSourceService)
     extends OutputService
     with Logging {
   override def output(filePath: String, dataSourceId: String): Option[File] = {
+    val inputFileName = new File(filePath).getName
+    val dotIndex = inputFileName.lastIndexOf('.')
+    val suffix = if (dotIndex != -1) inputFileName.substring(dotIndex) else ""
+    val timeStamp = Dates.format(LocalDateTime.now(), "yyyyMMddHHMMss")
+    val outputFile = FileSystems.getDefault.getPath(
+      Config.OUTPUT_FILE_PATH,
+      "/tmp/%s_%s%s"
+        .format(inputFileName.substring(0, dotIndex), timeStamp, suffix),
+    )
+
+    val outputDirectory = outputFile.getParent
+    if (!Files.isDirectory(outputDirectory)) {
+      Files.createDirectories(outputDirectory)
+    }
+
     Using(dataSourceService.connection(dataSourceId)) { conn =>
       val jdbcHelper = new JdbcHelper(conn)
       val context = new Context()
       context.putVar("conn", conn)
       context.putVar("jdbc", jdbcHelper)
+      Using(toInputStream(filePath)) { inputs =>
+        Using(Files.newOutputStream(outputFile)) { outputs =>
+          JxlsHelper.getInstance().processTemplate(inputs, outputs, context)
+        }
+      }
     }
 
-    None
+    Some(outputFile.toFile)
+  }
+
+  private def toInputStream(filePath: String): InputStream = {
+    val fullPath = FileSystems.getDefault.getPath(Config.OUTPUT_FILE_PATH, filePath)
+    if (!fullPath.toString.startsWith("/")) {
+      getClass.getClassLoader.getResourceAsStream(
+        fullPath.toString,
+      )
+    } else {
+      Files.newInputStream(fullPath)
+    }
   }
 }
