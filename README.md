@@ -1,7 +1,7 @@
 # OpenReports API
 ## Frameworks and libraries.
 
-| Name         | Version | Notes        |
+| Name         | Version | Usage        |
 |--------------|---------|--------------|
 | Scala        | 2.13.8  | -            |
 | Scalatra     | 2.8.2   | All of them. |
