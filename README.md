@@ -20,7 +20,7 @@
 - [ ] Output scheduled reporting.
 - [ ] Supporting template format are xls, xlsx.
 - [ ] Supporting output format are xls, xlsx, pdf.
-- [ ] Manage users and groups.
+- [ ] Manage users.
 - [ ] Send report mail.
 
 ## How to set up
@@ -53,46 +53,45 @@ docker-compose exec api sbt flywayMigrate
   - members
     - [x] status (member info only)
     - [ ] status (including menus, groups)
+    - [ ] update (name, password)
   - reports
-    - [ ] list
-    - [ ] output
+    - [x] list
+    - [ ] create
+    - [ ] update
+    - [ ] delete
+    - [x] output
+    - parameters
+      - [ ] list
+      - [ ] create
+      - [ ] update
+      - [ ] delete
+    - groups
+      - [ ] list
+      - [ ] create
+      - [ ] update
+      - [ ] delete
   - scheduled_reports
     - [ ] list
     - [ ] create
     - [ ] update
     - [ ] delete
-  - settings
-    - reports
+  - templates
+    - [ ] list
+    - [ ] create
+    - [ ] update
+    - [ ] delete
+  - workspaces
+    - [ ] update
+    - users
       - [ ] list
       - [ ] create
       - [ ] update
       - [ ] delete
-      - templates
-        - [ ] list
-        - [ ] create
-        - [ ] delete
-      - parameters
-        - [ ] list
-        - [ ] create
-        - [ ] update
-        - [ ] delete
-      - users
-        - [ ] list
-        - [ ] create
-        - [ ] update
-        - [ ] delete
-        - groups
-          - [ ] list
-          - [ ] create
-          - [ ] update
-          - [ ] delete
-    - workspaces
+    - data_sources
+      - [ ] list
+      - [ ] create
       - [ ] update
-      - data_sources
-        - [ ] list
-        - [ ] create
-        - [ ] update
-        - [ ] delete
+      - [ ] delete
 
 ### Table Structure
 
