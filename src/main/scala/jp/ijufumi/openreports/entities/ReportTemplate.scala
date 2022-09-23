@@ -9,6 +9,7 @@ case class ReportTemplate(
     id: String,
     name: String,
     filePath: String,
+    workspaceId: String,
     createdAt: Timestamp = Timestamp.valueOf(LocalDateTime.now()),
     updatedAt: Timestamp = Timestamp.valueOf(LocalDateTime.now()),
     versions: Long = 1,
@@ -22,6 +23,7 @@ class ReportTemplates(tag: Tag)
   def id = column[String]("id", O.PrimaryKey)
   def name = column[String]("name")
   def filePath = column[String]("file_path")
+  def workspaceId = column[String]("workspaceId")
   def createdAt = column[Timestamp]("created_at")
   def updatedAt = column[Timestamp]("updated_at")
   def versions = column[Long]("versions")
@@ -31,6 +33,7 @@ class ReportTemplates(tag: Tag)
       id,
       name,
       filePath,
+      workspaceId,
       createdAt,
       updatedAt,
       versions,

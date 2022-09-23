@@ -12,6 +12,7 @@ case class DataSource(
     username: String,
     password: String,
     driverTypeId: String,
+    workspaceId: String,
     createdAt: Timestamp = Timestamp.valueOf(LocalDateTime.now()),
     updatedAt: Timestamp = Timestamp.valueOf(LocalDateTime.now()),
     versions: Long = 1,
@@ -27,7 +28,8 @@ class DataSources(tag: Tag)
   def url = column[String]("url")
   def username = column[String]("username")
   def password = column[String]("password")
-  def driver_type_id = column[String]("driver_type_id")
+  def driverTypeId = column[String]("driver_type_id")
+  def workspaceId = column[String]("workspaceId")
   def createdAt = column[Timestamp]("created_at")
   def updatedAt = column[Timestamp]("updated_at")
   def versions = column[Long]("versions")
@@ -39,7 +41,8 @@ class DataSources(tag: Tag)
       url,
       username,
       password,
-      driver_type_id,
+      driverTypeId,
+      workspaceId,
       createdAt,
       updatedAt,
       versions,
