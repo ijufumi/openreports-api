@@ -2,7 +2,7 @@ package jp.ijufumi.openreports.repositories.db.impl
 
 import com.google.inject.Inject
 import jp.ijufumi.openreports.entities.{DataSource, DriverType}
-import jp.ijufumi.openreports.entities.queries.{driverTypeQuery, dataSourceQuery => query}
+import jp.ijufumi.openreports.entities.queries.{dataSourceQuery => query, driverTypeQuery}
 import jp.ijufumi.openreports.repositories.db.DataSourceRepository
 import slick.jdbc.JdbcBackend.Database
 import slick.jdbc.PostgresProfile.api._
@@ -14,7 +14,7 @@ class DataSourceRepositoryImpl @Inject() (db: Database) extends DataSourceReposi
   override def getById(id: String): Option[(DataSource, DriverType)] = {
     val getDataSources = query
       .join(driverTypeQuery)
-      .on(_.driver_type_id === _.id)
+      .on(_.driverTypeId === _.id)
       .filter(_._1.id === id)
     val dataSources = Await.result(db.run(getDataSources.result), Duration("10s"))
     if (dataSources.isEmpty) {
