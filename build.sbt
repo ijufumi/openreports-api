@@ -40,7 +40,7 @@ lazy val root = (project in file("."))
       "com.softwaremill.sttp.client3" %% "core" % SttpVersion,
       "com.softwaremill.sttp.client3" %% "json4s" % SttpVersion,
       "io.github.cdimascio" % "dotenv-java" % "2.2.4",
-      "net.petitviolet" %% "ulid4s" % "0.5.0",
+      "com.chatwork" %% "scala-ulid" % "1.0.24",
       "org.jxls" % "jxls" % "2.12.0",
     ),
     assembly / assemblyJarName := "open-report-api.jar",
