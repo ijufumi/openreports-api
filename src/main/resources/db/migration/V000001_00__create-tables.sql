@@ -68,6 +68,20 @@ create table data_sources
   foreign key (workspace_id) references workspaces (id)
 );
 
+-- create report_templates
+create table report_templates
+(
+  id           varchar(40) primary key,
+  name         varchar(250) not null,
+  file_path    varchar(250) not null,
+  workspace_id varchar(40),
+  created_at   timestamp    not null default now(),
+  updated_at   timestamp    not null default now(),
+  versions     bigint       not null default 0,
+
+  foreign key (workspace_id) references workspaces (id)
+);
+
 -- create reports
 create table reports
 (
@@ -85,16 +99,3 @@ create table reports
   foreign key (workspace_id) references workspaces (id)
 );
 
--- create report_templates
-create table report_templates
-(
-  id           varchar(40) primary key,
-  name         varchar(250) not null,
-  file_path    varchar(250) not null,
-  workspace_id varchar(40),
-  created_at   timestamp    not null default now(),
-  updated_at   timestamp    not null default now(),
-  versions     bigint       not null default 0,
-
-  foreign key (workspace_id) references workspaces (id)
-);
