@@ -48,7 +48,7 @@ create table driver_types
   created_at        timestamp    not null default now(),
   updated_at        timestamp    not null default now(),
   versions          bigint       not null default 0
-)
+);
 
 -- create data_sources
 create table data_sources
@@ -66,7 +66,7 @@ create table data_sources
 
   foreign key (driver_type_id) references driver_types (id),
   foreign key (workspace_id) references workspaces (id),
-)
+);
 
 -- create reports
 create table reports
@@ -83,7 +83,7 @@ create table reports
   foreign key (report_template_id) references report_templates (id),
   foreign key (data_source_id) references data_sources (id),
   foreign key (workspace_id) references workspaces (id),
-)
+);
 
 -- create report_templates
 create table report_templates
@@ -97,4 +97,4 @@ create table report_templates
   versions     bigint       not null default 0,
 
   foreign key (workspace_id) references workspaces (id),
-)
+);
