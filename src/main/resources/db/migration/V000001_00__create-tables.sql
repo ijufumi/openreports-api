@@ -20,6 +20,7 @@ create table workspaces
 (
   id         varchar(40) primary key,
   name       varchar(250) not null,
+  slug       varchar(250) not null,
   created_at timestamp    not null default now(),
   updated_at timestamp    not null default now(),
   versions   bigint       not null default 0
