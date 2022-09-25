@@ -10,7 +10,7 @@ class V000001_01__Create_data extends BaseJavaMigration {
     val memberId = member(context)
     val statement = {
       context.getConnection.prepareStatement(
-        s"INSERT INTO workspace_members (workspaceId, memberId) VALUES (?, ?)",
+        s"INSERT INTO workspace_members (workspace_id, member_id) VALUES (?, ?)",
       )
     }
     statement.setString(1, workspaceId)
