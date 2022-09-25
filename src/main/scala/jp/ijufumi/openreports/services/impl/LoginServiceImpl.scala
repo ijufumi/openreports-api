@@ -4,7 +4,7 @@ import jp.ijufumi.openreports.services.LoginService
 import jp.ijufumi.openreports.repositories.system._
 import com.google.inject.{Inject, Singleton}
 import jp.ijufumi.openreports.config.Config
-import jp.ijufumi.openreports.utils.{Hash, ID, Logging, Strings}
+import jp.ijufumi.openreports.utils.{Hash, IDs, Logging, Strings}
 import jp.ijufumi.openreports.vo.response.{Member => MemberReponse}
 import jp.ijufumi.openreports.cache.{CacheKeys, CacheWrapper}
 import jp.ijufumi.openreports.entities._
@@ -87,7 +87,7 @@ class LoginServiceImpl @Inject() (
     }
 
     val member = Member(
-      id = ID.ulid(),
+      id = IDs.ulid(),
       googleId = Some(userInfo.id),
       email = userInfo.email,
       name = userInfo.name,
@@ -96,7 +96,7 @@ class LoginServiceImpl @Inject() (
     try {
       val newMemberOpt = memberRepository.register(member)
       val workspaceName = Strings.nameFromEmail(userInfo.email) + "'s workspace"
-      val workspace = Workspace(ID.ulid(), workspaceName, Strings.generateSlug())
+      val workspace = Workspace(IDs.ulid(), workspaceName, Strings.generateSlug())
       workspaceRepository.register(workspace)
       val workspaceMember = WorkspaceMember(workspace.id, member.id)
       workspaceMemberRepository.register(workspaceMember)

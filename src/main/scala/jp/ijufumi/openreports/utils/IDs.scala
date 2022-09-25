@@ -2,7 +2,7 @@ package jp.ijufumi.openreports.utils
 
 import de.huxhorn.sulky.ulid.ULID
 
-object ID {
+object IDs {
   def ulid(): String = {
     new ULID().nextULID()
   }

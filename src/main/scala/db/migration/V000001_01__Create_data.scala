@@ -2,7 +2,7 @@ package db.migration
 
 import org.flywaydb.core.api.migration.BaseJavaMigration
 import org.flywaydb.core.api.migration.Context
-import jp.ijufumi.openreports.utils.{Hash, ID}
+import jp.ijufumi.openreports.utils.{Hash, IDs}
 
 class V000001_01__Create_data extends BaseJavaMigration {
   override def migrate(context: Context): Unit = {
@@ -20,7 +20,7 @@ class V000001_01__Create_data extends BaseJavaMigration {
   }
 
   def member(context: Context): String = {
-    val id = ID.ulid()
+    val id = IDs.ulid()
     val email = "root@ijufumi.jp"
     val password = Hash.hmacSha256("password")
     val name = "Root User"
