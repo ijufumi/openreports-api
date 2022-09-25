@@ -40,6 +40,12 @@ However, the below command makes you able to execute manually.
 docker-compose exec api sbt flywayMigrate
 ```
 
+### Drop all tables
+
+```shell
+docker-compose exec api sbt flywayClean
+```
+
 ## Developer's memo.
 ### API list
 
