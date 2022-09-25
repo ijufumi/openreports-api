@@ -14,6 +14,7 @@ entity members {
 entity workspaces {
   * id
   * name
+  * slug
   * created_at
   * updated_at
   * versions
