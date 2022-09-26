@@ -90,7 +90,8 @@ class V000001_01__Create_data extends BaseJavaMigration {
     val dbPort = sys.env.getOrElse("DB_PORT", "5432")
     val id = IDs.ulid()
     val name = "local"
-    val url = f"jdbc:postgresql://$dbHost%s:$dbPort%s/$dbName%s"
+
+    val url = String.format("jdbc:postgresql://%s:%s/%s", dbHost, dbPort, dbName)
     val statement = {
       context.getConnection.prepareStatement(
         s"INSERT INTO data_sources (id, name, url, username, password, driver_type_id, workspace_id) VALUES (?, ?, ?, ?, ?, ?, ?)",
@@ -138,7 +139,7 @@ class V000001_01__Create_data extends BaseJavaMigration {
     val name = "local"
     val statement = {
       context.getConnection.prepareStatement(
-        s"INSERT INTO data_sources (id, name, report_template_id, data_source_id, workspace_id) VALUES (?, ?, ?, ?, ?)",
+        s"INSERT INTO reports (id, name, report_template_id, data_source_id, workspace_id) VALUES (?, ?, ?, ?, ?)",
       )
     }
     statement.setString(1, id)
