@@ -8,15 +8,11 @@ class V000001_01__Create_data extends BaseJavaMigration {
   override def migrate(context: Context): Unit = {
     val workspaceId = workspace(context)
     val memberId = member(context)
-    val statement = {
-      context.getConnection.prepareStatement(
-        s"INSERT INTO workspace_members (workspace_id, member_id) VALUES (?, ?)",
-      )
-    }
-    statement.setString(1, workspaceId)
-    statement.setString(2, memberId)
-    try statement.execute
-    finally if (statement != null) statement.close()
+    workspace_member(context, workspaceId, memberId)
+    val driverTypeId = driverType(context)
+    val dataSourceId = dataSource(context, driverTypeId, workspaceId)
+    val templateId = template(context, workspaceId)
+    report(context, templateId, dataSourceId, workspaceId)
   }
 
   def member(context: Context): String = {
@@ -39,7 +35,7 @@ class V000001_01__Create_data extends BaseJavaMigration {
   }
 
   def workspace(context: Context): String = {
-    val id = ID.ulid()
+    val id = IDs.ulid()
     val name = "Root Workspace"
     val slug = "root"
     val statement = {
@@ -55,4 +51,102 @@ class V000001_01__Create_data extends BaseJavaMigration {
     id
   }
 
+  def workspace_member(context: Context, workspaceId: String, memberId: String): Unit = {
+    val statement = {
+      context.getConnection.prepareStatement(
+        s"INSERT INTO workspace_members (workspace_id, member_id) VALUES (?, ?)",
+      )
+    }
+    statement.setString(1, workspaceId)
+    statement.setString(2, memberId)
+    try statement.execute
+    finally if (statement != null) statement.close()
+
+  }
+
+  def driverType(context: Context): String = {
+    val id = IDs.ulid()
+    val name = "postgres"
+    val driverClass = "org.postgresql.Driver"
+    val statement = {
+      context.getConnection.prepareStatement(
+        s"INSERT INTO driver_types (id, name, jdbc_driver_class) VALUES (?, ?, ?)",
+      )
+    }
+    statement.setString(1, id)
+    statement.setString(2, name)
+    statement.setString(3, driverClass)
+    try statement.execute
+    finally if (statement != null) statement.close()
+
+    id
+  }
+
+  def dataSource(context: Context, driverTypeId: String, workspaceId: String): String = {
+    val dbHost = sys.env.getOrElse("DB_HOST", "localhost")
+    val dbName = sys.env.getOrElse("DB_NAME", "openreports")
+    val dbUser = sys.env.getOrElse("DB_USER", "postgres")
+    val dbPassword = sys.env.getOrElse("DB_PASSWORD", "password")
+    val dbPort = sys.env.getOrElse("DB_PORT", "5432")
+    val id = IDs.ulid()
+    val name = "local"
+    val url = f"jdbc:postgresql://$dbHost%s:$dbPort%s/$dbName%s"
+    val statement = {
+      context.getConnection.prepareStatement(
+        s"INSERT INTO data_sources (id, name, url, username, password, driver_type_id, workspace_id) VALUES (?, ?, ?, ?, ?, ?, ?)",
+      )
+    }
+    statement.setString(1, id)
+    statement.setString(2, name)
+    statement.setString(3, url)
+    statement.setString(4, dbUser)
+    statement.setString(5, dbPassword)
+    statement.setString(6, driverTypeId)
+    statement.setString(7, workspaceId)
+    try statement.execute
+    finally if (statement != null) statement.close()
+
+    id
+  }
+
+  def template(context: Context, workspaceId: String): String = {
+    val id = IDs.ulid()
+    val name = "postgres"
+    val filePath = "org.postgresql.Driver"
+    val statement = {
+      context.getConnection.prepareStatement(
+        s"INSERT INTO report_templates (id, name, file_path, workspace_id) VALUES (?, ?, ?, ?)",
+      )
+    }
+    statement.setString(1, id)
+    statement.setString(2, name)
+    statement.setString(3, filePath)
+    statement.setString(4, workspaceId)
+    try statement.execute
+    finally if (statement != null) statement.close()
+
+    id
+  }
+
+  def report(
+      context: Context,
+      templateId: String,
+      dataSourceId: String,
+      workspaceId: String,
+  ): Unit = {
+    val id = IDs.ulid()
+    val name = "local"
+    val statement = {
+      context.getConnection.prepareStatement(
+        s"INSERT INTO data_sources (id, name, report_template_id, data_source_id, workspace_id) VALUES (?, ?, ?, ?, ?)",
+      )
+    }
+    statement.setString(1, id)
+    statement.setString(2, name)
+    statement.setString(3, templateId)
+    statement.setString(4, dataSourceId)
+    statement.setString(5, workspaceId)
+    try statement.execute
+    finally if (statement != null) statement.close()
+  }
 }
