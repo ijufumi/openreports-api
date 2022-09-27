@@ -18,9 +18,9 @@ class WorkspaceMembers(tag: Tag)
       tag,
       "workspace_members",
     ) {
-  def workspaceId = column[String]("workspaceId", O.PrimaryKey)
+  def workspaceId = column[String]("workspace_id", O.PrimaryKey)
 
-  def memberId = column[String]("memberId", O.PrimaryKey)
+  def memberId = column[String]("member_id", O.PrimaryKey)
 
   def createdAt = column[Timestamp]("created_at")
 
