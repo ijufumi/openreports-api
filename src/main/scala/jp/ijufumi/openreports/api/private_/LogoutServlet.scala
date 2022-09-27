@@ -9,7 +9,7 @@ class LogoutServlet @Inject() (loginService: LoginService)
 
   override val needsVerificationToken = false
 
-  get("/logout") {
+  get("/") {
     val apiToken = getApiToken()
     loginService.logout(apiToken)
   }
