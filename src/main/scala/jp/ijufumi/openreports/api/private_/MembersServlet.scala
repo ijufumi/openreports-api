@@ -1,4 +1,4 @@
-package jp.ijufumi.openreports.api.private_.members
+package jp.ijufumi.openreports.api.private_
 
 import com.google.inject.Inject
 import jp.ijufumi.openreports.api.base.PrivateAPIServletBase
@@ -16,4 +16,9 @@ class MembersServlet @Inject()(loginService: LoginService)
       hookResult(Ok(member.get))
     }
   }
+  get("/logout") {
+    val apiToken = getApiToken()
+    loginService.logout(apiToken)
+  }
+
 }
