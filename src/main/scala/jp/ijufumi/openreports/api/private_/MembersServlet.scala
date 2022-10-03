@@ -8,7 +8,7 @@ import org.scalatra._
 class MembersServlet @Inject() (loginService: LoginService)
     extends PrivateAPIServletBase(loginService) {
   get("/status") {
-    val apiToken = getApiToken()
+    val apiToken = getApiTokenHeader()
     val member = loginService.getMemberByToken(apiToken)
     if (member.isEmpty) {
       hookResult(Unauthorized("Invalid api token"))
@@ -17,7 +17,7 @@ class MembersServlet @Inject() (loginService: LoginService)
     }
   }
   get("/logout") {
-    val apiToken = getApiToken()
+    val apiToken = getApiTokenHeader()
     loginService.logout(apiToken)
   }
 

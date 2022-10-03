@@ -44,11 +44,8 @@ class LoginServiceImpl @Inject() (
     cacheWrapper.remove(CacheKeys.ApiToken, memberId)
   }
 
-  override def verifyApiToken(apiToken: String): Boolean = {
-    if (apiToken == null || apiToken.isEmpty) {
-      return false
-    }
-    val memberOpt = getMember(apiToken)
+  override def verifyApiToken(apiTokenHeader: String): Boolean = {
+    val memberOpt = getMember(apiTokenHeader)
     if (memberOpt.isEmpty) {
       return false
     }
@@ -56,7 +53,7 @@ class LoginServiceImpl @Inject() (
     val memberId = memberOpt.get.id
     val cachedApiToken = cacheWrapper.get[String](CacheKeys.ApiToken, memberId)
 
-    cachedApiToken.getOrElse("").equals(apiToken)
+    cachedApiToken.getOrElse("").equals(apiTokenHeader)
   }
 
   override def getAuthorizationUrl: String = googleRepository.getAuthorizationUrl()
@@ -127,8 +124,16 @@ class LoginServiceImpl @Inject() (
     )
   }
 
-  private def getMember(apiToken: String): Option[Member] = {
-    val memberId = Hash.extractIdFromJWT(apiToken)
+  private def getMember(apiTokenHeader: String): Option[Member] = {
+    if (apiTokenHeader == null || apiTokenHeader.isEmpty) {
+      return None
+    }
+
+    val splitHeader = apiTokenHeader.split(" ")
+    if (splitHeader.length != 2) {
+      return None
+    }
+    val memberId = Hash.extractIdFromJWT(splitHeader(1))
     if (memberId == "") {
       return None
     }
