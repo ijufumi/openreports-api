@@ -9,8 +9,9 @@ import java.io.File
 
 class ReportServiceImpl @Inject() (reportRepository: ReportRepository, outputService: OutputService)
     extends ReportService {
-  def getReports(): Reports = {
-    val results = reportRepository.getsWithTemplate
+  def getReports(page: Int, limit: Int): Reports = {
+    val offset = List((page - 1) * limit, 0).min
+    val results = reportRepository.getsWithTemplate(offset, limit)
     val items = results.map(r => Report(r._1, r._2))
     Reports(items, 0, 0, items.length)
   }

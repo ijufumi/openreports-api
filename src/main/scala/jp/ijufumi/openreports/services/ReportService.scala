@@ -5,7 +5,7 @@ import jp.ijufumi.openreports.vo.response.{Report, Reports}
 import java.io.File
 
 trait ReportService {
-  def getReports(): Reports
+  def getReports(page: Int, limit: Int): Reports
 
   def getReport(id: String): Option[Report]
 

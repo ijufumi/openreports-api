@@ -4,9 +4,9 @@ import jp.ijufumi.openreports.entities.{Report, ReportTemplate}
 
 trait ReportRepository {
 
-  def gets(): Seq[Report]
+  def gets(offset: Int, limit: Int): Seq[Report]
 
-  def getsWithTemplate: Seq[(Report, ReportTemplate)]
+  def getsWithTemplate(offset: Int, limit: Int): Seq[(Report, ReportTemplate)]
 
   def getById(id: String): Option[Report]
 

@@ -11,14 +11,25 @@ import scala.concurrent.Await
 import scala.concurrent.duration.Duration
 
 class ReportRepositoryImpl @Inject() (db: Database) extends ReportRepository {
-  override def gets(): Seq[Report] = {
-    Await.result(db.run(query.result), Duration("10s"))
+  override def gets(offset: Int = 0, limit: Int = -1): Seq[Report] = {
+    var filtered = query.drop(offset)
+    if (limit > 0) {
+      filtered = filtered.take(limit)
+    }
+    Await.result(db.run(filtered.result), Duration("10s"))
   }
 
-  override def getsWithTemplate(): Seq[(Report, ReportTemplate)] = {
-    val getById = query
+  override def getsWithTemplate(
+      offset: Int = 0,
+      limit: Int = -1,
+  ): Seq[(Report, ReportTemplate)] = {
+    var getById = query
       .join(reportTemplateQuery)
       .on(_.reportTemplateId === _.id)
+      .drop(offset)
+    if (limit > 0) {
+      getById = getById.take(limit)
+    }
     Await.result(db.run(getById.result), Duration("10s"))
   }
 

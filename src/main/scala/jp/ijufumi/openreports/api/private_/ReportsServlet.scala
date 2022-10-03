@@ -9,7 +9,9 @@ class ReportsServlet @Inject() (loginService: LoginService, reportService: Repor
     extends PrivateAPIServletBase(loginService) {
 
   get("/") {
-    hookResult(Ok(reportService.getReports()))
+    val page = params("page").toInt
+    val limit  = params("limit").toInt
+    hookResult(Ok(reportService.getReports(page, limit)))
   }
 
   post("/") {}
