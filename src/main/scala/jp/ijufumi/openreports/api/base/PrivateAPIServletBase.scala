@@ -6,14 +6,10 @@ import org.scalatra._
 
 abstract class PrivateAPIServletBase(loginService: LoginService) extends APIServletBase {
 
-  val needsVerificationToken = true
-
   before() {
-    if (needsVerificationToken) {
-      val apiToken = getApiToken()
-      if (!loginService.verifyApiToken(apiToken)) {
-        Forbidden("API Token is invalid")
-      }
+    val apiToken = getApiToken()
+    if (!loginService.verifyApiToken(apiToken)) {
+      Forbidden("API Token is invalid")
     }
   }
 
