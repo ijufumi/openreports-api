@@ -45,7 +45,7 @@ class LoginServiceImpl @Inject() (
   }
 
   override def verifyApiToken(apiToken: String): Boolean = {
-    if (apiToken.isEmpty) {
+    if (apiToken == null || apiToken.isEmpty) {
       return false
     }
     val memberOpt = getMember(apiToken)
