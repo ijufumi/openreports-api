@@ -17,7 +17,7 @@ class CacheWrapper {
 
   def get[T](cacheKey: CacheKey, args: String*): Option[T] = {
     val value = cache.get(cacheKey.key(args: _*))
-    if (value.isFailure) {
+    if (value.isFailure || value.get.isEmpty) {
       return None
     }
     val original = value.get.get
