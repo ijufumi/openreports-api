@@ -8,8 +8,8 @@ import org.scalatra._
 class MembersServlet @Inject() (loginService: LoginService)
     extends PrivateAPIServletBase(loginService) {
   get("/status") {
-    val apiToken = getApiTokenHeader()
-    val member = loginService.getMemberByToken(apiToken)
+    val authorizationHeader = getAuthorizationHeader()
+    val member = loginService.getMemberByToken(authorizationHeader)
     if (member.isEmpty) {
       hookResult(Unauthorized("Invalid api token"))
     } else {
@@ -17,8 +17,8 @@ class MembersServlet @Inject() (loginService: LoginService)
     }
   }
   get("/logout") {
-    val apiToken = getApiTokenHeader()
-    loginService.logout(apiToken)
+    val authorizationHeader = getAuthorizationHeader()
+    loginService.logout(authorizationHeader)
   }
 
 }

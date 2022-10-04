@@ -7,13 +7,13 @@ import org.scalatra._
 abstract class PrivateAPIServletBase(loginService: LoginService) extends APIServletBase {
 
   before() {
-    val apiTokenHeader = getApiTokenHeader()
-    if (!loginService.verifyApiToken(apiTokenHeader)) {
+    val authorizationHeader = getAuthorizationHeader()
+    if (!loginService.verifyApiToken(authorizationHeader)) {
       Forbidden("API Token is invalid")
     }
   }
 
-  def getApiTokenHeader(): String = {
-    request.getHeader(Config.API_TOKEN_KEY)
+  def getAuthorizationHeader(): String = {
+    request.getHeader(Config.AUTHORIZATION_HEADER)
   }
 }

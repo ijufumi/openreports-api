@@ -35,8 +35,8 @@ class LoginServiceImpl @Inject() (
     makeResponse(member)
   }
 
-  override def logout(apiTokenHeader: String): Unit = {
-    val memberOpt = getMember(apiTokenHeader)
+  override def logout(authorizationHeader: String): Unit = {
+    val memberOpt = getMember(authorizationHeader)
     if (memberOpt.isEmpty) {
       return
     }
@@ -44,16 +44,19 @@ class LoginServiceImpl @Inject() (
     cacheWrapper.remove(CacheKeys.ApiToken, memberOpt.get.id)
   }
 
-  override def verifyApiToken(apiTokenHeader: String): Boolean = {
-    val memberOpt = getMember(apiTokenHeader)
-    if (memberOpt.isEmpty) {
+  override def verifyApiToken(authorizationHeader: String): Boolean = {
+    val apiToken = getApiToken(authorizationHeader)
+    if (apiToken.isEmpty) {
+      return false
+    }
+    val memberId = Hash.extractIdFromJWT(apiToken.get)
+    if (memberId == "") {
       return false
     }
 
-    val memberId = memberOpt.get.id
     val cachedApiToken = cacheWrapper.get[String](CacheKeys.ApiToken, memberId)
 
-    cachedApiToken.getOrElse("").equals(apiTokenHeader)
+    cachedApiToken.getOrElse("").equals(apiToken.get)
   }
 
   override def getAuthorizationUrl: String = googleRepository.getAuthorizationUrl()
@@ -108,8 +111,8 @@ class LoginServiceImpl @Inject() (
     }
   }
 
-  def getMemberByToken(apiToken: String): Option[MemberReponse] = {
-    val memberOpt = getMember(apiToken)
+  def getMemberByToken(authorizationHeader: String): Option[MemberReponse] = {
+    val memberOpt = getMember(authorizationHeader)
     if (memberOpt.isEmpty) {
       return None
     }
@@ -124,16 +127,24 @@ class LoginServiceImpl @Inject() (
     )
   }
 
-  private def getMember(apiTokenHeader: String): Option[Member] = {
-    if (apiTokenHeader == null || apiTokenHeader.isEmpty) {
+  private def getApiToken(authorizationHeader: String): Option[String] = {
+    if (authorizationHeader == null || authorizationHeader.isEmpty) {
       return None
     }
 
-    val splitHeader = apiTokenHeader.split(" ")
+    val splitHeader = authorizationHeader.split(" ")
     if (splitHeader.length != 2) {
       return None
     }
-    val memberId = Hash.extractIdFromJWT(splitHeader(1))
+    Some(splitHeader(1))
+  }
+
+  private def getMember(authorizationHeader: String): Option[Member] = {
+    val apiToken = getApiToken(authorizationHeader)
+    if (apiToken.isEmpty) {
+      return None
+    }
+    val memberId = Hash.extractIdFromJWT(apiToken.get)
     if (memberId == "") {
       return None
     }

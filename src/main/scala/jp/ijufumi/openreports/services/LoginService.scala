@@ -7,11 +7,11 @@ trait LoginService {
 
   def logout(apiToken: String): Unit
 
-  def verifyApiToken(apiTokenHeader: String): Boolean
+  def verifyApiToken(authorizationHeader: String): Boolean
 
   def getAuthorizationUrl: String
 
   def loginWithGoogle(code: String): Option[Member]
 
-  def getMemberByToken(apiToken: String): Option[Member]
+  def getMemberByToken(authorizationHeader: String): Option[Member]
 }
