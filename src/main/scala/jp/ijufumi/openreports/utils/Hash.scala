@@ -10,7 +10,7 @@ import com.auth0.jwt.exceptions.JWTDecodeException
 import java.util.{Calendar, Date}
 import jp.ijufumi.openreports.config.Config.HASH_KEY
 
-object Hash {
+object Hash extends Logging {
   def hmacSha256(value: String, salt: String = HASH_KEY): String = {
     val spec = new SecretKeySpec(salt.getBytes, "HmacSHA256")
     val mac = Mac.getInstance("HmacSHA256")
@@ -37,7 +37,9 @@ object Hash {
       val decoded = JWT.decode(jwtString)
       decoded.getClaim("id").asString()
     } catch {
-      case _: JWTDecodeException => return ""
+      case e: JWTDecodeException =>
+        logger.warn("Failed to extract id from JWT", e)
+        ""
     }
   }
 }
