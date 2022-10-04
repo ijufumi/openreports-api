@@ -2,7 +2,7 @@ val ScalatraVersion = "2.8.2"
 val SlickVersion = "3.4.0"
 val ScalaCacheVersion = "0.28.0"
 val SttpVersion = "3.7.1"
-val Json4sVersion = "4.0.5"
+val Json4sVersion = "4.0.6"
 val SLF4JVersion = "2.0.3"
 val LogbackVersion = "1.4.3"
 
@@ -31,6 +31,7 @@ lazy val root = (project in file("."))
       "com.google.inject" % "guice" % "5.1.0",
       "org.json4s" %% "json4s-jackson" % Json4sVersion,
       "org.json4s" %% "json4s-native" % Json4sVersion,
+      "org.json4s" %% "json4s-ext" % Json4sVersion,
       "commons-codec" % "commons-codec" % "1.15",
       "com.auth0" % "auth0" % "1.42.0",
       "com.typesafe.slick" %% "slick" % SlickVersion,

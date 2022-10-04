@@ -10,7 +10,8 @@ abstract class APIServletBase
     with JacksonJsonSupport
     with Logging
     with CorsSupport {
-  override protected implicit lazy val jsonFormats: Formats = DefaultFormats
+  override protected implicit lazy val jsonFormats: Formats =
+    DefaultFormats ++ org.json4s.ext.JavaTimeSerializers.all
 
   before() {
     contentType = formats("json")
