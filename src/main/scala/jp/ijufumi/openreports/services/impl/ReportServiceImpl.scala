@@ -10,10 +10,10 @@ import java.io.File
 class ReportServiceImpl @Inject() (reportRepository: ReportRepository, outputService: OutputService)
     extends ReportService {
   def getReports(page: Int, limit: Int): Reports = {
-    val offset = List((page - 1) * limit, 0).min
-    val results = reportRepository.getsWithTemplate(offset, limit)
+    val offset = List((page - 1) * limit, 0).max
+    val (results, count) = reportRepository.getsWithTemplate(offset, limit)
     val items = results.map(r => Report(r._1, r._2))
-    Reports(items, 0, 0, items.length)
+    Reports(items, 0, 0, count)
   }
 
   override def getReport(id: String): Option[Report] = {
