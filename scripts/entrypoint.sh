@@ -15,7 +15,5 @@ fi
 
 sbt flywayMigrate
 
-export JAVA_TOOL_OPTIONS="--add-opens java.base/java.time=ALL-UNNAMED"
-
 sbt run
 
