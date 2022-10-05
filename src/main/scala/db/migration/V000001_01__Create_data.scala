@@ -112,8 +112,8 @@ class V000001_01__Create_data extends BaseJavaMigration {
 
   def template(context: Context, workspaceId: String): String = {
     val id = IDs.ulid()
-    val name = "postgres"
-    val filePath = "org.postgresql.Driver"
+    val name = "sample"
+    val filePath = "resources/report/sample.xlsx"
     val statement = {
       context.getConnection.prepareStatement(
         s"INSERT INTO report_templates (id, name, file_path, workspace_id) VALUES (?, ?, ?, ?)",
