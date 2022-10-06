@@ -1,5 +1,6 @@
 package jp.ijufumi.openreports.entities
 
+import jp.ijufumi.openreports.utils.Dates
 import slick.jdbc.PostgresProfile.api._
 
 import java.sql.Timestamp
@@ -11,8 +12,8 @@ case class Member(
     email: String,
     password: String = "",
     name: String,
-    createdAt: Timestamp = Timestamp.valueOf(LocalDateTime.now()),
-    updatedAt: Timestamp = Timestamp.valueOf(LocalDateTime.now()),
+    createdAt: Long = Dates.currentTimestamp(),
+    updatedAt: Long = Dates.currentTimestamp(),
     versions: Long = 1,
 )
 
@@ -26,8 +27,8 @@ class Members(tag: Tag)
   def email = column[String]("email", O.Unique)
   def password = column[String]("password")
   def name = column[String]("name")
-  def createdAt = column[Timestamp]("created_at")
-  def updatedAt = column[Timestamp]("updated_at")
+  def createdAt = column[Long]("created_at")
+  def updatedAt = column[Long]("updated_at")
   def versions = column[Long]("versions")
 
   override def * =

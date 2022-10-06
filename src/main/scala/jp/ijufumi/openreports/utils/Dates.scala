@@ -1,7 +1,7 @@
 package jp.ijufumi.openreports.utils
 
 import java.time.format.DateTimeFormatter
-import java.time.{LocalDateTime, ZoneId}
+import java.time.{Instant, LocalDateTime, ZoneId}
 
 object Dates {
   def toLocalDateTime(date: java.util.Date): LocalDateTime = {
@@ -10,5 +10,9 @@ object Dates {
 
   def format(dateTime: LocalDateTime, pattern: String = "yyyyMMddHHMMss"): String = {
     DateTimeFormatter.ofPattern(pattern).format(dateTime)
+  }
+
+  def currentTimestamp(): Long = {
+    Instant.now().getEpochSecond
   }
 }

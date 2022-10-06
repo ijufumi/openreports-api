@@ -1,17 +1,15 @@
 package jp.ijufumi.openreports.entities
 
+import jp.ijufumi.openreports.utils.Dates
 import slick.jdbc.PostgresProfile.api._
-
-import java.sql.Timestamp
-import java.time.LocalDateTime
 
 case class ReportTemplate(
     id: String,
     name: String,
     filePath: String,
     workspaceId: String,
-    createdAt: Timestamp = Timestamp.valueOf(LocalDateTime.now()),
-    updatedAt: Timestamp = Timestamp.valueOf(LocalDateTime.now()),
+    createdAt: Long = Dates.currentTimestamp(),
+    updatedAt: Long = Dates.currentTimestamp(),
     versions: Long = 1,
 )
 
@@ -24,8 +22,8 @@ class ReportTemplates(tag: Tag)
   def name = column[String]("name")
   def filePath = column[String]("file_path")
   def workspaceId = column[String]("workspace_id")
-  def createdAt = column[Timestamp]("created_at")
-  def updatedAt = column[Timestamp]("updated_at")
+  def createdAt = column[Long]("created_at")
+  def updatedAt = column[Long]("updated_at")
   def versions = column[Long]("versions")
 
   override def * =

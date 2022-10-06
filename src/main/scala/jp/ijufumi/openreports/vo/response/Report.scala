@@ -1,14 +1,12 @@
 package jp.ijufumi.openreports.vo.response
 
-import java.time.LocalDateTime
 import jp.ijufumi.openreports.entities.{Report => ReportEntity, ReportTemplate}
-import jp.ijufumi.openreports.utils.Dates
 
 case class Report(
     id: String,
     name: String,
-    createdAt: LocalDateTime,
-    updatedAt: LocalDateTime,
+    createdAt: Long,
+    updatedAt: Long,
     reportTemplateName: String,
 )
 
@@ -17,8 +15,8 @@ object Report {
     Report(
       entity1.id,
       entity1.name,
-      Dates.toLocalDateTime(entity1.createdAt),
-      Dates.toLocalDateTime(entity1.updatedAt),
+      entity1.createdAt.getTime,
+      entity1.updatedAt.getTime,
       entity2.name,
     )
   }
