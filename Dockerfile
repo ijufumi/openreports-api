@@ -1,4 +1,4 @@
-FROM openjdk:17-slim-bullseye
+FROM eclipse-temurin:17-jdk-jammy
 
 RUN apt-get update && apt-get -y install curl gnupg postgresql-client
 
