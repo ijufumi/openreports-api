@@ -6,8 +6,8 @@ create table members
   email      varchar(250) not null,
   password   varchar(100) not null,
   name       varchar(250) not null,
-  created_at timestamp    not null default now(),
-  updated_at timestamp    not null default now(),
+  created_at bigint       not null default extract(epoch from current_timestamp at time zone 'UTC'),
+  updated_at bigint       not null default extract(epoch from current_timestamp at time zone 'UTC'),
   versions   bigint       not null default 0
 );
 
@@ -21,8 +21,8 @@ create table workspaces
   id         varchar(40) primary key,
   name       varchar(250) not null,
   slug       varchar(250) not null,
-  created_at timestamp    not null default now(),
-  updated_at timestamp    not null default now(),
+  created_at bigint       not null default extract(epoch from current_timestamp at time zone 'UTC'),
+  updated_at bigint       not null default extract(epoch from current_timestamp at time zone 'UTC'),
   versions   bigint       not null default 0
 );
 
@@ -31,9 +31,9 @@ create table workspace_members
 (
   workspace_id varchar(40),
   member_id    varchar(40),
-  created_at   timestamp not null default now(),
-  updated_at   timestamp not null default now(),
-  versions     bigint    not null default 0,
+  created_at   bigint not null default extract(epoch from current_timestamp at time zone 'UTC'),
+  updated_at   bigint not null default extract(epoch from current_timestamp at time zone 'UTC'),
+  versions     bigint not null default 0,
 
   primary key (workspace_id, member_id),
   foreign key (workspace_id) references workspaces (id),
@@ -46,8 +46,8 @@ create table driver_types
   id                varchar(40) primary key,
   name              varchar(250) not null,
   jdbc_driver_class varchar(250) not null,
-  created_at        timestamp    not null default now(),
-  updated_at        timestamp    not null default now(),
+  created_at        bigint       not null default extract(epoch from current_timestamp at time zone 'UTC'),
+  updated_at        bigint       not null default extract(epoch from current_timestamp at time zone 'UTC'),
   versions          bigint       not null default 0
 );
 
@@ -61,8 +61,8 @@ create table data_sources
   password       varchar(250) not null,
   driver_type_id varchar(40),
   workspace_id   varchar(40),
-  created_at     timestamp    not null default now(),
-  updated_at     timestamp    not null default now(),
+  created_at     bigint       not null default extract(epoch from current_timestamp at time zone 'UTC'),
+  updated_at     bigint       not null default extract(epoch from current_timestamp at time zone 'UTC'),
   versions       bigint       not null default 0,
 
   foreign key (driver_type_id) references driver_types (id),
@@ -76,8 +76,8 @@ create table report_templates
   name         varchar(250) not null,
   file_path    varchar(250) not null,
   workspace_id varchar(40),
-  created_at   timestamp    not null default now(),
-  updated_at   timestamp    not null default now(),
+  created_at   bigint       not null default extract(epoch from current_timestamp at time zone 'UTC'),
+  updated_at   bigint       not null default extract(epoch from current_timestamp at time zone 'UTC'),
   versions     bigint       not null default 0,
 
   foreign key (workspace_id) references workspaces (id)
@@ -91,8 +91,8 @@ create table reports
   report_template_id varchar(40)  not null,
   workspace_id       varchar(40),
   data_source_id     varchar(40)  not null,
-  created_at         timestamp    not null default now(),
-  updated_at         timestamp    not null default now(),
+  created_at         bigint       not null default extract(epoch from current_timestamp at time zone 'UTC'),
+  updated_at         bigint       not null default extract(epoch from current_timestamp at time zone 'UTC'),
   versions           bigint       not null default 0,
 
   foreign key (report_template_id) references report_templates (id),
