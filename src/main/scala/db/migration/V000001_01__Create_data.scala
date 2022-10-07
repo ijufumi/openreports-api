@@ -12,7 +12,9 @@ class V000001_01__Create_data extends BaseJavaMigration {
     val driverTypeId = driverType(context)
     val dataSourceId = dataSource(context, driverTypeId, workspaceId)
     val templateId = template(context, workspaceId)
-    report(context, templateId, dataSourceId, workspaceId)
+    for (i <- 1 to 35) {
+      report(context, templateId, dataSourceId, workspaceId, String.format("local-%d", i))
+    }
   }
 
   def member(context: Context): String = {
@@ -134,9 +136,9 @@ class V000001_01__Create_data extends BaseJavaMigration {
       templateId: String,
       dataSourceId: String,
       workspaceId: String,
+      name: String,
   ): Unit = {
     val id = IDs.ulid()
-    val name = "local"
     val statement = {
       context.getConnection.prepareStatement(
         s"INSERT INTO reports (id, name, report_template_id, data_source_id, workspace_id) VALUES (?, ?, ?, ?, ?)",
