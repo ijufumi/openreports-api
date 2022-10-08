@@ -7,7 +7,7 @@ val SLF4JVersion = "2.0.3"
 val LogbackVersion = "1.4.3"
 val FlywayVersion = "9.4.0"
 
-ThisBuild / scalaVersion := "2.13.9"
+ThisBuild / scalaVersion := "2.12.17"
 ThisBuild / organization := "jp.ijufumi"
 ThisBuild / pomIncludeRepository := { _ =>
   false
@@ -60,11 +60,6 @@ lazy val flywayPlugin = (project in file("FlywayPlugin"))
     sbtPlugin := true,
     version := "0.1.0-SNAPSHOT",
     organization := "jp.ijufumi.plugins",
-    pluginCrossBuild / sbtVersion := {
-      scalaBinaryVersion.value match {
-        case "2.13" => "1.7.0" // set minimum sbt version
-      }
-    },
     libraryDependencies ++= Seq(
       "org.flywaydb" % "flyway-core" % FlywayVersion,
     ),
