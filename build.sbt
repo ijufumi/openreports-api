@@ -5,6 +5,7 @@ val SttpVersion = "3.7.1"
 val Json4sVersion = "4.0.6"
 val SLF4JVersion = "2.0.3"
 val LogbackVersion = "1.4.3"
+val FlywayVersion = "9.4.0"
 
 ThisBuild / scalaVersion := "2.13.9"
 ThisBuild / organization := "jp.ijufumi"
@@ -13,7 +14,7 @@ ThisBuild / pomIncludeRepository := { _ =>
 }
 
 lazy val root = (project in file("."))
-  .enablePlugins(JettyPlugin, FlywayPlugin)
+  .enablePlugins(JettyPlugin)
   .settings(
     name := "Open Report API",
     version := "0.1.0-SNAPSHOT",
@@ -27,7 +28,7 @@ lazy val root = (project in file("."))
       "org.eclipse.jetty" % "jetty-webapp" % "9.4.35.v20201120" % "container;compile",
       "javax.servlet" % "javax.servlet-api" % "3.1.0" % "provided",
       "org.postgresql" % "postgresql" % "42.4.0",
-      "org.flywaydb" % "flyway-core" % "9.1.3",
+      "org.flywaydb" % "flyway-core" % FlywayVersion,
       "com.google.inject" % "guice" % "5.1.0",
       "org.json4s" %% "json4s-jackson" % Json4sVersion,
       "org.json4s" %% "json4s-native" % Json4sVersion,
@@ -52,15 +53,32 @@ lazy val root = (project in file("."))
     assembly / mainClass := Some("JettyLauncher"),
   )
 
+lazy val flywayPlugin = (project in file("FlywayPlugin"))
+  .enablePlugins(SbtPlugin, ContrabandPlugin)
+  .settings(
+    name := "sbt-flyway",
+    sbtPlugin := true,
+    version := "0.1.0-SNAPSHOT",
+    organization := "jp.ijufumi.plugins",
+    pluginCrossBuild / sbtVersion := {
+      scalaBinaryVersion.value match {
+        case "2.13" => "1.7.0" // set minimum sbt version
+      }
+    },
+    libraryDependencies ++= Seq(
+      "org.flywaydb" % "flyway-core" % FlywayVersion,
+    ),
+  )
+
 val dbHost = sys.env.getOrElse("DB_HOST", "localhost")
 val dbName = sys.env.getOrElse("DB_NAME", "openreports")
 val dbUser = sys.env.getOrElse("DB_USER", "postgres")
 val dbPassword = sys.env.getOrElse("DB_PASSWORD", "password")
 val dbPort = sys.env.getOrElse("DB_PORT", "5432")
 
-flywayUrl := f"jdbc:postgresql://$dbHost%s:$dbPort%s/$dbName%s"
-flywayUser := dbUser
-flywayPassword := dbPassword
-flywayBaselineOnMigrate := true
-flywayBaselineVersion := "0"
-flywaySchemas += "public"
+//flywayUrl := f"jdbc:postgresql://$dbHost%s:$dbPort%s/$dbName%s"
+//flywayUser := dbUser
+//flywayPassword := dbPassword
+//flywayBaselineOnMigrate := true
+//flywayBaselineVersion := "0"
+//flywaySchemas += "public"
