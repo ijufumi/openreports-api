@@ -36,10 +36,10 @@ object Strings {
       baseStringBuilder ++= extraCharacters.mkString
     }
 
-    val r = new Random()
     val baseString = baseStringBuilder.toString()
+    val r = new Random(baseString.length())
     for (i <- 0 until count) {
-      val index = r.between(0, baseString.length())
+      val index = r.nextInt()
       builder ++= baseString.charAt(index).toString
     }
     builder.mkString

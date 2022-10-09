@@ -2,7 +2,7 @@ package jp.ijufumi.openreports.cache
 
 sealed trait CacheKey {
   def key(args: String*): String = {
-    s"${getClass.getName}-${Array.from(args).mkString}"
+    s"${getClass.getName}-${args.mkString}"
   }
 }
 

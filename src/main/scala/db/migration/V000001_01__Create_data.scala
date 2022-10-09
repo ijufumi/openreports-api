@@ -13,7 +13,7 @@ class V000001_01__Create_data extends BaseJavaMigration {
     val dataSourceId = dataSource(context, driverTypeId, workspaceId)
     val templateId = template(context, workspaceId)
     for (i <- 1 to 35) {
-      report(context, templateId, dataSourceId, workspaceId, String.format("local-%d", i))
+      report(context, templateId, dataSourceId, workspaceId, s"local-${i}")
     }
   }
 
