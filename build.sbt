@@ -14,7 +14,7 @@ ThisBuild / pomIncludeRepository := { _ =>
 }
 
 lazy val root = (project in file("."))
-  .enablePlugins(JettyPlugin)
+  .enablePlugins(JettyPlugin, FlywayPlugin)
   .settings(
     name := "Open Report API",
     version := "0.1.0-SNAPSHOT",
@@ -53,27 +53,15 @@ lazy val root = (project in file("."))
     assembly / mainClass := Some("JettyLauncher"),
   )
 
-lazy val flywayPlugin = (project in file("FlywayPlugin"))
-  .enablePlugins(SbtPlugin, ContrabandPlugin)
-  .settings(
-    name := "sbt-flyway",
-    sbtPlugin := true,
-    version := "0.1.0-SNAPSHOT",
-    organization := "jp.ijufumi.plugins",
-    libraryDependencies ++= Seq(
-      "org.flywaydb" % "flyway-core" % FlywayVersion,
-    ),
-  )
-
 val dbHost = sys.env.getOrElse("DB_HOST", "localhost")
 val dbName = sys.env.getOrElse("DB_NAME", "openreports")
 val dbUser = sys.env.getOrElse("DB_USER", "postgres")
 val dbPassword = sys.env.getOrElse("DB_PASSWORD", "password")
 val dbPort = sys.env.getOrElse("DB_PORT", "5432")
 
-//flywayUrl := f"jdbc:postgresql://$dbHost%s:$dbPort%s/$dbName%s"
-//flywayUser := dbUser
-//flywayPassword := dbPassword
-//flywayBaselineOnMigrate := true
-//flywayBaselineVersion := "0"
-//flywaySchemas += "public"
+flywayUrl := f"jdbc:postgresql://$dbHost%s:$dbPort%s/$dbName%s"
+flywayUser := dbUser
+flywayPassword := dbPassword
+flywayBaselineOnMigrate := true
+flywayBaselineVersion := "0"
+flywaySchemas += "public"
