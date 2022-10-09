@@ -3,17 +3,18 @@
 
 | Name         | Version | Usage        |
 |--------------|---------|--------------|
-| Scala        | 2.13.8  | -            |
+| Scala        | 2.12.17 | -            |
 | Scalatra     | 2.8.2   | All of them. |
 | Servlet API  | 3.1.0   | Web API      |
+| slf4j        | 2.0.3   | Logging      |
 | logback      | 1.2.3   | Logging      |
- | Flyway       | 8.5.13  | Migration    |
+ | Flyway       | 9.4.0   | Migration    |
  | Slick        | 3.3.3   | ORM          |
  | PostgresSQL  | 42.4.0  | DB           |
  | Google Guice | 5.1.0   | DI           |
-| Scala Cache  | 0.28.0   | Cache        |
+| Scala Cache  | 0.28.0  | Cache        |
 | sttp client  | 3.7.0   | HTTP Client  |
- | jXls        | 2.12.0 | Reporting |
+ | jXls         | 2.12.0  | Reporting |
 
 ## Features (not implemented yet)
 - [ ] Output reporting.
