@@ -1,5 +1,3 @@
-val ScalaVersion = "2.13.9"
-
 val ScalatraVersion = "2.8.2"
 val SlickVersion = "3.4.0"
 val ScalaCacheVersion = "0.28.0"
@@ -9,7 +7,7 @@ val SLF4JVersion = "2.0.3"
 val LogbackVersion = "1.4.3"
 val FlywayVersion = "9.4.0"
 
-ThisBuild / scalaVersion := ScalaVersion
+ThisBuild / scalaVersion := "2.13.9"
 ThisBuild / organization := "jp.ijufumi"
 ThisBuild / pomIncludeRepository := { _ =>
   false
