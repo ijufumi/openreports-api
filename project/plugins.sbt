@@ -1,3 +1,4 @@
+// Because the latest flyway-sbt uses the flyway version under 7.4.0
 libraryDependencies += "org.flywaydb" % "flyway-core" % "8.5.13"
 
 addSbtPlugin("com.earldouglas" %% "xsbt-web-plugin" % "4.2.4")
