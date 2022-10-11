@@ -47,7 +47,7 @@ lazy val root = (project in file("."))
       "com.softwaremill.sttp.client3" %% "core" % SttpVersion,
       "com.softwaremill.sttp.client3" %% "json4s" % SttpVersion,
       "io.github.cdimascio" % "dotenv-java" % "2.2.4",
-      "de.huxhorn.sulky" % "de.huxhorn.sulky.ulid" % "8.3.0",
+      "com.chatwork" %% "scala-ulid" % "1.0.24",
       "org.jxls" % "jxls" % "2.12.0",
       "ch.qos.logback" % "logback-classic" % LogbackVersion,
       "ch.qos.logback" % "logback-core" % LogbackVersion,

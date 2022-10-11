@@ -1,9 +1,9 @@
 package jp.ijufumi.openreports.utils
 
-import de.huxhorn.sulky.ulid.ULID
+import com.chatwork.scala.ulid.ULID
 
 object IDs {
   def ulid(): String = {
-    new ULID().nextULID()
+    ULID.generate().asString
   }
 }
