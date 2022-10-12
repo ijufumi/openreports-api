@@ -37,9 +37,9 @@ object Strings {
     }
 
     val baseString = baseStringBuilder.toString()
-    val r = new Random(baseString.length())
+    val r = new Random()
     for (i <- 0 until count) {
-      val index = r.nextInt()
+      val index = r.nextInt(baseString.length())
       builder ++= baseString.charAt(index).toString
     }
     builder.mkString
