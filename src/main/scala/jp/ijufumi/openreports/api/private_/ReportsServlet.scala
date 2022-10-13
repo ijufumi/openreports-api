@@ -10,7 +10,7 @@ class ReportsServlet @Inject() (loginService: LoginService, reportService: Repor
 
   get("/") {
     val page = params("page").toInt
-    val limit  = params("limit").toInt
+    val limit = params("limit").toInt
     hookResult(Ok(reportService.getReports(page, limit)))
   }
 
