@@ -23,8 +23,10 @@ abstract class APIServletBase
 
   def hookResult(actionResult: ActionResult): ActionResult = {
     val servletPath = request.getRequestURI
+    val queryString = request.getQueryString
     val requestMethod = request.getMethod
-    val message = s"${requestMethod} ${servletPath} ${actionResult.status}"
+    val requestPath = if (queryString.isEmpty) servletPath else s"${servletPath}?${queryString}"
+    val message = s"${requestMethod} ${requestPath} ${actionResult.status}"
     actionResult.status match {
       case n if 400 <= n && n < 500 => logger.warn(message)
       case n if 500 <= n            => logger.error(message)
