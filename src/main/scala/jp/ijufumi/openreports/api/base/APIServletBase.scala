@@ -25,7 +25,9 @@ abstract class APIServletBase
     val servletPath = request.getRequestURI
     val queryString = request.getQueryString
     val requestMethod = request.getMethod
-    val requestPath = if (queryString.isEmpty) servletPath else s"${servletPath}?${queryString}"
+    val requestPath =
+      if (queryString == null || queryString.isEmpty) servletPath
+      else s"${servletPath}?${queryString}"
     val message = s"${requestMethod} ${requestPath} ${actionResult.status}"
     actionResult.status match {
       case n if 400 <= n && n < 500 => logger.warn(message)
