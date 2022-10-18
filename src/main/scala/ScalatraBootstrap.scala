@@ -1,4 +1,4 @@
-import jp.ijufumi.openreports.api.private_.{MembersServlet, ReportsServlet}
+import jp.ijufumi.openreports.api.private_.{MembersServlet, ReportTemplatesServlet, ReportsServlet}
 import jp.ijufumi.openreports.api.public_.{HealthServlet, LoginServlet}
 import org.scalatra._
 
@@ -13,6 +13,7 @@ class ScalatraBootstrap extends LifeCycle {
     // private endpoints
     mount(context, classOf[MembersServlet], "/members")
     mount(context, classOf[ReportsServlet], "/reports")
+    mount(context, classOf[ReportTemplatesServlet], "/report_templates")
   }
 
   def mount(
