@@ -1,14 +1,17 @@
 package jp.ijufumi.openreports.services.impl
 
 import com.google.inject.Inject
-import jp.ijufumi.openreports.repositories.db.ReportRepository
+import jp.ijufumi.openreports.repositories.db.{ReportRepository, ReportTemplateRepository}
 import jp.ijufumi.openreports.services.{OutputService, ReportService}
-import jp.ijufumi.openreports.vo.response.{Lists, Report}
+import jp.ijufumi.openreports.vo.response.{Lists, Report, ReportTemplate}
 
 import java.io.File
 
-class ReportServiceImpl @Inject() (reportRepository: ReportRepository, outputService: OutputService)
-    extends ReportService {
+class ReportServiceImpl @Inject() (
+    reportRepository: ReportRepository,
+    reportTemplateRepository: ReportTemplateRepository,
+    outputService: OutputService,
+) extends ReportService {
   def getReports(page: Int, limit: Int): Lists = {
     val offset = List(page * limit, 0).max
     val (results, count) = reportRepository.getsWithTemplate(offset, limit)
@@ -23,6 +26,21 @@ class ReportServiceImpl @Inject() (reportRepository: ReportRepository, outputSer
     }
 
     Some(Report(result.get._1, result.get._2))
+  }
+
+  override def getReportTemplates(page: Int, limit: Int): Lists = {
+    val offset = List(page * limit, 0).max
+    val (results, count) = reportTemplateRepository.gets(offset, limit)
+    val items = results.map(r => ReportTemplate(r))
+    Lists(items, offset, limit, count)
+  }
+
+  override def getReportTemplate(id: String): Option[ReportTemplate] = {
+    val result = reportTemplateRepository.getById(id)
+    if (result.isEmpty) {
+      return None
+    }
+    Some(ReportTemplate(result.get))
   }
 
   override def outputReport(id: String): Option[File] = {

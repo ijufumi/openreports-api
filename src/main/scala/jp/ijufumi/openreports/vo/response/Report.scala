@@ -1,6 +1,6 @@
 package jp.ijufumi.openreports.vo.response
 
-import jp.ijufumi.openreports.entities.{Report => ReportEntity, ReportTemplate}
+import jp.ijufumi.openreports.entities.{Report => ReportEntity, ReportTemplate => ReportTemplateEntity}
 
 case class Report(
     id: String,
@@ -11,7 +11,7 @@ case class Report(
 )
 
 object Report {
-  def apply(entity1: ReportEntity, entity2: ReportTemplate): Report = {
+  def apply(entity1: ReportEntity, entity2: ReportTemplateEntity): Report = {
     Report(
       entity1.id,
       entity1.name,
