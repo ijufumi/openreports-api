@@ -1,11 +1,11 @@
 package jp.ijufumi.openreports.services
 
-import jp.ijufumi.openreports.vo.response.{Report, Reports}
+import jp.ijufumi.openreports.vo.response.{Report, Lists}
 
 import java.io.File
 
 trait ReportService {
-  def getReports(page: Int, limit: Int): Reports
+  def getReports(page: Int, limit: Int): Lists
 
   def getReport(id: String): Option[Report]
 

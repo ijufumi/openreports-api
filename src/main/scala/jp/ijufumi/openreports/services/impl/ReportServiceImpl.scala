@@ -3,17 +3,17 @@ package jp.ijufumi.openreports.services.impl
 import com.google.inject.Inject
 import jp.ijufumi.openreports.repositories.db.ReportRepository
 import jp.ijufumi.openreports.services.{OutputService, ReportService}
-import jp.ijufumi.openreports.vo.response.{Report, Reports}
+import jp.ijufumi.openreports.vo.response.{Lists, Report}
 
 import java.io.File
 
 class ReportServiceImpl @Inject() (reportRepository: ReportRepository, outputService: OutputService)
     extends ReportService {
-  def getReports(page: Int, limit: Int): Reports = {
+  def getReports(page: Int, limit: Int): Lists = {
     val offset = List(page * limit, 0).max
     val (results, count) = reportRepository.getsWithTemplate(offset, limit)
     val items = results.map(r => Report(r._1, r._2))
-    Reports(items, offset, limit, count)
+    Lists(items, offset, limit, count)
   }
 
   override def getReport(id: String): Option[Report] = {
