@@ -11,8 +11,8 @@ class V000001_01__Create_data extends BaseJavaMigration {
     workspace_member(context, workspaceId, memberId)
     val driverTypeId = driverType(context)
     val dataSourceId = dataSource(context, driverTypeId, workspaceId)
-    val templateId = template(context, workspaceId)
     for (i <- 1 to 35) {
+      val templateId = template(context, workspaceId, s"template-${i}")
       report(context, templateId, dataSourceId, workspaceId, s"local-${i}")
     }
   }
@@ -112,9 +112,8 @@ class V000001_01__Create_data extends BaseJavaMigration {
     id
   }
 
-  def template(context: Context, workspaceId: String): String = {
+  def template(context: Context, workspaceId: String, name: String): String = {
     val id = IDs.ulid()
-    val name = "sample"
     val filePath = "resources/report/sample.xlsx"
     val statement = {
       context.getConnection.prepareStatement(
