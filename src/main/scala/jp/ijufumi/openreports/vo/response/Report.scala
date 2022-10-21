@@ -1,12 +1,16 @@
 package jp.ijufumi.openreports.vo.response
 
-import jp.ijufumi.openreports.entities.{Report => ReportEntity, ReportTemplate => ReportTemplateEntity}
+import jp.ijufumi.openreports.entities.{
+  Report => ReportEntity,
+  ReportTemplate => ReportTemplateEntity,
+}
 
 case class Report(
     id: String,
     name: String,
     createdAt: Long,
     updatedAt: Long,
+    reportTemplateId: String,
     reportTemplateName: String,
 )
 
@@ -17,6 +21,7 @@ object Report {
       entity1.name,
       entity1.createdAt,
       entity1.updatedAt,
+      entity2.id,
       entity2.name,
     )
   }
