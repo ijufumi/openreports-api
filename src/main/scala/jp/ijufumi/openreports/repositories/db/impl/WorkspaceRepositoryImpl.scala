@@ -2,7 +2,7 @@ package jp.ijufumi.openreports.repositories.db.impl
 
 import com.google.inject.Inject
 import jp.ijufumi.openreports.entities.Workspace
-import jp.ijufumi.openreports.entities.queries.{workspaceQuery => query}
+import jp.ijufumi.openreports.entities.queries.{workspaceQuery => query, workspaceMemberQuery}
 import jp.ijufumi.openreports.repositories.db.WorkspaceRepository
 import slick.jdbc.JdbcBackend.Database
 import slick.jdbc.PostgresProfile.api._
@@ -19,7 +19,12 @@ class WorkspaceRepositoryImpl @Inject() (db: Database) extends WorkspaceReposito
       return None
     }
     Some(workspaces.head)
+  }
 
+  override def getsByMemberId(memberId: String): Seq[Workspace] = {
+    val getsByMemberId = query.join(workspaceMemberQuery).on(_.id === _.workspaceId).filter(_._2.memberId === memberId)
+    val workspaces = Await.result(db.run(getsByMemberId.result), Duration("10s"))
+    workspaces.map(m => m._1)
   }
 
   override def register(workspace: Workspace): Option[Workspace] = {
