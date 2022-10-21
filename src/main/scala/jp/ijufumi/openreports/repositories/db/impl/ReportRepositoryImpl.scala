@@ -11,8 +11,8 @@ import scala.concurrent.Await
 import scala.concurrent.duration.Duration
 
 class ReportRepositoryImpl @Inject() (db: Database) extends ReportRepository {
-  override def gets(offset: Int = 0, limit: Int = -1): (Seq[Report], Int) = {
-    var filtered = query.drop(offset)
+  override def gets(workspaceId: String, offset: Int = 0, limit: Int = -1): (Seq[Report], Int) = {
+    var filtered = query.filter(_.workspaceId === workspaceId).drop(offset)
     val count = Await.result(db.run(query.length.result), Duration("10s"))
     if (limit > 0) {
       filtered = filtered.take(limit)
@@ -21,10 +21,11 @@ class ReportRepositoryImpl @Inject() (db: Database) extends ReportRepository {
   }
 
   override def getsWithTemplate(
+      workspaceId: String,
       offset: Int = 0,
       limit: Int = -1,
   ): (Seq[(Report, ReportTemplate)], Int) = {
-    var getById = query
+    var getById = query.filter(_.workspaceId === workspaceId)
       .join(reportTemplateQuery)
       .on(_.reportTemplateId === _.id)
 
@@ -39,8 +40,9 @@ class ReportRepositoryImpl @Inject() (db: Database) extends ReportRepository {
     (Await.result(db.run(getById.result), Duration("10s")), count)
   }
 
-  override def getById(id: String): Option[Report] = {
+  override def getById(workspaceId: String, id: String): Option[Report] = {
     val getById = query
+      .filter(_.workspaceId === workspaceId)
       .filter(_.id === id)
     val models = Await.result(db.run(getById.result), Duration("10s"))
     if (models.isEmpty) {
@@ -49,7 +51,7 @@ class ReportRepositoryImpl @Inject() (db: Database) extends ReportRepository {
     Some(models.head)
   }
 
-  override def getByIdWithTemplate(id: String): Option[(Report, ReportTemplate)] = {
+  override def getByIdWithTemplate(workspaceId: String, id: String): Option[(Report, ReportTemplate)] = {
     val getById = query
       .filter(_.id === id)
       .join(reportTemplateQuery)
@@ -64,7 +66,7 @@ class ReportRepositoryImpl @Inject() (db: Database) extends ReportRepository {
   override def register(model: Report): Option[Report] = {
     val register = (query += model).withPinnedSession
     Await.result(db.run(register), Duration("1m"))
-    getById(model.id)
+    getById(model.workspaceId, model.id)
   }
 
   override def update(model: Report): Unit = {

@@ -9,15 +9,18 @@ class ReportsServlet @Inject() (loginService: LoginService, reportService: Repor
     extends PrivateAPIServletBase(loginService) {
 
   get("/") {
+    val workspaceId = params("workspaceId")
     val page = params("page").toInt
     val limit = params("limit").toInt
-    hookResult(Ok(reportService.getReports(page, limit)))
+    hookResult(Ok(reportService.getReports(workspaceId, page, limit)))
   }
 
   post("/") {}
 
   get("/:id") {
-    val report = reportService.getReport(params("id"))
+    val workspaceId = params("workspaceId")
+    val id = params("id")
+    val report = reportService.getReport(workspaceId, id)
     if (report.isEmpty) {
       hookResult(NotFound("report not found"))
     } else {
@@ -26,7 +29,9 @@ class ReportsServlet @Inject() (loginService: LoginService, reportService: Repor
   }
 
   get("/output/:id") {
-    val file = reportService.outputReport(params("id"))
+    val workspaceId = params("workspaceId")
+    val id = params("id")
+    val file = reportService.outputReport(workspaceId, id)
     if (file.isEmpty) {
       hookResult(NotFound("report not found"))
     } else {

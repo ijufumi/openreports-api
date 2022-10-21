@@ -11,8 +11,8 @@ import scala.concurrent.Await
 import scala.concurrent.duration.Duration
 
 class ReportTemplateRepositoryImpl @Inject() (db: Database) extends ReportTemplateRepository {
-  override def gets(offset: Int, limit: Int): (Seq[ReportTemplate], Int) = {
-    var filtered = query.drop(offset)
+  override def gets(workspaceId: String, offset: Int, limit: Int): (Seq[ReportTemplate], Int) = {
+    var filtered = query.filter(_.workspaceId === workspaceId).drop(offset)
     val count = Await.result(db.run(query.length.result), Duration("10s"))
     if (limit > 0) {
       filtered = filtered.take(limit)
@@ -20,8 +20,9 @@ class ReportTemplateRepositoryImpl @Inject() (db: Database) extends ReportTempla
     (Await.result(db.run(filtered.result), Duration("10s")), count)
   }
 
-  override def getById(id: String): Option[ReportTemplate] = {
+  override def getById(workspaceId: String, id: String): Option[ReportTemplate] = {
     val getById = query
+      .filter(_.workspaceId === workspaceId)
       .filter(_.id === id)
     val models = Await.result(db.run(getById.result), Duration("10s"))
     if (models.isEmpty) {
@@ -34,7 +35,7 @@ class ReportTemplateRepositoryImpl @Inject() (db: Database) extends ReportTempla
   override def register(model: ReportTemplate): Option[ReportTemplate] = {
     val register = (query += model).withPinnedSession
     Await.result(db.run(register), Duration("1m"))
-    getById(model.id)
+    getById(model.workspaceId, model.id)
   }
 
   override def update(model: ReportTemplate): Unit = {
