@@ -8,8 +8,9 @@ import org.scalatra.Ok
 class ReportTemplatesServlet @Inject() (loginService: LoginService, reportService: ReportService)
     extends PrivateAPIServletBase(loginService) {
   get("/") {
+    val workspaceId = params("workspaceId")
     val page = params("page").toInt
     val limit = params("limit").toInt
-    hookResult(Ok(reportService.getReportTemplates(page, limit)))
+    hookResult(Ok(reportService.getReportTemplates(workspaceId, page, limit)))
   }
 }
