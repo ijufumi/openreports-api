@@ -25,6 +25,8 @@ object Config {
   val CACHE_TTL_SEC: Long = Integer.parseInt(getEnvValue("CACHE_TTL_SEC", "3600"))
   // for api
   val AUTHORIZATION_HEADER = "Authorization"
+  val WORKSPACE_ID_HEADER = "workspaceid"
+
   // for google auth
   val GOOGLE_CLIENT_ID: String = getEnvValue("GOOGLE_CLIENT_ID", "")
   val GOOGLE_CLIENT_SECRET: String = getEnvValue("GOOGLE_CLIENT_SECRET", "")

@@ -16,4 +16,8 @@ abstract class PrivateAPIServletBase(loginService: LoginService) extends APIServ
   def getAuthorizationHeader(): String = {
     request.getHeader(Config.AUTHORIZATION_HEADER)
   }
+
+  def getWorkspaceId(): String = {
+    request.getHeader(Config.WORKSPACE_ID_HEADER)
+  }
 }

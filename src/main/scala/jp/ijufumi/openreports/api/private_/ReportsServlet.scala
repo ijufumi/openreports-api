@@ -8,8 +8,8 @@ import org.scalatra.{NotFound, Ok}
 class ReportsServlet @Inject() (loginService: LoginService, reportService: ReportService)
     extends PrivateAPIServletBase(loginService) {
 
-  get("/:workspaceId") {
-    val workspaceId = params("workspaceId")
+  get("/") {
+    val workspaceId = getWorkspaceId()
     val page = params("page").toInt
     val limit = params("limit").toInt
     hookResult(Ok(reportService.getReports(workspaceId, page, limit)))
@@ -17,8 +17,8 @@ class ReportsServlet @Inject() (loginService: LoginService, reportService: Repor
 
   post("/") {}
 
-  get("/:workspaceId/:id") {
-    val workspaceId = params("workspaceId")
+  get("/:id") {
+    val workspaceId = getWorkspaceId()
     val id = params("id")
     val report = reportService.getReport(workspaceId, id)
     if (report.isEmpty) {
@@ -28,8 +28,8 @@ class ReportsServlet @Inject() (loginService: LoginService, reportService: Repor
     }
   }
 
-  get("/:workspaceId/output/:id") {
-    val workspaceId = params("workspaceId")
+  get("/output/:id") {
+    val workspaceId = getWorkspaceId()
     val id = params("id")
     val file = reportService.outputReport(workspaceId, id)
     if (file.isEmpty) {
