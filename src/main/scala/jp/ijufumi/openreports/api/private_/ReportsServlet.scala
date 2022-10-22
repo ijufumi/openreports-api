@@ -3,6 +3,7 @@ package jp.ijufumi.openreports.api.private_
 import com.google.inject.Inject
 import jp.ijufumi.openreports.api.base.PrivateAPIServletBase
 import jp.ijufumi.openreports.services.{LoginService, ReportService}
+import jp.ijufumi.openreports.vo.request.UpdateReport
 import org.scalatra.{NotFound, Ok}
 
 class ReportsServlet @Inject() (loginService: LoginService, reportService: ReportService)
@@ -39,7 +40,11 @@ class ReportsServlet @Inject() (loginService: LoginService, reportService: Repor
     }
   }
 
-  put("/:id") {}
+  put("/:id") {
+    val id = params("id")
+    val requestParam = extractBody[UpdateReport]()
+
+  }
 
   delete("/:id") {}
 }

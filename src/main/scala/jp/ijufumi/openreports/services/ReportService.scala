@@ -14,4 +14,6 @@ trait ReportService {
   def getReport(workspaceId: String, id: String): Option[Report]
 
   def outputReport(workspaceId: String, id: String): Option[File]
+
+  def updateReport(workspaceId: String, id: String, name: String, reportTemplateId: String): Option[Report]
 }

@@ -74,6 +74,7 @@ class ReportRepositoryImpl @Inject() (db: Database) extends ReportRepository {
   }
 
   override def update(model: Report): Unit = {
-    query.insertOrUpdate(model).withPinnedSession
+    val updateQuery = query.insertOrUpdate(model).withPinnedSession
+    Await.result(db.run(updateQuery), Duration("1m"))
   }
 }

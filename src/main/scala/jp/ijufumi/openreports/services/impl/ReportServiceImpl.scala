@@ -51,4 +51,20 @@ class ReportServiceImpl @Inject() (
     val (report, template) = result.get
     outputService.output(template.filePath, report.dataSourceId)
   }
+
+  override def updateReport(
+      workspaceId: String,
+      id: String,
+      name: String,
+      reportTemplateId: String,
+  ): Option[Report] = {
+    val reportOpt = reportRepository.getById(workspaceId, id)
+    if (reportOpt.isEmpty) {
+      return None
+    }
+    val report = reportOpt.get
+    val newReport = report.copy(name = name, reportTemplateId = reportTemplateId)
+    reportRepository.update(newReport)
+    this.getReport(workspaceId, id)
+  }
 }
