@@ -67,7 +67,7 @@ object Strings {
   }
 
   def generateSlug(): String = {
-    generateRandomSting(10, useUpper = false)("-", "_")
+    generateRandomSting(10, useUpper = false)()
   }
 
   def nameFromEmail(email: String): String = {
