@@ -25,7 +25,8 @@ class ReportRepositoryImpl @Inject() (db: Database) extends ReportRepository {
       offset: Int = 0,
       limit: Int = -1,
   ): (Seq[(Report, ReportTemplate)], Int) = {
-    var getById = query.filter(_.workspaceId === workspaceId)
+    var getById = query
+      .filter(_.workspaceId === workspaceId)
       .join(reportTemplateQuery)
       .on(_.reportTemplateId === _.id)
 
@@ -51,7 +52,10 @@ class ReportRepositoryImpl @Inject() (db: Database) extends ReportRepository {
     Some(models.head)
   }
 
-  override def getByIdWithTemplate(workspaceId: String, id: String): Option[(Report, ReportTemplate)] = {
+  override def getByIdWithTemplate(
+      workspaceId: String,
+      id: String,
+  ): Option[(Report, ReportTemplate)] = {
     val getById = query
       .filter(_.id === id)
       .join(reportTemplateQuery)
