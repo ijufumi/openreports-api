@@ -4,6 +4,26 @@ import org.eclipse.jetty.webapp.WebAppContext
 import org.scalatra.servlet.ScalatraListener
 
 object JettyLauncher {
+  private val CORS_HEADERS = Seq(
+    "Cookie",
+    "Host",
+    "X-Forwarded-For",
+    "Accept-Charset",
+    "If-Modified-Since",
+    "Accept-Language",
+    "X-Forwarded-Port",
+    "Connection",
+    "X-Forwarded-Proto",
+    "User-Agent",
+    "Referer",
+    "Accept-Encoding",
+    "X-Requested-With",
+    "Authorization",
+    "Accept",
+    "Content-Type",
+    "WorkspaceId",
+  )
+
   def main(args: Array[String]) {
     val port = sys.env.getOrElse("PORT", "8080").toInt
 
@@ -15,6 +35,7 @@ object JettyLauncher {
     context.addEventListener(new ScalatraListener)
     context.addServlet(classOf[DefaultServlet], "/")
     context.setInitParameter("org.scalatra.cors.allowedOrigins", "*")
+    context.setInitParameter("org.scalatra.cors.allowedHeaders", CORS_HEADERS.mkString(","))
     context.setInitParameter("org.scalatra.cors.allowCredentials", "false")
 
     server.setHandler(context)
