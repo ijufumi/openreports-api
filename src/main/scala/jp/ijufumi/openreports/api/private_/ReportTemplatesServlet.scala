@@ -7,7 +7,7 @@ import org.scalatra.Ok
 
 class ReportTemplatesServlet @Inject() (loginService: LoginService, reportService: ReportService)
     extends PrivateAPIServletBase(loginService) {
-  get("/") {
+  get("/:workspaceId/") {
     val workspaceId = params("workspaceId")
     val page = params("page").toInt
     val limit = params("limit").toInt

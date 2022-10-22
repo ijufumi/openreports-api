@@ -8,7 +8,7 @@ import org.scalatra.{NotFound, Ok}
 class ReportsServlet @Inject() (loginService: LoginService, reportService: ReportService)
     extends PrivateAPIServletBase(loginService) {
 
-  get("/") {
+  get("/:workspaceId") {
     val workspaceId = params("workspaceId")
     val page = params("page").toInt
     val limit = params("limit").toInt
@@ -17,7 +17,7 @@ class ReportsServlet @Inject() (loginService: LoginService, reportService: Repor
 
   post("/") {}
 
-  get("/:id") {
+  get("/:workspaceId/:id") {
     val workspaceId = params("workspaceId")
     val id = params("id")
     val report = reportService.getReport(workspaceId, id)
@@ -28,7 +28,7 @@ class ReportsServlet @Inject() (loginService: LoginService, reportService: Repor
     }
   }
 
-  get("/output/:id") {
+  get("/:workspaceId/output/:id") {
     val workspaceId = params("workspaceId")
     val id = params("id")
     val file = reportService.outputReport(workspaceId, id)

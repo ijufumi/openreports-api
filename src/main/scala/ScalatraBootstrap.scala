@@ -12,8 +12,8 @@ class ScalatraBootstrap extends LifeCycle {
     mount(context, classOf[LoginServlet], "/login")
     // private endpoints
     mount(context, classOf[MembersServlet], "/members")
-    mount(context, classOf[ReportsServlet], "/:workspaceId/reports")
-    mount(context, classOf[ReportTemplatesServlet], "/:workspaceId/report_templates")
+    mount(context, classOf[ReportsServlet], "/reports")
+    mount(context, classOf[ReportTemplatesServlet], "/report_templates")
   }
 
   def mount(
