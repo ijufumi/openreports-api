@@ -4,7 +4,6 @@ import com.google.inject.Inject
 import jp.ijufumi.openreports.api.base.PrivateAPIServletBase
 import jp.ijufumi.openreports.services.{LoginService, ReportService}
 import jp.ijufumi.openreports.vo.request.UpdateReport
-import org.scalatra.{NotFound, Ok}
 
 class ReportsServlet @Inject() (loginService: LoginService, reportService: ReportService)
     extends PrivateAPIServletBase(loginService) {
@@ -13,7 +12,7 @@ class ReportsServlet @Inject() (loginService: LoginService, reportService: Repor
     val workspaceId = getWorkspaceId()
     val page = params("page").toInt
     val limit = params("limit").toInt
-    hookResult(Ok(reportService.getReports(workspaceId, page, limit)))
+    okResult(reportService.getReports(workspaceId, page, limit))
   }
 
   post("/") {}
@@ -23,9 +22,9 @@ class ReportsServlet @Inject() (loginService: LoginService, reportService: Repor
     val id = params("id")
     val report = reportService.getReport(workspaceId, id)
     if (report.isEmpty) {
-      hookResult(NotFound("report not found"))
+      notFoundResult("report not found")
     } else {
-      hookResult(Ok(report.get))
+      okResult(report.get)
     }
   }
 
@@ -34,16 +33,23 @@ class ReportsServlet @Inject() (loginService: LoginService, reportService: Repor
     val id = params("id")
     val file = reportService.outputReport(workspaceId, id)
     if (file.isEmpty) {
-      hookResult(NotFound("report not found"))
+      notFoundResult("report not found")
     } else {
-      hookResult(Ok(file.get))
+      okResult(file.get)
     }
   }
 
   put("/:id") {
     val id = params("id")
+    val workspaceId = getWorkspaceId()
     val requestParam = extractBody[UpdateReport]()
-
+    val report =
+      reportService.updateReport(workspaceId, id, requestParam.name, requestParam.reportTemplateId)
+    if (report.isEmpty) {
+      notFoundResult("Failed to update report")
+    } else {
+      okResult(report.get)
+    }
   }
 
   delete("/:id") {}
