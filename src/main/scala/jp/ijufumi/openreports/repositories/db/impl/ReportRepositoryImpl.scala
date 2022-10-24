@@ -5,6 +5,7 @@ import jp.ijufumi.openreports.entities.{Report, ReportTemplate}
 import jp.ijufumi.openreports.entities.queries.{reportQuery => query, reportTemplateQuery}
 import slick.jdbc.PostgresProfile.api._
 import jp.ijufumi.openreports.repositories.db.ReportRepository
+import jp.ijufumi.openreports.utils.Dates
 import slick.jdbc.JdbcBackend.Database
 
 import scala.concurrent.Await
@@ -29,6 +30,7 @@ class ReportRepositoryImpl @Inject() (db: Database) extends ReportRepository {
       .filter(_.workspaceId === workspaceId)
       .join(reportTemplateQuery)
       .on(_.reportTemplateId === _.id)
+      .sortBy(_._1.id)
 
     val count = Await.result(db.run(getById.length.result), Duration("10s"))
     if (offset > 0) {
@@ -74,7 +76,8 @@ class ReportRepositoryImpl @Inject() (db: Database) extends ReportRepository {
   }
 
   override def update(model: Report): Unit = {
-    val updateQuery = query.insertOrUpdate(model).withPinnedSession
+    val newModel = model.copy(updatedAt = Dates.currentTimestamp())
+    val updateQuery = query.insertOrUpdate(newModel).withPinnedSession
     Await.result(db.run(updateQuery), Duration("1m"))
   }
 }
