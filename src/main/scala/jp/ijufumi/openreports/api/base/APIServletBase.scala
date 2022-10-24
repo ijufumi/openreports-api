@@ -2,7 +2,7 @@ package jp.ijufumi.openreports.api.base
 
 import jp.ijufumi.openreports.utils.Logging
 import org.json4s.{DefaultFormats, Formats}
-import org.scalatra.{ActionResult, CorsSupport, Ok, ScalatraServlet}
+import org.scalatra.{ActionResult, CorsSupport, Ok, NotFound, ScalatraServlet}
 import org.scalatra.json.JacksonJsonSupport
 
 abstract class APIServletBase
@@ -19,6 +19,14 @@ abstract class APIServletBase
 
   options("/*") {
     Ok(headers = Map("Access-Control-Allow-Origin" -> request.getHeader("Origin")))
+  }
+
+  def okResult(obj: Any): ActionResult = {
+    hookResult(Ok(obj))
+  }
+
+  def notFoundResult(obj: Any): ActionResult = {
+    hookResult(NotFound(obj))
   }
 
   def hookResult(actionResult: ActionResult): ActionResult = {
