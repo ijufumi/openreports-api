@@ -42,6 +42,7 @@ entity driver_types {
 
 entity reports {
   * id
+  * workspace_id
   * name
   * report_template_id
   * data_source_id
@@ -49,16 +50,18 @@ entity reports {
 
 entity report_templates {
   * id
+  * workspace_id
   * name
   * file_path
 }
 
-workspaces --{ workspace_members
+workspaces --r{ workspace_members
 workspace_members }-- members
-workspaces --{ data_sources
+workspaces --l{ data_sources
 workspaces --{ reports
 workspaces --{ report_templates
 reports }-- report_templates
 driver_types --{ data_sources
+data_sources --{ reports
 
 @enduml
