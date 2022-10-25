@@ -51,8 +51,16 @@ entity reports {
 entity report_templates {
   * id
   * workspace_id
+  * storage_id
   * name
   * file_path
+}
+
+entity storages {
+  * id
+  * workspace_id
+  * name
+  * type: [local, s3]
 }
 
 workspaces --r{ workspace_members
@@ -63,5 +71,7 @@ workspaces --{ report_templates
 reports }-- report_templates
 driver_types --{ data_sources
 data_sources --{ reports
+workspaces --{ storages
+storages --{ report_templates
 
 @enduml
