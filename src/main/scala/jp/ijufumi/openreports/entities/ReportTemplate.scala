@@ -1,5 +1,6 @@
 package jp.ijufumi.openreports.entities
 
+import jp.ijufumi.openreports.entities.enums.StorageTypes._
 import jp.ijufumi.openreports.utils.Dates
 import slick.jdbc.PostgresProfile.api._
 
@@ -8,6 +9,8 @@ case class ReportTemplate(
     name: String,
     filePath: String,
     workspaceId: String,
+    storageType: StorageType,
+    fileSize: Long,
     createdAt: Long = Dates.currentTimestamp(),
     updatedAt: Long = Dates.currentTimestamp(),
     versions: Long = 1,
@@ -18,10 +21,13 @@ class ReportTemplates(tag: Tag)
       tag,
       "report_templates",
     ) {
+
   def id = column[String]("id", O.PrimaryKey)
   def name = column[String]("name")
   def filePath = column[String]("file_path")
   def workspaceId = column[String]("workspace_id")
+  def storageType = column[StorageType]("storage_type")
+  def fileSize = column[Long]("file_size")
   def createdAt = column[Long]("created_at")
   def updatedAt = column[Long]("updated_at")
   def versions = column[Long]("versions")
@@ -32,6 +38,8 @@ class ReportTemplates(tag: Tag)
       name,
       filePath,
       workspaceId,
+      storageType,
+      fileSize,
       createdAt,
       updatedAt,
       versions,

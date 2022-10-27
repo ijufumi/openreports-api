@@ -115,15 +115,19 @@ class V000001_01__Create_data extends BaseJavaMigration {
   def template(context: Context, workspaceId: String, name: String): String = {
     val id = IDs.ulid()
     val filePath = "resources/report/sample.xlsx"
+    val storageType = "local"
+    val fileSize = 1
     val statement = {
       context.getConnection.prepareStatement(
-        s"INSERT INTO report_templates (id, name, file_path, workspace_id) VALUES (?, ?, ?, ?)",
+        s"INSERT INTO report_templates (id, name, file_path, workspace_id, storage_type, file_size) VALUES (?, ?, ?, ?, ?, ?)",
       )
     }
     statement.setString(1, id)
     statement.setString(2, name)
     statement.setString(3, filePath)
     statement.setString(4, workspaceId)
+    statement.setString(4, storageType)
+    statement.setLong(4, fileSize)
     try statement.execute
     finally if (statement != null) statement.close()
 

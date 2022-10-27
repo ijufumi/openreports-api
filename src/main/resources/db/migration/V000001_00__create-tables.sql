@@ -76,6 +76,8 @@ create table report_templates
   name         varchar(250) not null,
   file_path    varchar(250) not null,
   workspace_id varchar(40),
+  storage_type varchar(20)  not null default "local",
+  file_size    bigint       not null default 0,
   created_at   bigint       not null default extract(epoch from current_timestamp at time zone 'UTC'),
   updated_at   bigint       not null default extract(epoch from current_timestamp at time zone 'UTC'),
   versions     bigint       not null default 0,
@@ -100,3 +102,16 @@ create table reports
   foreign key (workspace_id) references workspaces (id)
 );
 
+-- create storages
+create table storages
+(
+  id                    varchar(40) primary key,
+  workspace_id          varchar(40),
+  aws_access_key_id     varchar(40),
+  aws_secret_access_key varchar(40),
+  created_at            bigint not null default extract(epoch from current_timestamp at time zone 'UTC'),
+  updated_at            bigint not null default extract(epoch from current_timestamp at time zone 'UTC'),
+  versions              bigint not null default 0,
+
+  foreign key (workspace_id) references workspaces (id)
+)
