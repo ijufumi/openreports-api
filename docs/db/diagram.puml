@@ -54,7 +54,7 @@ entity report_templates {
   * storage_id
   * name
   * file_path
-  * type: [local, s3]
+  * storage_type: [local, s3]
   * file_size
 }
 
