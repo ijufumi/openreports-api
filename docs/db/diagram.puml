@@ -54,13 +54,14 @@ entity report_templates {
   * storage_id
   * name
   * file_path
+  * type: [local, s3]
 }
 
 entity storages {
   * id
   * workspace_id
-  * name
-  * type: [local, s3]
+  * aws_access_key_id
+  * aws_secret_access_key
 }
 
 workspaces --r{ workspace_members
