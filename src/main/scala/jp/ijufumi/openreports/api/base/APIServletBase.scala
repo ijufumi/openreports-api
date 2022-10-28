@@ -1,7 +1,9 @@
 package jp.ijufumi.openreports.api.base
 
 import jp.ijufumi.openreports.utils.Logging
+import jp.ijufumi.openreports.entities.enums.StorageTypes
 import org.json4s.{DefaultFormats, Formats}
+import org.json4s.ext.EnumNameSerializer
 import org.scalatra.{ActionResult, CorsSupport, Ok, NotFound, ScalatraServlet}
 import org.scalatra.json.JacksonJsonSupport
 
@@ -12,6 +14,7 @@ abstract class APIServletBase
     with CorsSupport {
   override protected implicit lazy val jsonFormats: Formats = {
     DefaultFormats ++ org.json4s.ext.JavaTimeSerializers.all
+    DefaultFormats + new EnumNameSerializer(StorageTypes)
   }
 
   before() {
