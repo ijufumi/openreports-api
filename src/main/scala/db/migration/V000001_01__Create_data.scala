@@ -126,8 +126,8 @@ class V000001_01__Create_data extends BaseJavaMigration {
     statement.setString(2, name)
     statement.setString(3, filePath)
     statement.setString(4, workspaceId)
-    statement.setString(4, storageType)
-    statement.setLong(5, fileSize)
+    statement.setString(5, storageType)
+    statement.setLong(6, fileSize)
     try statement.execute
     finally if (statement != null) statement.close()
 
