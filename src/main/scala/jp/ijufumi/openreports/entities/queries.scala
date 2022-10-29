@@ -10,4 +10,5 @@ object queries {
   val reportTemplateQuery = TableQuery[ReportTemplates]
   val workspaceMemberQuery = TableQuery[WorkspaceMembers]
   val workspaceQuery = TableQuery[Workspaces]
+  val storageQuery = TableQuery[Storages]
 }
