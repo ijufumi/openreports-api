@@ -3,9 +3,9 @@ package jp.ijufumi.openreports.repositories.db
 import jp.ijufumi.openreports.entities.Storage
 
 trait StorageRepository {
-  def getById(id: String): Option[Storage]
+  def getById(workspaceId: String, id: String): Option[Storage]
 
-  def getAll: Seq[Storage]
+  def gets(workspaceId: String): Seq[Storage]
 
   def register(storage: Storage): Option[Storage]
 
