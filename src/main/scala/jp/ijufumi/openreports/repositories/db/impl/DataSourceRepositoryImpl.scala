@@ -23,7 +23,7 @@ class DataSourceRepositoryImpl @Inject() (db: Database) extends DataSourceReposi
     Some(dataSources.head)
   }
 
-  override def getAll(): Seq[DataSource] = Await.result(db.run(query.result), Duration("10s"))
+  override def getAll: Seq[DataSource] = Await.result(db.run(query.result), Duration("10s"))
 
   override def register(dataSource: DataSource): Option[(DataSource, DriverType)] = {
     Await.result(db.run(query += dataSource), Duration("1m"))
