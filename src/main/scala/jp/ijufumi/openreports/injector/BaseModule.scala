@@ -15,4 +15,8 @@ abstract class BaseModule extends AbstractModule {
       .to(implementClass)
       .in(classOf[Singleton])
   }
+
+  def bindInstance[T](interfaceClass: java.lang.Class[T], instance: T) = {
+    bind(interfaceClass).toInstance(instance)
+  }
 }
