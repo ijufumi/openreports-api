@@ -26,7 +26,6 @@ class DataSourceServiceImpl @Inject() (dataSourceRepository: DataSourceRepositor
       config.setAutoCommit(false)
       config.setDriverClassName(driverType.jdbcDriverClass)
       DataSourcePool.add(dataSource.name, config)
-      return DataSourcePool.connection(dataSource.name).get
     }
     DataSourcePool.connection(dataSource.name).get
   }
