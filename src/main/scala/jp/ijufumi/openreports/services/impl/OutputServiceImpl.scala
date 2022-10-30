@@ -2,6 +2,7 @@ package jp.ijufumi.openreports.services.impl
 
 import com.google.inject.Inject
 import jp.ijufumi.openreports.config.Config
+import jp.ijufumi.openreports.repositories.system.LocalFileRepository
 import jp.ijufumi.openreports.services.{DataSourceService, OutputService}
 import jp.ijufumi.openreports.utils.{Dates, Logging}
 
@@ -10,12 +11,14 @@ import org.jxls.common.Context
 import org.jxls.jdbc.JdbcHelper
 import org.jxls.util.JxlsHelper
 
-import java.io.{File, InputStream}
+import java.io.File
 import java.nio.file.{Files, FileSystems}
 import java.time.LocalDateTime
 
-class OutputServiceImpl @Inject() (dataSourceService: DataSourceService)
-    extends OutputService
+class OutputServiceImpl @Inject() (
+    dataSourceService: DataSourceService,
+    localFileRepository: LocalFileRepository,
+) extends OutputService
     with Logging {
   override def output(filePath: String, dataSourceId: String): Option[File] = {
     val inputFileName = new File(filePath).getName
@@ -37,7 +40,7 @@ class OutputServiceImpl @Inject() (dataSourceService: DataSourceService)
       val context = new Context()
       context.putVar("conn", conn)
       context.putVar("jdbc", jdbcHelper)
-      Using(toInputStream(filePath)) { inputs =>
+      Using(localFileRepository.get(filePath)) { inputs =>
         Using(Files.newOutputStream(outputFile)) { outputs =>
           JxlsHelper.getInstance().processTemplate(inputs, outputs, context)
         }
@@ -45,16 +48,5 @@ class OutputServiceImpl @Inject() (dataSourceService: DataSourceService)
     }
 
     Some(outputFile.toFile)
-  }
-
-  private def toInputStream(filePath: String): InputStream = {
-    val fullPath = FileSystems.getDefault.getPath(Config.OUTPUT_FILE_PATH, filePath)
-    if (!fullPath.toString.startsWith("/")) {
-      getClass.getClassLoader.getResourceAsStream(
-        fullPath.toString,
-      )
-    } else {
-      Files.newInputStream(fullPath)
-    }
   }
 }
