@@ -46,7 +46,7 @@ private object DataSourcePool {
   def connection(name: String): Option[Connection] = {
     val storedPool = pool.get(name)
     if (storedPool.isEmpty) {
-      return null
+      return None
     }
     Some(storedPool.get.getConnection)
   }
