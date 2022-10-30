@@ -35,5 +35,5 @@ object Config {
 
   // for report
   val TEMPLATE_PATH: String = getEnvValue("TEMPLATE_PATH", "report")
-  val OUTPUT_FILE_PATH: String = getEnvValue("OUTPUT_FILE_PATH", "/tmp/report/outputz1")
+  val OUTPUT_FILE_PATH: String = getEnvValue("OUTPUT_FILE_PATH", "/tmp/report/output")
 }
