@@ -2,8 +2,9 @@ package jp.ijufumi.openreports.services.impl
 
 import com.google.inject.Inject
 import jp.ijufumi.openreports.config.Config
+import jp.ijufumi.openreports.entities.enums.StorageTypes.StorageType
 import jp.ijufumi.openreports.repositories.system.LocalFileRepository
-import jp.ijufumi.openreports.services.{DataSourceService, OutputService}
+import jp.ijufumi.openreports.services.{DataSourceService, FileService, OutputService}
 import jp.ijufumi.openreports.utils.{Dates, Logging}
 
 import scala.util.Using
@@ -17,10 +18,15 @@ import java.time.LocalDateTime
 
 class OutputServiceImpl @Inject() (
     dataSourceService: DataSourceService,
-    localFileRepository: LocalFileRepository,
+    fileService: FileService,
 ) extends OutputService
     with Logging {
-  override def output(filePath: String, dataSourceId: String): Option[File] = {
+  override def output(
+      workspaceId: String,
+      filePath: String,
+      storageType: StorageType,
+      dataSourceId: String,
+  ): Option[File] = {
     val inputFileName = new File(filePath).getName
     val dotIndex = inputFileName.lastIndexOf('.')
     val suffix = if (dotIndex != -1) inputFileName.substring(dotIndex) else ""
@@ -40,7 +46,7 @@ class OutputServiceImpl @Inject() (
       val context = new Context()
       context.putVar("conn", conn)
       context.putVar("jdbc", jdbcHelper)
-      Using(localFileRepository.get(filePath)) { inputs =>
+      Using(fileService.get(workspaceId, filePath, storageType)) { inputs =>
         Using(Files.newOutputStream(outputFile)) { outputs =>
           JxlsHelper.getInstance().processTemplate(inputs, outputs, context)
         }

@@ -49,7 +49,7 @@ class ReportServiceImpl @Inject() (
       return None
     }
     val (report, template) = result.get
-    outputService.output(template.filePath, report.dataSourceId)
+    outputService.output(workspaceId, template.filePath, template.storageType, report.dataSourceId)
   }
 
   override def updateReport(
