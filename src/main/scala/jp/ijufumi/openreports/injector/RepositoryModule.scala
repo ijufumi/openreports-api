@@ -19,5 +19,6 @@ class RepositoryModule extends BaseModule {
     // system
     bindAsSingleton(classOf[GoogleRepository], classOf[GoogleRepositoryImpl])
     bindAsSingleton(classOf[LocalFileRepository], classOf[LocalFileRepositoryImpl])
+    bindAsSingleton(classOf[AwsS3Repository], classOf[AwsS3RepositoryImpl])
   }
 }

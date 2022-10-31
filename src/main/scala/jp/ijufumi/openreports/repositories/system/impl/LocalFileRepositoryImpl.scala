@@ -21,4 +21,6 @@ class LocalFileRepositoryImpl extends LocalFileRepository {
   override def create(key: String, file: InputStream): Unit = ???
 
   override def delete(key: String): Unit = ???
+
+  override def url(key: String): String = ???
 }
