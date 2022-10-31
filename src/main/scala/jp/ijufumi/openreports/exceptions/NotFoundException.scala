@@ -1,3 +1,4 @@
 package jp.ijufumi.openreports.exceptions
 
-class NotFoundException extends Exception {}
+class NotFoundException(message: String = null, cause: Throwable = null)
+    extends Exception(message, cause) {}
