@@ -1,6 +1,5 @@
 package jp.ijufumi.openreports.injector
 
-import com.google.inject.{AbstractModule, Singleton}
 import jp.ijufumi.openreports.services._
 import jp.ijufumi.openreports.services.impl._
 
@@ -11,5 +10,6 @@ class ServiceModule extends BaseModule {
     bindAsSingleton(classOf[ReportService], classOf[ReportServiceImpl])
     bindAsSingleton(classOf[OutputService], classOf[OutputServiceImpl])
     bindAsSingleton(classOf[DataSourceService], classOf[DataSourceServiceImpl])
+    bindAsSingleton(classOf[FileService], classOf[FileServiceImpl])
   }
 }
