@@ -4,7 +4,7 @@ import com.google.inject.Inject
 import jp.ijufumi.openreports.config.Config
 import jp.ijufumi.openreports.entities.enums.StorageTypes.StorageType
 import jp.ijufumi.openreports.repositories.system.LocalFileRepository
-import jp.ijufumi.openreports.services.{DataSourceService, FileService, OutputService}
+import jp.ijufumi.openreports.services.{DataSourceService, StorageService, OutputService}
 import jp.ijufumi.openreports.utils.{Dates, Logging}
 
 import scala.util.Using
@@ -17,8 +17,8 @@ import java.nio.file.{Files, FileSystems}
 import java.time.LocalDateTime
 
 class OutputServiceImpl @Inject() (
-    dataSourceService: DataSourceService,
-    fileService: FileService,
+                                    dataSourceService: DataSourceService,
+                                    fileService: StorageService,
 ) extends OutputService
     with Logging {
   override def output(

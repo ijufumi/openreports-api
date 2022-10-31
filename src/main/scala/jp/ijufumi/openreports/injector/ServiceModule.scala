@@ -10,6 +10,6 @@ class ServiceModule extends BaseModule {
     bindAsSingleton(classOf[ReportService], classOf[ReportServiceImpl])
     bindAsSingleton(classOf[OutputService], classOf[OutputServiceImpl])
     bindAsSingleton(classOf[DataSourceService], classOf[DataSourceServiceImpl])
-    bindAsSingleton(classOf[FileService], classOf[FileServiceImpl])
+    bindAsSingleton(classOf[StorageService], classOf[StorageServiceImpl])
   }
 }

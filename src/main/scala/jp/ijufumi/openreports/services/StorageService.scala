@@ -4,7 +4,7 @@ import jp.ijufumi.openreports.entities.enums.StorageTypes.StorageType
 
 import java.io.InputStream
 
-trait FileService {
+trait StorageService {
   def url(workspaceId: String, key: String, storageType: StorageType): String
 
   def get(workspaceId: String, key: String, storageType: StorageType): InputStream
