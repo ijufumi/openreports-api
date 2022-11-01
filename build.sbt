@@ -9,6 +9,7 @@ val Json4sVersion = "4.0.6"
 val SLF4JVersion = "2.0.3"
 val LogbackVersion = "1.4.3"
 val FlywayVersion = "9.4.0"
+val AWSSDKVersion = "2.18.7"
 
 ThisBuild / scalaVersion := Scala212Version
 ThisBuild / organization := "jp.ijufumi"
@@ -46,6 +47,7 @@ lazy val root = (project in file("."))
       "com.github.cb372" %% "scalacache-cats-effect" % ScalaCacheVersion exclude ("org.slf4j", "slf4j-api"),
       "com.softwaremill.sttp.client3" %% "core" % SttpVersion,
       "com.softwaremill.sttp.client3" %% "json4s" % SttpVersion,
+      "software.amazon.awssdk" % "s3" % AWSSDKVersion,
       "io.github.cdimascio" % "dotenv-java" % "2.2.4",
       "com.chatwork" %% "scala-ulid" % "1.0.24",
       "org.jxls" % "jxls" % "2.12.0",
