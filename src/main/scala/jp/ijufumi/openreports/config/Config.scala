@@ -33,6 +33,10 @@ object Config {
   val GOOGLE_AUTH_STATE_CACHE_TTL_SEC: Long =
     Integer.parseInt(getEnvValue("GOOGLE_AUTH_STATE_CACHE_TTL_SEC", "60"))
 
+  // for AWS
+  val AWS_ACCESS_KEY_ID: String = getEnvValue("AWS_ACCESS_KEY_ID")
+  val AWS_SECRET_ACCESS_KEY: String = getEnvValue("AWS_SECRET_ACCESS_KEY")
+
   // for report
   val TEMPLATE_PATH: String = getEnvValue("TEMPLATE_PATH", "report")
   val OUTPUT_FILE_PATH: String = getEnvValue("OUTPUT_FILE_PATH", "/tmp/report/output")
