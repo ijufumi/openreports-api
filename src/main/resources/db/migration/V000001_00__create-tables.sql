@@ -109,6 +109,7 @@ create table storages
   workspace_id          varchar(40) not null,
   aws_access_key_id     varchar(40),
   aws_secret_access_key varchar(40),
+  aws_region            varchar(40),
   created_at            bigint      not null default extract(epoch from current_timestamp at time zone 'UTC'),
   updated_at            bigint      not null default extract(epoch from current_timestamp at time zone 'UTC'),
   versions              bigint      not null default 0,

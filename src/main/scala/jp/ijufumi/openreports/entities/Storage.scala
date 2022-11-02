@@ -8,6 +8,7 @@ case class Storage(
     workspaceId: String,
     awsAccessKey: String,
     awsSecretKeyId: String,
+    awsRegion: String,
     createdAt: Long = Dates.currentTimestamp(),
     updatedAt: Long = Dates.currentTimestamp(),
     versions: Long = 1,
@@ -16,14 +17,16 @@ case class Storage(
 class Storages(tag: Tag) extends EntityBase[Storage](tag, "storages") {
   def id = column[String]("id", O.PrimaryKey)
   def workspaceId = column[String]("workspace_id")
-  def awsAccessKey = column[String]("workspace_id")
-  def awsSecretKeyId = column[String]("workspace_id")
+  def awsAccessKey = column[String]("aws_access_key")
+  def awsSecretKeyId = column[String]("aws_secret_key_id")
+  def awsRegion = column[String]("aws_region")
 
   def * = (
     id,
     workspaceId,
     awsAccessKey,
     awsSecretKeyId,
+    awsRegion,
     createdAt,
     updatedAt,
     versions,
