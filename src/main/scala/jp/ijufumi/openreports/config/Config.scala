@@ -36,6 +36,7 @@ object Config {
   // for AWS
   val AWS_ACCESS_KEY_ID: String = getEnvValue("AWS_ACCESS_KEY_ID")
   val AWS_SECRET_ACCESS_KEY: String = getEnvValue("AWS_SECRET_ACCESS_KEY")
+  val AWS_DEFAULT_REGION: String = getEnvValue("AWS_DEFAULT_REGION")
 
   // for report
   val TEMPLATE_PATH: String = getEnvValue("TEMPLATE_PATH", "report")
