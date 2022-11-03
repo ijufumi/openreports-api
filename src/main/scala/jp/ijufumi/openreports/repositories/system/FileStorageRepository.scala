@@ -3,11 +3,11 @@ package jp.ijufumi.openreports.repositories.system
 import java.io.InputStream
 
 trait FileStorageRepository {
-  def url(key: String): String
+  def url(workspaceId: String, key: String): String
 
-  def get(key: String): InputStream
+  def get(workspaceId: String, key: String): InputStream
 
-  def create(key: String, file: InputStream): Unit
+  def create(workspaceId: String, key: String, file: InputStream): Unit
 
-  def delete(key: String): Unit
+  def delete(workspaceId: String, key: String): Unit
 }

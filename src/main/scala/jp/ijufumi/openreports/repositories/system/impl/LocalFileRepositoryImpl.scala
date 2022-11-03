@@ -7,7 +7,7 @@ import java.io.InputStream
 import java.nio.file.{Files, FileSystems}
 
 class LocalFileRepositoryImpl extends LocalFileRepository {
-  override def get(key: String): InputStream = {
+  override def get(workspaceId: String, key: String): InputStream = {
     val fullPath = FileSystems.getDefault.getPath(Config.OUTPUT_FILE_PATH, key)
     if (!fullPath.toString.startsWith("/")) {
       getClass.getClassLoader.getResourceAsStream(
@@ -18,9 +18,9 @@ class LocalFileRepositoryImpl extends LocalFileRepository {
     }
   }
 
-  override def create(key: String, file: InputStream): Unit = ???
+  override def create(workspaceId: String, key: String, file: InputStream): Unit = ???
 
-  override def delete(key: String): Unit = ???
+  override def delete(workspaceId: String, key: String): Unit = ???
 
-  override def url(key: String): String = ???
+  override def url(workspaceId: String, key: String): String = ???
 }
