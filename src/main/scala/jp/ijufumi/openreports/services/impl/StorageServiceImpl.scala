@@ -17,7 +17,7 @@ class StorageServiceImpl @Inject()(
 
   override def get(workspaceId: String, key: String, storageType: StorageType): InputStream = {
     if (storageType == StorageTypes.Local) {
-      return localFileRepository.get(key)
+      return localFileRepository.get(workspaceId, key)
     }
     null
   }

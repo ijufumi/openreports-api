@@ -8,7 +8,7 @@ import java.nio.file.{Files, FileSystems}
 
 class LocalFileRepositoryImpl extends LocalFileRepository {
   override def get(workspaceId: String, key: String): InputStream = {
-    val fullPath = FileSystems.getDefault.getPath(Config.OUTPUT_FILE_PATH, key)
+    val fullPath = FileSystems.getDefault.getPath(Config.TEMPLATE_PATH, workspaceId, key)
     if (!fullPath.toString.startsWith("/")) {
       getClass.getClassLoader.getResourceAsStream(
         fullPath.toString,
