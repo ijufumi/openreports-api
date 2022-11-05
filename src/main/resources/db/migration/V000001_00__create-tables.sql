@@ -92,7 +92,7 @@ create table reports
   name               varchar(250) not null,
   report_template_id varchar(40)  not null,
   workspace_id       varchar(40)  not null,
-  data_source_id     varchar(40)  not null,
+  data_source_id     varchar(40),
   created_at         bigint       not null default extract(epoch from current_timestamp at time zone 'UTC'),
   updated_at         bigint       not null default extract(epoch from current_timestamp at time zone 'UTC'),
   versions           bigint       not null default 0,
