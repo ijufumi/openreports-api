@@ -11,5 +11,6 @@ class ServiceModule extends BaseModule {
     bindAsSingleton(classOf[OutputService], classOf[OutputServiceImpl])
     bindAsSingleton(classOf[DataSourceService], classOf[DataSourceServiceImpl])
     bindAsSingleton(classOf[StorageService], classOf[StorageServiceImpl])
+    bindAsSingleton(classOf[WorkspaceService], classOf[WorkspaceServiceImpl])
   }
 }
