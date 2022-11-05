@@ -1,10 +1,10 @@
 package jp.ijufumi.openreports.services.impl
 
-import jp.ijufumi.openreports.services.LoginService
+import jp.ijufumi.openreports.services.{LoginService, WorkspaceService}
 import jp.ijufumi.openreports.repositories.system._
 import com.google.inject.{Inject, Singleton}
 import jp.ijufumi.openreports.config.Config
-import jp.ijufumi.openreports.utils.{Hash, IDs, Logging, Strings}
+import jp.ijufumi.openreports.utils.{Hash, IDs, Logging}
 import jp.ijufumi.openreports.vo.response.{Member => MemberReponse}
 import jp.ijufumi.openreports.cache.{CacheKeys, CacheWrapper}
 import jp.ijufumi.openreports.entities._
@@ -16,8 +16,8 @@ class LoginServiceImpl @Inject() (
     cacheWrapper: CacheWrapper,
     memberRepository: MemberRepository,
     workspaceRepository: WorkspaceRepository,
-    workspaceMemberRepository: WorkspaceMemberRepository,
     googleRepository: GoogleRepository,
+    workspaceService: WorkspaceService,
 ) extends LoginService
     with Logging {
   override def login(email: String, password: String): Option[MemberReponse] = {
@@ -97,11 +97,7 @@ class LoginServiceImpl @Inject() (
 
     try {
       val newMemberOpt = memberRepository.register(member)
-      val workspaceName = Strings.nameFromEmail(userInfo.email) + "'s workspace"
-      val workspace = Workspace(IDs.ulid(), workspaceName, Strings.generateSlug())
-      workspaceRepository.register(workspace)
-      val workspaceMember = WorkspaceMember(workspace.id, member.id)
-      workspaceMemberRepository.register(workspaceMember)
+      workspaceService.createAndRelevant(member.id, member.email)
       makeResponse(newMemberOpt.get)
     } catch {
       case e: Throwable =>
