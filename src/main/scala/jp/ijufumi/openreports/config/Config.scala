@@ -23,6 +23,9 @@ object Config {
     Integer.parseInt(getEnvValue("API_TOKEN_EXPIRATION_SEC", "3600"))
   // for cache
   val CACHE_TTL_SEC: Long = Integer.parseInt(getEnvValue("CACHE_TTL_SEC", "3600"))
+  // for presigned url
+  val PRESIGNED_URL_EXPIRATION: Long =
+    Integer.parseInt(getEnvValue("PRESIGNED_URL_EXPIRATION", "3600"))
   // for api
   val AUTHORIZATION_HEADER = "Authorization"
   val WORKSPACE_ID_HEADER = "workspaceid"

@@ -3,7 +3,7 @@ package jp.ijufumi.openreports.repositories.system.impl
 import jp.ijufumi.openreports.config.Config
 import jp.ijufumi.openreports.repositories.system.LocalFileRepository
 
-import java.io.InputStream
+import java.io.{File, InputStream}
 import java.nio.file.{Files, FileSystems}
 
 class LocalFileRepositoryImpl extends LocalFileRepository {
@@ -18,7 +18,7 @@ class LocalFileRepositoryImpl extends LocalFileRepository {
     }
   }
 
-  override def create(workspaceId: String, key: String, file: InputStream): Unit = ???
+  override def create(workspaceId: String, key: String, file: File): Unit = ???
 
   override def delete(workspaceId: String, key: String): Unit = ???
 
