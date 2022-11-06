@@ -35,7 +35,7 @@ class AwsS3RepositoryImpl @Inject() (storageRepository: StorageRepository) exten
   }
 
   private def createClient(storage: Storage): S3Client = {
-    val credentials = AwsBasicCredentials.create(storage.awsAccessKey, storage.awsSecretKeyId)
+    val credentials = AwsBasicCredentials.create(storage.awsAccessKeyId, storage.awsSecretAccessKey)
     val region = Region.of(storage.awsRegion)
     S3Client
       .builder()
