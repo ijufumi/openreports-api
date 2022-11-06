@@ -40,10 +40,19 @@ class OutputServiceImpl @Inject() (
       Files.createDirectories(outputDirectory)
     }
 
+    val context: Context = new Context()
+    context.putVar("today", Dates.todayString())
     if (dataSourceId == null) {
-      this.output(workspaceId, filePath, storageType, outputFile)
+      this.output(workspaceId, filePath, storageType, outputFile, context)
     } else {
-      this.outputWithDataSource(workspaceId, filePath, storageType, dataSourceId, outputFile)
+      this.outputWithDataSource(
+        workspaceId,
+        filePath,
+        storageType,
+        dataSourceId,
+        outputFile,
+        context,
+      )
     }
 
     Some(outputFile.toFile)
@@ -55,10 +64,10 @@ class OutputServiceImpl @Inject() (
       storageType: StorageType,
       dataSourceId: String,
       outputFile: Path,
+      context: Context,
   ): Unit = {
     Using(dataSourceService.connection(dataSourceId)) { conn =>
       val jdbcHelper = new JdbcHelper(conn)
-      val context = new Context()
       context.putVar("conn", conn)
       context.putVar("jdbc", jdbcHelper)
       this.output(workspaceId, filePath, storageType, outputFile, context)
@@ -70,7 +79,7 @@ class OutputServiceImpl @Inject() (
       filePath: String,
       storageType: StorageType,
       outputFile: Path,
-      context: Context = new Context(),
+      context: Context,
   ): Unit = {
     Using(storageService.get(workspaceId, filePath, storageType)) { inputs =>
       Using(Files.newOutputStream(outputFile)) { outputs =>

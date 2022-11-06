@@ -12,6 +12,10 @@ object Dates {
     DateTimeFormatter.ofPattern(pattern).format(dateTime)
   }
 
+  def todayString(pattern: String = "yyyyMMddHHMMss"): String = {
+    this.format(LocalDateTime.now())
+  }
+
   def currentTimestamp(): Long = {
     Instant.now().getEpochSecond
   }
