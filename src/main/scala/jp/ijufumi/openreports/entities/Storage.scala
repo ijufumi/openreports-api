@@ -6,8 +6,8 @@ import slick.jdbc.PostgresProfile.api._
 case class Storage(
     id: String,
     workspaceId: String,
-    awsAccessKey: String = "",
-    awsSecretKeyId: String = "",
+    awsAccessKeyId: String = "",
+    awsSecretAccessKey: String = "",
     awsRegion: String = "",
     s3BucketName: String = "",
     createdAt: Long = Dates.currentTimestamp(),
@@ -18,16 +18,16 @@ case class Storage(
 class Storages(tag: Tag) extends EntityBase[Storage](tag, "storages") {
   def id = column[String]("id", O.PrimaryKey)
   def workspaceId = column[String]("workspace_id")
-  def awsAccessKey = column[String]("aws_access_key")
-  def awsSecretKeyId = column[String]("aws_secret_key_id")
+  def awsAccessKeyId = column[String]("aws_access_key_id")
+  def awsSecretAccessKey = column[String]("aws_secret_access_key")
   def awsRegion = column[String]("aws_region")
   def s3BucketName = column[String]("s3_bucket_name")
 
   def * = (
     id,
     workspaceId,
-    awsAccessKey,
-    awsSecretKeyId,
+    awsAccessKeyId,
+    awsSecretAccessKey,
     awsRegion,
     s3BucketName,
     createdAt,
