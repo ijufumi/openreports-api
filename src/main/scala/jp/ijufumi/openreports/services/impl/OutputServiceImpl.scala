@@ -32,7 +32,7 @@ class OutputServiceImpl @Inject() (
     val timeStamp = Dates.format(LocalDateTime.now())
     val outputFile = FileSystems.getDefault.getPath(
       Config.OUTPUT_FILE_PATH,
-      s"/tmp/${inputFileName.substring(0, dotIndex)}_${timeStamp}${suffix}",
+      s"/tmp/${inputFileName.substring(0, dotIndex)}_$timeStamp$suffix",
     )
 
     val outputDirectory = outputFile.getParent
@@ -81,7 +81,8 @@ class OutputServiceImpl @Inject() (
       outputFile: Path,
       context: Context,
   ): Unit = {
-    Using(storageService.get(workspaceId, filePath, storageType)) { inputs =>
+    val inputFile = storageService.get(workspaceId, filePath, storageType)
+    Using(Files.newInputStream(inputFile)) { inputs =>
       Using(Files.newOutputStream(outputFile)) { outputs =>
         JxlsHelper.getInstance().processTemplate(inputs, outputs, context)
       }
