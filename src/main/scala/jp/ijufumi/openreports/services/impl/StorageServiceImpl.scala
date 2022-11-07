@@ -6,28 +6,34 @@ import jp.ijufumi.openreports.repositories.system.{AwsS3Repository, LocalFileRep
 import jp.ijufumi.openreports.entities.enums.StorageTypes
 import jp.ijufumi.openreports.entities.enums.StorageTypes.StorageType
 
-import java.io.InputStream
+import java.nio.file.Path
 
-class StorageServiceImpl @Inject()(
+class StorageServiceImpl @Inject() (
     localFileRepository: LocalFileRepository,
     awsS3Repository: AwsS3Repository,
 ) extends StorageService {
 
   override def url(workspaceId: String, key: String, storageType: StorageType): String = ???
 
-  override def get(workspaceId: String, key: String, storageType: StorageType): InputStream = {
-    if (storageType == StorageTypes.Local) {
-      return localFileRepository.get(workspaceId, key)
+  override def get(workspaceId: String, key: String, storageType: StorageType): Path = {
+    storageType match {
+      case StorageTypes.Local => localFileRepository.get(workspaceId, key)
+      case StorageTypes.S3    => awsS3Repository.get(workspaceId, key)
+      case _                  => null
     }
-    null
   }
 
   override def create(
       workspaceId: String,
       key: String,
       storageType: StorageType,
-      file: InputStream,
-  ): Unit = ???
+      file: Path,
+  ): Unit = {
+    storageType match {
+      case StorageTypes.Local => localFileRepository.create(workspaceId, key, file)
+      case StorageTypes.S3    => awsS3Repository.create(workspaceId, key, file)
+    }
+  }
 
   override def delete(workspaceId: String, key: String, storageType: StorageType): Unit = ???
 }

@@ -3,22 +3,17 @@ package jp.ijufumi.openreports.repositories.system.impl
 import jp.ijufumi.openreports.config.Config
 import jp.ijufumi.openreports.repositories.system.LocalFileRepository
 
-import java.io.{File, InputStream}
-import java.nio.file.{Files, FileSystems}
+import java.nio.file.{Files, FileSystems, Path}
 
 class LocalFileRepositoryImpl extends LocalFileRepository {
-  override def get(workspaceId: String, key: String): InputStream = {
-    val fullPath = FileSystems.getDefault.getPath(Config.TEMPLATE_PATH, workspaceId, key)
-    if (!fullPath.toString.startsWith("/")) {
-      getClass.getClassLoader.getResourceAsStream(
-        fullPath.toString,
-      )
-    } else {
-      Files.newInputStream(fullPath)
-    }
+  override def get(workspaceId: String, key: String): Path = {
+    FileSystems.getDefault.getPath(Config.TEMPLATE_PATH, workspaceId, key)
   }
 
-  override def create(workspaceId: String, key: String, file: File): Unit = ???
+  override def create(workspaceId: String, key: String, file: Path): Unit = {
+    val fullPath = FileSystems.getDefault.getPath(Config.TEMPLATE_PATH, workspaceId, key)
+    Files.copy(file, fullPath)
+  }
 
   override def delete(workspaceId: String, key: String): Unit = ???
 

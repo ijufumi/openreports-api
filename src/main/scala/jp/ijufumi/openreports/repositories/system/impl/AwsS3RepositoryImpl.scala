@@ -13,26 +13,27 @@ import software.amazon.awssdk.services.s3.model._
 import software.amazon.awssdk.services.s3.presigner.S3Presigner
 import software.amazon.awssdk.services.s3.presigner.model._
 
-import java.io.{File, InputStream}
+import java.nio.file.{Files, Path}
 import java.time.Duration
-import java.time.temporal.TemporalUnit
-import java.util.concurrent.TimeUnit
 import scala.util.Using
 
 class AwsS3RepositoryImpl @Inject() (storageRepository: StorageRepository) extends AwsS3Repository {
-  override def get(workspaceId: String, key: String): InputStream = {
+  override def get(workspaceId: String, key: String): Path = {
     val storage = this.getStorage(workspaceId)
     val request = GetObjectRequest.builder().bucket(storage.s3BucketName).key(key).build()
-    Using(this.createClient(storage)) { client =>
+    val file = Files.createTempFile("/tmp", ".tmp")
+    val response = Using(this.createClient(storage)) { client =>
       client.getObject(request)
     }.get
+    Files.copy(response, file)
+    file
   }
 
-  override def create(workspaceId: String, key: String, file: File): Unit = {
+  override def create(workspaceId: String, key: String, file: Path): Unit = {
     val storage = this.getStorage(workspaceId)
     val request = PutObjectRequest.builder().bucket(storage.s3BucketName).key(key).build()
     Using(this.createClient(storage)) { client =>
-      client.putObject(request, file.toPath)
+      client.putObject(request, file)
     }
   }
 
@@ -47,7 +48,11 @@ class AwsS3RepositoryImpl @Inject() (storageRepository: StorageRepository) exten
   override def url(workspaceId: String, key: String): String = {
     val storage = this.getStorage(workspaceId)
     val getObjectRequest = GetObjectRequest.builder().bucket(storage.s3BucketName).key(key).build()
-    val request = GetObjectPresignRequest.builder().getObjectRequest(getObjectRequest).signatureDuration(Duration.ofSeconds(Config.PRESIGNED_URL_EXPIRATION)).build()
+    val request = GetObjectPresignRequest
+      .builder()
+      .getObjectRequest(getObjectRequest)
+      .signatureDuration(Duration.ofSeconds(Config.PRESIGNED_URL_EXPIRATION))
+      .build()
     Using(this.createPresignerClient(storage)) { client =>
       client.presignGetObject(request)
     }.get.url().toString
