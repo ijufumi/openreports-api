@@ -28,7 +28,7 @@ class ReportsServlet @Inject() (loginService: LoginService, reportService: Repor
     }
   }
 
-  get("/output/:id") {
+  get("/outputs/:id") {
     val workspaceId = getWorkspaceId()
     val id = params("id")
     val file = reportService.outputReport(workspaceId, id)
