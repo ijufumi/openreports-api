@@ -38,6 +38,6 @@ object Config {
 
   // for report
   val TEMPLATE_PATH: String = getEnvValue("TEMPLATE_PATH", "report")
-  val SAMPLE_REPORT_PATH: String = s"${TEMPLATE_PATH}/sample.xlsx"
+  val SAMPLE_REPORT_PATH: String = "sample.xlsx"
   val OUTPUT_FILE_PATH: String = getEnvValue("OUTPUT_FILE_PATH", "/tmp/report/output")
 }
