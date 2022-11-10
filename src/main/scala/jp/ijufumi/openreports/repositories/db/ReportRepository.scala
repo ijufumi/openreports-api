@@ -15,4 +15,6 @@ trait ReportRepository {
   def register(model: Report): Option[Report]
 
   def update(model: Report): Unit
+
+  def delete(workspaceId: String, id: String): Unit
 }

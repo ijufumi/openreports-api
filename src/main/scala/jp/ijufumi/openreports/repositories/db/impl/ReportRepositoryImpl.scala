@@ -80,4 +80,11 @@ class ReportRepositoryImpl @Inject() (db: Database) extends ReportRepository {
     val updateQuery = query.insertOrUpdate(newModel).withPinnedSession
     Await.result(db.run(updateQuery), Duration("1m"))
   }
+
+  override def delete(workspaceId: String, id: String): Unit = {
+    val getById = query
+      .filter(_.workspaceId === workspaceId)
+      .filter(_.id === id)
+    Await.result(db.run(getById.delete), Duration("10s"))
+  }
 }
