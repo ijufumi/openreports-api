@@ -52,5 +52,10 @@ class ReportsServlet @Inject() (loginService: LoginService, reportService: Repor
     }
   }
 
-  delete("/:id") {}
+  delete("/:id") {
+    val id = params("id")
+    val workspaceId = getWorkspaceId()
+    reportService.deleteReport(workspaceId, id)
+    okResult()
+  }
 }

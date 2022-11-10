@@ -67,4 +67,8 @@ class ReportServiceImpl @Inject() (
     reportRepository.update(newReport)
     this.getReport(workspaceId, id)
   }
+
+  override def deleteReport(workspaceId: String, id: String): Unit = {
+    reportRepository.delete(workspaceId, id)
+  }
 }
