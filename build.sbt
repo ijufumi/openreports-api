@@ -1,14 +1,14 @@
 val Scala213Version = "2.13.9"
 val Scala212Version = "2.12.17"
 
-val ScalatraVersion = "2.8.2"
-val SlickVersion = "3.4.0"
+val ScalatraVersion = "2.8.4"
+val SlickVersion = "3.4.1"
 val ScalaCacheVersion = "0.28.0"
-val SttpVersion = "3.7.1"
+val SttpVersion = "3.8.3"
 val Json4sVersion = "4.0.6"
 val SLF4JVersion = "2.0.3"
 val LogbackVersion = "1.4.3"
-val FlywayVersion = "9.4.0"
+val FlywayVersion = "9.7.0"
 val AWSSDKVersion = "2.18.7"
 
 ThisBuild / scalaVersion := Scala212Version
