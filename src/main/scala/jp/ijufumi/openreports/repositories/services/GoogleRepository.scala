@@ -1,4 +1,4 @@
-package jp.ijufumi.openreports.repositories.system
+package jp.ijufumi.openreports.repositories.services
 
 import jp.ijufumi.openreports.vo.response.google.UserInfo
 

@@ -1,7 +1,7 @@
-package jp.ijufumi.openreports.repositories.system.impl
+package jp.ijufumi.openreports.repositories.services.impl
 
 import jp.ijufumi.openreports.config.Config
-import jp.ijufumi.openreports.repositories.system.GoogleRepository
+import jp.ijufumi.openreports.repositories.services.GoogleRepository
 import jp.ijufumi.openreports.utils.{Logging, Strings}
 import jp.ijufumi.openreports.vo.response.google.{AccessToken, UserInfo}
 import org.json4s.DefaultFormats

@@ -4,6 +4,8 @@ import jp.ijufumi.openreports.repositories.system._
 import jp.ijufumi.openreports.repositories.system.impl._
 import jp.ijufumi.openreports.repositories.db._
 import jp.ijufumi.openreports.repositories.db.impl._
+import jp.ijufumi.openreports.repositories.services.GoogleRepository
+import jp.ijufumi.openreports.repositories.services.impl.GoogleRepositoryImpl
 
 class RepositoryModule extends BaseModule {
   override def configure(): Unit = {

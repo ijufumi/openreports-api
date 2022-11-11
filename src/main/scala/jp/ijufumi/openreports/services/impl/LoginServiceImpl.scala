@@ -9,6 +9,7 @@ import jp.ijufumi.openreports.vo.response.{Member => MemberReponse}
 import jp.ijufumi.openreports.cache.{CacheKeys, CacheWrapper}
 import jp.ijufumi.openreports.entities._
 import jp.ijufumi.openreports.repositories.db._
+import jp.ijufumi.openreports.repositories.services.GoogleRepository
 import slick.jdbc.PostgresProfile.api._
 
 @Singleton
