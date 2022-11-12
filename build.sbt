@@ -54,7 +54,7 @@ lazy val root = (project in file("."))
       "ch.qos.logback" % "logback-classic" % LogbackVersion,
       "ch.qos.logback" % "logback-core" % LogbackVersion,
     ),
-    assembly / assemblyJarName := "open-report-api.jar",
+    assembly / assemblyJarName := "open-reports-api.jar",
     assembly / mainClass := Some("JettyLauncher"),
   )
 

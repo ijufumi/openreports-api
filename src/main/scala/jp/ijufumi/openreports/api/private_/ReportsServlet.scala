@@ -22,7 +22,7 @@ class ReportsServlet @Inject() (loginService: LoginService, reportService: Repor
     val id = params("id")
     val report = reportService.getReport(workspaceId, id)
     if (report.isEmpty) {
-      notFoundResult("report not found")
+      notFoundResult("reports not found")
     } else {
       okResult(report.get)
     }
@@ -33,7 +33,7 @@ class ReportsServlet @Inject() (loginService: LoginService, reportService: Repor
     val id = params("id")
     val file = reportService.outputReport(workspaceId, id)
     if (file.isEmpty) {
-      notFoundResult("report not found")
+      notFoundResult("reports not found")
     } else {
       okResult(file.get)
     }
@@ -46,7 +46,7 @@ class ReportsServlet @Inject() (loginService: LoginService, reportService: Repor
     val report =
       reportService.updateReport(workspaceId, id, requestParam.name, requestParam.reportTemplateId)
     if (report.isEmpty) {
-      notFoundResult("Failed to update report")
+      notFoundResult("Failed to update reports")
     } else {
       okResult(report.get)
     }

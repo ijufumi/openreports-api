@@ -14,7 +14,7 @@ COPY build.sbt .
 COPY scripts ./scripts
 COPY src ./src
 COPY project ./project
-COPY report /report
+COPY reports /reports
 
 RUN sbt compile
 

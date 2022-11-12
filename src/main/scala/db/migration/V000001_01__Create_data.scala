@@ -114,7 +114,7 @@ class V000001_01__Create_data extends BaseJavaMigration {
 
   def template(context: Context, workspaceId: String, name: String): String = {
     val id = IDs.ulid()
-    val filePath = "resources/report/sample.xlsx"
+    val filePath = "resources/reports/sample.xlsx"
     val storageType = "local"
     val fileSize = 1
     val statement = {
