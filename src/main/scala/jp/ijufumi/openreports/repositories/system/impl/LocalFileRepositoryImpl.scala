@@ -8,13 +8,13 @@ import java.nio.file.{Files, FileSystems, Path}
 class LocalFileRepositoryImpl extends LocalFileRepository {
   override def get(workspaceId: String, key: String): Path = {
     val absolutePath = getClass.getClassLoader
-      .getResource(FileSystems.getDefault.getPath(Config.TEMPLATE_PATH, workspaceId, key).toString)
+      .getResource(FileSystems.getDefault.getPath(Config.TEMPLATE_ROOT_PATH, workspaceId, key).toString)
       .getFile
     FileSystems.getDefault.getPath(absolutePath)
   }
 
   override def create(workspaceId: String, key: String, file: Path): Unit = {
-    val fullPath = FileSystems.getDefault.getPath(Config.TEMPLATE_PATH, workspaceId, key)
+    val fullPath = FileSystems.getDefault.getPath(Config.TEMPLATE_ROOT_PATH, workspaceId, key)
     Files.copy(file, fullPath)
   }
 

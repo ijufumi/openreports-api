@@ -37,7 +37,7 @@ object Config {
     Integer.parseInt(getEnvValue("GOOGLE_AUTH_STATE_CACHE_TTL_SEC", "60"))
 
   // for report
-  val TEMPLATE_PATH: String = getEnvValue("TEMPLATE_PATH", "report")
+  val TEMPLATE_ROOT_PATH: String = getEnvValue("TEMPLATE_ROOT_PATH", "/report")
   val SAMPLE_REPORT_PATH: String = "sample.xlsx"
   val OUTPUT_FILE_PATH: String = getEnvValue("OUTPUT_FILE_PATH", "/tmp/report/output")
 }
