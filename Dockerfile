@@ -7,14 +7,13 @@ RUN echo "deb https://repo.scala-sbt.org/scalasbt/debian all main" | tee /etc/ap
 && curl -sL "https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x2EE0EA64E40A89B84B2DF73499E82A75642AC823" | apt-key add \
 && apt-get update && apt-get -y install sbt
 
-ENV ROOT_DIR /app
-WORKDIR $ROOT_DIR
+ENV APP_DIR /app
+WORKDIR $APP_DIR
 
-COPY scripts .
-COPY src .
 COPY build.sbt .
-COPY project .
-
+COPY scripts ./scripts
+COPY src ./src
+COPY project ./project
 COPY report /report
 
 RUN sbt compile
