@@ -13,6 +13,7 @@ WORKDIR $ROOT_DIR
 COPY scripts .
 COPY src .
 COPY build.sbt .
+COPY project .
 
 COPY report /report
 
