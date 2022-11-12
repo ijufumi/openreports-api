@@ -4,6 +4,11 @@
 .bsp
 .circleci
 .idea
+.scalafmt.conf
+docker-compose.yml
+LICENSE
+README.md
 
 docker
+docs
 target
