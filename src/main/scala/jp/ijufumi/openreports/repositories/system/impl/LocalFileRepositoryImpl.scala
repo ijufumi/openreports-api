@@ -12,6 +12,7 @@ class LocalFileRepositoryImpl extends LocalFileRepository {
 
   override def create(workspaceId: String, key: String, file: Path): Unit = {
     val fullPath = FileSystems.getDefault.getPath(Config.TEMPLATE_ROOT_PATH, workspaceId, key)
+    Files.createDirectories(fullPath.getParent)
     Files.copy(file, fullPath)
   }
 
