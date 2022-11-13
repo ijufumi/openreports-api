@@ -10,6 +10,7 @@ val SLF4JVersion = "2.0.3"
 val LogbackVersion = "1.4.3"
 val FlywayVersion = "9.7.0"
 val AWSSDKVersion = "2.18.7"
+val jXlsVersion = "2.12.0"
 
 ThisBuild / scalaVersion := Scala212Version
 ThisBuild / organization := "jp.ijufumi"
@@ -50,7 +51,8 @@ lazy val root = (project in file("."))
       "software.amazon.awssdk" % "s3" % AWSSDKVersion,
       "io.github.cdimascio" % "dotenv-java" % "2.2.4",
       "com.chatwork" %% "scala-ulid" % "1.0.24",
-      "org.jxls" % "jxls" % "2.12.0",
+      "org.jxls" % "jxls" % jXlsVersion,
+      "org.jxls" % "jxls-poi" % jXlsVersion,
       "ch.qos.logback" % "logback-classic" % LogbackVersion,
       "ch.qos.logback" % "logback-core" % LogbackVersion,
     ),
