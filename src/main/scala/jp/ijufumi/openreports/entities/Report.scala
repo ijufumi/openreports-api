@@ -8,7 +8,7 @@ case class Report(
     id: String,
     name: String,
     reportTemplateId: String,
-    dataSourceId: String,
+    dataSourceId: Option[String],
     workspaceId: String,
     createdAt: Long = Dates.currentTimestamp(),
     updatedAt: Long = Dates.currentTimestamp(),
@@ -23,7 +23,7 @@ class Reports(tag: Tag)
   def id = column[String]("id", O.PrimaryKey)
   def name = column[String]("name")
   def reportTemplateId = column[String]("report_template_id")
-  def dataSourceId = column[String]("data_source_id")
+  def dataSourceId = column[Option[String]]("data_source_id")
   def workspaceId = column[String]("workspace_id")
   def createdAt = column[Long]("created_at")
   def updatedAt = column[Long]("updated_at")

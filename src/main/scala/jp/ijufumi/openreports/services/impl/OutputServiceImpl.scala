@@ -24,7 +24,7 @@ class OutputServiceImpl @Inject() (
       workspaceId: String,
       filePath: String,
       storageType: StorageType,
-      dataSourceId: String,
+      dataSourceId: Option[String],
   ): Option[File] = {
     val inputFileName = new File(filePath).getName
     val dotIndex = inputFileName.lastIndexOf('.')
@@ -42,14 +42,14 @@ class OutputServiceImpl @Inject() (
 
     val context: Context = new Context()
     context.putVar("today", Dates.todayString())
-    if (dataSourceId == null) {
+    if (dataSourceId.isEmpty) {
       this.output(workspaceId, filePath, storageType, outputFile, context)
     } else {
       this.outputWithDataSource(
         workspaceId,
         filePath,
         storageType,
-        dataSourceId,
+        dataSourceId.get,
         outputFile,
         context,
       )
