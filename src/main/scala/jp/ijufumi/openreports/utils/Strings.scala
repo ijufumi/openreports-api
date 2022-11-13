@@ -77,4 +77,12 @@ object Strings {
     }
     result.get.group(1)
   }
+
+  def extension(filename: String): String = {
+    val index = filename.lastIndexOf(".")
+    if (index == -1) {
+      return ""
+    }
+    filename.substring(index)
+  }
 }

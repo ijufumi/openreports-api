@@ -51,7 +51,7 @@ class WorkspaceServiceImpl @Inject() (
 
   def copySample(workspaceId: String): String = {
     val source = storageService.get("", Config.SAMPLE_REPORT_PATH, StorageTypes.Local)
-    val key = Strings.generateRandomSting(10)()
+    val key = Strings.generateRandomSting(10)() + Strings.extension(source.getFileName.toString)
     storageService.create(workspaceId, key, StorageTypes.Local, source)
     key
   }
