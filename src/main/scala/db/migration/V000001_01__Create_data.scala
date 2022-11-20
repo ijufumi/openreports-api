@@ -119,7 +119,7 @@ class V000001_01__Create_data extends BaseJavaMigration {
     val fileSize = 1
     val statement = {
       context.getConnection.prepareStatement(
-        s"INSERT INTO report_templates (id, name, file_path, workspace_id, storage_type, file_size) VALUES (?, ?, ?, ?, ?, ?)",
+        s"INSERT INTO templates (id, name, file_path, workspace_id, storage_type, file_size) VALUES (?, ?, ?, ?, ?, ?)",
       )
     }
     statement.setString(1, id)
@@ -144,7 +144,7 @@ class V000001_01__Create_data extends BaseJavaMigration {
     val id = IDs.ulid()
     val statement = {
       context.getConnection.prepareStatement(
-        s"INSERT INTO reports (id, name, report_template_id, data_source_id, workspace_id) VALUES (?, ?, ?, ?, ?)",
+        s"INSERT INTO reports (id, name, template_id, data_source_id, workspace_id) VALUES (?, ?, ?, ?, ?)",
       )
     }
     statement.setString(1, id)
