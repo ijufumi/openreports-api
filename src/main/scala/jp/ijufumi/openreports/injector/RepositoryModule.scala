@@ -16,7 +16,7 @@ class RepositoryModule extends BaseModule {
     bindAsSingleton(classOf[WorkspaceMemberRepository], classOf[WorkspaceMemberRepositoryImpl])
     bindAsSingleton(classOf[DataSourceRepository], classOf[DataSourceRepositoryImpl])
     bindAsSingleton(classOf[ReportRepository], classOf[ReportRepositoryImpl])
-    bindAsSingleton(classOf[ReportTemplateRepository], classOf[ReportTemplateRepositoryImpl])
+    bindAsSingleton(classOf[TemplateRepository], classOf[TemplateRepositoryImpl])
     bindAsSingleton(classOf[StorageRepository], classOf[StorageRepositoryImpl])
     // system
     bindAsSingleton(classOf[GoogleRepository], classOf[GoogleRepositoryImpl])

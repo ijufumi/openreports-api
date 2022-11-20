@@ -7,9 +7,9 @@ import java.io.File
 trait ReportService {
   def getReports(workspaceId: String, page: Int, limit: Int): Lists
 
-  def getReportTemplates(workspaceId: String, page: Int, limit: Int): Lists
+  def getTemplates(workspaceId: String, page: Int, limit: Int): Lists
 
-  def getReportTemplate(workspaceId: String, id: String): Option[ReportTemplate]
+  def getTemplate(workspaceId: String, id: String): Option[ReportTemplate]
 
   def getReport(workspaceId: String, id: String): Option[Report]
 

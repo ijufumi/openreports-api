@@ -69,8 +69,8 @@ create table data_sources
   foreign key (workspace_id) references workspaces (id)
 );
 
--- create report_templates
-create table report_templates
+-- create templates
+create table templates
 (
   id           varchar(40) primary key,
   name         varchar(250) not null,
@@ -88,16 +88,16 @@ create table report_templates
 -- create reports
 create table reports
 (
-  id                 varchar(40) primary key,
-  name               varchar(250) not null,
-  report_template_id varchar(40)  not null,
-  workspace_id       varchar(40)  not null,
-  data_source_id     varchar(40),
-  created_at         bigint       not null default extract(epoch from current_timestamp at time zone 'UTC'),
-  updated_at         bigint       not null default extract(epoch from current_timestamp at time zone 'UTC'),
-  versions           bigint       not null default 0,
+  id             varchar(40) primary key,
+  name           varchar(250) not null,
+  template_id    varchar(40)  not null,
+  workspace_id   varchar(40)  not null,
+  data_source_id varchar(40),
+  created_at     bigint       not null default extract(epoch from current_timestamp at time zone 'UTC'),
+  updated_at     bigint       not null default extract(epoch from current_timestamp at time zone 'UTC'),
+  versions       bigint       not null default 0,
 
-  foreign key (report_template_id) references report_templates (id),
+  foreign key (emplate_id) references templates (id),
   foreign key (data_source_id) references data_sources (id),
   foreign key (workspace_id) references workspaces (id)
 );

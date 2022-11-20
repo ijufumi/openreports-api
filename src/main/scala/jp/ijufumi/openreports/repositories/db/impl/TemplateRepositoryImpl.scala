@@ -1,17 +1,17 @@
 package jp.ijufumi.openreports.repositories.db.impl
 
 import com.google.inject.Inject
-import jp.ijufumi.openreports.entities.ReportTemplate
-import jp.ijufumi.openreports.entities.queries.{reportTemplateQuery => query}
-import jp.ijufumi.openreports.repositories.db.ReportTemplateRepository
+import jp.ijufumi.openreports.entities.Template
+import jp.ijufumi.openreports.entities.queries.{templateQuery => query}
+import jp.ijufumi.openreports.repositories.db.TemplateRepository
 import slick.jdbc.JdbcBackend.Database
 import slick.jdbc.PostgresProfile.api._
 
 import scala.concurrent.Await
 import scala.concurrent.duration.Duration
 
-class ReportTemplateRepositoryImpl @Inject() (db: Database) extends ReportTemplateRepository {
-  override def gets(workspaceId: String, offset: Int, limit: Int): (Seq[ReportTemplate], Int) = {
+class TemplateRepositoryImpl @Inject()(db: Database) extends TemplateRepository {
+  override def gets(workspaceId: String, offset: Int, limit: Int): (Seq[Template], Int) = {
     var filtered = query.filter(_.workspaceId === workspaceId).drop(offset)
     val count = Await.result(db.run(query.length.result), Duration("10s"))
     if (limit > 0) {
@@ -20,7 +20,7 @@ class ReportTemplateRepositoryImpl @Inject() (db: Database) extends ReportTempla
     (Await.result(db.run(filtered.result), Duration("10s")), count)
   }
 
-  override def getById(workspaceId: String, id: String): Option[ReportTemplate] = {
+  override def getById(workspaceId: String, id: String): Option[Template] = {
     val getById = query
       .filter(_.workspaceId === workspaceId)
       .filter(_.id === id)
@@ -32,13 +32,13 @@ class ReportTemplateRepositoryImpl @Inject() (db: Database) extends ReportTempla
 
   }
 
-  override def register(model: ReportTemplate): Option[ReportTemplate] = {
+  override def register(model: Template): Option[Template] = {
     val register = (query += model).withPinnedSession
     Await.result(db.run(register), Duration("1m"))
     getById(model.workspaceId, model.id)
   }
 
-  override def update(model: ReportTemplate): Unit = {
+  override def update(model: Template): Unit = {
     query.insertOrUpdate(model).withPinnedSession
   }
 }

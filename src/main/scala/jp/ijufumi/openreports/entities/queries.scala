@@ -7,7 +7,7 @@ object queries {
   val dataSourceQuery = TableQuery[DataSources]
   val driverTypeQuery = TableQuery[DriverTypes]
   val memberQuery = TableQuery[Members]
-  val reportTemplateQuery = TableQuery[ReportTemplates]
+  val templateQuery = TableQuery[Templates]
   val workspaceMemberQuery = TableQuery[WorkspaceMembers]
   val workspaceQuery = TableQuery[Workspaces]
   val storageQuery = TableQuery[Storages]

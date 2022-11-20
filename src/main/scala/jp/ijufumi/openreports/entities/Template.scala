@@ -4,7 +4,7 @@ import jp.ijufumi.openreports.entities.enums.StorageTypes._
 import jp.ijufumi.openreports.utils.Dates
 import slick.jdbc.PostgresProfile.api._
 
-case class ReportTemplate(
+case class Template(
     id: String,
     name: String,
     filePath: String,
@@ -16,8 +16,8 @@ case class ReportTemplate(
     versions: Long = 1,
 )
 
-class ReportTemplates(tag: Tag)
-    extends Table[ReportTemplate](
+class Templates(tag: Tag)
+    extends Table[Template](
       tag,
       "report_templates",
     ) {
@@ -43,5 +43,5 @@ class ReportTemplates(tag: Tag)
       createdAt,
       updatedAt,
       versions,
-    ) <> (ReportTemplate.tupled, ReportTemplate.unapply)
+    ) <> (Template.tupled, Template.unapply)
 }

@@ -2,7 +2,7 @@ package jp.ijufumi.openreports.vo.response
 
 import jp.ijufumi.openreports.entities.{
   Report => ReportEntity,
-  ReportTemplate => ReportTemplateEntity,
+  Template => ReportTemplateEntity,
 }
 
 case class Report(

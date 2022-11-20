@@ -1,7 +1,7 @@
 package jp.ijufumi.openreports.vo.response
 
 import jp.ijufumi.openreports.entities.enums.StorageTypes.StorageType
-import jp.ijufumi.openreports.entities.{ReportTemplate => ReportTemplateEntity}
+import jp.ijufumi.openreports.entities.{Template => ReportTemplateEntity}
 
 case class ReportTemplate(
     id: String,

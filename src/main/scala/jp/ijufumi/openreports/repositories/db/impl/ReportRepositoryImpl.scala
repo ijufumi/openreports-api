@@ -1,8 +1,8 @@
 package jp.ijufumi.openreports.repositories.db.impl
 
 import com.google.inject.Inject
-import jp.ijufumi.openreports.entities.{Report, ReportTemplate}
-import jp.ijufumi.openreports.entities.queries.{reportQuery => query, reportTemplateQuery}
+import jp.ijufumi.openreports.entities.{Report, Template}
+import jp.ijufumi.openreports.entities.queries.{reportQuery => query, templateQuery}
 import slick.jdbc.PostgresProfile.api._
 import jp.ijufumi.openreports.repositories.db.ReportRepository
 import jp.ijufumi.openreports.utils.Dates
@@ -25,11 +25,11 @@ class ReportRepositoryImpl @Inject() (db: Database) extends ReportRepository {
       workspaceId: String,
       offset: Int = 0,
       limit: Int = -1,
-  ): (Seq[(Report, ReportTemplate)], Int) = {
+  ): (Seq[(Report, Template)], Int) = {
     var getById = query
       .filter(_.workspaceId === workspaceId)
-      .join(reportTemplateQuery)
-      .on(_.reportTemplateId === _.id)
+      .join(templateQuery)
+      .on(_.templateId === _.id)
       .sortBy(_._1.id)
 
     val count = Await.result(db.run(getById.length.result), Duration("10s"))
@@ -57,11 +57,11 @@ class ReportRepositoryImpl @Inject() (db: Database) extends ReportRepository {
   override def getByIdWithTemplate(
       workspaceId: String,
       id: String,
-  ): Option[(Report, ReportTemplate)] = {
+  ): Option[(Report, Template)] = {
     val getById = query
       .filter(_.id === id)
-      .join(reportTemplateQuery)
-      .on(_.reportTemplateId === _.id)
+      .join(templateQuery)
+      .on(_.templateId === _.id)
     val models = Await.result(db.run(getById.result), Duration("10s"))
     if (models.isEmpty) {
       return None

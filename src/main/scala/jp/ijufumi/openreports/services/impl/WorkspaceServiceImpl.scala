@@ -3,10 +3,10 @@ package jp.ijufumi.openreports.services.impl
 import com.google.inject.Inject
 import jp.ijufumi.openreports.config.Config
 import jp.ijufumi.openreports.entities.enums.StorageTypes
-import jp.ijufumi.openreports.entities.{Report, ReportTemplate, Storage, Workspace, WorkspaceMember}
+import jp.ijufumi.openreports.entities.{Report, Template, Storage, Workspace, WorkspaceMember}
 import jp.ijufumi.openreports.repositories.db.{
   ReportRepository,
-  ReportTemplateRepository,
+  TemplateRepository,
   StorageRepository,
   WorkspaceMemberRepository,
   WorkspaceRepository,
@@ -16,12 +16,12 @@ import jp.ijufumi.openreports.utils.{IDs, Strings}
 import slick.jdbc.PostgresProfile.api._
 
 class WorkspaceServiceImpl @Inject() (
-    workspaceRepository: WorkspaceRepository,
-    workspaceMemberRepository: WorkspaceMemberRepository,
-    storageRepository: StorageRepository,
-    reportRepository: ReportRepository,
-    reportTemplateRepository: ReportTemplateRepository,
-    storageService: StorageService,
+                                       workspaceRepository: WorkspaceRepository,
+                                       workspaceMemberRepository: WorkspaceMemberRepository,
+                                       storageRepository: StorageRepository,
+                                       reportRepository: ReportRepository,
+                                       reportTemplateRepository: TemplateRepository,
+                                       storageService: StorageService,
 ) extends WorkspaceService {
   override def createAndRelevant(memberId: String, email: String): Option[Workspace] = {
     var workspaceOpt = Option.empty[Workspace]
@@ -36,7 +36,7 @@ class WorkspaceServiceImpl @Inject() (
       storageRepository.register(storage)
       val key = this.copySample(workspace.id)
       val reportTemplate =
-        ReportTemplate(IDs.ulid(), "copy of sample", key, workspace.id, StorageTypes.Local, 1)
+        Template(IDs.ulid(), "copy of sample", key, workspace.id, StorageTypes.Local, 1)
       reportTemplateRepository.register(reportTemplate)
       val report = Report(IDs.ulid(), "copy of sample", reportTemplate.id, null, workspace.id)
       reportRepository.register(report)
