@@ -97,7 +97,7 @@ create table reports
   updated_at     bigint       not null default extract(epoch from current_timestamp at time zone 'UTC'),
   versions       bigint       not null default 0,
 
-  foreign key (emplate_id) references templates (id),
+  foreign key (template_id) references templates (id),
   foreign key (data_source_id) references data_sources (id),
   foreign key (workspace_id) references workspaces (id)
 );
