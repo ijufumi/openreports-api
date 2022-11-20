@@ -19,7 +19,7 @@ case class Template(
 class Templates(tag: Tag)
     extends Table[Template](
       tag,
-      "report_templates",
+      "templates",
     ) {
 
   def id = column[String]("id", O.PrimaryKey)
