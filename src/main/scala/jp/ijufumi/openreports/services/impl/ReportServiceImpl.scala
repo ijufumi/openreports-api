@@ -4,6 +4,7 @@ import com.google.inject.Inject
 import jp.ijufumi.openreports.repositories.db.{ReportRepository, TemplateRepository}
 import jp.ijufumi.openreports.services.{OutputService, ReportService}
 import jp.ijufumi.openreports.vo.response.{Lists, Report, ReportTemplate}
+import org.scalatra.servlet.FileItem
 
 import java.io.File
 
@@ -70,5 +71,9 @@ class ReportServiceImpl @Inject() (
 
   override def deleteReport(workspaceId: String, id: String): Unit = {
     reportRepository.delete(workspaceId, id)
+  }
+
+  override def createTemplate(workspaceId: String, name: String, fileItem: FileItem): Unit = {
+
   }
 }

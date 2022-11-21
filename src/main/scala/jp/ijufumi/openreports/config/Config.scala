@@ -9,6 +9,10 @@ object Config {
     dotEnv.get(key, sys.env.getOrElse(key, defaultValue))
   }
 
+  private def getEnvIntValue(key: String, defaultValue: Int = ""): Int = {
+    Integer.parseInt(dotEnv.get(key, sys.env.getOrElse(key, defaultValue)))
+  }
+
   val FRONTEND_URL: String = getEnvValue("FRONTEND_URL", "http://localhost:3000")
 
   // for database
@@ -20,12 +24,12 @@ object Config {
   // for hash
   val HASH_KEY: String = getEnvValue("HASH_KEY", "test")
   val API_TOKEN_EXPIRATION_SEC: Integer =
-    Integer.parseInt(getEnvValue("API_TOKEN_EXPIRATION_SEC", "3600"))
+    getEnvIntValue("API_TOKEN_EXPIRATION_SEC", "3600")
   // for cache
-  val CACHE_TTL_SEC: Long = Integer.parseInt(getEnvValue("CACHE_TTL_SEC", "3600"))
+  val CACHE_TTL_SEC: Long = getEnvIntValue("CACHE_TTL_SEC", "3600")
   // for presigned url
   val PRESIGNED_URL_EXPIRATION: Long =
-    Integer.parseInt(getEnvValue("PRESIGNED_URL_EXPIRATION", "3600"))
+    getEnvIntValue("PRESIGNED_URL_EXPIRATION", "3600")
   // for api
   val AUTHORIZATION_HEADER = "Authorization"
   val WORKSPACE_ID_HEADER = "workspaceid"
@@ -40,4 +44,7 @@ object Config {
   val TEMPLATE_ROOT_PATH: String = getEnvValue("TEMPLATE_ROOT_PATH", "/reports")
   val SAMPLE_REPORT_PATH: String = "sample.xlsx"
   val OUTPUT_FILE_PATH: String = getEnvValue("OUTPUT_FILE_PATH", "/tmp/reports/output")
+
+  // for file upload
+  val UPLOAD_FILE_MAX_SIZE: Long = getEnvIntValue("UPLOAD_FILE_MAX_SIZE", 1024 * 1024)
 }

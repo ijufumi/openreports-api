@@ -1,6 +1,7 @@
 package jp.ijufumi.openreports.services
 
 import jp.ijufumi.openreports.vo.response.{Lists, Report, ReportTemplate}
+import org.scalatra.servlet.FileItem
 
 import java.io.File
 
@@ -18,4 +19,6 @@ trait ReportService {
   def updateReport(workspaceId: String, id: String, name: String, reportTemplateId: String): Option[Report]
 
   def deleteReport(workspaceId: String, id: String): Unit
+
+  def createTemplate(workspaceId: String, name: String, fileItem: FileItem): Unit
 }

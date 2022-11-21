@@ -13,4 +13,10 @@ class TemplatesServlet @Inject()(loginService: LoginService, reportService: Repo
     val limit = params("limit").toInt
     hookResult(Ok(reportService.getTemplates(workspaceId, page, limit)))
   }
+
+  post("/") {
+    val workspaceId = getWorkspaceId()
+    val file = fileMultiParams("file")
+    file.head
+  }
 }

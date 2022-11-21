@@ -1,10 +1,14 @@
 package jp.ijufumi.openreports.api.base
 
+import org.scalatra._
+import org.scalatra.servlet.{FileUploadSupport, MultipartConfig}
 import jp.ijufumi.openreports.config.Config
 import jp.ijufumi.openreports.services.LoginService
-import org.scalatra._
 
-abstract class PrivateAPIServletBase(loginService: LoginService) extends APIServletBase {
+abstract class PrivateAPIServletBase(loginService: LoginService)
+    extends APIServletBase
+    with FileUploadSupport {
+  configureMultipartHandling(MultipartConfig(maxFileSize = Some(Config.UPLOAD_FILE_MAX_SIZE)))
 
   before() {
     val authorizationHeader = getAuthorizationHeader()
