@@ -9,7 +9,7 @@ object Config {
     dotEnv.get(key, sys.env.getOrElse(key, defaultValue))
   }
 
-  private def getEnvIntValue(key: String, defaultValue: Int = ""): Int = {
+  private def getEnvIntValue(key: String, defaultValue: Int = 0): Int = {
     Integer.parseInt(dotEnv.get(key, sys.env.getOrElse(key, defaultValue)))
   }
 
@@ -24,12 +24,12 @@ object Config {
   // for hash
   val HASH_KEY: String = getEnvValue("HASH_KEY", "test")
   val API_TOKEN_EXPIRATION_SEC: Integer =
-    getEnvIntValue("API_TOKEN_EXPIRATION_SEC", "3600")
+    getEnvIntValue("API_TOKEN_EXPIRATION_SEC", 3600)
   // for cache
-  val CACHE_TTL_SEC: Long = getEnvIntValue("CACHE_TTL_SEC", "3600")
+  val CACHE_TTL_SEC: Long = getEnvIntValue("CACHE_TTL_SEC", 3600)
   // for presigned url
   val PRESIGNED_URL_EXPIRATION: Long =
-    getEnvIntValue("PRESIGNED_URL_EXPIRATION", "3600")
+    getEnvIntValue("PRESIGNED_URL_EXPIRATION", 3600)
   // for api
   val AUTHORIZATION_HEADER = "Authorization"
   val WORKSPACE_ID_HEADER = "workspaceid"
