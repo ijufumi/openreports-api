@@ -1,17 +1,22 @@
 package jp.ijufumi.openreports.services.impl
 
 import com.google.inject.Inject
+import jp.ijufumi.openreports.entities.Template
+import jp.ijufumi.openreports.entities.enums.StorageTypes
 import jp.ijufumi.openreports.repositories.db.{ReportRepository, TemplateRepository}
-import jp.ijufumi.openreports.services.{OutputService, ReportService}
+import jp.ijufumi.openreports.services.{OutputService, ReportService, StorageService}
+import jp.ijufumi.openreports.utils.{IDs, Strings, TemporaryFiles}
 import jp.ijufumi.openreports.vo.response.{Lists, Report, ReportTemplate}
 import org.scalatra.servlet.FileItem
 
 import java.io.File
+import scala.util.Using
 
 class ReportServiceImpl @Inject() (
-                                    reportRepository: ReportRepository,
-                                    reportTemplateRepository: TemplateRepository,
-                                    outputService: OutputService,
+    reportRepository: ReportRepository,
+    reportTemplateRepository: TemplateRepository,
+    outputService: OutputService,
+    storageService: StorageService,
 ) extends ReportService {
   def getReports(workspaceId: String, page: Int, limit: Int): Lists = {
     val offset = List(page * limit, 0).max
@@ -73,7 +78,16 @@ class ReportServiceImpl @Inject() (
     reportRepository.delete(workspaceId, id)
   }
 
-  override def createTemplate(workspaceId: String, name: String, fileItem: FileItem): Unit = {
-
+  override def createTemplate(workspaceId: String, name: String, fileItem: FileItem): Option[ReportTemplate] = {
+    val key = Strings.generateRandomSting(10)()
+    val storageType = StorageTypes.Local
+    Using(TemporaryFiles.createDir()) { tmpDir =>
+      val tmpFile = TemporaryFiles.createFile(tmpDir.path())
+      tmpFile.write(fileItem.get())
+      storageService.create(workspaceId, key, storageType, tmpFile.path())
+    }
+    val template = Template(IDs.ulid(), name, key, workspaceId, storageType, fileItem.size)
+    reportTemplateRepository.register(template)
+    Some(ReportTemplate.apply(template))
   }
 }

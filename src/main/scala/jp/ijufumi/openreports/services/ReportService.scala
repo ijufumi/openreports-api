@@ -20,5 +20,5 @@ trait ReportService {
 
   def deleteReport(workspaceId: String, id: String): Unit
 
-  def createTemplate(workspaceId: String, name: String, fileItem: FileItem): Unit
+  def createTemplate(workspaceId: String, name: String, fileItem: FileItem): Option[ReportTemplate]
 }
