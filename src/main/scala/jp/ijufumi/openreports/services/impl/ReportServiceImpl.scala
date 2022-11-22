@@ -14,7 +14,7 @@ import scala.util.Using
 
 class ReportServiceImpl @Inject() (
     reportRepository: ReportRepository,
-    reportTemplateRepository: TemplateRepository,
+    templateRepository: TemplateRepository,
     outputService: OutputService,
     storageService: StorageService,
 ) extends ReportService {
@@ -36,13 +36,13 @@ class ReportServiceImpl @Inject() (
 
   override def getTemplates(workspaceId: String, page: Int, limit: Int): Lists = {
     val offset = List(page * limit, 0).max
-    val (results, count) = reportTemplateRepository.gets(workspaceId, offset, limit)
+    val (results, count) = templateRepository.gets(workspaceId, offset, limit)
     val items = results.map(r => TemplateResponse(r))
     Lists(items, offset, limit, count)
   }
 
   override def getTemplate(workspaceId: String, id: String): Option[TemplateResponse] = {
-    val result = reportTemplateRepository.getById(workspaceId, id)
+    val result = templateRepository.getById(workspaceId, id)
     if (result.isEmpty) {
       return None
     }
@@ -78,7 +78,11 @@ class ReportServiceImpl @Inject() (
     reportRepository.delete(workspaceId, id)
   }
 
-  override def createTemplate(workspaceId: String, name: String, fileItem: FileItem): Option[TemplateResponse] = {
+  override def createTemplate(
+      workspaceId: String,
+      name: String,
+      fileItem: FileItem,
+  ): Option[TemplateResponse] = {
     val key = Strings.generateRandomSting(10)()
     val storageType = StorageTypes.Local
     Using(TemporaryFiles.createDir()) { tmpDir =>
@@ -87,7 +91,7 @@ class ReportServiceImpl @Inject() (
       storageService.create(workspaceId, key, storageType, tmpFile.path())
     }
     val template = Template(IDs.ulid(), name, key, workspaceId, storageType, fileItem.size)
-    reportTemplateRepository.register(template)
+    templateRepository.register(template)
     Some(TemplateResponse.apply(template))
   }
 }
