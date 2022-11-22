@@ -3,7 +3,7 @@ package jp.ijufumi.openreports.vo.response
 import jp.ijufumi.openreports.entities.enums.StorageTypes.StorageType
 import jp.ijufumi.openreports.entities.{Template => ReportTemplateEntity}
 
-case class ReportTemplate(
+case class Template(
     id: String,
     name: String,
     filePath: String,
@@ -13,9 +13,9 @@ case class ReportTemplate(
     updatedAt: Long,
 )
 
-object ReportTemplate {
-  def apply(entity: ReportTemplateEntity): ReportTemplate = {
-    ReportTemplate(
+object Template {
+  def apply(entity: ReportTemplateEntity): Template = {
+    Template(
       entity.id,
       entity.name,
       entity.filePath,

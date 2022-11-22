@@ -6,7 +6,7 @@ import jp.ijufumi.openreports.entities.enums.StorageTypes
 import jp.ijufumi.openreports.repositories.db.{ReportRepository, TemplateRepository}
 import jp.ijufumi.openreports.services.{OutputService, ReportService, StorageService}
 import jp.ijufumi.openreports.utils.{IDs, Strings, TemporaryFiles}
-import jp.ijufumi.openreports.vo.response.{Lists, Report, ReportTemplate}
+import jp.ijufumi.openreports.vo.response.{Lists, Report, Template => TemplateResponse}
 import org.scalatra.servlet.FileItem
 
 import java.io.File
@@ -37,16 +37,16 @@ class ReportServiceImpl @Inject() (
   override def getTemplates(workspaceId: String, page: Int, limit: Int): Lists = {
     val offset = List(page * limit, 0).max
     val (results, count) = reportTemplateRepository.gets(workspaceId, offset, limit)
-    val items = results.map(r => ReportTemplate(r))
+    val items = results.map(r => TemplateResponse(r))
     Lists(items, offset, limit, count)
   }
 
-  override def getTemplate(workspaceId: String, id: String): Option[ReportTemplate] = {
+  override def getTemplate(workspaceId: String, id: String): Option[TemplateResponse] = {
     val result = reportTemplateRepository.getById(workspaceId, id)
     if (result.isEmpty) {
       return None
     }
-    Some(ReportTemplate(result.get))
+    Some(TemplateResponse(result.get))
   }
 
   override def outputReport(workspaceId: String, id: String): Option[File] = {
@@ -78,7 +78,7 @@ class ReportServiceImpl @Inject() (
     reportRepository.delete(workspaceId, id)
   }
 
-  override def createTemplate(workspaceId: String, name: String, fileItem: FileItem): Option[ReportTemplate] = {
+  override def createTemplate(workspaceId: String, name: String, fileItem: FileItem): Option[TemplateResponse] = {
     val key = Strings.generateRandomSting(10)()
     val storageType = StorageTypes.Local
     Using(TemporaryFiles.createDir()) { tmpDir =>
@@ -88,6 +88,6 @@ class ReportServiceImpl @Inject() (
     }
     val template = Template(IDs.ulid(), name, key, workspaceId, storageType, fileItem.size)
     reportTemplateRepository.register(template)
-    Some(ReportTemplate.apply(template))
+    Some(TemplateResponse.apply(template))
   }
 }
