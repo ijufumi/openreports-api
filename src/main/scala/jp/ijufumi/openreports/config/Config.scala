@@ -10,7 +10,7 @@ object Config {
   }
 
   private def getEnvIntValue(key: String, defaultValue: Int = 0): Int = {
-    Integer.parseInt(dotEnv.get(key, sys.env.getOrElse(key, String.valueOf(defaultValue))))
+    Integer.parseInt(getEnvValue(key, String.valueOf(defaultValue)))
   }
 
   val FRONTEND_URL: String = getEnvValue("FRONTEND_URL", "http://localhost:3000")
