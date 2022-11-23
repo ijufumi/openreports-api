@@ -11,9 +11,9 @@ class MembersServlet @Inject() (loginService: LoginService)
     val authorizationHeader = getAuthorizationHeader()
     val member = loginService.getMemberByToken(authorizationHeader)
     if (member.isEmpty) {
-      unauthorizedResult("Invalid api token")
+      unauthorized("Invalid api token")
     } else {
-      okResult(member.get)
+      ok(member.get)
     }
   }
   get("/logout") {

@@ -5,6 +5,6 @@ import org.scalatra._
 
 class HealthServlet extends APIServletBase {
   get("/") {
-    okResult("hello")
+    ok("hello")
   }
 }

@@ -11,7 +11,7 @@ class TemplatesServlet @Inject() (loginService: LoginService, reportService: Rep
     val workspaceId = getWorkspaceId()
     val page = params("page").toInt
     val limit = params("limit").toInt
-    okResult(reportService.getTemplates(workspaceId, page, limit))
+    ok(reportService.getTemplates(workspaceId, page, limit))
   }
 
   post("/") {
@@ -20,9 +20,9 @@ class TemplatesServlet @Inject() (loginService: LoginService, reportService: Rep
     val req = extractBody[CreateTemplate]()
     val res = reportService.createTemplate(workspaceId, req, file)
     if (res.isEmpty) {
-      badRequestResult("something wrong...")
+      badRequest("something wrong...")
     } else {
-      okResult(res.get)
+      ok(res.get)
     }
   }
 }
