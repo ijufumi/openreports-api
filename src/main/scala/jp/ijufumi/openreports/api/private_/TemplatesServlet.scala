@@ -4,7 +4,6 @@ import com.google.inject.Inject
 import jp.ijufumi.openreports.api.base.PrivateAPIServletBase
 import jp.ijufumi.openreports.services.{LoginService, ReportService}
 import jp.ijufumi.openreports.vo.request.CreateTemplate
-import org.scalatra.Ok
 
 class TemplatesServlet @Inject() (loginService: LoginService, reportService: ReportService)
     extends PrivateAPIServletBase(loginService) {
@@ -17,9 +16,9 @@ class TemplatesServlet @Inject() (loginService: LoginService, reportService: Rep
 
   post("/") {
     val workspaceId = getWorkspaceId()
-    val file = fileMultiParams("file")
+    val file = fileParams("file")
     val request = extractBody[CreateTemplate]()
-    val response = reportService.createTemplate(workspaceId, request, file.head)
+    val response = reportService.createTemplate(workspaceId, request, file)
     if (response.isEmpty) {
       badRequest("something wrong...")
     } else {
