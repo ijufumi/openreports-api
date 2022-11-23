@@ -17,12 +17,12 @@ class TemplatesServlet @Inject() (loginService: LoginService, reportService: Rep
   post("/") {
     val workspaceId = getWorkspaceId()
     val file = fileParams("file")
-    val request = extractBody[CreateTemplate]()
-    val response = reportService.createTemplate(workspaceId, request, file)
-    if (response.isEmpty) {
+    val req = extractBody[CreateTemplate]()
+    val res = reportService.createTemplate(workspaceId, req, file)
+    if (res.isEmpty) {
       badRequestResult("something wrong...")
     } else {
-      okResult(response.get)
+      okResult(res.get)
     }
   }
 }
