@@ -25,25 +25,25 @@ abstract class APIServletBase
     Ok(headers = Map("Access-Control-Allow-Origin" -> request.getHeader("Origin")))
   }
 
-  def ok(obj: Any): ActionResult = {
+  def okResult(obj: Any): ActionResult = {
     hookResult(Ok(obj))
   }
 
   // 4xx
-  def notFound(obj: Any): ActionResult = {
+  def notFoundResult(obj: Any): ActionResult = {
     hookResult(NotFound(obj))
   }
 
-  def badRequest(obj: Any): ActionResult = {
+  def badRequestResult(obj: Any): ActionResult = {
     hookResult(BadRequest(obj))
   }
 
-  def unauthorized(obj: Any): ActionResult = {
+  def unauthorizedResult(obj: Any): ActionResult = {
     hookResult(Unauthorized(obj))
   }
 
   // 5xx
-  def internalServerError(obj: Any): ActionResult = {
+  def internalServerErrorResult(obj: Any): ActionResult = {
     hookResult(InternalServerError(obj))
   }
 
