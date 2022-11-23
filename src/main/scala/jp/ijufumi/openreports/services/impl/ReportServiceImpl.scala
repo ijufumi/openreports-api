@@ -6,6 +6,7 @@ import jp.ijufumi.openreports.entities.enums.StorageTypes
 import jp.ijufumi.openreports.repositories.db.{ReportRepository, TemplateRepository}
 import jp.ijufumi.openreports.services.{OutputService, ReportService, StorageService}
 import jp.ijufumi.openreports.utils.{IDs, Strings, TemporaryFiles}
+import jp.ijufumi.openreports.vo.request.CreateTemplate
 import jp.ijufumi.openreports.vo.response.{Lists, Report, Template => TemplateResponse}
 import org.scalatra.servlet.FileItem
 
@@ -80,7 +81,7 @@ class ReportServiceImpl @Inject() (
 
   override def createTemplate(
       workspaceId: String,
-      name: String,
+      req: CreateTemplate,
       fileItem: FileItem,
   ): Option[TemplateResponse] = {
     val key = Strings.generateRandomSting(10)()
@@ -90,7 +91,7 @@ class ReportServiceImpl @Inject() (
       tmpFile.write(fileItem.get())
       storageService.create(workspaceId, key, storageType, tmpFile.path())
     }
-    val template = Template(IDs.ulid(), name, key, workspaceId, storageType, fileItem.size)
+    val template = Template(IDs.ulid(), req.name, key, workspaceId, storageType, fileItem.size)
     templateRepository.register(template)
     Some(TemplateResponse.apply(template))
   }
