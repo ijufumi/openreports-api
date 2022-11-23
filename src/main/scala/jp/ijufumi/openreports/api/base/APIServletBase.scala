@@ -4,7 +4,7 @@ import jp.ijufumi.openreports.utils.Logging
 import jp.ijufumi.openreports.entities.enums.StorageTypes
 import org.json4s.{DefaultFormats, Formats}
 import org.json4s.ext.EnumNameSerializer
-import org.scalatra.{ActionResult, CorsSupport, Ok, NotFound, ScalatraServlet}
+import org.scalatra.{ActionResult, BadRequest, CorsSupport, InternalServerError, NotFound, Ok, ScalatraServlet, Unauthorized}
 import org.scalatra.json.JacksonJsonSupport
 
 abstract class APIServletBase
@@ -25,12 +25,26 @@ abstract class APIServletBase
     Ok(headers = Map("Access-Control-Allow-Origin" -> request.getHeader("Origin")))
   }
 
-  def okResult(obj: Any): ActionResult = {
+  def ok(obj: Any): ActionResult = {
     hookResult(Ok(obj))
   }
 
-  def notFoundResult(obj: Any): ActionResult = {
+  // 4xx
+  def notFound(obj: Any): ActionResult = {
     hookResult(NotFound(obj))
+  }
+
+  def badRequest(obj: Any): ActionResult = {
+    hookResult(BadRequest(obj))
+  }
+
+  def unauthorized(obj: Any): ActionResult = {
+    hookResult(Unauthorized(obj))
+  }
+
+  // 5xx
+  def internalServerError(obj: Any): ActionResult = {
+    hookResult(InternalServerError(obj))
   }
 
   def hookResult(actionResult: ActionResult): ActionResult = {

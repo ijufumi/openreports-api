@@ -12,7 +12,7 @@ class ReportsServlet @Inject() (loginService: LoginService, reportService: Repor
     val workspaceId = getWorkspaceId()
     val page = params("page").toInt
     val limit = params("limit").toInt
-    okResult(reportService.getReports(workspaceId, page, limit))
+    ok(reportService.getReports(workspaceId, page, limit))
   }
 
   post("/") {}
@@ -22,9 +22,9 @@ class ReportsServlet @Inject() (loginService: LoginService, reportService: Repor
     val id = params("id")
     val report = reportService.getReport(workspaceId, id)
     if (report.isEmpty) {
-      notFoundResult("reports not found")
+      notFound("reports not found")
     } else {
-      okResult(report.get)
+      ok(report.get)
     }
   }
 
@@ -33,9 +33,9 @@ class ReportsServlet @Inject() (loginService: LoginService, reportService: Repor
     val id = params("id")
     val file = reportService.outputReport(workspaceId, id)
     if (file.isEmpty) {
-      notFoundResult("reports not found")
+      notFound("reports not found")
     } else {
-      okResult(file.get)
+      ok(file.get)
     }
   }
 
@@ -46,9 +46,9 @@ class ReportsServlet @Inject() (loginService: LoginService, reportService: Repor
     val report =
       reportService.updateReport(workspaceId, id, requestParam.name, requestParam.reportTemplateId)
     if (report.isEmpty) {
-      notFoundResult("Failed to update reports")
+      notFound("Failed to update reports")
     } else {
-      okResult(report.get)
+      ok(report.get)
     }
   }
 
@@ -56,6 +56,6 @@ class ReportsServlet @Inject() (loginService: LoginService, reportService: Repor
     val id = params("id")
     val workspaceId = getWorkspaceId()
     reportService.deleteReport(workspaceId, id)
-    okResult()
+    ok()
   }
 }
