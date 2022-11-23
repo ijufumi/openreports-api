@@ -4,7 +4,16 @@ import jp.ijufumi.openreports.utils.Logging
 import jp.ijufumi.openreports.entities.enums.StorageTypes
 import org.json4s.{DefaultFormats, Formats}
 import org.json4s.ext.EnumNameSerializer
-import org.scalatra.{ActionResult, BadRequest, CorsSupport, InternalServerError, NotFound, Ok, ScalatraServlet, Unauthorized}
+import org.scalatra.{
+  ActionResult,
+  BadRequest,
+  CorsSupport,
+  InternalServerError,
+  NotFound,
+  Ok,
+  ScalatraServlet,
+  Unauthorized,
+}
 import org.scalatra.json.JacksonJsonSupport
 
 abstract class APIServletBase
@@ -66,7 +75,7 @@ abstract class APIServletBase
   error {
     case t => {
       logger.error(t.getMessage, t)
-      throw t
+      internalServerError(t)
     }
   }
 
