@@ -6,6 +6,7 @@ import org.apache.commons.codec.binary.Hex
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
 import com.auth0.jwt.exceptions.JWTDecodeException
+import com.auth0.jwt.interfaces.DecodedJWT
 
 import java.util.{Calendar, Date}
 import jp.ijufumi.openreports.config.Config.HASH_KEY
@@ -35,11 +36,19 @@ object Hash extends Logging {
   def extractIdFromJWT(jwtString: String): String = {
     try {
       val decoded = JWT.decode(jwtString)
+      if (isExpired(decoded)) {
+        return ""
+      }
       decoded.getClaim("id").asString()
     } catch {
       case e: JWTDecodeException =>
         logger.warn("Failed to extract id from JWT", e)
         ""
     }
+  }
+
+  def isExpired(decoded: DecodedJWT): Boolean = {
+    val expiredAt = decoded.getExpiresAt
+    expiredAt.before(new Date())
   }
 }
