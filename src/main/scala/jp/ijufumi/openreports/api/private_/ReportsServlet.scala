@@ -9,7 +9,7 @@ class ReportsServlet @Inject() (loginService: LoginService, reportService: Repor
     extends PrivateAPIServletBase(loginService) {
 
   get("/") {
-    val workspaceId = getWorkspaceId()
+    val workspaceId = workspaceId()
     val page = params("page").toInt
     val limit = params("limit").toInt
     ok(reportService.getReports(workspaceId, page, limit))
@@ -18,7 +18,7 @@ class ReportsServlet @Inject() (loginService: LoginService, reportService: Repor
   post("/") {}
 
   get("/:id") {
-    val workspaceId = getWorkspaceId()
+    val workspaceId = workspaceId()
     val id = params("id")
     val report = reportService.getReport(workspaceId, id)
     if (report.isEmpty) {
@@ -29,7 +29,7 @@ class ReportsServlet @Inject() (loginService: LoginService, reportService: Repor
   }
 
   get("/outputs/:id") {
-    val workspaceId = getWorkspaceId()
+    val workspaceId = workspaceId()
     val id = params("id")
     val file = reportService.outputReport(workspaceId, id)
     if (file.isEmpty) {
@@ -41,7 +41,7 @@ class ReportsServlet @Inject() (loginService: LoginService, reportService: Repor
 
   put("/:id") {
     val id = params("id")
-    val workspaceId = getWorkspaceId()
+    val workspaceId = workspaceId()
     val requestParam = extractBody[UpdateReport]()
     val report =
       reportService.updateReport(workspaceId, id, requestParam.name, requestParam.reportTemplateId)
@@ -54,7 +54,7 @@ class ReportsServlet @Inject() (loginService: LoginService, reportService: Repor
 
   delete("/:id") {
     val id = params("id")
-    val workspaceId = getWorkspaceId()
+    val workspaceId = workspaceId()
     reportService.deleteReport(workspaceId, id)
     ok()
   }

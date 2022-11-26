@@ -13,6 +13,7 @@ import org.scalatra.{
   Ok,
   ScalatraServlet,
   Unauthorized,
+  Forbidden,
 }
 import org.scalatra.json.JacksonJsonSupport
 
@@ -49,6 +50,10 @@ abstract class APIServletBase
 
   def unauthorized(obj: Any): ActionResult = {
     hookResult(Unauthorized(obj))
+  }
+
+  def forbidden(obj: Any): ActionResult = {
+    hookResult(Forbidden(obj))
   }
 
   // 5xx

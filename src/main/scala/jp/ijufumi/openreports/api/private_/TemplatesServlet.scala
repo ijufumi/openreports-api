@@ -8,14 +8,14 @@ import jp.ijufumi.openreports.vo.request.CreateTemplate
 class TemplatesServlet @Inject() (loginService: LoginService, reportService: ReportService)
     extends PrivateAPIServletBase(loginService) {
   get("/") {
-    val workspaceId = getWorkspaceId()
+    val workspaceId = workspaceId()
     val page = params("page").toInt
     val limit = params("limit").toInt
     ok(reportService.getTemplates(workspaceId, page, limit))
   }
 
   post("/") {
-    val workspaceId = getWorkspaceId()
+    val workspaceId = workspaceId()
     val file = fileParams("file")
     val req = extractBody[CreateTemplate]()
     val res = reportService.createTemplate(workspaceId, req, file)
