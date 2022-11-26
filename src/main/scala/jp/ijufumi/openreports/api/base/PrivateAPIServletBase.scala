@@ -10,8 +10,8 @@ abstract class PrivateAPIServletBase(loginService: LoginService)
   configureMultipartHandling(MultipartConfig(maxFileSize = Some(Config.UPLOAD_FILE_MAX_SIZE)))
 
   before() {
-    val authorizationHeader = authorizationHeader()
-    if (!loginService.verifyApiToken(authorizationHeader)) {
+    val header = authorizationHeader()
+    if (!loginService.verifyApiToken(header)) {
       forbidden("API Token is invalid")
     }
   }

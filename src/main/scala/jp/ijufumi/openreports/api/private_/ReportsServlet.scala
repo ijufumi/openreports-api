@@ -9,18 +9,18 @@ class ReportsServlet @Inject() (loginService: LoginService, reportService: Repor
     extends PrivateAPIServletBase(loginService) {
 
   get("/") {
-    val workspaceId = workspaceId()
+    val _workspaceId = workspaceId()
     val page = params("page").toInt
     val limit = params("limit").toInt
-    ok(reportService.getReports(workspaceId, page, limit))
+    ok(reportService.getReports(_workspaceId, page, limit))
   }
 
   post("/") {}
 
   get("/:id") {
-    val workspaceId = workspaceId()
+    val _workspaceId = workspaceId()
     val id = params("id")
-    val report = reportService.getReport(workspaceId, id)
+    val report = reportService.getReport(_workspaceId, id)
     if (report.isEmpty) {
       notFound("reports not found")
     } else {
@@ -29,9 +29,9 @@ class ReportsServlet @Inject() (loginService: LoginService, reportService: Repor
   }
 
   get("/outputs/:id") {
-    val workspaceId = workspaceId()
+    val _workspaceId = workspaceId()
     val id = params("id")
-    val file = reportService.outputReport(workspaceId, id)
+    val file = reportService.outputReport(_workspaceId, id)
     if (file.isEmpty) {
       notFound("reports not found")
     } else {
@@ -41,10 +41,10 @@ class ReportsServlet @Inject() (loginService: LoginService, reportService: Repor
 
   put("/:id") {
     val id = params("id")
-    val workspaceId = workspaceId()
+    val _workspaceId = workspaceId()
     val requestParam = extractBody[UpdateReport]()
     val report =
-      reportService.updateReport(workspaceId, id, requestParam.name, requestParam.reportTemplateId)
+      reportService.updateReport(_workspaceId, id, requestParam.name, requestParam.reportTemplateId)
     if (report.isEmpty) {
       notFound("Failed to update reports")
     } else {
@@ -54,8 +54,8 @@ class ReportsServlet @Inject() (loginService: LoginService, reportService: Repor
 
   delete("/:id") {
     val id = params("id")
-    val workspaceId = workspaceId()
-    reportService.deleteReport(workspaceId, id)
+    val _workspaceId = workspaceId()
+    reportService.deleteReport(_workspaceId, id)
     ok()
   }
 }
