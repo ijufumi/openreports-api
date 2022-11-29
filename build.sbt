@@ -6,10 +6,10 @@ val SlickVersion = "3.4.1"
 val ScalaCacheVersion = "0.28.0"
 val SttpVersion = "3.8.3"
 val Json4sVersion = "4.0.6"
-val SLF4JVersion = "2.0.3"
-val LogbackVersion = "1.4.3"
+val SLF4JVersion = "2.0.4"
+val LogbackVersion = "1.4.5"
 val FlywayVersion = "9.7.0"
-val AWSSDKVersion = "2.18.7"
+val AWSSDKVersion = "2.18.21"
 val jXlsVersion = "2.12.0"
 
 ThisBuild / scalaVersion := Scala212Version
@@ -26,20 +26,21 @@ lazy val root = (project in file("."))
     libraryDependencies ++= Seq(
       "org.scalatra" %% "scalatra" % ScalatraVersion,
       "org.scalatra" %% "scalatra-json" % ScalatraVersion,
+      "org.scalatra" %% "scalatra-forms" % ScalatraVersion,
       "org.scalatra" %% "scalatra-scalatest" % ScalatraVersion % "test",
-      "ch.qos.logback" % "logback-classic" % "1.2.3" % "runtime",
+      "ch.qos.logback" % "logback-classic" % "1.4.5" % "runtime",
       "org.slf4j" % "slf4j-api" % SLF4JVersion,
       "org.slf4j" % "jcl-over-slf4j" % SLF4JVersion,
-      "org.eclipse.jetty" % "jetty-webapp" % "9.4.35.v20201120" % "container;compile",
-      "javax.servlet" % "javax.servlet-api" % "3.1.0" % "provided",
-      "org.postgresql" % "postgresql" % "42.4.0",
+      "org.eclipse.jetty" % "jetty-webapp" % "11.0.12" % "container;compile",
+      "javax.servlet" % "javax.servlet-api" % "4.0.1" % "provided",
+      "org.postgresql" % "postgresql" % "42.5.0",
       "org.flywaydb" % "flyway-core" % FlywayVersion,
       "com.google.inject" % "guice" % "5.1.0",
       "org.json4s" %% "json4s-jackson" % Json4sVersion,
       "org.json4s" %% "json4s-native" % Json4sVersion,
       "org.json4s" %% "json4s-ext" % Json4sVersion,
       "commons-codec" % "commons-codec" % "1.15",
-      "com.auth0" % "auth0" % "1.42.0",
+      "com.auth0" % "auth0" % "1.44.1",
       "com.typesafe.slick" %% "slick" % SlickVersion,
       "com.typesafe.slick" %% "slick-hikaricp" % SlickVersion,
       "com.typesafe.slick" %% "slick-testkit" % SlickVersion % "test",
