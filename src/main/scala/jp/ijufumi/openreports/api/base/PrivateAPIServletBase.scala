@@ -12,7 +12,7 @@ abstract class PrivateAPIServletBase(loginService: LoginService)
   before() {
     val header = authorizationHeader()
     if (!loginService.verifyApiToken(header)) {
-      forbidden("API Token is invalid")
+      halt(forbidden("API Token is invalid"))
     }
   }
 
