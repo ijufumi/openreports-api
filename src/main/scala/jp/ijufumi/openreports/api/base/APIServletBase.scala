@@ -16,12 +16,17 @@ import org.scalatra.{
   Forbidden,
 }
 import org.scalatra.json.JacksonJsonSupport
+import org.scalatra.forms.FormSupport
+import org.scalatra.i18n.I18nSupport
 
 abstract class APIServletBase
     extends ScalatraServlet
     with JacksonJsonSupport
+    with FormSupport
+    with I18nSupport
     with Logging
     with CorsSupport {
+
   override protected implicit lazy val jsonFormats: Formats = {
     DefaultFormats ++ org.json4s.ext.JavaTimeSerializers.all
     DefaultFormats + new EnumNameSerializer(StorageTypes)
