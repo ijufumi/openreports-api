@@ -8,15 +8,15 @@ import org.scalatra.{
   ActionResult,
   BadRequest,
   CorsSupport,
+  Forbidden,
   InternalServerError,
   NotFound,
   Ok,
   ScalatraServlet,
   Unauthorized,
-  Forbidden,
 }
 import org.scalatra.json.JacksonJsonSupport
-import org.scalatra.forms.FormSupport
+import org.scalatra.forms._
 import org.scalatra.i18n.I18nSupport
 
 abstract class APIServletBase
