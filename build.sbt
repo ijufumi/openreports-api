@@ -31,7 +31,7 @@ lazy val root = (project in file("."))
       "ch.qos.logback" % "logback-classic" % "1.4.5" % "runtime",
       "org.slf4j" % "slf4j-api" % SLF4JVersion,
       "org.slf4j" % "jcl-over-slf4j" % SLF4JVersion,
-      "org.eclipse.jetty" % "jetty-webapp" % "11.0.12" % "container;compile",
+      "org.eclipse.jetty" % "jetty-webapp" % "9.4.49.v20220914" % "container;compile",
       "javax.servlet" % "javax.servlet-api" % "3.1.0" % "provided",
       "org.postgresql" % "postgresql" % "42.5.0",
       "org.flywaydb" % "flyway-core" % FlywayVersion,
