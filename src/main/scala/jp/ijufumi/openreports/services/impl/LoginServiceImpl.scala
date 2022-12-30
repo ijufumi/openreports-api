@@ -48,16 +48,22 @@ class LoginServiceImpl @Inject() (
   override def verifyApiToken(authorizationHeader: String): Boolean = {
     val apiToken = getApiToken(authorizationHeader)
     if (apiToken.isEmpty) {
+      logger.info("api token is empty")
       return false
     }
     val memberId = Hash.extractIdFromJWT(apiToken.get)
     if (memberId == "") {
+      logger.info("didn't extract member id from token")
       return false
     }
 
     val cachedApiToken = cacheWrapper.get[String](CacheKeys.ApiToken, memberId)
 
-    cachedApiToken.getOrElse("").equals(apiToken.get)
+    if (!cachedApiToken.getOrElse("").equals(apiToken.get)) {
+      logger.info("tokens didn't match")
+      return false
+    }
+    true
   }
 
   override def getAuthorizationUrl: String = googleRepository.getAuthorizationUrl()
