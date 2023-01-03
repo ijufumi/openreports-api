@@ -66,7 +66,7 @@ abstract class APIServletBase
     hookResult(InternalServerError(obj))
   }
 
-  def hookResult(actionResult: ActionResult): ActionResult = {
+  private def hookResult(actionResult: ActionResult): ActionResult = {
     val servletPath = request.getRequestURI
     val queryString = request.getQueryString
     val requestMethod = request.getMethod
