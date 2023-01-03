@@ -41,4 +41,11 @@ class TemplateRepositoryImpl @Inject()(db: Database) extends TemplateRepository 
   override def update(model: Template): Unit = {
     query.insertOrUpdate(model).withPinnedSession
   }
+
+  override def delete(workspaceId: String, id: String): Unit = {
+    val getById = query
+      .filter(_.workspaceId === workspaceId)
+      .filter(_.id === id)
+    Await.result(db.run(getById.delete), Duration("10s"))
+  }
 }

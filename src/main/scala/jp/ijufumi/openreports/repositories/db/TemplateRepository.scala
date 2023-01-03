@@ -11,4 +11,6 @@ trait TemplateRepository {
   def register(model: Template): Option[Template]
 
   def update(model: Template): Unit
+
+  def delete(workspaceId: String, id: String): Unit
 }

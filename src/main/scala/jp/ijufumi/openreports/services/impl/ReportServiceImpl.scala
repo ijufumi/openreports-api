@@ -95,4 +95,28 @@ class ReportServiceImpl @Inject() (
     templateRepository.register(template)
     Some(TemplateResponse.apply(template))
   }
+
+  override def updateTemplate(
+      workspaceId: String,
+      id: String,
+      name: String,
+  ): Option[TemplateResponse] = {
+    val templateOpt = templateRepository.getById(workspaceId, id)
+    if (templateOpt.isEmpty) {
+      return None
+    }
+    val template = templateOpt.get.copy(name = name)
+    templateRepository.update(template)
+    Some(TemplateResponse.apply(template))
+  }
+
+  override def deleteTemplate(workspaceId: String, id: String): Unit = {
+    val templateOpt = templateRepository.getById(workspaceId, id)
+    if (templateOpt.isEmpty) {
+      return
+    }
+    val template = templateOpt.get
+    templateRepository.delete(workspaceId, id)
+    storageService.delete(workspaceId, template.filePath, template.storageType)
+  }
 }
