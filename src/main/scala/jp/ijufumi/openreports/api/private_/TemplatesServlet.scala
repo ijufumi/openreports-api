@@ -4,7 +4,7 @@ import com.google.inject.Inject
 import org.scalatra.forms._
 import jp.ijufumi.openreports.api.base.PrivateAPIServletBase
 import jp.ijufumi.openreports.services.{LoginService, ReportService}
-import jp.ijufumi.openreports.vo.request.{CreateTemplate, UpdateTemplate}
+import jp.ijufumi.openreports.vo.request.{CreateTemplate, UpdateReport, UpdateTemplate}
 
 class TemplatesServlet @Inject() (loginService: LoginService, reportService: ReportService)
     extends PrivateAPIServletBase(loginService) {
@@ -39,24 +39,14 @@ class TemplatesServlet @Inject() (loginService: LoginService, reportService: Rep
 
   put("/:id") {
     val id = params("id")
-    val postForm = mapping(
-      "name" -> text(),
-    )(UpdateTemplate.apply)
-
-    validate(postForm)(
-      (errors) => {
-        badRequest(errors)
-      },
-      (form: UpdateTemplate) => {
-        val _workspaceId = workspaceId()
-        val res = reportService.updateTemplate(_workspaceId, id, form.name)
-        if (res.isEmpty) {
-          badRequest("something wrong...")
-        } else {
-          ok(res.get)
-        }
-      },
-    )
+    val requestParam = extractBody[UpdateTemplate]()
+    val _workspaceId = workspaceId()
+    val res = reportService.updateTemplate(_workspaceId, id, requestParam.name)
+    if (res.isEmpty) {
+      badRequest("something wrong...")
+    } else {
+      ok(res.get)
+    }
   }
 
   delete("/:id") {
