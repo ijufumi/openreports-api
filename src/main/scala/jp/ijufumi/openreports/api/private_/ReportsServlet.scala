@@ -12,7 +12,8 @@ class ReportsServlet @Inject() (loginService: LoginService, reportService: Repor
     val _workspaceId = workspaceId()
     val page = params("page").toInt
     val limit = params("limit").toInt
-    ok(reportService.getReports(_workspaceId, page, limit))
+    val templateId = params("templateId")
+    ok(reportService.getReports(_workspaceId, page, limit, templateId))
   }
 
   post("/") {}

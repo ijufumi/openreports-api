@@ -4,9 +4,9 @@ import jp.ijufumi.openreports.entities.{Report, Template}
 
 trait ReportRepository {
 
-  def gets(workspaceId: String, offset: Int, limit: Int): (Seq[Report], Int)
+  def gets(workspaceId: String, offset: Int, limit: Int, templateId: String = ""): (Seq[Report], Int)
 
-  def getsWithTemplate(workspaceId: String, offset: Int, limit: Int): (Seq[(Report, Template)], Int)
+  def getsWithTemplate(workspaceId: String, offset: Int, limit: Int, templateId: String = ""): (Seq[(Report, Template)], Int)
 
   def getById(workspaceId: String, id: String): Option[Report]
 

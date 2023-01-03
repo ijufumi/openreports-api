@@ -12,8 +12,16 @@ import scala.concurrent.Await
 import scala.concurrent.duration.Duration
 
 class ReportRepositoryImpl @Inject() (db: Database) extends ReportRepository {
-  override def gets(workspaceId: String, offset: Int = 0, limit: Int = -1): (Seq[Report], Int) = {
+  override def gets(
+      workspaceId: String,
+      offset: Int = 0,
+      limit: Int = -1,
+      templateId: String = "",
+  ): (Seq[Report], Int) = {
     var filtered = query.filter(_.workspaceId === workspaceId).drop(offset)
+    if (templateId.nonEmpty) {
+      filtered = filtered.filter(_.templateId === templateId)
+    }
     val count = Await.result(db.run(query.length.result), Duration("10s"))
     if (limit > 0) {
       filtered = filtered.take(limit)
@@ -25,6 +33,7 @@ class ReportRepositoryImpl @Inject() (db: Database) extends ReportRepository {
       workspaceId: String,
       offset: Int = 0,
       limit: Int = -1,
+      templateId: String = "",
   ): (Seq[(Report, Template)], Int) = {
     var getById = query
       .filter(_.workspaceId === workspaceId)
@@ -32,6 +41,9 @@ class ReportRepositoryImpl @Inject() (db: Database) extends ReportRepository {
       .on(_.templateId === _.id)
       .sortBy(_._1.id)
 
+    if (templateId.nonEmpty) {
+      getById = getById.filter(_._1.templateId === templateId)
+    }
     val count = Await.result(db.run(getById.length.result), Duration("10s"))
     if (offset > 0) {
       getById = getById.drop(offset)
