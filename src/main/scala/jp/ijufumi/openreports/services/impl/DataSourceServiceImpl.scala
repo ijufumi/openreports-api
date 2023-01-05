@@ -12,8 +12,8 @@ import scala.collection.mutable
 
 class DataSourceServiceImpl @Inject() (dataSourceRepository: DataSourceRepository)
     extends DataSourceService {
-  def connection(dataSourceId: String): Connection = {
-    val dataSourceOpt = dataSourceRepository.getById(dataSourceId)
+  def connection(workspaceId: String, dataSourceId: String): Connection = {
+    val dataSourceOpt = dataSourceRepository.getById(workspaceId, dataSourceId)
     if (dataSourceOpt.isEmpty) {
       throw new NotFoundException()
     }

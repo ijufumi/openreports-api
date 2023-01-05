@@ -66,7 +66,7 @@ class OutputServiceImpl @Inject() (
       outputFile: Path,
       context: Context,
   ): Unit = {
-    Using(dataSourceService.connection(dataSourceId)) { conn =>
+    Using(dataSourceService.connection(workspaceId, dataSourceId)) { conn =>
       val jdbcHelper = new JdbcHelper(conn)
       context.putVar("conn", conn)
       context.putVar("jdbc", jdbcHelper)
