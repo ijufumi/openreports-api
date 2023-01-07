@@ -1,7 +1,7 @@
 package jp.ijufumi.openreports.entities
 
 import slick.jdbc.PostgresProfile.api._
-import jp.ijufumi.openreports.entities.queries.templateQuery
+import jp.ijufumi.openreports.gateways.datastores.database.repositories.impl.queries.templateQuery
 import jp.ijufumi.openreports.utils.Dates
 
 case class Report(

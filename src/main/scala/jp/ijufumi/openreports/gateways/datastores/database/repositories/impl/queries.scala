@@ -1,8 +1,9 @@
-package jp.ijufumi.openreports.entities
+package jp.ijufumi.openreports.gateways.datastores.database.repositories.impl
 
+import jp.ijufumi.openreports.entities._
 import slick.jdbc.PostgresProfile.api._
 
-object queries {
+private[impl] object queries {
   val reportQuery = TableQuery[Reports]
   val dataSourceQuery = TableQuery[DataSources]
   val driverTypeQuery = TableQuery[DriverTypes]

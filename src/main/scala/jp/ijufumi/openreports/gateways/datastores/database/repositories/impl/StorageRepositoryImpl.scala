@@ -3,7 +3,7 @@ package jp.ijufumi.openreports.gateways.datastores.database.repositories.impl
 import com.google.inject.Inject
 import slick.jdbc.PostgresProfile.api._
 import jp.ijufumi.openreports.entities.Storage
-import jp.ijufumi.openreports.entities.queries.{storageQuery => query}
+import queries.{storageQuery => query}
 import jp.ijufumi.openreports.gateways.datastores.database.repositories.StorageRepository
 import jp.ijufumi.openreports.utils.Dates
 import slick.jdbc.JdbcBackend.Database

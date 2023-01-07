@@ -2,7 +2,7 @@ package jp.ijufumi.openreports.gateways.datastores.database.repositories.impl
 
 import com.google.inject.Inject
 import jp.ijufumi.openreports.entities.{DataSource, DriverType}
-import jp.ijufumi.openreports.entities.queries.{dataSourceQuery => query, driverTypeQuery}
+import queries.{dataSourceQuery => query, driverTypeQuery}
 import jp.ijufumi.openreports.gateways.datastores.database.repositories.DataSourceRepository
 import slick.jdbc.JdbcBackend.Database
 import slick.jdbc.PostgresProfile.api._

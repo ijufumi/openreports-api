@@ -2,7 +2,7 @@ package jp.ijufumi.openreports.gateways.datastores.database.repositories.impl
 
 import com.google.inject.Inject
 import jp.ijufumi.openreports.entities.WorkspaceMember
-import jp.ijufumi.openreports.entities.queries.{workspaceMemberQuery => query}
+import queries.{workspaceMemberQuery => query}
 import jp.ijufumi.openreports.gateways.datastores.database.repositories.WorkspaceMemberRepository
 import slick.jdbc.JdbcBackend.Database
 import slick.jdbc.PostgresProfile.api._
