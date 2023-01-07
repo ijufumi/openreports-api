@@ -3,6 +3,7 @@ package jp.ijufumi.openreports.api.private_
 import com.google.inject.Inject
 import jp.ijufumi.openreports.api.base.PrivateAPIServletBase
 import jp.ijufumi.openreports.services.{DataSourceService, LoginService}
+import jp.ijufumi.openreports.vo.request.{CreateDataSource, UpdateDataSource}
 
 class DataSourcesServlet @Inject() (
     loginService: LoginService,
@@ -15,9 +16,13 @@ class DataSourcesServlet @Inject() (
     ok(result)
   }
 
-  post("/") {}
+  post("/") {
+    val requestVal = extractBody[CreateDataSource]()
+  }
 
-  put("/:id") {}
+  put("/:id") {
+    val requestVal = extractBody[UpdateDataSource]()
+  }
 
   get("/:id") {}
 

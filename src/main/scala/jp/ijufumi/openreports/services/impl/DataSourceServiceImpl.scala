@@ -6,6 +6,7 @@ import com.zaxxer.hikari.pool.HikariPool
 import jp.ijufumi.openreports.exceptions.NotFoundException
 import jp.ijufumi.openreports.repositories.db.DataSourceRepository
 import jp.ijufumi.openreports.services.DataSourceService
+import jp.ijufumi.openreports.vo.request.{CreateDataSource, UpdateDataSource}
 import jp.ijufumi.openreports.vo.response.DataSource
 
 import java.sql.Connection
@@ -34,6 +35,33 @@ class DataSourceServiceImpl @Inject() (dataSourceRepository: DataSourceRepositor
   override def getDataSources(workspaceId: String): Seq[DataSource] = {
     val dataSources = dataSourceRepository.getAll(workspaceId)
     dataSources.map(d => DataSource(d._1))
+  }
+
+  override def getDataSource(workspaceId: String, id: String): Option[DataSource] = {
+    val dataSource = dataSourceRepository.getById(workspaceId, id)
+    if (dataSource.isEmpty) {
+      return None
+    }
+    Some(DataSource(dataSource.get._1))
+  }
+
+  override def registerDataSource(
+      workspaceId: String,
+      requestVal: CreateDataSource,
+  ): Option[DataSource] = {
+    None
+  }
+
+  override def updateDataSource(
+      workspaceId: String,
+      id: String,
+      updateDataSource: UpdateDataSource,
+  ): Option[DataSource] = {
+    None
+  }
+
+  override def deleteDataSource(workspaceId: String, id: String): Unit = {
+    None
   }
 }
 
