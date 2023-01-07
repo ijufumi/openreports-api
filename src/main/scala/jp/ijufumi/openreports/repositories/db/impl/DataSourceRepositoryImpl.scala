@@ -40,4 +40,12 @@ class DataSourceRepositoryImpl @Inject() (db: Database) extends DataSourceReposi
   override def update(dataSource: DataSource): Unit = {
     query.insertOrUpdate(dataSource)
   }
+
+  override def delete(workspaceId: String, id: String): Unit = {
+    val getDataSources = query
+      .filter(_.id === id)
+      .filter(_.workspaceId === workspaceId)
+
+    Await.result(db.run(getDataSources.delete), Duration("10s"))
+  }
 }

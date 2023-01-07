@@ -10,4 +10,6 @@ trait DataSourceRepository {
   def register(dataSource: DataSource): Option[(DataSource, DriverType)]
 
   def update(dataSource: DataSource): Unit
+
+  def delete(workspaceId: String, id: String): Unit
 }
