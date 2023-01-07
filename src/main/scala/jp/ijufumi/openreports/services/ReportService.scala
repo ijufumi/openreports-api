@@ -1,7 +1,7 @@
 package jp.ijufumi.openreports.services
 
-import jp.ijufumi.openreports.vo.request.CreateTemplate
-import jp.ijufumi.openreports.vo.response.{Lists, Report, Template}
+import jp.ijufumi.openreports.models.inputs.CreateTemplate
+import jp.ijufumi.openreports.models.outputs.{Lists, Report, Template}
 import org.scalatra.servlet.FileItem
 
 import java.io.File

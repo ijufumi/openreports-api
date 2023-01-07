@@ -1,7 +1,7 @@
 package jp.ijufumi.openreports.services.impl
 
 import com.google.inject.Inject
-import jp.ijufumi.openreports.config.Config
+import jp.ijufumi.openreports.configs.Config
 import jp.ijufumi.openreports.entities.enums.StorageTypes.StorageType
 import jp.ijufumi.openreports.services.{DataSourceService, OutputService, StorageService}
 import jp.ijufumi.openreports.utils.{Dates, Logging}

@@ -2,9 +2,10 @@ package jp.ijufumi.openreports.services.impl
 
 import com.google.inject.Inject
 import jp.ijufumi.openreports.services.StorageService
-import jp.ijufumi.openreports.repositories.system.{AwsS3Repository, LocalFileRepository}
 import jp.ijufumi.openreports.entities.enums.StorageTypes
 import jp.ijufumi.openreports.entities.enums.StorageTypes.StorageType
+import jp.ijufumi.openreports.gateways.filestores.local.LocalFileRepository
+import jp.ijufumi.openreports.gateways.filestores.s3.AwsS3Repository
 
 import java.nio.file.Path
 

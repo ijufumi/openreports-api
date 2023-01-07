@@ -9,7 +9,7 @@ import com.auth0.jwt.exceptions.JWTDecodeException
 import com.auth0.jwt.interfaces.DecodedJWT
 
 import java.util.{Calendar, Date}
-import jp.ijufumi.openreports.config.Config.HASH_KEY
+import jp.ijufumi.openreports.configs.Config.HASH_KEY
 
 object Hash extends Logging {
   def hmacSha256(value: String, salt: String = HASH_KEY): String = {

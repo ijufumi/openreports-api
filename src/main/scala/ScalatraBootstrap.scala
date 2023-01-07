@@ -1,9 +1,9 @@
-import jp.ijufumi.openreports.api.private_.{MembersServlet, ReportsServlet, TemplatesServlet}
-import jp.ijufumi.openreports.api.public_.{HealthServlet, LoginServlet}
+import jp.ijufumi.openreports.apis.private_.{MembersServlet, ReportsServlet, TemplatesServlet}
+import jp.ijufumi.openreports.apis.public_.{HealthServlet, LoginServlet}
+import jp.ijufumi.openreports.configs.injectors.Injector
 import org.scalatra._
 
 import javax.servlet.ServletContext
-import jp.ijufumi.openreports.injector.Injector
 
 class ScalatraBootstrap extends LifeCycle {
   override def init(context: ServletContext): Unit = {

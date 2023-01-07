@@ -3,11 +3,11 @@ package jp.ijufumi.openreports.services.impl
 import com.google.inject.Inject
 import jp.ijufumi.openreports.entities.Template
 import jp.ijufumi.openreports.entities.enums.StorageTypes
-import jp.ijufumi.openreports.repositories.db.{ReportRepository, TemplateRepository}
+import jp.ijufumi.openreports.gateways.datastores.database.repositories.{ReportRepository, TemplateRepository}
 import jp.ijufumi.openreports.services.{OutputService, ReportService, StorageService}
 import jp.ijufumi.openreports.utils.{IDs, Strings, TemporaryFiles}
-import jp.ijufumi.openreports.vo.request.CreateTemplate
-import jp.ijufumi.openreports.vo.response.{Lists, Report, Template => TemplateResponse}
+import jp.ijufumi.openreports.models.inputs.CreateTemplate
+import jp.ijufumi.openreports.models.outputs.{Lists, Report, Template => TemplateResponse}
 import org.scalatra.servlet.FileItem
 
 import java.io.File

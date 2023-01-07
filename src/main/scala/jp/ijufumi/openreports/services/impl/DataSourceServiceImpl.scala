@@ -4,10 +4,10 @@ import com.google.inject.Inject
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.pool.HikariPool
 import jp.ijufumi.openreports.exceptions.NotFoundException
-import jp.ijufumi.openreports.repositories.db.DataSourceRepository
+import jp.ijufumi.openreports.gateways.datastores.database.repositories.DataSourceRepository
 import jp.ijufumi.openreports.services.DataSourceService
-import jp.ijufumi.openreports.vo.request.{CreateDataSource, UpdateDataSource}
-import jp.ijufumi.openreports.vo.response.DataSource
+import jp.ijufumi.openreports.models.inputs.{CreateDataSource, UpdateDataSource}
+import jp.ijufumi.openreports.models.outputs.DataSource
 
 import java.sql.Connection
 import scala.collection.mutable

@@ -1,16 +1,10 @@
 package jp.ijufumi.openreports.services.impl
 
 import com.google.inject.Inject
-import jp.ijufumi.openreports.config.Config
+import jp.ijufumi.openreports.configs.Config
 import jp.ijufumi.openreports.entities.enums.StorageTypes
 import jp.ijufumi.openreports.entities.{Report, Template, Storage, Workspace, WorkspaceMember}
-import jp.ijufumi.openreports.repositories.db.{
-  ReportRepository,
-  TemplateRepository,
-  StorageRepository,
-  WorkspaceMemberRepository,
-  WorkspaceRepository,
-}
+import jp.ijufumi.openreports.gateways.datastores.database.repositories.{ReportRepository, StorageRepository, TemplateRepository, WorkspaceMemberRepository, WorkspaceRepository}
 import jp.ijufumi.openreports.services.{StorageService, WorkspaceService}
 import jp.ijufumi.openreports.utils.{IDs, Strings}
 import slick.jdbc.PostgresProfile.api._
