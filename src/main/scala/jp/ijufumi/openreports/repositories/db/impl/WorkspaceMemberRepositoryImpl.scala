@@ -15,7 +15,7 @@ class WorkspaceMemberRepositoryImpl @Inject() (db: Database) extends WorkspaceMe
     val getById = query
       .filter(_.workspaceId === workspaceId)
       .filter(_.memberId === memberId)
-    val workspaceMembers = Await.result(db.run(getById.result), Duration("10s"))
+    val workspaceMembers = Await.result(db.run(getById.result), queryTimeout)
     if (workspaceMembers.isEmpty) {
       return None
     }
@@ -25,7 +25,7 @@ class WorkspaceMemberRepositoryImpl @Inject() (db: Database) extends WorkspaceMe
 
   override def register(workspaceMember: WorkspaceMember): Option[WorkspaceMember] = {
     val register = (query += workspaceMember).withPinnedSession
-    Await.result(db.run(register), Duration("1m"))
+    Await.result(db.run(register), queryTimeout)
     getById(workspaceMember.workspaceId, workspaceMember.memberId)
   }
 }

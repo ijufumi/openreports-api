@@ -16,7 +16,7 @@ class StorageRepositoryImpl @Inject() (db: Database) extends StorageRepository {
     val getById = query
       .filter(_.workspaceId === workspaceId)
       .filter(_.id === id)
-    val models = Await.result(db.run(getById.result), Duration("10s"))
+    val models = Await.result(db.run(getById.result), queryTimeout)
     if (models.isEmpty) {
       return None
     }
@@ -26,18 +26,18 @@ class StorageRepositoryImpl @Inject() (db: Database) extends StorageRepository {
   override def gets(workspaceId: String): Seq[Storage] = {
     val getById = query
       .filter(_.workspaceId === workspaceId)
-    Await.result(db.run(getById.result), Duration("10s"))
+    Await.result(db.run(getById.result), queryTimeout)
   }
 
   override def register(model: Storage): Option[Storage] = {
     val register = (query += model).withPinnedSession
-    Await.result(db.run(register), Duration("1m"))
+    Await.result(db.run(register), queryTimeout)
     getById(model.workspaceId, model.id)
   }
 
   override def update(model: Storage): Unit = {
     val newModel = model.copy(updatedAt = Dates.currentTimestamp())
     val updateQuery = query.insertOrUpdate(newModel).withPinnedSession
-    Await.result(db.run(updateQuery), Duration("1m"))
+    Await.result(db.run(updateQuery), queryTimeout)
   }
 }

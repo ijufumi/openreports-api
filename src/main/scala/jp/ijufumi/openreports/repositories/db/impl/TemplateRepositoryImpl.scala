@@ -13,18 +13,18 @@ import scala.concurrent.duration.Duration
 class TemplateRepositoryImpl @Inject()(db: Database) extends TemplateRepository {
   override def gets(workspaceId: String, offset: Int, limit: Int): (Seq[Template], Int) = {
     var filtered = query.filter(_.workspaceId === workspaceId).drop(offset)
-    val count = Await.result(db.run(query.length.result), Duration("10s"))
+    val count = Await.result(db.run(query.length.result), queryTimeout)
     if (limit > 0) {
       filtered = filtered.take(limit)
     }
-    (Await.result(db.run(filtered.result), Duration("10s")), count)
+    (Await.result(db.run(filtered.result), queryTimeout), count)
   }
 
   override def getById(workspaceId: String, id: String): Option[Template] = {
     val getById = query
       .filter(_.workspaceId === workspaceId)
       .filter(_.id === id)
-    val models = Await.result(db.run(getById.result), Duration("10s"))
+    val models = Await.result(db.run(getById.result), queryTimeout)
     if (models.isEmpty) {
       return None
     }
@@ -34,7 +34,7 @@ class TemplateRepositoryImpl @Inject()(db: Database) extends TemplateRepository 
 
   override def register(model: Template): Option[Template] = {
     val register = (query += model).withPinnedSession
-    Await.result(db.run(register), Duration("1m"))
+    Await.result(db.run(register), queryTimeout)
     getById(model.workspaceId, model.id)
   }
 
@@ -46,6 +46,6 @@ class TemplateRepositoryImpl @Inject()(db: Database) extends TemplateRepository 
     val getById = query
       .filter(_.workspaceId === workspaceId)
       .filter(_.id === id)
-    Await.result(db.run(getById.delete), Duration("10s"))
+    Await.result(db.run(getById.delete), queryTimeout)
   }
 }

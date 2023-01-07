@@ -17,7 +17,7 @@ class DataSourceRepositoryImpl @Inject() (db: Database) extends DataSourceReposi
       .on(_.driverTypeId === _.id)
       .filter(_._1.id === id)
       .filter(_._1.workspaceId === workspaceId)
-    val dataSources = Await.result(db.run(getDataSources.result), Duration("10s"))
+    val dataSources = Await.result(db.run(getDataSources.result), queryTimeout)
     if (dataSources.isEmpty) {
       return None
     }
@@ -29,11 +29,11 @@ class DataSourceRepositoryImpl @Inject() (db: Database) extends DataSourceReposi
       .join(driverTypeQuery)
       .on(_.driverTypeId === _.id)
       .filter(_._1.workspaceId === workspaceId)
-    Await.result(db.run(getDataSources.result), Duration("10s"))
+    Await.result(db.run(getDataSources.result), queryTimeout)
   }
 
   override def register(dataSource: DataSource): Option[(DataSource, DriverType)] = {
-    Await.result(db.run(query += dataSource), Duration("1m"))
+    Await.result(db.run(query += dataSource), queryTimeout)
     getById(dataSource.workspaceId, dataSource.id)
   }
 
@@ -46,6 +46,6 @@ class DataSourceRepositoryImpl @Inject() (db: Database) extends DataSourceReposi
       .filter(_.id === id)
       .filter(_.workspaceId === workspaceId)
 
-    Await.result(db.run(getDataSources.delete), Duration("10s"))
+    Await.result(db.run(getDataSources.delete), queryTimeout)
   }
 }

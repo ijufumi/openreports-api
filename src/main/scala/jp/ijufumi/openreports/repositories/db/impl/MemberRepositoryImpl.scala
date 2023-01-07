@@ -13,7 +13,7 @@ class MemberRepositoryImpl @Inject() (db: Database) extends MemberRepository {
   override def getById(id: String): Option[Member] = {
     val getMembers = query
       .filter(_.id === id)
-    val members = Await.result(db.run(getMembers.result), Duration("10s"))
+    val members = Await.result(db.run(getMembers.result), queryTimeout)
     if (members.isEmpty) {
       return None
     }
@@ -23,7 +23,7 @@ class MemberRepositoryImpl @Inject() (db: Database) extends MemberRepository {
   override def getByGoogleId(googleId: String): Option[Member] = {
     val getMembers = query
       .filter(_.googleId === googleId)
-    val members = Await.result(db.run(getMembers.result), Duration("10s"))
+    val members = Await.result(db.run(getMembers.result), queryTimeout)
     if (members.isEmpty) {
       return None
     }
@@ -33,7 +33,7 @@ class MemberRepositoryImpl @Inject() (db: Database) extends MemberRepository {
   override def getMemberByEmail(email: String): Option[Member] = {
     val getMembers = query
       .filter(_.email === email)
-    val members = Await.result(db.run(getMembers.result), Duration("10s"))
+    val members = Await.result(db.run(getMembers.result), queryTimeout)
     if (members.isEmpty) {
       return None
     }
@@ -42,7 +42,7 @@ class MemberRepositoryImpl @Inject() (db: Database) extends MemberRepository {
 
   override def register(member: Member): Option[Member] = {
     val register = (query += member).withPinnedSession
-    Await.result(db.run(register), Duration("1m"))
+    Await.result(db.run(register), queryTimeout)
     getById(member.id)
   }
 

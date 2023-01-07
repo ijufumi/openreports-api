@@ -74,7 +74,7 @@ class ReportRepositoryImpl @Inject() (db: Database) extends ReportRepository {
       .filter(_.id === id)
       .join(templateQuery)
       .on(_.templateId === _.id)
-    val models = Await.result(db.run(getById.result), Duration("10s"))
+    val models = Await.result(db.run(getById.result), queryTimeout)
     if (models.isEmpty) {
       return None
     }
@@ -83,14 +83,14 @@ class ReportRepositoryImpl @Inject() (db: Database) extends ReportRepository {
 
   override def register(model: Report): Option[Report] = {
     val register = (query += model).withPinnedSession
-    Await.result(db.run(register), Duration("1m"))
+    Await.result(db.run(register), queryTimeout)
     getById(model.workspaceId, model.id)
   }
 
   override def update(model: Report): Unit = {
     val newModel = model.copy(updatedAt = Dates.currentTimestamp())
     val updateQuery = query.insertOrUpdate(newModel).withPinnedSession
-    Await.result(db.run(updateQuery), Duration("1m"))
+    Await.result(db.run(updateQuery), queryTimeout)
   }
 
   override def delete(workspaceId: String, id: String): Unit = {
