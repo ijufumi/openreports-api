@@ -1,7 +1,7 @@
 package jp.ijufumi.openreports.services.impl
 
 import jp.ijufumi.openreports.services.{LoginService, WorkspaceService}
-import jp.ijufumi.openreports.repositories.system._
+
 import com.google.inject.{Inject, Singleton}
 import jp.ijufumi.openreports.configs.Config
 import jp.ijufumi.openreports.utils.{Hash, IDs, Logging}
@@ -10,7 +10,6 @@ import jp.ijufumi.openreports.entities._
 import jp.ijufumi.openreports.gateways.auth.google.GoogleRepository
 import jp.ijufumi.openreports.gateways.datastores.cache.{CacheKeys, CacheWrapper}
 import jp.ijufumi.openreports.gateways.datastores.database.repositories.{MemberRepository, WorkspaceRepository}
-import jp.ijufumi.openreports.repositories.db._
 import slick.jdbc.PostgresProfile.api._
 
 @Singleton
