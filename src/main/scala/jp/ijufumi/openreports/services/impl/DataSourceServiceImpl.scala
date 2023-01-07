@@ -6,6 +6,7 @@ import com.zaxxer.hikari.pool.HikariPool
 import jp.ijufumi.openreports.exceptions.NotFoundException
 import jp.ijufumi.openreports.repositories.db.DataSourceRepository
 import jp.ijufumi.openreports.services.DataSourceService
+import jp.ijufumi.openreports.vo.response.DataSource
 
 import java.sql.Connection
 import scala.collection.mutable
@@ -18,20 +19,25 @@ class DataSourceServiceImpl @Inject() (dataSourceRepository: DataSourceRepositor
       throw new NotFoundException()
     }
     val (dataSource, driverType) = dataSourceOpt.get
-    if (!DataSourcePool.has(dataSource.name)) {
+    if (!dataSourcePool.has(dataSource.name)) {
       val config = new HikariConfig()
       config.setUsername(dataSource.username)
       config.setPassword(dataSource.password)
       config.setJdbcUrl(dataSource.url)
       config.setAutoCommit(false)
       config.setDriverClassName(driverType.jdbcDriverClass)
-      DataSourcePool.add(dataSource.name, config)
+      dataSourcePool.add(dataSource.name, config)
     }
-    DataSourcePool.connection(dataSource.name).get
+    dataSourcePool.connection(dataSource.name).get
+  }
+
+  override def getDataSources(workspaceId: String): Seq[DataSource] = {
+    val dataSources = dataSourceRepository.getAll(workspaceId)
+    dataSources.map(d => DataSource(d._1))
   }
 }
 
-private object DataSourcePool {
+private object dataSourcePool {
   private val pool = mutable.Map.empty[String, HikariPool]
 
   def add(name: String, config: HikariConfig): Unit = {
