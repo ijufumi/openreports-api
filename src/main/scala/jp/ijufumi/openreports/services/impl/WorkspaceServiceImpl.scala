@@ -59,7 +59,7 @@ class WorkspaceServiceImpl @Inject() (
     if (workspaceOpt.isEmpty) {
       return None
     }
-    val newWorkspace = workspaceOpt.get.copy(name = input.name)
+    val newWorkspace = workspaceOpt.get.copyForUpdate(input)
     workspaceRepository.update(newWorkspace)
   }
 
