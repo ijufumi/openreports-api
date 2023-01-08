@@ -1,6 +1,6 @@
 package jp.ijufumi.openreports.services
 
-import jp.ijufumi.openreports.models.inputs.CreateTemplate
+import jp.ijufumi.openreports.models.inputs.{CreateTemplate, UpdateReport, UpdateTemplate}
 import jp.ijufumi.openreports.models.outputs.{Lists, Report, Template}
 import org.scalatra.servlet.FileItem
 
@@ -17,7 +17,7 @@ trait ReportService {
 
   def outputReport(workspaceId: String, id: String): Option[File]
 
-  def updateReport(workspaceId: String, id: String, name: String, reportTemplateId: String): Option[Report]
+  def updateReport(workspaceId: String, id: String, input: UpdateReport): Option[Report]
 
   def deleteReport(workspaceId: String, id: String): Unit
 

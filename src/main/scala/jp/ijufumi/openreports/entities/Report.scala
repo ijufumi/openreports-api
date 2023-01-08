@@ -1,18 +1,23 @@
 package jp.ijufumi.openreports.entities
 
+import jp.ijufumi.openreports.models.inputs.UpdateReport
 import slick.jdbc.PostgresProfile.api._
 import jp.ijufumi.openreports.utils.Dates
 
 case class Report(
-                   id: String,
-                   name: String,
-                   templateId: String,
-                   dataSourceId: Option[String],
-                   workspaceId: String,
-                   createdAt: Long = Dates.currentTimestamp(),
-                   updatedAt: Long = Dates.currentTimestamp(),
-                   versions: Long = 1,
-)
+    id: String,
+    name: String,
+    templateId: String,
+    dataSourceId: Option[String],
+    workspaceId: String,
+    createdAt: Long = Dates.currentTimestamp(),
+    updatedAt: Long = Dates.currentTimestamp(),
+    versions: Long = 1,
+) {
+  def copyForUpdate(input: UpdateReport): Report = {
+    this.copy(name = input.name, templateId = input.templateId)
+  }
+}
 
 class Reports(tag: Tag)
     extends Table[Report](

@@ -3,10 +3,13 @@ package jp.ijufumi.openreports.services.impl
 import com.google.inject.Inject
 import jp.ijufumi.openreports.entities.Template
 import jp.ijufumi.openreports.entities.enums.StorageTypes
-import jp.ijufumi.openreports.gateways.datastores.database.repositories.{ReportRepository, TemplateRepository}
+import jp.ijufumi.openreports.gateways.datastores.database.repositories.{
+  ReportRepository,
+  TemplateRepository,
+}
 import jp.ijufumi.openreports.services.{OutputService, ReportService, StorageService}
 import jp.ijufumi.openreports.utils.{IDs, Strings, TemporaryFiles}
-import jp.ijufumi.openreports.models.inputs.CreateTemplate
+import jp.ijufumi.openreports.models.inputs.{CreateTemplate, UpdateReport, UpdateTemplate}
 import jp.ijufumi.openreports.models.outputs.{Lists, Report, Template => TemplateResponse}
 import org.scalatra.servlet.FileItem
 
@@ -62,15 +65,14 @@ class ReportServiceImpl @Inject() (
   override def updateReport(
       workspaceId: String,
       id: String,
-      name: String,
-      reportTemplateId: String,
+      input: UpdateReport,
   ): Option[Report] = {
     val reportOpt = reportRepository.getById(workspaceId, id)
     if (reportOpt.isEmpty) {
       return None
     }
     val report = reportOpt.get
-    val newReport = report.copy(name = name, templateId = reportTemplateId)
+    val newReport = report.copyForUpdate(input)
     reportRepository.update(newReport)
     this.getReport(workspaceId, id)
   }

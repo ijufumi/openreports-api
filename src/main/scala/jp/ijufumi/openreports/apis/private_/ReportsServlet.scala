@@ -45,7 +45,7 @@ class ReportsServlet @Inject() (loginService: LoginService, reportService: Repor
     val _workspaceId = workspaceId()
     val requestParam = extractBody[UpdateReport]()
     val report =
-      reportService.updateReport(_workspaceId, id, requestParam.name, requestParam.reportTemplateId)
+      reportService.updateReport(_workspaceId, id, requestParam)
     if (report.isEmpty) {
       notFound("Failed to update reports")
     } else {
