@@ -22,7 +22,7 @@ class LoginServlet @Inject() (loginService: LoginService) extends APIServletBase
 
   post("/google") {
     val loginRequest = extractBody[GoogleLogin]()
-    val member = loginService.loginWithGoogle(loginRequest.code)
+    val member = loginService.loginWithGoogle(loginRequest)
     if (member.isEmpty) {
       unauthorized("state or code or both are invalid")
     } else {

@@ -1,6 +1,6 @@
 package jp.ijufumi.openreports.services
 
-import jp.ijufumi.openreports.models.inputs.Login
+import jp.ijufumi.openreports.models.inputs.{GoogleLogin, Login}
 import jp.ijufumi.openreports.models.outputs.Member
 
 trait LoginService {
@@ -12,7 +12,7 @@ trait LoginService {
 
   def getAuthorizationUrl: String
 
-  def loginWithGoogle(code: String): Option[Member]
+  def loginWithGoogle(input: GoogleLogin): Option[Member]
 
   def getMemberByToken(authorizationHeader: String): Option[Member]
 }

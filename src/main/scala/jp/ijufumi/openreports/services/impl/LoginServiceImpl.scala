@@ -9,7 +9,7 @@ import jp.ijufumi.openreports.entities._
 import jp.ijufumi.openreports.gateways.auth.google.GoogleRepository
 import jp.ijufumi.openreports.gateways.datastores.cache.{CacheKeys, CacheWrapper}
 import jp.ijufumi.openreports.gateways.datastores.database.repositories.{MemberRepository, WorkspaceRepository}
-import jp.ijufumi.openreports.models.inputs.Login
+import jp.ijufumi.openreports.models.inputs.{GoogleLogin, Login}
 import slick.jdbc.PostgresProfile.api._
 
 @Singleton
@@ -70,8 +70,8 @@ class LoginServiceImpl @Inject() (
 
   override def getAuthorizationUrl: String = googleRepository.getAuthorizationUrl()
 
-  override def loginWithGoogle(code: String): Option[MemberReponse] = {
-    val tokenOpt = googleRepository.fetchToken(code)
+  override def loginWithGoogle(input: GoogleLogin): Option[MemberReponse] = {
+    val tokenOpt = googleRepository.fetchToken(input.code)
     if (tokenOpt.isEmpty) {
       logger.info("Missing token")
       return None
