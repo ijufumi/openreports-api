@@ -41,7 +41,7 @@ class TemplatesServlet @Inject() (loginService: LoginService, reportService: Rep
     val id = params("id")
     val requestParam = extractBody[UpdateTemplate]()
     val _workspaceId = workspaceId()
-    val res = reportService.updateTemplate(_workspaceId, id, requestParam.name)
+    val res = reportService.updateTemplate(_workspaceId, id, requestParam)
     if (res.isEmpty) {
       badRequest("something wrong...")
     } else {
