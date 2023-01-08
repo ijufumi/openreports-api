@@ -3,19 +3,26 @@ package jp.ijufumi.openreports.services.impl
 import com.google.inject.Inject
 import jp.ijufumi.openreports.configs.Config
 import jp.ijufumi.openreports.entities.enums.StorageTypes
-import jp.ijufumi.openreports.entities.{Report, Template, Storage, Workspace, WorkspaceMember}
-import jp.ijufumi.openreports.gateways.datastores.database.repositories.{ReportRepository, StorageRepository, TemplateRepository, WorkspaceMemberRepository, WorkspaceRepository}
+import jp.ijufumi.openreports.entities.{Report, Storage, Template, Workspace, WorkspaceMember}
+import jp.ijufumi.openreports.gateways.datastores.database.repositories.{
+  ReportRepository,
+  StorageRepository,
+  TemplateRepository,
+  WorkspaceMemberRepository,
+  WorkspaceRepository,
+}
+import jp.ijufumi.openreports.models.inputs.UpdateWorkspace
 import jp.ijufumi.openreports.services.{StorageService, WorkspaceService}
 import jp.ijufumi.openreports.utils.{IDs, Strings}
 import slick.jdbc.PostgresProfile.api._
 
 class WorkspaceServiceImpl @Inject() (
-                                       workspaceRepository: WorkspaceRepository,
-                                       workspaceMemberRepository: WorkspaceMemberRepository,
-                                       storageRepository: StorageRepository,
-                                       reportRepository: ReportRepository,
-                                       reportTemplateRepository: TemplateRepository,
-                                       storageService: StorageService,
+    workspaceRepository: WorkspaceRepository,
+    workspaceMemberRepository: WorkspaceMemberRepository,
+    storageRepository: StorageRepository,
+    reportRepository: ReportRepository,
+    reportTemplateRepository: TemplateRepository,
+    storageService: StorageService,
 ) extends WorkspaceService {
   override def createAndRelevant(memberId: String, email: String): Option[Workspace] = {
     var workspaceOpt = Option.empty[Workspace]
@@ -43,7 +50,20 @@ class WorkspaceServiceImpl @Inject() (
     workspaceOpt
   }
 
-  def copySample(workspaceId: String): String = {
+  override def getWorkspace(id: String): Option[Workspace] = {
+    workspaceRepository.getById(id)
+  }
+
+  override def updateWorkspace(id: String, input: UpdateWorkspace): Option[Workspace] = {
+    val workspaceOpt = workspaceRepository.getById(id)
+    if (workspaceOpt.isEmpty) {
+      return None
+    }
+    val newWorkspace = workspaceOpt.get.copy(name = input.name)
+    workspaceRepository.update(newWorkspace)
+  }
+
+  private def copySample(workspaceId: String): String = {
     val source = storageService.get("", Config.SAMPLE_REPORT_PATH, StorageTypes.Local)
     val key = Strings.generateRandomSting(10)() + Strings.extension(source.getFileName.toString)
     storageService.create(workspaceId, key, StorageTypes.Local, source)

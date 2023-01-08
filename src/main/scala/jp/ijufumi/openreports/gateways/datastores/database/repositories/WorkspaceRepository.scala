@@ -10,5 +10,5 @@ trait WorkspaceRepository {
 
   def register(workspace: Workspace): Option[Workspace]
 
-  def update(workspace: Workspace): Unit
+  def update(workspace: Workspace): Option[Workspace]
 }

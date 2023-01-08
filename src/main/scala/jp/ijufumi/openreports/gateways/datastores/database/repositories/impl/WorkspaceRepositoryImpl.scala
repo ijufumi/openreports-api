@@ -33,7 +33,8 @@ class WorkspaceRepositoryImpl @Inject() (db: Database) extends WorkspaceReposito
     getById(workspace.id)
   }
 
-  override def update(workspace: Workspace): Unit = {
+  override def update(workspace: Workspace): Option[Workspace] = {
     query.insertOrUpdate(workspace).withPinnedSession
+    getById(workspace.id)
   }
 }
