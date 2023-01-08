@@ -1,6 +1,7 @@
 package jp.ijufumi.openreports.entities
 
 import jp.ijufumi.openreports.entities.enums.StorageTypes._
+import jp.ijufumi.openreports.models.inputs.UpdateTemplate
 import jp.ijufumi.openreports.utils.Dates
 import slick.jdbc.PostgresProfile.api._
 
@@ -14,7 +15,11 @@ case class Template(
     createdAt: Long = Dates.currentTimestamp(),
     updatedAt: Long = Dates.currentTimestamp(),
     versions: Long = 1,
-)
+) {
+  def copyForUpdate(input: UpdateTemplate): Template = {
+    this.copy(name = input.name)
+  }
+}
 
 class Templates(tag: Tag)
     extends Table[Template](

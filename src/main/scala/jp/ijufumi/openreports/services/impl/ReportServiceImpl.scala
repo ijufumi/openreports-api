@@ -101,13 +101,13 @@ class ReportServiceImpl @Inject() (
   override def updateTemplate(
       workspaceId: String,
       id: String,
-      name: String,
+      input: UpdateTemplate,
   ): Option[TemplateResponse] = {
     val templateOpt = templateRepository.getById(workspaceId, id)
     if (templateOpt.isEmpty) {
       return None
     }
-    val template = templateOpt.get.copy(name = name)
+    val template = templateOpt.get.copyForUpdate(input)
     templateRepository.update(template)
     Some(TemplateResponse.apply(template))
   }
