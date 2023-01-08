@@ -13,7 +13,7 @@ class WorkspaceServlet @Inject() (
     val _workspaceId = workspaceId()
     val result = workspaceService.getWorkspace(_workspaceId)
     if (result.isEmpty) {
-      notFound()
+      notFound("workspace not found")
     } else {
       ok(result.get)
     }
@@ -24,7 +24,7 @@ class WorkspaceServlet @Inject() (
     val requestVal = extractBody[UpdateWorkspace]()
     val result = workspaceService.updateWorkspace(_workspaceId, requestVal)
     if (result.isEmpty) {
-      notFound()
+      notFound("could not update workspace")
     } else {
       ok(result.get)
     }
