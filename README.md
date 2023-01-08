@@ -50,51 +50,52 @@ docker-compose exec api sbt flywayClean
 ## Developer's memo.
 ### API list
 
-- public
+- [ ] public
   - [x] login
     - [x] with ID / password
     - [x] Google login
-- private
-  - common
+  - [x] health
+- [ ] private
+  - [x] common
     - [x] logout
-  - members
+  - [ ] members
     - [x] status (member info only)
     - [ ] status (including menus, groups)
     - [ ] update (name, password)
-  - reports
+  - [ ] reports
     - [x] list
-    - [ ] create
-    - [ ] update
-    - [ ] delete
+    - [x] create
+    - [x] update
+    - [x] delete
     - [x] output
-    - parameters
+    - [ ] parameters
       - [ ] list
       - [ ] create
       - [ ] update
       - [ ] delete
-    - groups
+    - [ ] groups
       - [ ] list
       - [ ] create
       - [ ] update
       - [ ] delete
-  - scheduled_reports
+  - [ ] scheduled_reports
     - [ ] list
     - [ ] create
     - [ ] update
     - [ ] delete
-  - templates
-    - [ ] list
-    - [ ] create
-    - [ ] update
-    - [ ] delete
-  - workspaces
-    - [ ] update
-    - users
+  - [ ] templates
+    - [x] list
+    - [x] create
+    - [x] update
+    - [x] delete
+  - [ ] workspaces
+    - [x] update
+    - [ ] users
       - [ ] list
       - [ ] create
       - [ ] update
       - [ ] delete
-    - data_sources
+    - [ ] data_sources
       - [ ] list
       - [ ] create
       - [ ] update
