@@ -24,7 +24,7 @@ class WorkspaceServlet @Inject() (
     val requestVal = extractBody[UpdateWorkspace]()
     val result = workspaceService.updateWorkspace(_workspaceId, requestVal)
     if (result.isEmpty) {
-      notFound("could not update workspace")
+      badRequest("something wrong...")
     } else {
       ok(result.get)
     }
