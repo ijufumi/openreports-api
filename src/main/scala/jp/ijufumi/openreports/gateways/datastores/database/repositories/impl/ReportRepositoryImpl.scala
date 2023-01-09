@@ -9,7 +9,6 @@ import jp.ijufumi.openreports.utils.Dates
 import slick.jdbc.JdbcBackend.Database
 
 import scala.concurrent.Await
-import scala.concurrent.duration.Duration
 
 class ReportRepositoryImpl @Inject() (db: Database) extends ReportRepository {
   override def gets(
@@ -22,11 +21,11 @@ class ReportRepositoryImpl @Inject() (db: Database) extends ReportRepository {
     if (templateId.nonEmpty) {
       filtered = filtered.filter(_.templateId === templateId)
     }
-    val count = Await.result(db.run(query.length.result), Duration("10s"))
+    val count = Await.result(db.run(query.length.result), queryTimeout)
     if (limit > 0) {
       filtered = filtered.take(limit)
     }
-    (Await.result(db.run(filtered.result), Duration("10s")), count)
+    (Await.result(db.run(filtered.result), queryTimeout), count)
   }
 
   override def getsWithTemplate(
@@ -44,7 +43,7 @@ class ReportRepositoryImpl @Inject() (db: Database) extends ReportRepository {
     if (templateId.nonEmpty) {
       getById = getById.filter(_._1.templateId === templateId)
     }
-    val count = Await.result(db.run(getById.length.result), Duration("10s"))
+    val count = Await.result(db.run(getById.length.result), queryTimeout)
     if (offset > 0) {
       getById = getById.drop(offset)
     }
@@ -52,14 +51,14 @@ class ReportRepositoryImpl @Inject() (db: Database) extends ReportRepository {
       getById = getById.take(limit)
     }
 
-    (Await.result(db.run(getById.result), Duration("10s")), count)
+    (Await.result(db.run(getById.result), queryTimeout), count)
   }
 
   override def getById(workspaceId: String, id: String): Option[Report] = {
     val getById = query
       .filter(_.workspaceId === workspaceId)
       .filter(_.id === id)
-    val models = Await.result(db.run(getById.result), Duration("10s"))
+    val models = Await.result(db.run(getById.result), queryTimeout)
     if (models.isEmpty) {
       return None
     }
@@ -97,6 +96,6 @@ class ReportRepositoryImpl @Inject() (db: Database) extends ReportRepository {
     val getById = query
       .filter(_.workspaceId === workspaceId)
       .filter(_.id === id)
-    Await.result(db.run(getById.delete), Duration("10s"))
+    Await.result(db.run(getById.delete), queryTimeout)
   }
 }

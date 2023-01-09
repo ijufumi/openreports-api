@@ -9,7 +9,6 @@ import jp.ijufumi.openreports.utils.Dates
 import slick.jdbc.JdbcBackend.Database
 
 import scala.concurrent.Await
-import scala.concurrent.duration.Duration
 
 class StorageRepositoryImpl @Inject() (db: Database) extends StorageRepository {
   override def getById(workspaceId: String, id: String): Option[Storage] = {

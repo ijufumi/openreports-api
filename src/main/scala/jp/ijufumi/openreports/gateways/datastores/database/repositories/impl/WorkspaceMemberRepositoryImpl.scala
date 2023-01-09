@@ -8,7 +8,6 @@ import slick.jdbc.JdbcBackend.Database
 import slick.jdbc.PostgresProfile.api._
 
 import scala.concurrent.Await
-import scala.concurrent.duration.Duration
 
 class WorkspaceMemberRepositoryImpl @Inject() (db: Database) extends WorkspaceMemberRepository {
   override def getById(workspaceId: String, memberId: String): Option[WorkspaceMember] = {

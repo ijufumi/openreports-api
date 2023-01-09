@@ -8,7 +8,6 @@ import slick.jdbc.JdbcBackend.Database
 import slick.jdbc.PostgresProfile.api._
 
 import scala.concurrent.Await
-import scala.concurrent.duration.Duration
 
 class DataSourceRepositoryImpl @Inject() (db: Database) extends DataSourceRepository {
   override def getById(workspaceId: String, id: String): Option[(DataSource, DriverType)] = {

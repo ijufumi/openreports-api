@@ -8,9 +8,8 @@ import slick.jdbc.JdbcBackend.Database
 import slick.jdbc.PostgresProfile.api._
 
 import scala.concurrent.Await
-import scala.concurrent.duration.Duration
 
-class TemplateRepositoryImpl @Inject()(db: Database) extends TemplateRepository {
+class TemplateRepositoryImpl @Inject() (db: Database) extends TemplateRepository {
   override def gets(workspaceId: String, offset: Int, limit: Int): (Seq[Template], Int) = {
     var filtered = query.filter(_.workspaceId === workspaceId).drop(offset)
     val count = Await.result(db.run(query.length.result), queryTimeout)
