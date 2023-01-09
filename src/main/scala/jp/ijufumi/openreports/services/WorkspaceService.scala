@@ -13,5 +13,5 @@ trait WorkspaceService {
 
   def getWorkspaceMembers(id: String): Seq[WorkspaceMember]
 
-
+  def getWorkspaceMember(workspaceId: String, memberId: String): Option[WorkspaceMember]
 }

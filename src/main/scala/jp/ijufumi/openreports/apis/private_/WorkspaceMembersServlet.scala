@@ -9,7 +9,9 @@ class WorkspaceMembersServlet @Inject()(
     workspaceService: WorkspaceService,
 ) extends PrivateAPIServletBase(loginService) {
   get("/") {
-
+    val _workspaceId = workspaceId()
+    val result = workspaceService.getWorkspaceMembers(_workspaceId)
+    ok(result)
   }
 
   post("/") {
@@ -17,7 +19,14 @@ class WorkspaceMembersServlet @Inject()(
   }
 
   get("/:id") {
-
+    val _workspaceId = workspaceId()
+    val id = params("id")
+    val result = workspaceService.getWorkspaceMember(_workspaceId, id)
+    if (result.isEmpty) {
+      notFound("member not found")
+    } else {
+      ok(result)
+    }
   }
 
   put("/:id") {

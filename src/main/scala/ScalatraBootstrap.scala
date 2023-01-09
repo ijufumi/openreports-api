@@ -3,6 +3,7 @@ import jp.ijufumi.openreports.apis.private_.{
   MembersServlet,
   ReportsServlet,
   TemplatesServlet,
+  WorkspaceMembersServlet,
   WorkspaceServlet,
 }
 import jp.ijufumi.openreports.apis.public_.{HealthServlet, LoginServlet}
@@ -22,6 +23,7 @@ class ScalatraBootstrap extends LifeCycle {
     mount(context, classOf[TemplatesServlet], "/templates")
     mount(context, classOf[DataSourcesServlet], "/data_sources")
     mount(context, classOf[WorkspaceServlet], "/workspaces")
+    mount(context, classOf[WorkspaceMembersServlet], "/workspace_members")
   }
 
   def mount(

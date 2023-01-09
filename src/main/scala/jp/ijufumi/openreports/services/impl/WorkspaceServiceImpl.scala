@@ -76,6 +76,14 @@ class WorkspaceServiceImpl @Inject() (
     results.map(v => WorkspaceMemberResponse(v._1, v._2))
   }
 
+  override def getWorkspaceMember(
+      workspaceId: String,
+      memberId: String,
+  ): Option[WorkspaceMemberResponse] = {
+    val results = workspaceMemberRepository.getWithMemberById(workspaceId, memberId)
+    results.map(v => WorkspaceMemberResponse(v._1, v._2))
+  }
+
   private def copySample(workspaceId: String): String = {
     val source = storageService.get("", Config.SAMPLE_REPORT_PATH, StorageTypes.Local)
     val key = Strings.generateRandomSting(10)() + Strings.extension(source.getFileName.toString)
