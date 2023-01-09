@@ -2,9 +2,11 @@ package jp.ijufumi.openreports.services.impl
 
 import com.google.inject.Inject
 import jp.ijufumi.openreports.configs.Config
-import jp.ijufumi.openreports.entities.enums.StorageTypes
+import jp.ijufumi.openreports.entities.enums.{PermissionTypes, StorageTypes}
 import jp.ijufumi.openreports.entities.{Report, Storage, Template, Workspace, WorkspaceMember}
+import jp.ijufumi.openreports.exceptions.NotFoundException
 import jp.ijufumi.openreports.gateways.datastores.database.repositories.{
+  PermissionRepository,
   ReportRepository,
   StorageRepository,
   TemplateRepository,
@@ -12,6 +14,7 @@ import jp.ijufumi.openreports.gateways.datastores.database.repositories.{
   WorkspaceRepository,
 }
 import jp.ijufumi.openreports.models.inputs.UpdateWorkspace
+import jp.ijufumi.openreports.models.outputs.{WorkspaceMember => WorkspaceMemberResponse}
 import jp.ijufumi.openreports.services.{StorageService, WorkspaceService}
 import jp.ijufumi.openreports.utils.{IDs, Strings}
 import slick.jdbc.PostgresProfile.api._
@@ -23,6 +26,7 @@ class WorkspaceServiceImpl @Inject() (
     reportRepository: ReportRepository,
     reportTemplateRepository: TemplateRepository,
     storageService: StorageService,
+    permissionRepository: PermissionRepository,
 ) extends WorkspaceService {
   override def createAndRelevant(memberId: String, email: String): Option[Workspace] = {
     var workspaceOpt = Option.empty[Workspace]
@@ -31,7 +35,11 @@ class WorkspaceServiceImpl @Inject() (
       val workspace = Workspace(IDs.ulid(), workspaceName, Strings.generateSlug())
       workspaceOpt = Some(workspace)
       workspaceRepository.register(workspace)
-      val workspaceMember = WorkspaceMember(workspace.id, memberId)
+      val permission = permissionRepository.getByType(PermissionTypes.Admin)
+      if (permission.isEmpty) {
+        throw new NotFoundException("permission not found")
+      }
+      val workspaceMember = WorkspaceMember(workspace.id, memberId, permission.get.id)
       workspaceMemberRepository.register(workspaceMember)
       val storage = Storage(IDs.ulid(), workspace.id)
       storageRepository.register(storage)
@@ -61,6 +69,11 @@ class WorkspaceServiceImpl @Inject() (
     }
     val newWorkspace = workspaceOpt.get.copyForUpdate(input)
     workspaceRepository.update(newWorkspace)
+  }
+
+  override def getWorkspaceMembers(id: String): Seq[WorkspaceMemberResponse] = {
+    // TODO: need to implement
+    Seq.empty
   }
 
   private def copySample(workspaceId: String): String = {

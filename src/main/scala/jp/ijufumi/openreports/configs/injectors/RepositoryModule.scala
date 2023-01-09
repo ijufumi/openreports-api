@@ -1,9 +1,27 @@
 package jp.ijufumi.openreports.configs.injectors
 
 import jp.ijufumi.openreports.gateways.auth.google.GoogleRepository
-import jp.ijufumi.openreports.gateways.datastores.database.repositories.{DataSourceRepository, MemberRepository, ReportRepository, StorageRepository, TemplateRepository, WorkspaceMemberRepository, WorkspaceRepository}
-import jp.ijufumi.openreports.gateways.datastores.database.repositories.impl.{MemberRepositoryImpl, WorkspaceRepositoryImpl, WorkspaceMemberRepositoryImpl, DataSourceRepositoryImpl, ReportRepositoryImpl, TemplateRepositoryImpl, StorageRepositoryImpl}
 import jp.ijufumi.openreports.gateways.auth.google.impl.GoogleRepositoryImpl
+import jp.ijufumi.openreports.gateways.datastores.database.repositories.{
+  DataSourceRepository,
+  MemberRepository,
+  PermissionRepository,
+  ReportRepository,
+  StorageRepository,
+  TemplateRepository,
+  WorkspaceMemberRepository,
+  WorkspaceRepository,
+}
+import jp.ijufumi.openreports.gateways.datastores.database.repositories.impl.{
+  DataSourceRepositoryImpl,
+  MemberRepositoryImpl,
+  PermissionRepositoryImpl,
+  ReportRepositoryImpl,
+  StorageRepositoryImpl,
+  TemplateRepositoryImpl,
+  WorkspaceMemberRepositoryImpl,
+  WorkspaceRepositoryImpl,
+}
 import jp.ijufumi.openreports.gateways.filestores.local.LocalFileRepository
 import jp.ijufumi.openreports.gateways.filestores.local.impl.LocalFileRepositoryImpl
 import jp.ijufumi.openreports.gateways.filestores.s3.AwsS3Repository
@@ -20,6 +38,7 @@ class RepositoryModule extends BaseModule {
     bindAsSingleton(classOf[ReportRepository], classOf[ReportRepositoryImpl])
     bindAsSingleton(classOf[TemplateRepository], classOf[TemplateRepositoryImpl])
     bindAsSingleton(classOf[StorageRepository], classOf[StorageRepositoryImpl])
+    bindAsSingleton(classOf[PermissionRepository], classOf[PermissionRepositoryImpl])
     // auth
     bindAsSingleton(classOf[GoogleRepository], classOf[GoogleRepositoryImpl])
     // file store
