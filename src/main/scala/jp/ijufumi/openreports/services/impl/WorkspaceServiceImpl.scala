@@ -72,8 +72,8 @@ class WorkspaceServiceImpl @Inject() (
   }
 
   override def getWorkspaceMembers(id: String): Seq[WorkspaceMemberResponse] = {
-    // TODO: need to implement
-    Seq.empty
+    val results = workspaceMemberRepository.getsWithMember(id)
+    results.map(v => WorkspaceMemberResponse(v._1, v._2))
   }
 
   private def copySample(workspaceId: String): String = {
