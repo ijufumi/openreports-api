@@ -12,4 +12,5 @@ private[impl] object queries {
   val workspaceMemberQuery = TableQuery[WorkspaceMembers]
   val workspaceQuery = TableQuery[Workspaces]
   val storageQuery = TableQuery[Storages]
+  val permissionQuery = TableQuery[Permissions]
 }

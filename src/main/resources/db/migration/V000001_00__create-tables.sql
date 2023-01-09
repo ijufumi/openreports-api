@@ -26,18 +26,29 @@ create table workspaces
   versions   bigint       not null default 0
 );
 
+create table permissions
+(
+  id         varchar(40) primary key,
+  name       varchar(250) not null,
+  created_at bigint       not null default extract(epoch from current_timestamp at time zone 'UTC'),
+  updated_at bigint       not null default extract(epoch from current_timestamp at time zone 'UTC'),
+  versions   bigint       not null default 0
+)
+
 -- create workspace_members
 create table workspace_members
 (
-  workspace_id varchar(40) not null,
-  member_id    varchar(40) not null,
-  created_at   bigint      not null default extract(epoch from current_timestamp at time zone 'UTC'),
-  updated_at   bigint      not null default extract(epoch from current_timestamp at time zone 'UTC'),
-  versions     bigint      not null default 0,
+  workspace_id  varchar(40) not null,
+  member_id     varchar(40) not null,
+  permission_id varchar(40) not null,
+  created_at    bigint      not null default extract(epoch from current_timestamp at time zone 'UTC'),
+  updated_at    bigint      not null default extract(epoch from current_timestamp at time zone 'UTC'),
+  versions      bigint      not null default 0,
 
   primary key (workspace_id, member_id),
   foreign key (workspace_id) references workspaces (id),
-  foreign key (member_id) references members (id)
+  foreign key (member_id) references members (id),
+  foreign key (permission_id) references permissions (id)
 );
 
 -- create driver_types
