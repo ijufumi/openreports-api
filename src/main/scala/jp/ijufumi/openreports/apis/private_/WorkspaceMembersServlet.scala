@@ -2,6 +2,7 @@ package jp.ijufumi.openreports.apis.private_
 
 import com.google.inject.Inject
 import jp.ijufumi.openreports.apis.base.PrivateAPIServletBase
+import jp.ijufumi.openreports.models.inputs.{CreateWorkspaceMember, UpdateWorkspaceMember}
 import jp.ijufumi.openreports.services.{LoginService, WorkspaceService}
 
 class WorkspaceMembersServlet @Inject()(
@@ -15,7 +16,7 @@ class WorkspaceMembersServlet @Inject()(
   }
 
   post("/") {
-
+    val requestVal = extractBody[CreateWorkspaceMember]()
   }
 
   get("/:memberId") {
@@ -30,7 +31,7 @@ class WorkspaceMembersServlet @Inject()(
   }
 
   put("/:memberId") {
-
+    val requestVal = extractBody[UpdateWorkspaceMember]()
   }
 
   delete("/:memberId") {

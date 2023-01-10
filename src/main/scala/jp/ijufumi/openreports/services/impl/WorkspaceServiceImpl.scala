@@ -13,7 +13,11 @@ import jp.ijufumi.openreports.gateways.datastores.database.repositories.{
   WorkspaceMemberRepository,
   WorkspaceRepository,
 }
-import jp.ijufumi.openreports.models.inputs.UpdateWorkspace
+import jp.ijufumi.openreports.models.inputs.{
+  CreateWorkspaceMember,
+  UpdateWorkspace,
+  UpdateWorkspaceMember,
+}
 import jp.ijufumi.openreports.models.outputs.{WorkspaceMember => WorkspaceMemberResponse}
 import jp.ijufumi.openreports.services.{StorageService, WorkspaceService}
 import jp.ijufumi.openreports.utils.{IDs, Strings}
@@ -83,6 +87,27 @@ class WorkspaceServiceImpl @Inject() (
     val results = workspaceMemberRepository.getWithMemberById(workspaceId, memberId)
     results.map(v => WorkspaceMemberResponse(v._1, v._2))
   }
+
+  override def createWorkspaceMember(
+      workspaceId: String,
+      input: CreateWorkspaceMember,
+  ): Option[WorkspaceMemberResponse] = {
+    val workspaceMember = WorkspaceMember(
+      workspaceId,
+      input.memberId,
+      input.permissionId,
+    )
+    workspaceMemberRepository.register(workspaceMember)
+    this.getWorkspaceMember(workspaceId, input.memberId)
+  }
+
+  override def updateWorkspaceMember(
+      workspaceId: String,
+      memberId: String,
+      input: UpdateWorkspaceMember,
+  ): Option[WorkspaceMemberResponse] = ???
+
+  override def deleteWorkspaceMember(workspaceId: String, memberId: String): Unit = ???
 
   private def copySample(workspaceId: String): String = {
     val source = storageService.get("", Config.SAMPLE_REPORT_PATH, StorageTypes.Local)
