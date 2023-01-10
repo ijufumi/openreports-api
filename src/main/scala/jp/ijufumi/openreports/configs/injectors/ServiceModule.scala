@@ -1,7 +1,23 @@
 package jp.ijufumi.openreports.configs.injectors
 
-import jp.ijufumi.openreports.services._
-import jp.ijufumi.openreports.services.impl._
+import jp.ijufumi.openreports.services.impl.{
+  DataSourceServiceImpl,
+  LoginServiceImpl,
+  OutputServiceImpl,
+  PermissionServiceImpl,
+  ReportServiceImpl,
+  StorageServiceImpl,
+  WorkspaceServiceImpl,
+}
+import jp.ijufumi.openreports.services.{
+  DataSourceService,
+  LoginService,
+  OutputService,
+  PermissionService,
+  ReportService,
+  StorageService,
+  WorkspaceService,
+}
 
 class ServiceModule extends BaseModule {
   override def configure(): Unit = {
@@ -12,5 +28,6 @@ class ServiceModule extends BaseModule {
     bindAsSingleton(classOf[DataSourceService], classOf[DataSourceServiceImpl])
     bindAsSingleton(classOf[StorageService], classOf[StorageServiceImpl])
     bindAsSingleton(classOf[WorkspaceService], classOf[WorkspaceServiceImpl])
+    bindAsSingleton(classOf[PermissionService], classOf[PermissionServiceImpl])
   }
 }
