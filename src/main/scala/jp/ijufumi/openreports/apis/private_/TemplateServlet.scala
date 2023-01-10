@@ -6,7 +6,7 @@ import jp.ijufumi.openreports.apis.base.PrivateAPIServletBase
 import jp.ijufumi.openreports.services.{LoginService, ReportService}
 import jp.ijufumi.openreports.models.inputs.{CreateTemplate, UpdateReport, UpdateTemplate}
 
-class TemplatesServlet @Inject() (loginService: LoginService, reportService: ReportService)
+class TemplateServlet @Inject()(loginService: LoginService, reportService: ReportService)
     extends PrivateAPIServletBase(loginService) {
   get("/") {
     val _workspaceId = workspaceId()

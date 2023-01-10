@@ -4,7 +4,7 @@ import com.google.inject.Inject
 import jp.ijufumi.openreports.apis.base.PrivateAPIServletBase
 import jp.ijufumi.openreports.services.LoginService
 
-class MembersServlet @Inject() (loginService: LoginService)
+class MemberServlet @Inject()(loginService: LoginService)
     extends PrivateAPIServletBase(loginService) {
   get("/status") {
     val header = authorizationHeader()

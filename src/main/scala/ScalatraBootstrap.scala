@@ -1,8 +1,8 @@
 import jp.ijufumi.openreports.apis.private_.{
-  DataSourcesServlet,
-  MembersServlet,
-  ReportsServlet,
-  TemplatesServlet,
+  DataSourceServlet,
+  MemberServlet,
+  ReportServlet,
+  TemplateServlet,
   WorkspaceMembersServlet,
   WorkspaceServlet,
 }
@@ -18,10 +18,10 @@ class ScalatraBootstrap extends LifeCycle {
     mount(context, classOf[HealthServlet], "/health")
     mount(context, classOf[LoginServlet], "/login")
     // private endpoints
-    mount(context, classOf[MembersServlet], "/members")
-    mount(context, classOf[ReportsServlet], "/reports")
-    mount(context, classOf[TemplatesServlet], "/templates")
-    mount(context, classOf[DataSourcesServlet], "/data_sources")
+    mount(context, classOf[MemberServlet], "/members")
+    mount(context, classOf[ReportServlet], "/reports")
+    mount(context, classOf[TemplateServlet], "/templates")
+    mount(context, classOf[DataSourceServlet], "/data_sources")
     mount(context, classOf[WorkspaceServlet], "/workspaces")
     mount(context, classOf[WorkspaceMembersServlet], "/workspace_members")
   }

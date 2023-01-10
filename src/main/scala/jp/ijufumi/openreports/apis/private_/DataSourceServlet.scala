@@ -5,7 +5,7 @@ import jp.ijufumi.openreports.apis.base.PrivateAPIServletBase
 import jp.ijufumi.openreports.services.{DataSourceService, LoginService}
 import jp.ijufumi.openreports.models.inputs.{CreateDataSource, UpdateDataSource}
 
-class DataSourcesServlet @Inject() (
+class DataSourceServlet @Inject()(
     loginService: LoginService,
     dataSourceService: DataSourceService,
 ) extends PrivateAPIServletBase(loginService) {

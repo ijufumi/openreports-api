@@ -18,10 +18,10 @@ class WorkspaceMembersServlet @Inject()(
 
   }
 
-  get("/:id") {
+  get("/:memberId") {
     val _workspaceId = workspaceId()
-    val id = params("id")
-    val result = workspaceService.getWorkspaceMember(_workspaceId, id)
+    val memberId = params("memberId")
+    val result = workspaceService.getWorkspaceMember(_workspaceId, memberId)
     if (result.isEmpty) {
       notFound("member not found")
     } else {
@@ -29,11 +29,11 @@ class WorkspaceMembersServlet @Inject()(
     }
   }
 
-  put("/:id") {
+  put("/:memberId") {
 
   }
 
-  delete("/:id") {
+  delete("/:memberId") {
 
   }
 }
