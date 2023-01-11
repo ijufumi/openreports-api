@@ -45,6 +45,6 @@ class TemplateRepositoryImpl @Inject() (db: Database) extends TemplateRepository
     val getById = query
       .filter(_.workspaceId === workspaceId)
       .filter(_.id === id)
-    Await.result(db.run(getById.delete), queryTimeout)
+    Await.result(db.run(getById.delete.withPinnedSession), queryTimeout)
   }
 }
