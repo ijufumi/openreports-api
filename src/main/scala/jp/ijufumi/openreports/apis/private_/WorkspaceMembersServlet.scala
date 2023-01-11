@@ -5,7 +5,7 @@ import jp.ijufumi.openreports.apis.base.PrivateAPIServletBase
 import jp.ijufumi.openreports.models.inputs.{CreateWorkspaceMember, UpdateWorkspaceMember}
 import jp.ijufumi.openreports.services.{LoginService, WorkspaceService}
 
-class WorkspaceMembersServlet @Inject()(
+class WorkspaceMembersServlet @Inject() (
     loginService: LoginService,
     workspaceService: WorkspaceService,
 ) extends PrivateAPIServletBase(loginService) {
@@ -31,10 +31,20 @@ class WorkspaceMembersServlet @Inject()(
   }
 
   put("/:memberId") {
+    val _workspaceId = workspaceId()
     val requestVal = extractBody[UpdateWorkspaceMember]()
+    val result = workspaceService.updateWorkspaceMember(_workspaceId, requestVal)
+    if (result.isEmpty) {
+      badRequest("something wrong...")
+    } else {
+      ok(result)
+    }
   }
 
   delete("/:memberId") {
-
+    val _workspaceId = workspaceId()
+    val memberId = params("memberId")
+    workspaceService.deleteWorkspaceMember(_workspaceId, memberId)
+    ok("success")
   }
 }

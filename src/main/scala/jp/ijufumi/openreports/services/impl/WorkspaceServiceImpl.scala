@@ -105,9 +105,19 @@ class WorkspaceServiceImpl @Inject() (
       workspaceId: String,
       memberId: String,
       input: UpdateWorkspaceMember,
-  ): Option[WorkspaceMemberResponse] = ???
+  ): Option[WorkspaceMemberResponse] = {
+    val workspaceMemberOpt = workspaceMemberRepository.getById(workspaceId, memberId)
+    if (workspaceMemberOpt.isEmpty) {
+      return None
+    }
+    val newWorkspaceMember = workspaceMemberOpt.get.copyForUpdate(input)
+    workspaceMemberRepository.update(newWorkspaceMember)
+    this.getWorkspaceMember(workspaceId, memberId)
+  }
 
-  override def deleteWorkspaceMember(workspaceId: String, memberId: String): Unit = ???
+  override def deleteWorkspaceMember(workspaceId: String, memberId: String): Unit = {
+    workspaceMemberRepository.delete(workspaceId, memberId)
+  }
 
   private def copySample(workspaceId: String): String = {
     val source = storageService.get("", Config.SAMPLE_REPORT_PATH, StorageTypes.Local)

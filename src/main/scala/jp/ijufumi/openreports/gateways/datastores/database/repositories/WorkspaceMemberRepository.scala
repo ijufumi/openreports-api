@@ -12,4 +12,8 @@ trait WorkspaceMemberRepository {
   def getsWithMember(workspaceId: String): Seq[(WorkspaceMember, Member)]
 
   def register(workspaceMember: WorkspaceMember): Option[WorkspaceMember]
+
+  def update(workspaceMember: WorkspaceMember): Unit
+
+  def delete(workspaceId: String, memberId: String): Unit
 }

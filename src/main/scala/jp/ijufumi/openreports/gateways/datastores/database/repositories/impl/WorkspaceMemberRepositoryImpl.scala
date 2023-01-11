@@ -27,7 +27,10 @@ class WorkspaceMemberRepositoryImpl @Inject() (db: Database) extends WorkspaceMe
     Await.result(db.run(getById.result), queryTimeout)
   }
 
-  override def getWithMemberById(workspaceId: String, memberId: String): Option[(WorkspaceMember, Member)] = {
+  override def getWithMemberById(
+      workspaceId: String,
+      memberId: String,
+  ): Option[(WorkspaceMember, Member)] = {
     val getById = query
       .join(memberQuery)
       .on(_.memberId === _.id)
@@ -52,5 +55,15 @@ class WorkspaceMemberRepositoryImpl @Inject() (db: Database) extends WorkspaceMe
     val register = (query += workspaceMember).withPinnedSession
     Await.result(db.run(register), queryTimeout)
     getById(workspaceMember.workspaceId, workspaceMember.memberId)
+  }
+
+  override def update(workspaceMember: WorkspaceMember): Unit = {
+    query.insertOrUpdate(workspaceMember).withPinnedSession
+  }
+
+  override def delete(workspaceId: String, memberId: String): Unit = {
+    val getById = query
+      .filter(_.workspaceId === workspaceId)
+    Await.result(db.run(getById.delete.withPinnedSession), queryTimeout)
   }
 }
