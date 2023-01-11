@@ -32,12 +32,12 @@ class DataSourceRepositoryImpl @Inject() (db: Database) extends DataSourceReposi
   }
 
   override def register(dataSource: DataSource): Option[(DataSource, DriverType)] = {
-    Await.result(db.run(query += dataSource), queryTimeout)
+    Await.result(db.run((query += dataSource).withPinnedSession), queryTimeout)
     getById(dataSource.workspaceId, dataSource.id)
   }
 
   override def update(dataSource: DataSource): Unit = {
-    query.insertOrUpdate(dataSource)
+    query.insertOrUpdate(dataSource).withPinnedSession
   }
 
   override def delete(workspaceId: String, id: String): Unit = {
@@ -45,6 +45,6 @@ class DataSourceRepositoryImpl @Inject() (db: Database) extends DataSourceReposi
       .filter(_.id === id)
       .filter(_.workspaceId === workspaceId)
 
-    Await.result(db.run(getDataSources.delete), queryTimeout)
+    Await.result(db.run(getDataSources.delete.withPinnedSession), queryTimeout)
   }
 }
