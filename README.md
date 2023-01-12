@@ -65,6 +65,7 @@ docker-compose exec api sbt flywayClean
     - [ ] update (name, password)
   - [ ] reports
     - [x] list
+    - [x] get
     - [x] create
     - [x] update
     - [x] delete
@@ -85,6 +86,7 @@ docker-compose exec api sbt flywayClean
     - [ ] update
     - [ ] delete
   - [ ] templates
+    - [x] get
     - [x] list
     - [x] create
     - [x] update
