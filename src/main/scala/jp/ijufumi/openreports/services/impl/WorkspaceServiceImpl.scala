@@ -84,7 +84,7 @@ class WorkspaceServiceImpl @Inject() (
       workspaceId: String,
       memberId: String,
   ): Option[WorkspaceMemberResponse] = {
-    val results = workspaceMemberRepository.getWithMemberById(workspaceId, memberId)
+    val results = workspaceMemberRepository.getByIdWithMember(workspaceId, memberId)
     results.map(v => WorkspaceMemberResponse(v._1, v._2))
   }
 

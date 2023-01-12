@@ -51,7 +51,15 @@ class DataSourceServiceImpl @Inject() (dataSourceRepository: DataSourceRepositor
       workspaceId: String,
       requestVal: CreateDataSource,
   ): Option[DataSourceResponse] = {
-    val dataSource = DataSource(IDs.ulid(), workspaceId, requestVal)
+    val dataSource = DataSource(
+      IDs.ulid(),
+      requestVal.name,
+      requestVal.url,
+      requestVal.username,
+      requestVal.password,
+      requestVal.driverTypeId,
+      workspaceId,
+    )
     dataSourceRepository.register(dataSource)
     getDataSource(workspaceId, dataSource.id)
   }
