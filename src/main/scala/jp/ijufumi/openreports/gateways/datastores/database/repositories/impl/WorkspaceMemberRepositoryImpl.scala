@@ -27,7 +27,7 @@ class WorkspaceMemberRepositoryImpl @Inject() (db: Database) extends WorkspaceMe
     Await.result(db.run(getById.result), queryTimeout)
   }
 
-  override def getWithMemberById(
+  override def getByIdWithMember(
       workspaceId: String,
       memberId: String,
   ): Option[(WorkspaceMember, Member)] = {
