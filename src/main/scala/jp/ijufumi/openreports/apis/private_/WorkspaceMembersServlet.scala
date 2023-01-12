@@ -32,8 +32,9 @@ class WorkspaceMembersServlet @Inject() (
 
   put("/:memberId") {
     val _workspaceId = workspaceId()
+    val memberId = params("memberId")
     val requestVal = extractBody[UpdateWorkspaceMember]()
-    val result = workspaceService.updateWorkspaceMember(_workspaceId, requestVal)
+    val result = workspaceService.updateWorkspaceMember(_workspaceId, memberId, requestVal)
     if (result.isEmpty) {
       badRequest("something wrong...")
     } else {
