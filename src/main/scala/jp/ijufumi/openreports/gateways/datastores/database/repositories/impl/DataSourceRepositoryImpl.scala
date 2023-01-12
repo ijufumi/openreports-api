@@ -10,7 +10,24 @@ import slick.jdbc.PostgresProfile.api._
 import scala.concurrent.Await
 
 class DataSourceRepositoryImpl @Inject() (db: Database) extends DataSourceRepository {
-  override def getById(workspaceId: String, id: String): Option[(DataSource, DriverType)] = {
+  override def getById(workspaceId: String, id: String): Option[DataSource] = {
+    val getDataSources = query
+      .filter(_.id === id)
+      .filter(_.workspaceId === workspaceId)
+    val dataSources = Await.result(db.run(getDataSources.result), queryTimeout)
+    Some(dataSources.head)
+  }
+
+  override def getAll(workspaceId: String): Seq[DataSource] = {
+    val getDataSources = query
+      .filter(_.workspaceId === workspaceId)
+    Await.result(db.run(getDataSources.result), queryTimeout)
+  }
+
+  override def getByIdWithDriverType(
+      workspaceId: String,
+      id: String,
+  ): Option[(DataSource, DriverType)] = {
     val getDataSources = query
       .join(driverTypeQuery)
       .on(_.driverTypeId === _.id)
@@ -23,15 +40,7 @@ class DataSourceRepositoryImpl @Inject() (db: Database) extends DataSourceReposi
     Some(dataSources.head)
   }
 
-  override def getAll(workspaceId: String): Seq[(DataSource, DriverType)] = {
-    val getDataSources = query
-      .join(driverTypeQuery)
-      .on(_.driverTypeId === _.id)
-      .filter(_._1.workspaceId === workspaceId)
-    Await.result(db.run(getDataSources.result), queryTimeout)
-  }
-
-  override def register(dataSource: DataSource): Option[(DataSource, DriverType)] = {
+  override def register(dataSource: DataSource): Option[DataSource] = {
     Await.result(db.run((query += dataSource).withPinnedSession), queryTimeout)
     getById(dataSource.workspaceId, dataSource.id)
   }

@@ -1,6 +1,6 @@
 package jp.ijufumi.openreports.entities
 
-import jp.ijufumi.openreports.models.inputs.UpdateDataSource
+import jp.ijufumi.openreports.models.inputs.{CreateDataSource, UpdateDataSource}
 import jp.ijufumi.openreports.utils.Dates
 import slick.jdbc.PostgresProfile.api._
 
@@ -16,9 +16,22 @@ case class DataSource(
     updatedAt: Long = Dates.currentTimestamp(),
     versions: Long = 1,
 ) {
-
-  def forUpdate(input: UpdateDataSource): DataSource = {
+  def copyForUpdate(input: UpdateDataSource): DataSource = {
     this.copy(name = input.name)
+  }
+}
+
+object DataSource {
+  def apply(id: String, workspaceId: String, input: CreateDataSource): DataSource = {
+    DataSource(
+      id,
+      input.name,
+      input.url,
+      input.username,
+      input.password,
+      input.driverTypeId,
+      workspaceId,
+    )
   }
 }
 

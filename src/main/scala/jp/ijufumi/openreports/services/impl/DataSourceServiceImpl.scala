@@ -3,11 +3,13 @@ package jp.ijufumi.openreports.services.impl
 import com.google.inject.Inject
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.pool.HikariPool
+import jp.ijufumi.openreports.entities.DataSource
 import jp.ijufumi.openreports.exceptions.NotFoundException
 import jp.ijufumi.openreports.gateways.datastores.database.repositories.DataSourceRepository
 import jp.ijufumi.openreports.services.DataSourceService
 import jp.ijufumi.openreports.models.inputs.{CreateDataSource, UpdateDataSource}
-import jp.ijufumi.openreports.models.outputs.DataSource
+import jp.ijufumi.openreports.models.outputs.{DataSource => DataSourceResponse}
+import jp.ijufumi.openreports.utils.IDs
 
 import java.sql.Connection
 import scala.collection.mutable
@@ -15,7 +17,7 @@ import scala.collection.mutable
 class DataSourceServiceImpl @Inject() (dataSourceRepository: DataSourceRepository)
     extends DataSourceService {
   def connection(workspaceId: String, dataSourceId: String): Connection = {
-    val dataSourceOpt = dataSourceRepository.getById(workspaceId, dataSourceId)
+    val dataSourceOpt = dataSourceRepository.getByIdWithDriverType(workspaceId, dataSourceId)
     if (dataSourceOpt.isEmpty) {
       throw new NotFoundException()
     }
@@ -32,36 +34,44 @@ class DataSourceServiceImpl @Inject() (dataSourceRepository: DataSourceRepositor
     dataSourcePool.connection(dataSource.name).get
   }
 
-  override def getDataSources(workspaceId: String): Seq[DataSource] = {
+  override def getDataSources(workspaceId: String): Seq[DataSourceResponse] = {
     val dataSources = dataSourceRepository.getAll(workspaceId)
-    dataSources.map(d => DataSource(d._1))
+    dataSources.map(d => DataSourceResponse(d))
   }
 
-  override def getDataSource(workspaceId: String, id: String): Option[DataSource] = {
+  override def getDataSource(workspaceId: String, id: String): Option[DataSourceResponse] = {
     val dataSource = dataSourceRepository.getById(workspaceId, id)
     if (dataSource.isEmpty) {
       return None
     }
-    Some(DataSource(dataSource.get._1))
+    Some(DataSourceResponse(dataSource.get))
   }
 
   override def registerDataSource(
       workspaceId: String,
       requestVal: CreateDataSource,
-  ): Option[DataSource] = {
-    None
+  ): Option[DataSourceResponse] = {
+    val dataSource = DataSource(IDs.ulid(), workspaceId, requestVal)
+    dataSourceRepository.register(dataSource)
+    getDataSource(workspaceId, dataSource.id)
   }
 
   override def updateDataSource(
       workspaceId: String,
       id: String,
-      updateDataSource: UpdateDataSource,
-  ): Option[DataSource] = {
-    None
+      requestVal: UpdateDataSource,
+  ): Option[DataSourceResponse] = {
+    val dataSource = dataSourceRepository.getById(workspaceId, id)
+    if (dataSource.isEmpty) {
+      return None
+    }
+    val newDataSource = dataSource.get.copyForUpdate(requestVal)
+    dataSourceRepository.update(newDataSource)
+    getDataSource(workspaceId, newDataSource.id)
   }
 
   override def deleteDataSource(workspaceId: String, id: String): Unit = {
-    None
+    dataSourceRepository.delete(workspaceId, id)
   }
 }
 
