@@ -6,6 +6,6 @@ case class WorkspaceMember(workspaceId: String, memberId: String, email: String,
 
 object WorkspaceMember {
   def apply(entity: WorkspaceMemberEntity, member: MemberEntity): WorkspaceMember = {
-    WorkspaceMember(entity.workspaceId, entity.memberId, member.email, entity.permissionId)
+    WorkspaceMember(entity.workspaceId, entity.memberId, member.email, entity.roleId)
   }
 }
