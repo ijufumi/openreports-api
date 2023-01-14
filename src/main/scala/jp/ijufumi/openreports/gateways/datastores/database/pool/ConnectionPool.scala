@@ -27,7 +27,7 @@ object ConnectionPool {
     config.setJdbcUrl(url)
     config.setAutoCommit(false)
     config.setDriverClassName(jdbcDriverClass)
-    pool += (name -> config)
+    pool += (name -> new HikariPool(config))
 
     newConnection(name)
   }
