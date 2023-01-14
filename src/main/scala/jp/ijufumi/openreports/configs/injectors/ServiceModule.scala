@@ -4,7 +4,7 @@ import jp.ijufumi.openreports.services.impl.{
   DataSourceServiceImpl,
   LoginServiceImpl,
   OutputServiceImpl,
-  PermissionServiceImpl,
+  RoleServiceImpl,
   ReportServiceImpl,
   StorageServiceImpl,
   WorkspaceServiceImpl,
@@ -13,7 +13,7 @@ import jp.ijufumi.openreports.services.{
   DataSourceService,
   LoginService,
   OutputService,
-  PermissionService,
+  RoleService,
   ReportService,
   StorageService,
   WorkspaceService,
@@ -28,6 +28,6 @@ class ServiceModule extends BaseModule {
     bindAsSingleton(classOf[DataSourceService], classOf[DataSourceServiceImpl])
     bindAsSingleton(classOf[StorageService], classOf[StorageServiceImpl])
     bindAsSingleton(classOf[WorkspaceService], classOf[WorkspaceServiceImpl])
-    bindAsSingleton(classOf[PermissionService], classOf[PermissionServiceImpl])
+    bindAsSingleton(classOf[RoleService], classOf[RoleServiceImpl])
   }
 }

@@ -2,11 +2,11 @@ package jp.ijufumi.openreports.services.impl
 
 import com.google.inject.Inject
 import jp.ijufumi.openreports.configs.Config
-import jp.ijufumi.openreports.entities.enums.{PermissionTypes, StorageTypes}
+import jp.ijufumi.openreports.entities.enums.{RoleTypes, StorageTypes}
 import jp.ijufumi.openreports.entities.{Report, Storage, Template, Workspace, WorkspaceMember}
 import jp.ijufumi.openreports.exceptions.NotFoundException
 import jp.ijufumi.openreports.gateways.datastores.database.repositories.{
-  PermissionRepository,
+  RoleRepository,
   ReportRepository,
   StorageRepository,
   TemplateRepository,
@@ -24,13 +24,13 @@ import jp.ijufumi.openreports.utils.{IDs, Strings}
 import slick.jdbc.PostgresProfile.api._
 
 class WorkspaceServiceImpl @Inject() (
-    workspaceRepository: WorkspaceRepository,
-    workspaceMemberRepository: WorkspaceMemberRepository,
-    storageRepository: StorageRepository,
-    reportRepository: ReportRepository,
-    reportTemplateRepository: TemplateRepository,
-    storageService: StorageService,
-    permissionRepository: PermissionRepository,
+                                       workspaceRepository: WorkspaceRepository,
+                                       workspaceMemberRepository: WorkspaceMemberRepository,
+                                       storageRepository: StorageRepository,
+                                       reportRepository: ReportRepository,
+                                       reportTemplateRepository: TemplateRepository,
+                                       storageService: StorageService,
+                                       permissionRepository: RoleRepository,
 ) extends WorkspaceService {
   override def createAndRelevant(memberId: String, email: String): Option[Workspace] = {
     var workspaceOpt = Option.empty[Workspace]
@@ -39,7 +39,7 @@ class WorkspaceServiceImpl @Inject() (
       val workspace = Workspace(IDs.ulid(), workspaceName, Strings.generateSlug())
       workspaceOpt = Some(workspace)
       workspaceRepository.register(workspace)
-      val permission = permissionRepository.getByType(PermissionTypes.Admin)
+      val permission = permissionRepository.getByType(RoleTypes.Admin)
       if (permission.isEmpty) {
         throw new NotFoundException("permission not found")
       }

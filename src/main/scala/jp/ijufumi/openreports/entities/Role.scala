@@ -1,23 +1,24 @@
 package jp.ijufumi.openreports.entities
 
+import jp.ijufumi.openreports.entities.enums.RoleTypes.RoleType
 import jp.ijufumi.openreports.utils.Dates
 import slick.jdbc.PostgresProfile.api._
 
-case class Permission(
+case class Role(
     id: String,
-    name: String,
+    roleType: RoleType,
     createdAt: Long = Dates.currentTimestamp(),
     updatedAt: Long = Dates.currentTimestamp(),
     versions: Long = 1,
 )
 
-class Permissions(tag: Tag)
-    extends Table[Permission](
+class Roles(tag: Tag)
+    extends Table[Role](
       tag,
-      "permissions",
+      "roles",
     ) {
   def id = column[String]("id", O.PrimaryKey)
-  def name = column[String]("name")
+  def roleType = column[RoleType]("role_type", O.Unique)
   def createdAt = column[Long]("created_at")
   def updatedAt = column[Long]("updated_at")
   def versions = column[Long]("versions")
@@ -25,9 +26,9 @@ class Permissions(tag: Tag)
   override def * =
     (
       id,
-      name,
+      roleType,
       createdAt,
       updatedAt,
       versions,
-    ) <> (Permission.tupled, Permission.unapply)
+    ) <> (Role.tupled, Role.unapply)
 }

@@ -5,7 +5,7 @@ import jp.ijufumi.openreports.gateways.auth.google.impl.GoogleRepositoryImpl
 import jp.ijufumi.openreports.gateways.datastores.database.repositories.{
   DataSourceRepository,
   MemberRepository,
-  PermissionRepository,
+  RoleRepository,
   ReportRepository,
   StorageRepository,
   TemplateRepository,
@@ -15,7 +15,7 @@ import jp.ijufumi.openreports.gateways.datastores.database.repositories.{
 import jp.ijufumi.openreports.gateways.datastores.database.repositories.impl.{
   DataSourceRepositoryImpl,
   MemberRepositoryImpl,
-  PermissionRepositoryImpl,
+  RoleRepositoryImpl,
   ReportRepositoryImpl,
   StorageRepositoryImpl,
   TemplateRepositoryImpl,
@@ -38,7 +38,7 @@ class RepositoryModule extends BaseModule {
     bindAsSingleton(classOf[ReportRepository], classOf[ReportRepositoryImpl])
     bindAsSingleton(classOf[TemplateRepository], classOf[TemplateRepositoryImpl])
     bindAsSingleton(classOf[StorageRepository], classOf[StorageRepositoryImpl])
-    bindAsSingleton(classOf[PermissionRepository], classOf[PermissionRepositoryImpl])
+    bindAsSingleton(classOf[RoleRepository], classOf[RoleRepositoryImpl])
     // auth
     bindAsSingleton(classOf[GoogleRepository], classOf[GoogleRepositoryImpl])
     // file store

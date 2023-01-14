@@ -1,12 +1,13 @@
 package db.migration
 
+import jp.ijufumi.openreports.entities.enums.RoleTypes
 import org.flywaydb.core.api.migration.BaseJavaMigration
 import org.flywaydb.core.api.migration.Context
 import jp.ijufumi.openreports.utils.{Hash, IDs}
 
 class V000001_01__Create_data extends BaseJavaMigration {
   override def migrate(context: Context): Unit = {
-    permission(context)
+    role(context)
     val workspaceId = workspace(context)
     val memberId = member(context)
     workspaceMember(context, workspaceId, memberId)
@@ -18,19 +19,21 @@ class V000001_01__Create_data extends BaseJavaMigration {
     }
   }
 
-  private def permission(context: Context): Unit = {
-    List("admin", "developer", "viewer").foreach{name => {
-      val id = IDs.ulid()
-      val statement = {
-        context.getConnection.prepareStatement(
-          s"INSERT INTO permissions (id, name) VALUES (?, ?)",
-        )
+  private def role(context: Context): Unit = {
+    RoleTypes.values.foreach { value =>
+      {
+        val id = IDs.ulid()
+        val statement = {
+          context.getConnection.prepareStatement(
+            s"INSERT INTO roles (id, role_type) VALUES (?, ?)",
+          )
+        }
+        statement.setString(1, id)
+        statement.setString(2, value.toString)
+        try statement.execute
+        finally if (statement != null) statement.close()
       }
-      statement.setString(1, id)
-      statement.setString(2, name)
-      try statement.execute
-      finally if (statement != null) statement.close()
-    }}
+    }
   }
 
   private def member(context: Context): String = {
