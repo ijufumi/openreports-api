@@ -3,12 +3,15 @@ package jp.ijufumi.openreports.services.impl
 import jp.ijufumi.openreports.services.{LoginService, WorkspaceService}
 import com.google.inject.{Inject, Singleton}
 import jp.ijufumi.openreports.configs.Config
-import jp.ijufumi.openreports.utils.{Hash, IDs, Logging}
+import jp.ijufumi.openreports.utils.{Hash, IDs, Logging, Strings}
 import jp.ijufumi.openreports.models.outputs.{Member => MemberReponse}
 import jp.ijufumi.openreports.entities._
 import jp.ijufumi.openreports.gateways.auth.google.GoogleRepository
 import jp.ijufumi.openreports.gateways.datastores.cache.{CacheKeys, CacheWrapper}
-import jp.ijufumi.openreports.gateways.datastores.database.repositories.{MemberRepository, WorkspaceRepository}
+import jp.ijufumi.openreports.gateways.datastores.database.repositories.{
+  MemberRepository,
+  WorkspaceRepository,
+}
 import jp.ijufumi.openreports.models.inputs.{GoogleLogin, Login}
 import slick.jdbc.PostgresProfile.api._
 
@@ -106,7 +109,8 @@ class LoginServiceImpl @Inject() (
 
     try {
       val newMemberOpt = memberRepository.register(member)
-      workspaceService.createAndRelevant(member.id, member.email)
+      val workspaceName = Strings.nameFromEmail(member.email) + "'s workspace"
+      workspaceService.createAndRelevant(workspaceName, member.id)
       makeResponse(newMemberOpt.get)
     } catch {
       case e: Throwable =>

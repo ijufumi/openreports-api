@@ -6,14 +6,15 @@ import jp.ijufumi.openreports.entities.enums.{RoleTypes, StorageTypes}
 import jp.ijufumi.openreports.entities.{Report, Storage, Template, Workspace, WorkspaceMember}
 import jp.ijufumi.openreports.exceptions.NotFoundException
 import jp.ijufumi.openreports.gateways.datastores.database.repositories.{
-  RoleRepository,
   ReportRepository,
+  RoleRepository,
   StorageRepository,
   TemplateRepository,
   WorkspaceMemberRepository,
   WorkspaceRepository,
 }
 import jp.ijufumi.openreports.models.inputs.{
+  CreateWorkspace,
   CreateWorkspaceMember,
   UpdateWorkspace,
   UpdateWorkspaceMember,
@@ -24,19 +25,22 @@ import jp.ijufumi.openreports.utils.{IDs, Strings}
 import slick.jdbc.PostgresProfile.api._
 
 class WorkspaceServiceImpl @Inject() (
-                                       workspaceRepository: WorkspaceRepository,
-                                       workspaceMemberRepository: WorkspaceMemberRepository,
-                                       storageRepository: StorageRepository,
-                                       reportRepository: ReportRepository,
-                                       reportTemplateRepository: TemplateRepository,
-                                       storageService: StorageService,
-                                       permissionRepository: RoleRepository,
+    workspaceRepository: WorkspaceRepository,
+    workspaceMemberRepository: WorkspaceMemberRepository,
+    storageRepository: StorageRepository,
+    reportRepository: ReportRepository,
+    reportTemplateRepository: TemplateRepository,
+    storageService: StorageService,
+    permissionRepository: RoleRepository,
 ) extends WorkspaceService {
-  override def createAndRelevant(memberId: String, email: String): Option[Workspace] = {
+  override def createAndRelevant(input: CreateWorkspace, memberId: String): Option[Workspace] = {
+    createAndRelevant(input.name, memberId)
+  }
+
+  override def createAndRelevant(name: String, memberId: String): Option[Workspace] = {
     var workspaceOpt = Option.empty[Workspace]
     try {
-      val workspaceName = Strings.nameFromEmail(email) + "'s workspace"
-      val workspace = Workspace(IDs.ulid(), workspaceName, Strings.generateSlug())
+      val workspace = Workspace(IDs.ulid(), name, Strings.generateSlug())
       workspaceOpt = Some(workspace)
       workspaceRepository.register(workspace)
       val permission = permissionRepository.getByType(RoleTypes.Admin)

@@ -2,6 +2,7 @@ package jp.ijufumi.openreports.apis.base
 
 import org.scalatra.servlet.{FileUploadSupport, MultipartConfig}
 import jp.ijufumi.openreports.configs.Config
+import jp.ijufumi.openreports.models.outputs.Member
 import jp.ijufumi.openreports.services.LoginService
 
 abstract class PrivateAPIServletBase(loginService: LoginService)
@@ -13,7 +14,14 @@ abstract class PrivateAPIServletBase(loginService: LoginService)
     val header = authorizationHeader()
     if (!loginService.verifyApiToken(header)) {
       halt(forbidden("API Token is invalid"))
+    } else {
+      val member = loginService.getMemberByToken(header)
+      request.setAttribute("member", member)
     }
+  }
+
+  after() {
+    request.removeAttribute("member")
   }
 
   def authorizationHeader(): String = {
@@ -22,5 +30,10 @@ abstract class PrivateAPIServletBase(loginService: LoginService)
 
   def workspaceId(): String = {
     request.getHeader(Config.WORKSPACE_ID_HEADER)
+  }
+
+  def memberId(): String = {
+    val member = request.getAttribute("name").asInstanceOf[Member]
+    member.id
   }
 }

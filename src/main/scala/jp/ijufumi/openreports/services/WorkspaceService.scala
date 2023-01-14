@@ -1,11 +1,13 @@
 package jp.ijufumi.openreports.services
 
 import jp.ijufumi.openreports.entities.Workspace
-import jp.ijufumi.openreports.models.inputs.{CreateWorkspaceMember, UpdateWorkspace, UpdateWorkspaceMember}
+import jp.ijufumi.openreports.models.inputs.{CreateWorkspace, CreateWorkspaceMember, UpdateWorkspace, UpdateWorkspaceMember}
 import jp.ijufumi.openreports.models.outputs.WorkspaceMember
 
 trait WorkspaceService {
-  def createAndRelevant(memberId: String, email: String): Option[Workspace]
+  def createAndRelevant(input: CreateWorkspace, memberId: String): Option[Workspace]
+
+  def createAndRelevant(name: String, memberId: String): Option[Workspace]
 
   def getWorkspace(id: String): Option[Workspace]
 
