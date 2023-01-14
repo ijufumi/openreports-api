@@ -20,7 +20,7 @@ class ScalatraBootstrap extends LifeCycle {
     mount(context, classOf[WorkspaceMembersServlet], "/workspace_members")
   }
 
-  def mount(
+  private def mount(
       context: ServletContext,
       servletClass: Class[_ <: ScalatraServlet],
       uriPattern: String,
