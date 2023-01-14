@@ -34,19 +34,19 @@ create table roles
   created_at bigint       not null default extract(epoch from current_timestamp at time zone 'UTC'),
   updated_at bigint       not null default extract(epoch from current_timestamp at time zone 'UTC'),
   versions   bigint       not null default 0
-)
+);
 
 create unique index role_IX1 on roles (role_type);
 
 -- create workspace_members
 create table workspace_members
 (
-  workspace_id  varchar(40) not null,
-  member_id     varchar(40) not null,
-  role_id       varchar(40) not null,
-  created_at    bigint      not null default extract(epoch from current_timestamp at time zone 'UTC'),
-  updated_at    bigint      not null default extract(epoch from current_timestamp at time zone 'UTC'),
-  versions      bigint      not null default 0,
+  workspace_id varchar(40) not null,
+  member_id    varchar(40) not null,
+  role_id      varchar(40) not null,
+  created_at   bigint      not null default extract(epoch from current_timestamp at time zone 'UTC'),
+  updated_at   bigint      not null default extract(epoch from current_timestamp at time zone 'UTC'),
+  versions     bigint      not null default 0,
 
   primary key (workspace_id, member_id),
   foreign key (workspace_id) references workspaces (id),
