@@ -5,12 +5,12 @@ import jp.ijufumi.openreports.utils.Dates
 import slick.jdbc.PostgresProfile.api._
 
 case class WorkspaceMember(
-                            workspaceId: String,
-                            memberId: String,
-                            roleId: String,
-                            createdAt: Long = Dates.currentTimestamp(),
-                            updatedAt: Long = Dates.currentTimestamp(),
-                            versions: Long = 1,
+    workspaceId: String,
+    memberId: String,
+    roleId: String,
+    createdAt: Long = Dates.currentTimestamp(),
+    updatedAt: Long = Dates.currentTimestamp(),
+    versions: Long = 1,
 ) {
   def copyForUpdate(input: UpdateWorkspaceMember): WorkspaceMember = {
     this.copy(roleId = input.roleId)
