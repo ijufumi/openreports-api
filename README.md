@@ -91,7 +91,7 @@ docker-compose exec api sbt flywayClean
     - [x] create
     - [x] update
     - [x] delete
-  - [x] workspaces
+  - [ ] workspaces
     - [x] get
     - [x] update
     - [x] members
@@ -106,6 +106,9 @@ docker-compose exec api sbt flywayClean
       - [x] create
       - [x] update
       - [x] delete
+    - [ ] Logs
+      - [ ] list
+      - [ ] delete
 
 ### Table Structure
 
