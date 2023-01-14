@@ -1,8 +1,6 @@
 package jp.ijufumi.openreports.services.impl
 
 import com.google.inject.Inject
-import com.zaxxer.hikari.HikariConfig
-import com.zaxxer.hikari.pool.HikariPool
 import jp.ijufumi.openreports.entities.DataSource
 import jp.ijufumi.openreports.exceptions.NotFoundException
 import jp.ijufumi.openreports.gateways.datastores.database.repositories.DataSourceRepository
@@ -10,9 +8,9 @@ import jp.ijufumi.openreports.services.DataSourceService
 import jp.ijufumi.openreports.models.inputs.{CreateDataSource, UpdateDataSource}
 import jp.ijufumi.openreports.models.outputs.{DataSource => DataSourceResponse}
 import jp.ijufumi.openreports.utils.IDs
+import jp.ijufumi.openreports.gateways.datastores.database.pool.ConnectionPool
 
 import java.sql.Connection
-import scala.collection.mutable
 
 class DataSourceServiceImpl @Inject() (dataSourceRepository: DataSourceRepository)
     extends DataSourceService {
@@ -22,16 +20,13 @@ class DataSourceServiceImpl @Inject() (dataSourceRepository: DataSourceRepositor
       throw new NotFoundException()
     }
     val (dataSource, driverType) = dataSourceOpt.get
-    if (!dataSourcePool.has(dataSource.name)) {
-      val config = new HikariConfig()
-      config.setUsername(dataSource.username)
-      config.setPassword(dataSource.password)
-      config.setJdbcUrl(dataSource.url)
-      config.setAutoCommit(false)
-      config.setDriverClassName(driverType.jdbcDriverClass)
-      dataSourcePool.add(dataSource.name, config)
-    }
-    dataSourcePool.connection(dataSource.name).get
+    ConnectionPool.newConnection(
+      dataSource.name,
+      dataSource.username,
+      dataSource.password,
+      dataSource.url,
+      driverType.jdbcDriverClass,
+    )
   }
 
   override def getDataSources(workspaceId: String): Seq[DataSourceResponse] = {
@@ -80,25 +75,5 @@ class DataSourceServiceImpl @Inject() (dataSourceRepository: DataSourceRepositor
 
   override def deleteDataSource(workspaceId: String, id: String): Unit = {
     dataSourceRepository.delete(workspaceId, id)
-  }
-}
-
-private object dataSourcePool {
-  private val pool = mutable.Map.empty[String, HikariPool]
-
-  def add(name: String, config: HikariConfig): Unit = {
-    pool += (name -> new HikariPool(config))
-  }
-
-  def has(name: String): Boolean = {
-    pool.contains(name)
-  }
-
-  def connection(name: String): Option[Connection] = {
-    val storedPool = pool.get(name)
-    if (storedPool.isEmpty) {
-      return None
-    }
-    Some(storedPool.get.getConnection)
   }
 }
