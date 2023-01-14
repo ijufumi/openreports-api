@@ -7,10 +7,10 @@ import jp.ijufumi.openreports.utils.{Hash, IDs}
 
 class V000001_01__Create_data extends BaseJavaMigration {
   override def migrate(context: Context): Unit = {
-    role(context)
+    val roleId = role(context)
     val workspaceId = workspace(context)
     val memberId = member(context)
-    workspaceMember(context, workspaceId, memberId)
+    workspaceMember(context, workspaceId, memberId, roleId)
     val driverTypeId = driverType(context)
     val dataSourceId = dataSource(context, driverTypeId, workspaceId)
     for (i <- 1 to 35) {
@@ -19,10 +19,14 @@ class V000001_01__Create_data extends BaseJavaMigration {
     }
   }
 
-  private def role(context: Context): Unit = {
+  private def role(context: Context): String = {
+    var roleId = ""
     RoleTypes.values.foreach { value =>
       {
         val id = IDs.ulid()
+        if (roleId.isEmpty) {
+          roleId = id
+        }
         val statement = {
           context.getConnection.prepareStatement(
             s"INSERT INTO roles (id, role_type) VALUES (?, ?)",
@@ -34,6 +38,7 @@ class V000001_01__Create_data extends BaseJavaMigration {
         finally if (statement != null) statement.close()
       }
     }
+    roleId
   }
 
   private def member(context: Context): String = {
@@ -72,14 +77,15 @@ class V000001_01__Create_data extends BaseJavaMigration {
     id
   }
 
-  private def workspaceMember(context: Context, workspaceId: String, memberId: String): Unit = {
+  private def workspaceMember(context: Context, workspaceId: String, memberId: String, roleId: String): Unit = {
     val statement = {
       context.getConnection.prepareStatement(
-        s"INSERT INTO workspace_members (workspace_id, member_id) VALUES (?, ?)",
+        s"INSERT INTO workspace_members (workspace_id, member_id, role_id) VALUES (?, ?, ?)",
       )
     }
     statement.setString(1, workspaceId)
     statement.setString(2, memberId)
+    statement.setString(3, roleId)
     try statement.execute
     finally if (statement != null) statement.close()
 
