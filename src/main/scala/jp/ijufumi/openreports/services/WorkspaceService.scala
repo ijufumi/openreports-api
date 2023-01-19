@@ -1,8 +1,7 @@
 package jp.ijufumi.openreports.services
 
-import jp.ijufumi.openreports.entities.Workspace
 import jp.ijufumi.openreports.models.inputs.{CreateWorkspace, CreateWorkspaceMember, UpdateWorkspace, UpdateWorkspaceMember}
-import jp.ijufumi.openreports.models.outputs.WorkspaceMember
+import jp.ijufumi.openreports.models.outputs.{Lists, Workspace, WorkspaceMember}
 
 trait WorkspaceService {
   def createAndRelevant(input: CreateWorkspace, memberId: String): Option[Workspace]
@@ -10,6 +9,8 @@ trait WorkspaceService {
   def createAndRelevant(name: String, memberId: String): Option[Workspace]
 
   def getWorkspace(id: String): Option[Workspace]
+
+  def getWorkspaces(): Lists[Workspace]
 
   def updateWorkspace(id: String, input: UpdateWorkspace): Option[Workspace]
 
