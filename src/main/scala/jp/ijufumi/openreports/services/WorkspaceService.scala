@@ -10,7 +10,7 @@ trait WorkspaceService {
 
   def getWorkspace(id: String): Option[Workspace]
 
-  def getWorkspaces(): Lists[Workspace]
+  def getWorkspacesByMemberId(memberId: String): Lists[Workspace]
 
   def updateWorkspace(id: String, input: UpdateWorkspace): Option[Workspace]
 

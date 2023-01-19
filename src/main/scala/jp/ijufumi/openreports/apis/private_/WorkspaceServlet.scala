@@ -10,7 +10,8 @@ class WorkspaceServlet @Inject() (
     workspaceService: WorkspaceService,
 ) extends PrivateAPIServletBase(loginService) {
   get("/") {
-    val result = workspaceService.getWorkspaces()
+    val _memberId = memberId()
+    val result = workspaceService.getWorkspaces(_memberId)
     ok(result)
   }
 
