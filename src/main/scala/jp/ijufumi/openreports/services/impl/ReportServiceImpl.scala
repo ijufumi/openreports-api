@@ -38,7 +38,7 @@ class ReportServiceImpl @Inject() (
     Some(Report(result.get._1, result.get._2))
   }
 
-  override def getTemplates(workspaceId: String, page: Int, limit: Int): Lists[Report] = {
+  override def getTemplates(workspaceId: String, page: Int, limit: Int): Lists[TemplateResponse] = {
     val offset = List(page * limit, 0).max
     val (results, count) = templateRepository.gets(workspaceId, offset, limit)
     val items = results.map(r => TemplateResponse(r))

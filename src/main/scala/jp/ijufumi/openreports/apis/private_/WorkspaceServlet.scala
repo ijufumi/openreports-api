@@ -10,12 +10,8 @@ class WorkspaceServlet @Inject() (
     workspaceService: WorkspaceService,
 ) extends PrivateAPIServletBase(loginService) {
   get("/") {
-    val result = workspaceService.getWorkspace(_workspaceId)
-    if (result.isEmpty) {
-      notFound("workspace not found")
-    } else {
-      ok(result.get)
-    }
+    val result = workspaceService.getWorkspaces()
+    ok(result)
   }
 
   get("/:id") {
