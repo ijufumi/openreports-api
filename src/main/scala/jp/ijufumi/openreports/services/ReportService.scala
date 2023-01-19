@@ -7,9 +7,9 @@ import org.scalatra.servlet.FileItem
 import java.io.File
 
 trait ReportService {
-  def getReports(workspaceId: String, page: Int, limit: Int, templateId: String = ""): Lists
+  def getReports(workspaceId: String, page: Int, limit: Int, templateId: String = ""): Lists[Report]
 
-  def getTemplates(workspaceId: String, page: Int, limit: Int): Lists
+  def getTemplates(workspaceId: String, page: Int, limit: Int): Lists[Report]
 
   def getTemplate(workspaceId: String, id: String): Option[Template]
 

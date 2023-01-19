@@ -22,7 +22,7 @@ class ReportServiceImpl @Inject() (
     outputService: OutputService,
     storageService: StorageService,
 ) extends ReportService {
-  def getReports(workspaceId: String, page: Int, limit: Int, templateId: String = ""): Lists = {
+  def getReports(workspaceId: String, page: Int, limit: Int, templateId: String = ""): Lists[Report] = {
     val offset = List(page * limit, 0).max
     val (results, count) = reportRepository.getsWithTemplate(workspaceId, offset, limit, templateId)
     val items = results.map(r => Report(r._1, r._2))
@@ -38,7 +38,7 @@ class ReportServiceImpl @Inject() (
     Some(Report(result.get._1, result.get._2))
   }
 
-  override def getTemplates(workspaceId: String, page: Int, limit: Int): Lists = {
+  override def getTemplates(workspaceId: String, page: Int, limit: Int): Lists[Report] = {
     val offset = List(page * limit, 0).max
     val (results, count) = templateRepository.gets(workspaceId, offset, limit)
     val items = results.map(r => TemplateResponse(r))
