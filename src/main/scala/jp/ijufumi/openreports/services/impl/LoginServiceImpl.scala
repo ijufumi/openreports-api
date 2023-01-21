@@ -119,12 +119,15 @@ class LoginServiceImpl @Inject() (
     }
   }
 
-  def getMemberByToken(authorizationHeader: String): Option[MemberReponse] = {
+  def getMemberByToken(authorizationHeader: String, generateToken: Boolean = true): Option[MemberReponse] = {
     val memberOpt = getMember(authorizationHeader)
     if (memberOpt.isEmpty) {
       return None
     }
-    makeResponse(memberOpt.get)
+    if (generateToken) {
+      return makeResponse(memberOpt.get)
+    }
+    Some(MemberReponse(memberOpt.get, Seq.empty, ""))
   }
 
   private def makeResponse(member: Member): Option[MemberReponse] = {
