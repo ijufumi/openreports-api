@@ -6,7 +6,7 @@ import jp.ijufumi.openreports.exceptions.NotFoundException
 import jp.ijufumi.openreports.gateways.datastores.database.repositories.DataSourceRepository
 import jp.ijufumi.openreports.services.DataSourceService
 import jp.ijufumi.openreports.models.inputs.{CreateDataSource, UpdateDataSource}
-import jp.ijufumi.openreports.models.outputs.{DataSource => DataSourceResponse}
+import jp.ijufumi.openreports.models.outputs.{DataSource => DataSourceResponse, Lists}
 import jp.ijufumi.openreports.utils.IDs
 import jp.ijufumi.openreports.gateways.datastores.database.pool.ConnectionPool
 
@@ -29,9 +29,14 @@ class DataSourceServiceImpl @Inject() (dataSourceRepository: DataSourceRepositor
     )
   }
 
-  override def getDataSources(workspaceId: String): Seq[DataSourceResponse] = {
+  override def getDataSources(workspaceId: String): Lists[DataSourceResponse] = {
     val dataSources = dataSourceRepository.getAll(workspaceId)
-    dataSources.map(d => DataSourceResponse(d))
+    Lists(
+      dataSources.map(d => DataSourceResponse(d)),
+      0,
+      dataSources.size,
+      dataSources.size,
+    )
   }
 
   override def getDataSource(workspaceId: String, id: String): Option[DataSourceResponse] = {

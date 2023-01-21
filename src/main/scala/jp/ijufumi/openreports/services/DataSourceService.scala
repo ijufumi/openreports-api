@@ -3,12 +3,12 @@ package jp.ijufumi.openreports.services
 import jp.ijufumi.openreports.models.inputs.{CreateDataSource, UpdateDataSource}
 
 import java.sql.Connection
-import jp.ijufumi.openreports.models.outputs.DataSource
+import jp.ijufumi.openreports.models.outputs.{DataSource, Lists}
 
 trait DataSourceService {
   def connection(workspaceId: String, dataSourceId: String): Connection
 
-  def getDataSources(workspaceId: String): Seq[DataSource]
+  def getDataSources(workspaceId: String): Lists[DataSource]
 
   def getDataSource(workspaceId: String, id: String): Option[DataSource]
 
