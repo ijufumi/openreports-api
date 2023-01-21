@@ -4,7 +4,17 @@ import jp.ijufumi.openreports.utils.Logging
 import jp.ijufumi.openreports.entities.enums.{RoleTypes, StorageTypes}
 import org.json4s.{DefaultFormats, Formats}
 import org.json4s.ext.EnumNameSerializer
-import org.scalatra.{ActionResult, BadRequest, CorsSupport, Forbidden, InternalServerError, NotFound, Ok, ScalatraServlet, Unauthorized}
+import org.scalatra.{
+  ActionResult,
+  BadRequest,
+  CorsSupport,
+  Forbidden,
+  InternalServerError,
+  NotFound,
+  Ok,
+  ScalatraServlet,
+  Unauthorized,
+}
 import org.scalatra.json.JacksonJsonSupport
 import org.scalatra.forms._
 import org.scalatra.i18n.I18nSupport
@@ -55,6 +65,10 @@ abstract class APIServletBase
   // 5xx
   def internalServerError(obj: Any): ActionResult = {
     hookResult(InternalServerError(obj))
+  }
+
+  def params(key: String, default: String): String = {
+    params(request).getOrElse(key, default)
   }
 
   private def hookResult(actionResult: ActionResult): ActionResult = {
