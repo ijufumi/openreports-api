@@ -28,9 +28,10 @@ abstract class APIServletBase
     with CorsSupport {
 
   override protected implicit lazy val jsonFormats: Formats = {
-    DefaultFormats ++ org.json4s.ext.JavaTimeSerializers.all
-    DefaultFormats + new EnumNameSerializer(StorageTypes)
-    DefaultFormats + new EnumNameSerializer(RoleTypes)
+    DefaultFormats ++ Seq(
+      org.json4s.ext.JavaTimeSerializers.all,
+      Seq(new EnumNameSerializer(StorageTypes), new EnumNameSerializer(RoleTypes)),
+    ).flatten
   }
 
   before() {
