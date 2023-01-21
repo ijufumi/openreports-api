@@ -77,9 +77,14 @@ class WorkspaceServiceImpl @Inject() (
     workspaceRepository.update(newWorkspace).map(v => WorkspaceResponse(v))
   }
 
-  override def getWorkspaceMembers(id: String): Seq[WorkspaceMemberResponse] = {
+  override def getWorkspaceMembers(id: String): Lists[WorkspaceMemberResponse] = {
     val results = workspaceMemberRepository.getsWithMember(id)
-    results.map(v => WorkspaceMemberResponse(v._1, v._2))
+    Lists(
+      results.map(v => WorkspaceMemberResponse(v._1, v._2)),
+      0,
+      results.size,
+      results.size
+    )
   }
 
   override def getWorkspaceMember(

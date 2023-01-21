@@ -14,7 +14,7 @@ trait WorkspaceService {
 
   def updateWorkspace(id: String, input: UpdateWorkspace): Option[Workspace]
 
-  def getWorkspaceMembers(id: String): Seq[WorkspaceMember]
+  def getWorkspaceMembers(id: String): Lists[WorkspaceMember]
 
   def getWorkspaceMember(workspaceId: String, memberId: String): Option[WorkspaceMember]
 
