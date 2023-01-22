@@ -30,9 +30,9 @@ class DataSourceServiceImpl @Inject() (dataSourceRepository: DataSourceRepositor
   }
 
   override def getDataSources(workspaceId: String): Lists[DataSourceResponse] = {
-    val dataSources = dataSourceRepository.getAll(workspaceId)
+    val dataSources = dataSourceRepository.getAllWithDriverType(workspaceId)
     Lists(
-      dataSources.map(d => DataSourceResponse(d)),
+      dataSources.map(d => DataSourceResponse(d._1, d._2)),
       0,
       dataSources.size,
       dataSources.size,
@@ -40,11 +40,8 @@ class DataSourceServiceImpl @Inject() (dataSourceRepository: DataSourceRepositor
   }
 
   override def getDataSource(workspaceId: String, id: String): Option[DataSourceResponse] = {
-    val dataSource = dataSourceRepository.getById(workspaceId, id)
-    if (dataSource.isEmpty) {
-      return None
-    }
-    Some(DataSourceResponse(dataSource.get))
+    val dataSource = dataSourceRepository.getByIdWithDriverType(workspaceId, id)
+    dataSource.map(v => DataSourceResponse(v._1, v._2))
   }
 
   override def registerDataSource(

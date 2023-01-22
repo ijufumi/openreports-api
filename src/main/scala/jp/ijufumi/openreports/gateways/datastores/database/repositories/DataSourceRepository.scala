@@ -9,6 +9,8 @@ trait DataSourceRepository {
 
   def getByIdWithDriverType(workspaceId: String, id: String): Option[(DataSource, DriverType)]
 
+  def getAllWithDriverType(workspaceId: String): Seq[(DataSource, DriverType)]
+
   def register(dataSource: DataSource): Option[DataSource]
 
   def update(dataSource: DataSource): Unit

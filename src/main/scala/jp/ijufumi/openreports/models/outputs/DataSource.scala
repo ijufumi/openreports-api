@@ -1,6 +1,6 @@
 package jp.ijufumi.openreports.models.outputs
 
-import jp.ijufumi.openreports.entities.{DataSource => DataSourceEntity}
+import jp.ijufumi.openreports.entities.{DataSource => DataSourceEntity, DriverType => DriverTypeEntity}
 case class DataSource(
     id: String,
     name: String,
@@ -8,10 +8,11 @@ case class DataSource(
     username: String,
     password: String,
     driverTypeId: String,
+    driverTypeName: String,
 )
 
 object DataSource {
-  def apply(entity: DataSourceEntity): DataSource = {
+  def apply(entity: DataSourceEntity, driverType: DriverTypeEntity): DataSource = {
     DataSource(
       entity.id,
       entity.name,
@@ -19,6 +20,7 @@ object DataSource {
       entity.username,
       entity.password,
       entity.driverTypeId,
+      driverType.name,
     )
   }
 }

@@ -40,6 +40,14 @@ class DataSourceRepositoryImpl @Inject() (db: Database) extends DataSourceReposi
     Some(dataSources.head)
   }
 
+  override def getAllWithDriverType(workspaceId: String): Seq[(DataSource, DriverType)] = {
+    val getDataSources = query
+      .join(driverTypeQuery)
+      .on(_.driverTypeId === _.id)
+      .filter(_._1.workspaceId === workspaceId)
+    Await.result(db.run(getDataSources.result), queryTimeout)
+  }
+
   override def register(dataSource: DataSource): Option[DataSource] = {
     Await.result(db.run((query += dataSource).withPinnedSession), queryTimeout)
     getById(dataSource.workspaceId, dataSource.id)
