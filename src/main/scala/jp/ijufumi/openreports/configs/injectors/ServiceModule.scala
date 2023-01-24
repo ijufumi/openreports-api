@@ -2,19 +2,21 @@ package jp.ijufumi.openreports.configs.injectors
 
 import jp.ijufumi.openreports.services.impl.{
   DataSourceServiceImpl,
+  DriverTypeServiceImpl,
   LoginServiceImpl,
   OutputServiceImpl,
-  RoleServiceImpl,
   ReportServiceImpl,
+  RoleServiceImpl,
   StorageServiceImpl,
   WorkspaceServiceImpl,
 }
 import jp.ijufumi.openreports.services.{
   DataSourceService,
+  DriverTypeService,
   LoginService,
   OutputService,
-  RoleService,
   ReportService,
+  RoleService,
   StorageService,
   WorkspaceService,
 }
@@ -29,5 +31,6 @@ class ServiceModule extends BaseModule {
     bindAsSingleton(classOf[StorageService], classOf[StorageServiceImpl])
     bindAsSingleton(classOf[WorkspaceService], classOf[WorkspaceServiceImpl])
     bindAsSingleton(classOf[RoleService], classOf[RoleServiceImpl])
+    bindAsSingleton(classOf[DriverTypeService], classOf[DriverTypeServiceImpl])
   }
 }
