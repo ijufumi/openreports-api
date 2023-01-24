@@ -1,5 +1,5 @@
 import jp.ijufumi.openreports.apis.private_.{DataSourceServlet, MemberServlet, ReportServlet, TemplateServlet, WorkspaceMembersServlet, WorkspaceServlet}
-import jp.ijufumi.openreports.apis.public_.{HealthServlet, LoginServlet, RoleServlet}
+import jp.ijufumi.openreports.apis.public_.{DriverTypeServlet, HealthServlet, LoginServlet, RoleServlet}
 import jp.ijufumi.openreports.configs.injectors.Injector
 import org.scalatra._
 
@@ -11,6 +11,7 @@ class ScalatraBootstrap extends LifeCycle {
     mount(context, classOf[HealthServlet], "/health")
     mount(context, classOf[LoginServlet], "/login")
     mount(context, classOf[RoleServlet], "/roles")
+    mount(context, classOf[DriverTypeServlet], "/driver_types")
     // private endpoints
     mount(context, classOf[MemberServlet], "/members")
     mount(context, classOf[ReportServlet], "/reports")
