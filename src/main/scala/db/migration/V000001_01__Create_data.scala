@@ -1,6 +1,6 @@
 package db.migration
 
-import jp.ijufumi.openreports.entities.enums.RoleTypes
+import jp.ijufumi.openreports.entities.enums.{JdbcDriverClasses, RoleTypes, DBNameMappings}
 import org.flywaydb.core.api.migration.BaseJavaMigration
 import org.flywaydb.core.api.migration.Context
 import jp.ijufumi.openreports.utils.{Hash, IDs}
@@ -77,7 +77,12 @@ class V000001_01__Create_data extends BaseJavaMigration {
     id
   }
 
-  private def workspaceMember(context: Context, workspaceId: String, memberId: String, roleId: String): Unit = {
+  private def workspaceMember(
+      context: Context,
+      workspaceId: String,
+      memberId: String,
+      roleId: String,
+  ): Unit = {
     val statement = {
       context.getConnection.prepareStatement(
         s"INSERT INTO workspace_members (workspace_id, member_id, role_id) VALUES (?, ?, ?)",
@@ -92,21 +97,27 @@ class V000001_01__Create_data extends BaseJavaMigration {
   }
 
   private def driverType(context: Context): String = {
-    val id = IDs.ulid()
-    val name = "postgres"
-    val driverClass = "org.postgresql.Driver"
-    val statement = {
-      context.getConnection.prepareStatement(
-        s"INSERT INTO driver_types (id, name, jdbc_driver_class) VALUES (?, ?, ?)",
-      )
-    }
-    statement.setString(1, id)
-    statement.setString(2, name)
-    statement.setString(3, driverClass)
-    try statement.execute
-    finally if (statement != null) statement.close()
+    var driverTypeId = ""
+    JdbcDriverClasses.values.foreach(value => {
+      val id = IDs.ulid()
+      if (driverTypeId.isEmpty) {
+        driverTypeId = id
+      }
+      val name = DBNameMappings.getDbNameNyDriverClass(value)
+      val driverClass = value.toString
+      val statement = {
+        context.getConnection.prepareStatement(
+          s"INSERT INTO driver_types (id, name, jdbc_driver_class) VALUES (?, ?, ?)",
+        )
+      }
+      statement.setString(1, id)
+      statement.setString(2, name)
+      statement.setString(3, driverClass)
+      try statement.execute
+      finally if (statement != null) statement.close()
+    })
 
-    id
+    driverTypeId
   }
 
   private def dataSource(context: Context, driverTypeId: String, workspaceId: String): String = {
