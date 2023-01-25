@@ -1,15 +1,16 @@
 package jp.ijufumi.openreports.entities
 
+import jp.ijufumi.openreports.entities.enums.JdbcDriverClasses.JdbcDriverClass
 import jp.ijufumi.openreports.utils.Dates
 import slick.jdbc.PostgresProfile.api._
 
 case class DriverType(
-    id: String,
-    name: String,
-    jdbcDriverClass: String,
-    createdAt: Long = Dates.currentTimestamp(),
-    updatedAt: Long = Dates.currentTimestamp(),
-    versions: Long = 1,
+                       id: String,
+                       name: String,
+                       jdbcDriverClass: JdbcDriverClass,
+                       createdAt: Long = Dates.currentTimestamp(),
+                       updatedAt: Long = Dates.currentTimestamp(),
+                       versions: Long = 1,
 )
 
 class DriverTypes(tag: Tag)
@@ -19,7 +20,7 @@ class DriverTypes(tag: Tag)
     ) {
   def id = column[String]("id", O.PrimaryKey)
   def name = column[String]("name")
-  def jdbcDriverClass = column[String]("jdbc_driver_class")
+  def jdbcDriverClass = column[JdbcDriverClass]("jdbc_driver_class")
   def createdAt = column[Long]("created_at")
   def updatedAt = column[Long]("updated_at")
   def versions = column[Long]("versions")

@@ -1,7 +1,7 @@
 package jp.ijufumi.openreports.apis.base
 
 import jp.ijufumi.openreports.utils.Logging
-import jp.ijufumi.openreports.entities.enums.{RoleTypes, StorageTypes}
+import jp.ijufumi.openreports.entities.enums.{JdbcDriverClasses, RoleTypes, StorageTypes}
 import org.json4s.{DefaultFormats, Formats}
 import org.json4s.ext.EnumNameSerializer
 import org.scalatra.{
@@ -30,7 +30,11 @@ abstract class APIServletBase
   override protected implicit lazy val jsonFormats: Formats = {
     DefaultFormats ++ Seq(
       org.json4s.ext.JavaTimeSerializers.all,
-      Seq(new EnumNameSerializer(StorageTypes), new EnumNameSerializer(RoleTypes)),
+      Seq(
+        new EnumNameSerializer(StorageTypes),
+        new EnumNameSerializer(RoleTypes),
+        new EnumNameSerializer(JdbcDriverClasses),
+      ),
     ).flatten
   }
 
