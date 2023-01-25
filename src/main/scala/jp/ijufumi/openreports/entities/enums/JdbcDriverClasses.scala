@@ -4,10 +4,10 @@ import slick.ast.BaseTypedType
 import slick.jdbc.JdbcType
 import slick.jdbc.PostgresProfile.api._
 
-
 object JdbcDriverClasses extends Enumeration {
   type JdbcDriverClass = Value
 
+  val Postgres: JdbcDriverClass = Value("org.postgresql.Driver")
   val MySQL: JdbcDriverClass = Value("com.mysql.jdbc.Driver")
 
   implicit val storageTypeMapper: JdbcType[JdbcDriverClass] with BaseTypedType[JdbcDriverClass] =
@@ -15,4 +15,15 @@ object JdbcDriverClasses extends Enumeration {
       e => e.toString,
       s => JdbcDriverClasses.withName(s),
     )
+}
+
+object DBNameMappings {
+  private val mapping = Map(
+    "MySQL" -> JdbcDriverClasses.MySQL,
+    "Postgres" -> JdbcDriverClasses.Postgres,
+  )
+
+  def getDbNameNyDriverClass(driverClass: JdbcDriverClasses.JdbcDriverClass): String = {
+    mapping.find(v => v._2 == driverClass).map(v => v._1).orNull
+  }
 }
