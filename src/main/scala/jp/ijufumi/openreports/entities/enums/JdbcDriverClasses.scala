@@ -23,7 +23,7 @@ object DBNameMappings {
     "Postgres" -> JdbcDriverClasses.Postgres,
   )
 
-  def getDbNameNyDriverClass(driverClass: JdbcDriverClasses.JdbcDriverClass): String = {
+  def getDbNameByDriverClass(driverClass: JdbcDriverClasses.JdbcDriverClass): String = {
     mapping.find(v => v._2 == driverClass).map(v => v._1).orNull
   }
 }

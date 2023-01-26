@@ -103,7 +103,7 @@ class V000001_01__Create_data extends BaseJavaMigration {
       if (driverTypeId.isEmpty) {
         driverTypeId = id
       }
-      val name = DBNameMappings.getDbNameNyDriverClass(value)
+      val name = DBNameMappings.getDbNameByDriverClass(value)
       val driverClass = value.toString
       val statement = {
         context.getConnection.prepareStatement(
