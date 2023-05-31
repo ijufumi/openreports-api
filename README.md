@@ -4,17 +4,17 @@
 | Name         | Version | Usage        |
 |--------------|---------|--------------|
 | Scala        | 2.12.17 | -            |
-| Scalatra     | 2.8.2   | All of them. |
-| Servlet API  | 3.1.0   | Web API      |
-| slf4j        | 2.0.3   | Logging      |
-| logback      | 1.2.3   | Logging      |
- | Flyway       | 9.4.0   | Migration    |
- | Slick        | 3.3.3   | ORM          |
- | PostgresSQL  | 42.4.0  | DB           |
- | Google Guice | 5.1.0   | DI           |
+| Scalatra     | 2.8.4   | All of them. |
+| Servlet API  | 4.0.1   | Web API      |
+| slf4j        | 2.0.7   | Logging      |
+| logback      | 1.4.7   | Logging      |
+| Flyway       | 9.19.1  | Migration    |
+| Slick        | 3.4.1   | ORM          |
+| PostgresSQL  | 42.6.0  | DB           |
+| Google Guice | 7.0.0   | DI           |
 | Scala Cache  | 0.28.0  | Cache        |
-| sttp client  | 3.7.0   | HTTP Client  |
- | jXls         | 2.12.0  | Reporting |
+| sttp client  | 3.8.15  | HTTP Client  |
+| jXls         | 2.12.0  | Reporting |
 
 ## Features (not implemented yet)
 - [ ] Output reporting.
@@ -29,7 +29,7 @@
 ### Starting up
 
 ```shell
-COMPOSE_DOCKER_CLI_BUILD=1 DOCKER_BUILCDKIT=1 docker-compose up --build
+COMPOSE_DOCKER_CLI_BUILD=1 DOCKER_BUILCDKIT=1 docker compose up --build
 ```
 
 ### Migration
