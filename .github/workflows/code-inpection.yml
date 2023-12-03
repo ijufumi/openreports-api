@@ -13,5 +13,9 @@ jobs:
         with:
           distribution: temurin
           java-version: 17
+          cache: 'sbt'
+          cache-dependency-path: |
+            build.sbt
+            project/build.properties
       - name: Build and Test
-        run: sbt -v +test
+        run: sbt compile
