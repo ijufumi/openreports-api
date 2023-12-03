@@ -1,6 +1,6 @@
 name: code inspection
 on:
-.  push:
+  push:
   workflow_dispatch:
 jobs:
   test:
