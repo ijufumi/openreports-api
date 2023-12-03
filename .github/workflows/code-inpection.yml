@@ -1,0 +1,21 @@
+name: code inspection
+on:
+  push:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+          cache: 'sbt'
+          cache-dependency-path: |
+            build.sbt
+            project/build.properties
+      - name: Build
+        run: sbt compile
