@@ -1,5 +1,5 @@
 val Scala213Version = "2.13.9"
-val Scala212Version = "2.12.17"
+val Scala212Version = "2.12.18"
 
 // for scala libraries
 val ScalatraVersion = "2.8.4"
@@ -12,13 +12,13 @@ val ULIDVersion = "1.0.24"
 // for java libraries
 val SLF4JVersion = "2.0.7"
 val LogbackVersion = "1.4.7"
-val FlywayVersion = "9.19.1"
+val FlywayVersion = "9.22.3"
 val AWSSDKVersion = "2.20.76"
 val jXlsVersion = "2.12.0"
 val Auth0Version = "2.3.0"
 val GuiceVersion = "7.0.0"
 val DotEnvJavaVersion = "3.0.0"
-val JettyVersion = "11.0.15"
+val JettyVersion = "10.0.18"
 val PostgresVersion = "42.6.0"
 val ServletAPIVersion = "4.0.1"
 
