@@ -3,12 +3,12 @@
 
 | Name         | Version | Usage        |
 |--------------|---------|--------------|
-| Scala        | 2.12.17 | -            |
+| Scala        | 2.12.18 | -            |
 | Scalatra     | 2.8.4   | All of them. |
 | Servlet API  | 4.0.1   | Web API      |
 | slf4j        | 2.0.7   | Logging      |
 | logback      | 1.4.7   | Logging      |
-| Flyway       | 9.19.1  | Migration    |
+| Flyway       | 9.22.3  | Migration    |
 | Slick        | 3.4.1   | ORM          |
 | PostgresSQL  | 42.6.0  | DB           |
 | Google Guice | 7.0.0   | DI           |
