@@ -18,7 +18,7 @@ val jXlsVersion = "2.12.0"
 val Auth0Version = "2.3.0"
 val GuiceVersion = "7.0.0"
 val DotEnvJavaVersion = "3.0.0"
-val JettyVersion = "11.0.15"
+val JettyVersion = "10.0.18"
 val PostgresVersion = "42.6.0"
 val ServletAPIVersion = "4.0.1"
 
