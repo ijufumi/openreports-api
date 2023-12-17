@@ -16,7 +16,7 @@ COPY src ./src
 COPY project ./project
 COPY reports /reports
 
-RUN sbt compile
+RUN sbt pacakge
 
 RUN chmod +x ./scripts/entrypoint.sh
 
