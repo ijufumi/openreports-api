@@ -1,0 +1,29 @@
+name: Create PlantUML Images
+
+on:
+  push:
+    paths:
+      - docs/db/diagram.puml
+    branches:
+      - master
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install packages
+        run: |
+          brew install plantuml
+      - name: Create Images
+        run: |
+          cat docs/db/diagram.puml | plantuml -tsvg -p > .docs/db/diagram.svg
+      - name: Commit changes
+        uses: EndBug/add-and-commit@v9
+        with:
+          author_name: Takafumi Iju
+          author_email: ijufumi@gmail.com
+          message: 'Create image files by GitHub Action(create-plantuml-images.yml).'
+          add: './docs/db/diagram.svg'
+          push: true
