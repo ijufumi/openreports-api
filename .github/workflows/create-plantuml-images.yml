@@ -18,7 +18,7 @@ jobs:
           brew install plantuml
       - name: Create Images
         run: |
-          cat docs/db/diagram.puml | plantuml -tsvg -p > .docs/db/diagram.svg
+          cat ./docs/db/diagram.puml | plantuml -tsvg -p > ./docs/db/diagram.svg
       - name: Commit changes
         uses: EndBug/add-and-commit@v9
         with:
