@@ -47,6 +47,12 @@ docker-compose exec api sbt flywayMigrate
 docker-compose exec api sbt flywayClean
 ```
 
+## Design
+
+### ER diagram
+
+！[ERD](./docs/db/diagram.svg)
+
 ## Developer's memo.
 ### API list
 
