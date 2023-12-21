@@ -51,7 +51,7 @@ docker-compose exec api sbt flywayClean
 
 ### ER diagram
 
-！[ERD](./docs/db/diagram.svg)
+![ERD](./docs/db/diagram.svg)
 
 ## Developer's memo.
 ### API list
