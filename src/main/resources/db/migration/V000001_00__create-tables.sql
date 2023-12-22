@@ -117,7 +117,7 @@ create table reports
 );
 
 -- create storages
-create table storages
+create table storages_s3
 (
   id                    varchar(40) primary key,
   workspace_id          varchar(40) not null,

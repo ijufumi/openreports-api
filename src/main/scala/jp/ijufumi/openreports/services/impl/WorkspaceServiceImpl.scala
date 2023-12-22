@@ -3,9 +3,9 @@ package jp.ijufumi.openreports.services.impl
 import com.google.inject.Inject
 import jp.ijufumi.openreports.configs.Config
 import jp.ijufumi.openreports.entities.enums.{RoleTypes, StorageTypes}
-import jp.ijufumi.openreports.entities.{Report, Storage, Template, Workspace, WorkspaceMember}
+import jp.ijufumi.openreports.entities.{Report, StorageS3, Template, Workspace, WorkspaceMember}
 import jp.ijufumi.openreports.exceptions.NotFoundException
-import jp.ijufumi.openreports.gateways.datastores.database.repositories.{ReportRepository, RoleRepository, StorageRepository, TemplateRepository, WorkspaceMemberRepository, WorkspaceRepository}
+import jp.ijufumi.openreports.gateways.datastores.database.repositories.{ReportRepository, RoleRepository, StorageS3Repository, TemplateRepository, WorkspaceMemberRepository, WorkspaceRepository}
 import jp.ijufumi.openreports.models.inputs.{CreateWorkspace, CreateWorkspaceMember, UpdateWorkspace, UpdateWorkspaceMember}
 import jp.ijufumi.openreports.models.outputs.{Lists, Workspace => WorkspaceResponse, WorkspaceMember => WorkspaceMemberResponse}
 import jp.ijufumi.openreports.services.{StorageService, WorkspaceService}
@@ -13,13 +13,13 @@ import jp.ijufumi.openreports.utils.{IDs, Strings}
 import slick.jdbc.PostgresProfile.api._
 
 class WorkspaceServiceImpl @Inject() (
-    workspaceRepository: WorkspaceRepository,
-    workspaceMemberRepository: WorkspaceMemberRepository,
-    storageRepository: StorageRepository,
-    reportRepository: ReportRepository,
-    reportTemplateRepository: TemplateRepository,
-    storageService: StorageService,
-    permissionRepository: RoleRepository,
+                                       workspaceRepository: WorkspaceRepository,
+                                       workspaceMemberRepository: WorkspaceMemberRepository,
+                                       storageRepository: StorageS3Repository,
+                                       reportRepository: ReportRepository,
+                                       reportTemplateRepository: TemplateRepository,
+                                       storageService: StorageService,
+                                       permissionRepository: RoleRepository,
 ) extends WorkspaceService {
   override def createAndRelevant(input: CreateWorkspace, memberId: String): Option[WorkspaceResponse] = {
     createAndRelevant(input.name, memberId)
@@ -37,7 +37,7 @@ class WorkspaceServiceImpl @Inject() (
       }
       val workspaceMember = WorkspaceMember(workspace.id, memberId, permission.get.id)
       workspaceMemberRepository.register(workspaceMember)
-      val storage = Storage(IDs.ulid(), workspace.id)
+      val storage = StorageS3(IDs.ulid(), workspace.id)
       storageRepository.register(storage)
       val key = this.copySample(workspace.id)
       val reportTemplate =

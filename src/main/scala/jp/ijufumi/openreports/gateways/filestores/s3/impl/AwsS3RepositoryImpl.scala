@@ -2,9 +2,9 @@ package jp.ijufumi.openreports.gateways.filestores.s3.impl
 
 import com.google.inject.Inject
 import jp.ijufumi.openreports.configs.Config
-import jp.ijufumi.openreports.entities.Storage
+import jp.ijufumi.openreports.entities.StorageS3
 import jp.ijufumi.openreports.exceptions.NotFoundException
-import jp.ijufumi.openreports.gateways.datastores.database.repositories.StorageRepository
+import jp.ijufumi.openreports.gateways.datastores.database.repositories.StorageS3Repository
 import jp.ijufumi.openreports.gateways.filestores.s3.AwsS3Repository
 import software.amazon.awssdk.auth.credentials.{AwsBasicCredentials, StaticCredentialsProvider}
 import software.amazon.awssdk.regions.Region
@@ -17,7 +17,7 @@ import java.nio.file.{Files, Path}
 import java.time.Duration
 import scala.util.Using
 
-class AwsS3RepositoryImpl @Inject() (storageRepository: StorageRepository) extends AwsS3Repository {
+class AwsS3RepositoryImpl @Inject() (storageRepository: StorageS3Repository) extends AwsS3Repository {
   override def get(workspaceId: String, key: String): Path = {
     val storage = this.getStorage(workspaceId)
     val request = GetObjectRequest.builder().bucket(storage.s3BucketName).key(key).build()
@@ -58,7 +58,7 @@ class AwsS3RepositoryImpl @Inject() (storageRepository: StorageRepository) exten
     }.get.url().toString
   }
 
-  private def getStorage(workspaceId: String): Storage = {
+  private def getStorage(workspaceId: String): StorageS3 = {
     val storageList = storageRepository.gets(workspaceId)
     if (storageList.isEmpty) {
       throw new NotFoundException(s"storage doesn't exist. workspaceId: ${workspaceId}")
@@ -66,7 +66,7 @@ class AwsS3RepositoryImpl @Inject() (storageRepository: StorageRepository) exten
     storageList.head
   }
 
-  private def createClient(storage: Storage): S3Client = {
+  private def createClient(storage: StorageS3): S3Client = {
     val credentials = AwsBasicCredentials.create(storage.awsAccessKeyId, storage.awsSecretAccessKey)
     val region = Region.of(storage.awsRegion)
     S3Client
@@ -76,7 +76,7 @@ class AwsS3RepositoryImpl @Inject() (storageRepository: StorageRepository) exten
       .build()
   }
 
-  private def createPresignerClient(storage: Storage): S3Presigner = {
+  private def createPresignerClient(storage: StorageS3): S3Presigner = {
     val credentials = AwsBasicCredentials.create(storage.awsAccessKeyId, storage.awsSecretAccessKey)
     val region = Region.of(storage.awsRegion)
     S3Presigner

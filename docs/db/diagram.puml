@@ -32,6 +32,7 @@ entity data_sources {
   * username
   * password
   * driver_type_id
+  * workspace_id
 }
 
 entity driver_types {
@@ -58,11 +59,13 @@ entity report_templates {
   * file_size
 }
 
-entity storages {
+entity storages_s3 {
   * id
   * workspace_id
   * aws_access_key_id
   * aws_secret_access_key
+  * aws_region
+  * s3_bucket_name
 }
 
 workspaces --r{ workspace_members
@@ -73,7 +76,7 @@ workspaces --{ report_templates
 reports }-- report_templates
 driver_types --{ data_sources
 data_sources --{ reports
-workspaces --{ storages
-storages --{ report_templates
+workspaces --{ storages_s3
+storages_s3 --{ report_templates
 
 @enduml
