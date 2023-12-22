@@ -3,7 +3,7 @@ package jp.ijufumi.openreports.entities
 import jp.ijufumi.openreports.utils.Dates
 import slick.jdbc.PostgresProfile.api._
 
-case class Storage(
+case class StorageS3(
     id: String,
     workspaceId: String,
     awsAccessKeyId: String = "",
@@ -15,7 +15,7 @@ case class Storage(
     versions: Long = 1,
 )
 
-class Storages(tag: Tag) extends EntityBase[Storage](tag, "storages") {
+class Storages(tag: Tag) extends EntityBase[StorageS3](tag, "storage_s3s") {
   def id = column[String]("id", O.PrimaryKey)
   def workspaceId = column[String]("workspace_id")
   def awsAccessKeyId = column[String]("aws_access_key_id")
@@ -33,5 +33,5 @@ class Storages(tag: Tag) extends EntityBase[Storage](tag, "storages") {
     createdAt,
     updatedAt,
     versions,
-  ) <> (Storage.tupled, Storage.unapply)
+  ) <> (StorageS3.tupled, StorageS3.unapply)
 }

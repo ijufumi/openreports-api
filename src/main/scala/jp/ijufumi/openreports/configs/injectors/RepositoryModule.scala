@@ -2,8 +2,8 @@ package jp.ijufumi.openreports.configs.injectors
 
 import jp.ijufumi.openreports.gateways.auth.google.GoogleRepository
 import jp.ijufumi.openreports.gateways.auth.google.impl.GoogleRepositoryImpl
-import jp.ijufumi.openreports.gateways.datastores.database.repositories.{DataSourceRepository, DriverTypeRepository, MemberRepository, ReportRepository, RoleRepository, StorageRepository, TemplateRepository, WorkspaceMemberRepository, WorkspaceRepository}
-import jp.ijufumi.openreports.gateways.datastores.database.repositories.impl.{DataSourceRepositoryImpl, DriverTypeRepositoryImpl, MemberRepositoryImpl, ReportRepositoryImpl, RoleRepositoryImpl, StorageRepositoryImpl, TemplateRepositoryImpl, WorkspaceMemberRepositoryImpl, WorkspaceRepositoryImpl}
+import jp.ijufumi.openreports.gateways.datastores.database.repositories.{DataSourceRepository, DriverTypeRepository, MemberRepository, ReportRepository, RoleRepository, StorageS3Repository, TemplateRepository, WorkspaceMemberRepository, WorkspaceRepository}
+import jp.ijufumi.openreports.gateways.datastores.database.repositories.impl.{DataSourceRepositoryImpl, DriverTypeRepositoryImpl, MemberRepositoryImpl, ReportRepositoryImpl, RoleRepositoryImpl, StorageS3RepositoryImpl, TemplateRepositoryImpl, WorkspaceMemberRepositoryImpl, WorkspaceRepositoryImpl}
 import jp.ijufumi.openreports.gateways.filestores.local.LocalFileRepository
 import jp.ijufumi.openreports.gateways.filestores.local.impl.LocalFileRepositoryImpl
 import jp.ijufumi.openreports.gateways.filestores.s3.AwsS3Repository
@@ -19,7 +19,7 @@ class RepositoryModule extends BaseModule {
     bindAsSingleton(classOf[DataSourceRepository], classOf[DataSourceRepositoryImpl])
     bindAsSingleton(classOf[ReportRepository], classOf[ReportRepositoryImpl])
     bindAsSingleton(classOf[TemplateRepository], classOf[TemplateRepositoryImpl])
-    bindAsSingleton(classOf[StorageRepository], classOf[StorageRepositoryImpl])
+    bindAsSingleton(classOf[StorageS3Repository], classOf[StorageS3RepositoryImpl])
     bindAsSingleton(classOf[RoleRepository], classOf[RoleRepositoryImpl])
     bindAsSingleton(classOf[DriverTypeRepository], classOf[DriverTypeRepositoryImpl])
     // auth
