@@ -61,7 +61,7 @@ class AwsS3RepositoryImpl @Inject() (storageRepository: StorageS3Repository) ext
   private def getStorage(workspaceId: String): StorageS3 = {
     val storageList = storageRepository.gets(workspaceId)
     if (storageList.isEmpty) {
-      throw new NotFoundException(s"storage doesn't exist. workspaceId: ${workspaceId}")
+      throw new NotFoundException(s"storage doesn't exist. workspaceId: $workspaceId")
     }
     storageList.head
   }
