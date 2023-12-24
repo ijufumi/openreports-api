@@ -67,7 +67,7 @@ docker-compose exec api sbt flywayClean
     - [x] logout
   - [ ] members
     - [x] status (member info only)
-    - [ ] status (including menus, groups)
+    - [ ] ~~status (including menus, groups)~~
     - [x] update (name, password)
   - [ ] reports
     - [x] list
