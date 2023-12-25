@@ -15,7 +15,7 @@ abstract class PrivateAPIServletBase(loginService: LoginService)
     if (!loginService.verifyApiToken(header)) {
       halt(forbidden("API Token is invalid"))
     } else {
-      val member = loginService.getMemberByToken(header, false)
+      val member = loginService.getMemberByToken(header, generateToken = false)
       request.setAttribute("member", member)
     }
   }
