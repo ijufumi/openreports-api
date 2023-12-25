@@ -8,26 +8,16 @@ import jp.ijufumi.openreports.services.{LoginService, MemberService}
 class MemberServlet @Inject() (loginService: LoginService, memberService: MemberService)
     extends PrivateAPIServletBase(loginService) {
   get("/status") {
-    val header = authorizationHeader()
-    val member = loginService.getMemberByToken(header)
-    if (member.isEmpty) {
-      unauthorized("Invalid api token")
-    } else {
-      ok(member.get)
-    }
+    ok(member())
   }
+
   get("/logout") {
     val header = authorizationHeader()
     loginService.logout(header)
   }
   put("/update") {
-    val header = authorizationHeader()
-    val memberOpt = loginService.getMemberByToken(header)
-    if (memberOpt.isEmpty) {
-      unauthorized("Invalid api token")
-    } else {
-      val requestParam = extractBody[UpdateMember]()
-      ok(memberService.update(memberOpt.get.id, requestParam.name, requestParam.password))
-    }
+    val requestParam = extractBody[UpdateMember]()
+    val _member = member()
+    ok(memberService.update(_member.id, requestParam.name, requestParam.password))
   }
 }
