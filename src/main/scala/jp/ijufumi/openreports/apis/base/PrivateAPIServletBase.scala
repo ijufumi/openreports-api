@@ -33,7 +33,10 @@ abstract class PrivateAPIServletBase(loginService: LoginService)
   }
 
   def memberId(): String = {
-    val member = request.getAttribute("name").asInstanceOf[Member]
-    member.id
+    member().id
+  }
+
+  def member(): Member = {
+    request.getAttribute("name").asInstanceOf[Member]
   }
 }
