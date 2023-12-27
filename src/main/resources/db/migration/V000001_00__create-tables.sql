@@ -116,6 +116,33 @@ create table reports
   foreign key (workspace_id) references workspaces (id)
 );
 
+-- create report_groups
+create table report_groups
+(
+  id           varchar(40) primary key,
+  name         varchar(255) not null,
+  workspace_id varchar(40)  not null,
+  created_at   bigint       not null default extract(epoch from current_timestamp at time zone 'UTC'),
+  updated_at   bigint       not null default extract(epoch from current_timestamp at time zone 'UTC'),
+  versions     bigint       not null default 0,
+
+  foreign key (workspace_id) references workspaces (id)
+);
+
+-- create report_group_reports
+create table report_group_reports
+(
+  id              varchar(40) primary key,
+  report_id       varchar(40) not null,
+  report_group_id varchar(40) not null,
+  created_at      bigint      not null default extract(epoch from current_timestamp at time zone 'UTC'),
+  updated_at      bigint      not null default extract(epoch from current_timestamp at time zone 'UTC'),
+  versions        bigint      not null default 0,
+
+  foreign key (report_id) references reports (id),
+  foreign key (report_group_id) references report_groups (id)
+);
+
 -- create storages
 create table storages_s3
 (
