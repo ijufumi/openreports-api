@@ -1,6 +1,6 @@
 package db.migration
 
-import jp.ijufumi.openreports.entities.enums.{JdbcDriverClasses, RoleTypes, DBNameMappings}
+import jp.ijufumi.openreports.entities.enums.{DBNameMappings, JdbcDriverClasses, RoleTypes}
 import org.flywaydb.core.api.migration.BaseJavaMigration
 import org.flywaydb.core.api.migration.Context
 import jp.ijufumi.openreports.utils.{Hash, IDs}
@@ -13,9 +13,11 @@ class V000001_01__Create_data extends BaseJavaMigration {
     workspaceMember(context, workspaceId, memberId, roleId)
     val driverTypeId = driverType(context)
     val dataSourceId = dataSource(context, driverTypeId, workspaceId)
+    val reportGroupId = reportGroup(context, workspaceId)
     for (i <- 1 to 35) {
-      val templateId = template(context, workspaceId, s"template-${i}")
-      report(context, templateId, dataSourceId, workspaceId, s"local-${i}")
+      val templateId = template(context, workspaceId, s"template-$i")
+      val reportId = report(context, templateId, dataSourceId, workspaceId, s"local-$i")
+      reportGroupReport(context, reportId, reportGroupId)
     }
   }
 
@@ -170,13 +172,33 @@ class V000001_01__Create_data extends BaseJavaMigration {
     id
   }
 
+  private def reportGroup(
+      context: Context,
+      workspaceId: String,
+  ): String = {
+    val id = IDs.ulid()
+    val name = "sample group"
+    val statement = {
+      context.getConnection.prepareStatement(
+        s"INSERT INTO report_groups (id, name, workspace_id) VALUES (?, ?, ?)",
+      )
+    }
+    statement.setString(1, id)
+    statement.setString(2, name)
+    statement.setString(3, workspaceId)
+    try statement.execute
+    finally if (statement != null) statement.close()
+
+    id
+  }
+
   private def report(
       context: Context,
       templateId: String,
       dataSourceId: String,
       workspaceId: String,
       name: String,
-  ): Unit = {
+  ): String = {
     val id = IDs.ulid()
     val statement = {
       context.getConnection.prepareStatement(
@@ -188,6 +210,25 @@ class V000001_01__Create_data extends BaseJavaMigration {
     statement.setString(3, templateId)
     statement.setString(4, dataSourceId)
     statement.setString(5, workspaceId)
+    try statement.execute
+    finally if (statement != null) statement.close()
+    id
+  }
+
+  private def reportGroupReport(
+      context: Context,
+      reportId: String,
+      reportGroupId: String,
+  ): Unit = {
+    val id = IDs.ulid()
+    val statement = {
+      context.getConnection.prepareStatement(
+        s"INSERT INTO report_group_reports (id, report_id, report_group_id) VALUES (?, ?, ?)",
+      )
+    }
+    statement.setString(1, id)
+    statement.setString(2, reportId)
+    statement.setString(3, reportGroupId)
     try statement.execute
     finally if (statement != null) statement.close()
   }
