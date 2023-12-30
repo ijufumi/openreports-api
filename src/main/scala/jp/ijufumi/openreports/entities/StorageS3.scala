@@ -15,7 +15,7 @@ case class StorageS3(
     versions: Long = 1,
 )
 
-class Storages(tag: Tag) extends EntityBase[StorageS3](tag, "storage_s3s") {
+class StorageS3s(tag: Tag) extends EntityBase[StorageS3](tag, "storage_s3s") {
   def id = column[String]("id", O.PrimaryKey)
   def workspaceId = column[String]("workspace_id")
   def awsAccessKeyId = column[String]("aws_access_key_id")

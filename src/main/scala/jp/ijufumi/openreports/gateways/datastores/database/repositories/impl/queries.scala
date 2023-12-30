@@ -11,6 +11,6 @@ private[impl] object queries {
   val templateQuery = TableQuery[Templates]
   val workspaceMemberQuery = TableQuery[WorkspaceMembers]
   val workspaceQuery = TableQuery[Workspaces]
-  val storageQuery = TableQuery[Storages]
+  val storageQuery = TableQuery[StorageS3s]
   val roleQuery = TableQuery[Roles]
 }
