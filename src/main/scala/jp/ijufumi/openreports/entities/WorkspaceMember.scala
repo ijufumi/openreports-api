@@ -18,16 +18,13 @@ case class WorkspaceMember(
 }
 
 class WorkspaceMembers(tag: Tag)
-    extends Table[WorkspaceMember](
+    extends EntityBase[WorkspaceMember](
       tag,
       "workspace_members",
     ) {
   def workspaceId = column[String]("workspace_id", O.PrimaryKey)
   def memberId = column[String]("member_id", O.PrimaryKey)
   def roleId = column[String]("role_id")
-  def createdAt = column[Long]("created_at")
-  def updatedAt = column[Long]("updated_at")
-  def versions = column[Long]("versions")
 
   override def * =
     (

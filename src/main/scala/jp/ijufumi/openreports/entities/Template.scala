@@ -22,7 +22,7 @@ case class Template(
 }
 
 class Templates(tag: Tag)
-    extends Table[Template](
+    extends EntityBase[Template](
       tag,
       "templates",
     ) {
@@ -33,9 +33,6 @@ class Templates(tag: Tag)
   def workspaceId = column[String]("workspace_id")
   def storageType = column[StorageType]("storage_type")
   def fileSize = column[Long]("file_size")
-  def createdAt = column[Long]("created_at")
-  def updatedAt = column[Long]("updated_at")
-  def versions = column[Long]("versions")
 
   override def * =
     (
