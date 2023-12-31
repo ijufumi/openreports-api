@@ -13,16 +13,13 @@ case class ReportGroupReport(
 )
 
 class ReportGroupReports(tag: Tag)
-    extends Table[ReportGroupReport](
+    extends EntityBase[ReportGroupReport](
       tag,
       "report_group_reports",
     ) {
   def id = column[String]("id", O.PrimaryKey)
   def reportId = column[String]("report_id")
   def reportGroupId = column[String]("report_group_id")
-  def createdAt = column[Long]("created_at")
-  def updatedAt = column[Long]("updated_at")
-  def versions = column[Long]("versions")
 
   override def * =
     (
