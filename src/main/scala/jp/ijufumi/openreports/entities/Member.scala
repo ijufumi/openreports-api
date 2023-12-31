@@ -18,7 +18,7 @@ case class Member(
 )
 
 class Members(tag: Tag)
-    extends Table[Member](
+    extends EntityBase[Member](
       tag,
       "members",
     ) {
@@ -27,9 +27,6 @@ class Members(tag: Tag)
   def email = column[String]("email", O.Unique)
   def password = column[String]("password")
   def name = column[String]("name")
-  def createdAt = column[Long]("created_at")
-  def updatedAt = column[Long]("updated_at")
-  def versions = column[Long]("versions")
 
   override def * =
     (

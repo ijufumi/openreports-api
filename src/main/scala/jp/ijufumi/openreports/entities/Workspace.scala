@@ -18,16 +18,13 @@ case class Workspace(
 }
 
 class Workspaces(tag: Tag)
-    extends Table[Workspace](
+    extends EntityBase[Workspace](
       tag,
       "workspaces",
     ) {
   def id = column[String]("id", O.PrimaryKey)
   def name = column[String]("name")
   def slug = column[String]("slug")
-  def createdAt = column[Long]("created_at")
-  def updatedAt = column[Long]("updated_at")
-  def versions = column[Long]("versions")
 
   override def * =
     (

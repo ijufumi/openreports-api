@@ -20,7 +20,7 @@ case class Report(
 }
 
 class Reports(tag: Tag)
-    extends Table[Report](
+    extends EntityBase[Report](
       tag,
       "reports",
     ) {
@@ -29,9 +29,6 @@ class Reports(tag: Tag)
   def templateId = column[String]("template_id")
   def dataSourceId = column[Option[String]]("data_source_id")
   def workspaceId = column[String]("workspace_id")
-  def createdAt = column[Long]("created_at")
-  def updatedAt = column[Long]("updated_at")
-  def versions = column[Long]("versions")
 
   override def * =
     (
