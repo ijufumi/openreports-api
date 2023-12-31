@@ -22,7 +22,7 @@ case class DataSource(
 }
 
 class DataSources(tag: Tag)
-    extends Table[DataSource](
+    extends EntityBase[DataSource](
       tag,
       "data_sources",
     ) {
@@ -33,9 +33,6 @@ class DataSources(tag: Tag)
   def password = column[String]("password")
   def driverTypeId = column[String]("driver_type_id")
   def workspaceId = column[String]("workspace_id")
-  def createdAt = column[Long]("created_at")
-  def updatedAt = column[Long]("updated_at")
-  def versions = column[Long]("versions")
 
   override def * =
     (

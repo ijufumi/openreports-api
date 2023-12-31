@@ -5,25 +5,22 @@ import jp.ijufumi.openreports.utils.Dates
 import slick.jdbc.PostgresProfile.api._
 
 case class DriverType(
-                       id: String,
-                       name: String,
-                       jdbcDriverClass: JdbcDriverClass,
-                       createdAt: Long = Dates.currentTimestamp(),
-                       updatedAt: Long = Dates.currentTimestamp(),
-                       versions: Long = 1,
+    id: String,
+    name: String,
+    jdbcDriverClass: JdbcDriverClass,
+    createdAt: Long = Dates.currentTimestamp(),
+    updatedAt: Long = Dates.currentTimestamp(),
+    versions: Long = 1,
 )
 
 class DriverTypes(tag: Tag)
-    extends Table[DriverType](
+    extends EntityBase[DriverType](
       tag,
       "driver_types",
     ) {
   def id = column[String]("id", O.PrimaryKey)
   def name = column[String]("name")
   def jdbcDriverClass = column[JdbcDriverClass]("jdbc_driver_class")
-  def createdAt = column[Long]("created_at")
-  def updatedAt = column[Long]("updated_at")
-  def versions = column[Long]("versions")
 
   override def * =
     (

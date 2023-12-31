@@ -13,15 +13,12 @@ case class Role(
 )
 
 class Roles(tag: Tag)
-    extends Table[Role](
+    extends EntityBase[Role](
       tag,
       "roles",
     ) {
   def id = column[String]("id", O.PrimaryKey)
   def roleType = column[RoleType]("role_type", O.Unique)
-  def createdAt = column[Long]("created_at")
-  def updatedAt = column[Long]("updated_at")
-  def versions = column[Long]("versions")
 
   override def * =
     (
