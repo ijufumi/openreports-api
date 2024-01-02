@@ -35,10 +35,23 @@ class ReportGroupReportRepositoryImpl @Inject() (db: Database) extends ReportGro
     Some(models.head)
   }
 
+  override def getByIds(ids: Seq[String]): Seq[ReportGroupReport] = {
+    val getById = query
+      .filter(_.id.inSet(ids))
+    Await.result(db.run(getById.result), queryTimeout)
+  }
+
   override def register(model: ReportGroupReport): Option[ReportGroupReport] = {
     val register = (query += model).withPinnedSession
     Await.result(db.run(register), queryTimeout)
     getById(model.id)
+  }
+
+  override def registerInBatch(model: Seq[ReportGroupReport]): Seq[ReportGroupReport] = {
+    val register = (query ++= model).withPinnedSession
+    Await.result(db.run(register), queryTimeout)
+    val ids = model.map(m => m.id)
+    getByIds(ids)
   }
 
   override def update(model: ReportGroupReport): Unit = {
@@ -50,6 +63,18 @@ class ReportGroupReportRepositoryImpl @Inject() (db: Database) extends ReportGro
   override def delete(id: String): Unit = {
     val getById = query
       .filter(_.id === id)
+    Await.result(db.run(getById.delete), queryTimeout)
+  }
+
+  override def deleteByReportId(id: String): Unit = {
+    val getById = query
+      .filter(_.reportId === id)
+    Await.result(db.run(getById.delete), queryTimeout)
+  }
+
+  override def deleteByReportGroupId(id: String): Unit = {
+    val getById = query
+      .filter(_.reportGroupId === id)
     Await.result(db.run(getById.delete), queryTimeout)
   }
 }

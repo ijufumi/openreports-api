@@ -11,9 +11,17 @@ trait ReportGroupReportRepository {
 
   def getById(id: String): Option[ReportGroupReport]
 
+  def getByIds(ids: Seq[String]): Seq[ReportGroupReport]
+
   def register(model: ReportGroupReport): Option[ReportGroupReport]
+
+  def registerInBatch(model: Seq[ReportGroupReport]): Seq[ReportGroupReport]
 
   def update(model: ReportGroupReport): Unit
 
   def delete(id: String): Unit
+
+  def deleteByReportId(id: String): Unit
+
+  def deleteByReportGroupId(id: String): Unit
 }
