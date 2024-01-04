@@ -5,6 +5,8 @@ import slick.jdbc.PostgresProfile.api._
 
 private[impl] object queries {
   val reportQuery = TableQuery[Reports]
+  val reportGroupQuery = TableQuery[ReportGroups]
+  val reportGroupReportQuery = TableQuery[ReportGroupReports]
   val dataSourceQuery = TableQuery[DataSources]
   val driverTypeQuery = TableQuery[DriverTypes]
   val memberQuery = TableQuery[Members]
