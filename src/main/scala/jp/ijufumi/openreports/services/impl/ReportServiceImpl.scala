@@ -3,14 +3,11 @@ package jp.ijufumi.openreports.services.impl
 import com.google.inject.Inject
 import jp.ijufumi.openreports.entities.Template
 import jp.ijufumi.openreports.entities.enums.StorageTypes
-import jp.ijufumi.openreports.gateways.datastores.database.repositories.{
-  ReportRepository,
-  TemplateRepository,
-}
+import jp.ijufumi.openreports.gateways.datastores.database.repositories.{ReportGroupRepository, ReportRepository, TemplateRepository}
 import jp.ijufumi.openreports.services.{OutputService, ReportService, StorageService}
 import jp.ijufumi.openreports.utils.{IDs, Strings, TemporaryFiles}
 import jp.ijufumi.openreports.models.inputs.{CreateTemplate, UpdateReport, UpdateTemplate}
-import jp.ijufumi.openreports.models.outputs.{Lists, Report, Template => TemplateResponse}
+import jp.ijufumi.openreports.models.outputs.{Lists, Report, ReportGroup, Template => TemplateResponse}
 import org.scalatra.servlet.FileItem
 
 import java.io.File
@@ -19,6 +16,7 @@ import scala.util.Using
 class ReportServiceImpl @Inject() (
     reportRepository: ReportRepository,
     templateRepository: TemplateRepository,
+    reportGroupRepository: ReportGroupRepository,
     outputService: OutputService,
     storageService: StorageService,
 ) extends ReportService {
@@ -120,5 +118,12 @@ class ReportServiceImpl @Inject() (
     val template = templateOpt.get
     templateRepository.delete(workspaceId, id)
     storageService.delete(workspaceId, template.filePath, template.storageType)
+  }
+
+  def getGroups(workspaceId: String, page: Int, limit: Int): Lists[ReportGroup] = {
+    val offset = List(page * limit, 0).max
+    val (results, count) = reportGroupRepository.gets(workspaceId, offset, limit)
+    val items = results.map(_ => ReportGroup)
+    Lists(items, offset, limit, count)
   }
 }
