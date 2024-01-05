@@ -37,7 +37,7 @@ class ReportServiceImpl @Inject() (
   ): Lists[Report] = {
     val offset = List(page * limit, 0).max
     val (results, count) = reportRepository.getsWithTemplate(workspaceId, offset, limit, templateId)
-    val items = results.map(r => Report(r._1, r._2))
+    val items = results.map(r => Report(r))
     Lists(items, offset, limit, count)
   }
 
@@ -47,7 +47,7 @@ class ReportServiceImpl @Inject() (
       return None
     }
 
-    Some(Report(result.get._1, result.get._2))
+    Some(Report(result.get))
   }
 
   override def getTemplates(workspaceId: String, page: Int, limit: Int): Lists[TemplateResponse] = {
@@ -107,7 +107,7 @@ class ReportServiceImpl @Inject() (
     }
     val template = Template(IDs.ulid(), req.name, key, workspaceId, storageType, fileItem.size)
     templateRepository.register(template)
-    Some(TemplateResponse.apply(template))
+    Some(TemplateResponse(template))
   }
 
   override def updateTemplate(
@@ -121,7 +121,7 @@ class ReportServiceImpl @Inject() (
     }
     val template = templateOpt.get.copyForUpdate(input)
     templateRepository.update(template)
-    Some(TemplateResponse.apply(template))
+    Some(TemplateResponse(template))
   }
 
   override def deleteTemplate(workspaceId: String, id: String): Unit = {

@@ -15,14 +15,14 @@ case class Report(
 )
 
 object Report {
-  def apply(entity1: ReportEntity, entity2: ReportTemplateEntity): Report = {
+  def apply(entity: Tuple2[ReportEntity, ReportTemplateEntity]): Report = {
     Report(
-      entity1.id,
-      entity1.name,
-      entity1.createdAt,
-      entity1.updatedAt,
-      entity2.id,
-      entity2.name,
+      entity._1.id,
+      entity._1.name,
+      entity._1.createdAt,
+      entity._1.updatedAt,
+      entity._2.id,
+      entity._2.name,
     )
   }
 }
