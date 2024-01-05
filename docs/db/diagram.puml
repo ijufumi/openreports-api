@@ -71,7 +71,7 @@ entity report_group_reports {
   * report_id
 }
 
-entity storages_s3 {
+entity storage_s3s {
   * id
   * workspace_id
   * aws_access_key_id
@@ -91,7 +91,7 @@ report_groups }--{ report_group_reports
 report_group_reports }--{ reports
 driver_types --{ data_sources
 data_sources --{ reports
-workspaces --{ storages_s3
-storages_s3 --{ report_templates
+workspaces --{ storage_s3s
+storage_s3s --{ report_templates
 
 @enduml
