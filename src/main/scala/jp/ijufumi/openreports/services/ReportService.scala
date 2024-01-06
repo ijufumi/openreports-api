@@ -1,7 +1,7 @@
 package jp.ijufumi.openreports.services
 
-import jp.ijufumi.openreports.models.inputs.{CreateTemplate, UpdateReport, UpdateTemplate}
-import jp.ijufumi.openreports.models.outputs.{Lists, Report, Template, ReportGroup}
+import jp.ijufumi.openreports.models.inputs.{CreateReportGroup, CreateTemplate, UpdateReport, UpdateTemplate}
+import jp.ijufumi.openreports.models.outputs.{Lists, Report, ReportGroup, Template}
 import org.scalatra.servlet.FileItem
 
 import java.io.File
@@ -28,4 +28,8 @@ trait ReportService {
   def deleteTemplate(workspaceId: String, id: String): Unit
 
   def getGroups(workspaceId: String, page: Int, limit: Int): Lists[ReportGroup]
+
+  def getGroup(workspaceId: String, id: String): Option[ReportGroup]
+
+  def createReportGroup(workspaceId: String, input: CreateReportGroup): Option[ReportGroup]
 }
