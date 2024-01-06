@@ -21,7 +21,6 @@ import jp.ijufumi.openreports.models.inputs.{
 import jp.ijufumi.openreports.models.outputs.{
   Lists,
   Report,
-  ReportGroup,
   ReportGroup => ReportGroupResponse,
   Template => TemplateResponse,
 }
