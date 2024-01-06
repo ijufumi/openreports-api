@@ -1,20 +1,27 @@
 package jp.ijufumi.openreports.services.impl
 
+import util.control.Breaks._
 import com.google.inject.Inject
-import jp.ijufumi.openreports.entities.Template
+import jp.ijufumi.openreports.entities.{ReportGroup, ReportGroupReport, Template}
 import jp.ijufumi.openreports.entities.enums.StorageTypes
 import jp.ijufumi.openreports.gateways.datastores.database.repositories.{
+  ReportGroupReportRepository,
   ReportGroupRepository,
   ReportRepository,
   TemplateRepository,
 }
 import jp.ijufumi.openreports.services.{OutputService, ReportService, StorageService}
 import jp.ijufumi.openreports.utils.{IDs, Strings, TemporaryFiles}
-import jp.ijufumi.openreports.models.inputs.{CreateTemplate, UpdateReport, UpdateTemplate}
+import jp.ijufumi.openreports.models.inputs.{
+  CreateReportGroup,
+  CreateTemplate,
+  UpdateReport,
+  UpdateTemplate,
+}
 import jp.ijufumi.openreports.models.outputs.{
   Lists,
   Report,
-  ReportGroup,
+  ReportGroup => ReportGroupResponse,
   Template => TemplateResponse,
 }
 import org.scalatra.servlet.FileItem
@@ -26,6 +33,7 @@ class ReportServiceImpl @Inject() (
     reportRepository: ReportRepository,
     templateRepository: TemplateRepository,
     reportGroupRepository: ReportGroupRepository,
+    reportGroupReportRepository: ReportGroupReportRepository,
     outputService: OutputService,
     storageService: StorageService,
 ) extends ReportService {
@@ -134,10 +142,34 @@ class ReportServiceImpl @Inject() (
     storageService.delete(workspaceId, template.filePath, template.storageType)
   }
 
-  def getGroups(workspaceId: String, page: Int, limit: Int): Lists[ReportGroup] = {
+  override def getGroups(workspaceId: String, page: Int, limit: Int): Lists[ReportGroupResponse] = {
     val offset = List(page * limit, 0).max
     val (results, count) = reportGroupRepository.gets(workspaceId, offset, limit)
-    val items = results.map(r => ReportGroup(r))
+    val items = results.map(r => ReportGroupResponse(r))
     Lists(items, offset, limit, count)
+  }
+
+  override def getGroup(workspaceId: String, id: String): Option[ReportGroupResponse] = {
+    val report = reportGroupRepository.getById(workspaceId, id)
+    report.map(r => ReportGroupResponse(r))
+  }
+
+  override def createReportGroup(
+      workspaceId: String,
+      input: CreateReportGroup,
+  ): Option[ReportGroupResponse] = {
+    val reportGroup = ReportGroup(IDs.ulid(), input.name, workspaceId)
+    reportGroupRepository.register(reportGroup)
+    for (reportId <- input.reportIds) {
+      breakable {
+        val reportOpt = reportRepository.getById(workspaceId, reportId)
+        if (reportOpt.isEmpty) {
+          break
+        }
+        val reportGroupReport = ReportGroupReport(IDs.ulid(), reportId, reportGroup.id)
+        reportGroupReportRepository.register(reportGroupReport)
+      }
+    }
+    getGroup(workspaceId, reportGroup.id)
   }
 }
