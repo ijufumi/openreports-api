@@ -69,23 +69,23 @@ docker-compose exec api sbt flywayClean
     - [x] status (member info only)
     - [ ] ~~status (including menus, groups)~~
     - [x] update (name, password)
-  - [ ] reports
+  - [x] reports
     - [x] list
     - [x] get
-    - [ ] create
+    - [x] create
     - [x] update
     - [x] delete
     - [x] output
-    - [ ] parameters
-      - [ ] list
-      - [ ] create
-      - [ ] update
-      - [ ] delete
-    - [ ] groups
-      - [x] list
-      - [x] create
-      - [ ] update
-      - [ ] delete
+  - [ ] report parameters
+    - [ ] list
+    - [ ] create
+    - [ ] update
+    - [ ] delete
+  - [ ] report groups
+    - [x] list
+    - [x] create
+    - [ ] update
+    - [ ] delete
   - [ ] scheduled_reports
     - [ ] list
     - [ ] create
