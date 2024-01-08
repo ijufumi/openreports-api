@@ -1,4 +1,4 @@
-package jp.ijufumi.openreports.entities
+package jp.ijufumi.openreports.gateways.datastores.database.entities
 
 import jp.ijufumi.openreports.entities.enums.RoleTypes.RoleType
 import jp.ijufumi.openreports.utils.Dates

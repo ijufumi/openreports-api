@@ -1,4 +1,4 @@
-package jp.ijufumi.openreports.entities.enums
+package jp.ijufumi.openreports.gateways.datastores.database.entities.enums
 
 import slick.ast.BaseTypedType
 import slick.jdbc.JdbcType
