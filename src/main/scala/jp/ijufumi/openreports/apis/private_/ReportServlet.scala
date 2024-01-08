@@ -3,9 +3,9 @@ package jp.ijufumi.openreports.apis.private_
 import com.google.inject.Inject
 import jp.ijufumi.openreports.apis.base.PrivateAPIServletBase
 import jp.ijufumi.openreports.services.{LoginService, ReportService}
-import jp.ijufumi.openreports.models.inputs.UpdateReport
+import jp.ijufumi.openreports.models.inputs.{CreateReport, UpdateReport}
 
-class ReportServlet @Inject()(loginService: LoginService, reportService: ReportService)
+class ReportServlet @Inject() (loginService: LoginService, reportService: ReportService)
     extends PrivateAPIServletBase(loginService) {
 
   get("/") {
@@ -16,7 +16,17 @@ class ReportServlet @Inject()(loginService: LoginService, reportService: ReportS
     ok(reportService.getReports(_workspaceId, page, limit, templateId))
   }
 
-  post("/") {}
+  post("/") {
+    val _workspaceId = workspaceId()
+    val requestParam = extractBody[CreateReport]()
+    val report =
+      reportService.createReport(_workspaceId, requestParam)
+    if (report.isEmpty) {
+      badRequest("something wrong...")
+    } else {
+      ok(report.get)
+    }
+  }
 
   get("/:id") {
     val _workspaceId = workspaceId()

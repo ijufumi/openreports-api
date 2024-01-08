@@ -15,7 +15,7 @@ case class Report(
     versions: Long = 1,
 ) {
   def copyForUpdate(input: UpdateReport): Report = {
-    this.copy(name = input.name, templateId = input.templateId)
+    this.copy(name = input.name, templateId = input.templateId, dataSourceId = input.dataSourceId)
   }
 }
 
