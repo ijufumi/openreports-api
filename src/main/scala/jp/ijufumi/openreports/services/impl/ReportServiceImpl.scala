@@ -2,7 +2,7 @@ package jp.ijufumi.openreports.services.impl
 
 import util.control.Breaks._
 import com.google.inject.Inject
-import jp.ijufumi.openreports.entities.{ReportGroup, ReportGroupReport, Template}
+import jp.ijufumi.openreports.entities.{Report, ReportGroup, ReportGroupReport, Template}
 import jp.ijufumi.openreports.entities.enums.StorageTypes
 import jp.ijufumi.openreports.gateways.datastores.database.repositories.{
   ReportGroupReportRepository,
@@ -10,9 +10,15 @@ import jp.ijufumi.openreports.gateways.datastores.database.repositories.{
   ReportRepository,
   TemplateRepository,
 }
-import jp.ijufumi.openreports.services.{OutputService, ReportService, StorageService}
+import jp.ijufumi.openreports.services.{
+  DataSourceService,
+  OutputService,
+  ReportService,
+  StorageService,
+}
 import jp.ijufumi.openreports.utils.{IDs, Strings, TemporaryFiles}
 import jp.ijufumi.openreports.models.inputs.{
+  CreateReport,
   CreateReportGroup,
   CreateTemplate,
   UpdateReport,
@@ -20,7 +26,7 @@ import jp.ijufumi.openreports.models.inputs.{
 }
 import jp.ijufumi.openreports.models.outputs.{
   Lists,
-  Report,
+  Report => ReportResponse,
   ReportGroup => ReportGroupResponse,
   Template => TemplateResponse,
 }
@@ -34,6 +40,7 @@ class ReportServiceImpl @Inject() (
     templateRepository: TemplateRepository,
     reportGroupRepository: ReportGroupRepository,
     reportGroupReportRepository: ReportGroupReportRepository,
+    dataSourceService: DataSourceService,
     outputService: OutputService,
     storageService: StorageService,
 ) extends ReportService {
@@ -42,20 +49,20 @@ class ReportServiceImpl @Inject() (
       page: Int,
       limit: Int,
       templateId: String = "",
-  ): Lists[Report] = {
+  ): Lists[ReportResponse] = {
     val offset = List(page * limit, 0).max
     val (results, count) = reportRepository.getsWithTemplate(workspaceId, offset, limit, templateId)
-    val items = results.map(r => Report(r))
+    val items = results.map(r => ReportResponse(r))
     Lists(items, offset, limit, count)
   }
 
-  override def getReport(workspaceId: String, id: String): Option[Report] = {
+  override def getReport(workspaceId: String, id: String): Option[ReportResponse] = {
     val result = reportRepository.getByIdWithTemplate(workspaceId, id)
     if (result.isEmpty) {
       return None
     }
 
-    Some(Report(result.get))
+    Some(ReportResponse(result.get))
   }
 
   override def getTemplates(workspaceId: String, page: Int, limit: Int): Lists[TemplateResponse] = {
@@ -82,14 +89,32 @@ class ReportServiceImpl @Inject() (
     outputService.output(workspaceId, template.filePath, template.storageType, report.dataSourceId)
   }
 
+  override def createReport(workspaceId: String, input: CreateReport): Option[ReportResponse] = {
+    if (input.dataSourceId.isDefined) {
+      val dataSourceOpt = dataSourceService.getDataSource(workspaceId, input.dataSourceId.get)
+      if (dataSourceOpt.isEmpty) {
+        return None
+      }
+    }
+    val report = Report(IDs.ulid(), input.name, input.templateId, input.dataSourceId, workspaceId)
+    reportRepository.register(report)
+    this.getReport(workspaceId, report.id)
+  }
+
   override def updateReport(
       workspaceId: String,
       id: String,
       input: UpdateReport,
-  ): Option[Report] = {
+  ): Option[ReportResponse] = {
     val reportOpt = reportRepository.getById(workspaceId, id)
     if (reportOpt.isEmpty) {
       return None
+    }
+    if (input.dataSourceId.isDefined) {
+      val dataSourceOpt = dataSourceService.getDataSource(workspaceId, input.dataSourceId.get)
+      if (dataSourceOpt.isEmpty) {
+        return None
+      }
     }
     val report = reportOpt.get
     val newReport = report.copyForUpdate(input)
