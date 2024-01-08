@@ -1,7 +1,7 @@
 package jp.ijufumi.openreports.gateways.datastores.database.repositories.impl
 
 import com.google.inject.Inject
-import jp.ijufumi.openreports.entities.Template
+import jp.ijufumi.openreports.gateways.datastores.database.entities.Template
 import queries.{templateQuery => query}
 import jp.ijufumi.openreports.gateways.datastores.database.repositories.TemplateRepository
 import slick.jdbc.JdbcBackend.Database

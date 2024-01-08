@@ -1,6 +1,6 @@
 package jp.ijufumi.openreports.models.outputs
 
-import jp.ijufumi.openreports.entities.{
+import jp.ijufumi.openreports.gateways.datastores.database.entities.{
   Report => ReportEntity,
   Template => ReportTemplateEntity,
 }

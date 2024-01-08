@@ -1,8 +1,8 @@
 package jp.ijufumi.openreports.gateways.datastores.database.repositories.impl
 
 import com.google.inject.Inject
-import jp.ijufumi.openreports.entities.Role
-import jp.ijufumi.openreports.entities.enums.RoleTypes.RoleType
+import jp.ijufumi.openreports.gateways.datastores.database.entities.Role
+import jp.ijufumi.openreports.gateways.datastores.database.entities.enums.RoleTypes.RoleType
 import jp.ijufumi.openreports.gateways.datastores.database.repositories.RoleRepository
 import queries.{roleQuery => query}
 import slick.jdbc.JdbcBackend.Database

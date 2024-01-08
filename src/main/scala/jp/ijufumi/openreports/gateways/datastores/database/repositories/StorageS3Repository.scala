@@ -1,6 +1,6 @@
 package jp.ijufumi.openreports.gateways.datastores.database.repositories
 
-import jp.ijufumi.openreports.entities.StorageS3
+import jp.ijufumi.openreports.gateways.datastores.database.entities.StorageS3
 
 trait StorageS3Repository {
   def getById(workspaceId: String, id: String): Option[StorageS3]

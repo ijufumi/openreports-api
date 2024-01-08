@@ -1,6 +1,6 @@
 package jp.ijufumi.openreports.gateways.datastores.database.repositories
 
-import jp.ijufumi.openreports.entities.{DataSource, DriverType}
+import jp.ijufumi.openreports.gateways.datastores.database.entities.{DataSource, DriverType}
 
 trait DataSourceRepository {
   def getById(workspaceId: String, id: String): Option[DataSource]

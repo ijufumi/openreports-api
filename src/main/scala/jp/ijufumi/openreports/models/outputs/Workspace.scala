@@ -1,6 +1,6 @@
 package jp.ijufumi.openreports.models.outputs
 
-import jp.ijufumi.openreports.entities.{Workspace => WorkspaceEntity}
+import jp.ijufumi.openreports.gateways.datastores.database.entities.{Workspace => WorkspaceEntity}
 
 case class Workspace(id: String, name: String, slug: String)
 

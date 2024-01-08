@@ -1,7 +1,7 @@
 package jp.ijufumi.openreports.gateways.datastores.database.repositories.impl
 
 import com.google.inject.Inject
-import jp.ijufumi.openreports.entities.ReportGroupReport
+import jp.ijufumi.openreports.gateways.datastores.database.entities.ReportGroupReport
 import jp.ijufumi.openreports.gateways.datastores.database.repositories.ReportGroupReportRepository
 import jp.ijufumi.openreports.gateways.datastores.database.repositories.impl.queries.{
   reportGroupReportQuery => query,

@@ -1,7 +1,7 @@
 package jp.ijufumi.openreports.models.outputs
 
-import jp.ijufumi.openreports.entities.enums.StorageTypes.StorageType
-import jp.ijufumi.openreports.entities.{Template => ReportTemplateEntity}
+import jp.ijufumi.openreports.gateways.datastores.database.entities.enums.StorageTypes.StorageType
+import jp.ijufumi.openreports.gateways.datastores.database.entities.{Template => ReportTemplateEntity}
 
 case class Template(
     id: String,

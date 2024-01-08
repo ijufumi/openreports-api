@@ -1,6 +1,6 @@
 package jp.ijufumi.openreports.gateways.datastores.database.repositories
 
-import jp.ijufumi.openreports.entities.Member
+import jp.ijufumi.openreports.gateways.datastores.database.entities.Member
 
 trait MemberRepository {
   def getById(id: String): Option[Member]
