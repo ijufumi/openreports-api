@@ -2,7 +2,12 @@ package jp.ijufumi.openreports.services.impl
 
 import util.control.Breaks._
 import com.google.inject.Inject
-import jp.ijufumi.openreports.gateways.datastores.database.entities.{Report, ReportGroup, ReportGroupReport, Template}
+import jp.ijufumi.openreports.gateways.datastores.database.entities.{
+  Report,
+  ReportGroup,
+  ReportGroupReport,
+  Template,
+}
 import jp.ijufumi.openreports.gateways.datastores.database.entities.enums.StorageTypes
 import jp.ijufumi.openreports.gateways.datastores.database.repositories.{
   ReportGroupReportRepository,
@@ -22,6 +27,7 @@ import jp.ijufumi.openreports.models.inputs.{
   CreateReportGroup,
   CreateTemplate,
   UpdateReport,
+  UpdateReportGroup,
   UpdateTemplate,
 }
 import jp.ijufumi.openreports.models.outputs.{
@@ -179,7 +185,7 @@ class ReportServiceImpl @Inject() (
     report.map(r => ReportGroupResponse(r))
   }
 
-  override def createReportGroup(
+  override def createGroup(
       workspaceId: String,
       input: CreateReportGroup,
   ): Option[ReportGroupResponse] = {
@@ -196,5 +202,31 @@ class ReportServiceImpl @Inject() (
       }
     }
     getGroup(workspaceId, reportGroup.id)
+  }
+
+  override def updateGroup(
+      workspaceId: String,
+      id: String,
+      input: UpdateReportGroup,
+  ): Option[ReportGroupResponse] = {
+    val reportGroupOpt = reportGroupRepository.getById(workspaceId, id)
+    if (reportGroupOpt.isEmpty) {
+      return None
+    }
+    val newReportGroup = reportGroupOpt.get.copyForUpdate(input)
+    reportGroupRepository.update(newReportGroup)
+    reportGroupReportRepository.deleteByReportGroupId(id)
+    for (reportId <- input.reportIds) {
+      breakable {
+        val reportOpt = reportRepository.getById(workspaceId, reportId)
+        if (reportOpt.isEmpty) {
+          break
+        }
+        val reportGroupReport = ReportGroupReport(IDs.ulid(), reportId, id)
+        reportGroupReportRepository.register(reportGroupReport)
+      }
+    }
+
+    getGroup(workspaceId, id)
   }
 }
