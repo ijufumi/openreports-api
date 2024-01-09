@@ -1,6 +1,6 @@
 package db.migration
 
-import jp.ijufumi.openreports.entities.enums.{DBNameMappings, JdbcDriverClasses, RoleTypes}
+import jp.ijufumi.openreports.gateways.datastores.database.entities.enums.{DBNameMappings, JdbcDriverClasses, RoleTypes}
 import org.flywaydb.core.api.migration.BaseJavaMigration
 import org.flywaydb.core.api.migration.Context
 import jp.ijufumi.openreports.utils.{Hash, IDs}

@@ -1,6 +1,6 @@
-package jp.ijufumi.openreports.entities
+package jp.ijufumi.openreports.gateways.datastores.database.entities
 
-import jp.ijufumi.openreports.entities.enums.StorageTypes._
+import jp.ijufumi.openreports.gateways.datastores.database.entities.enums.StorageTypes._
 import jp.ijufumi.openreports.models.inputs.UpdateTemplate
 import jp.ijufumi.openreports.utils.Dates
 import slick.jdbc.PostgresProfile.api._

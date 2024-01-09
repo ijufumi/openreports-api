@@ -1,4 +1,4 @@
-package jp.ijufumi.openreports.entities
+package jp.ijufumi.openreports.gateways.datastores.database.entities
 
 import slick.jdbc.PostgresProfile.api._
 import jp.ijufumi.openreports.utils.Dates

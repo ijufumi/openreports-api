@@ -1,7 +1,7 @@
 package jp.ijufumi.openreports.services.impl
 
 import com.google.inject.Inject
-import jp.ijufumi.openreports.entities.DataSource
+import jp.ijufumi.openreports.gateways.datastores.database.entities.DataSource
 import jp.ijufumi.openreports.exceptions.NotFoundException
 import jp.ijufumi.openreports.gateways.datastores.database.repositories.DataSourceRepository
 import jp.ijufumi.openreports.services.DataSourceService

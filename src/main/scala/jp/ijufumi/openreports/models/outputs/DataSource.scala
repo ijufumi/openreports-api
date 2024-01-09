@@ -1,6 +1,6 @@
 package jp.ijufumi.openreports.models.outputs
 
-import jp.ijufumi.openreports.entities.{DataSource => DataSourceEntity, DriverType => DriverTypeEntity}
+import jp.ijufumi.openreports.gateways.datastores.database.entities.{DataSource => DataSourceEntity, DriverType => DriverTypeEntity}
 case class DataSource(
     id: String,
     name: String,

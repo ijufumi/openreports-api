@@ -2,7 +2,7 @@ package jp.ijufumi.openreports.gateways.datastores.database.repositories.impl
 
 import com.google.inject.Inject
 import scala.concurrent.Await
-import jp.ijufumi.openreports.entities.Member
+import jp.ijufumi.openreports.gateways.datastores.database.entities.Member
 import queries.{memberQuery => query}
 import jp.ijufumi.openreports.gateways.datastores.database.repositories.MemberRepository
 import slick.jdbc.JdbcBackend.Database

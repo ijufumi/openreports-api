@@ -1,6 +1,6 @@
 package jp.ijufumi.openreports.gateways.datastores.database.repositories
 
-import jp.ijufumi.openreports.entities.{Member, WorkspaceMember}
+import jp.ijufumi.openreports.gateways.datastores.database.entities.{Member, WorkspaceMember}
 
 trait WorkspaceMemberRepository {
   def getById(workspaceId: String, memberId: String): Option[WorkspaceMember]

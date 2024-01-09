@@ -1,6 +1,6 @@
 package jp.ijufumi.openreports.models.outputs
 
-import jp.ijufumi.openreports.entities.{ReportGroup => ReportGroupEntity}
+import jp.ijufumi.openreports.gateways.datastores.database.entities.{ReportGroup => ReportGroupEntity}
 
 case class ReportGroup(id: String, name: String, createdAt: Long, updatedAt: Long)
 

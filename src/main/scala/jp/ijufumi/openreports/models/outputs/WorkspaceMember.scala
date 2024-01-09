@@ -1,6 +1,6 @@
 package jp.ijufumi.openreports.models.outputs
 
-import jp.ijufumi.openreports.entities.{WorkspaceMember => WorkspaceMemberEntity, Member => MemberEntity}
+import jp.ijufumi.openreports.gateways.datastores.database.entities.{WorkspaceMember => WorkspaceMemberEntity, Member => MemberEntity}
 
 case class WorkspaceMember(workspaceId: String, memberId: String, email: String, roleId: String)
 

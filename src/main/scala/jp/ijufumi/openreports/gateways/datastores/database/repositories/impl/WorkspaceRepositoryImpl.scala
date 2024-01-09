@@ -1,7 +1,7 @@
 package jp.ijufumi.openreports.gateways.datastores.database.repositories.impl
 
 import com.google.inject.Inject
-import jp.ijufumi.openreports.entities.Workspace
+import jp.ijufumi.openreports.gateways.datastores.database.entities.Workspace
 import queries.{workspaceMemberQuery, workspaceQuery => query}
 import jp.ijufumi.openreports.gateways.datastores.database.repositories.WorkspaceRepository
 import slick.jdbc.JdbcBackend.Database

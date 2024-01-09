@@ -1,6 +1,6 @@
 package jp.ijufumi.openreports.gateways.datastores.database.repositories.impl
 
-import jp.ijufumi.openreports.entities._
+import jp.ijufumi.openreports.gateways.datastores.database.entities._
 import slick.jdbc.PostgresProfile.api._
 
 private[impl] object queries {

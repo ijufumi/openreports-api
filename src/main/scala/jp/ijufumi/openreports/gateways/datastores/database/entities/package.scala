@@ -1,4 +1,4 @@
-package jp.ijufumi.openreports
+package jp.ijufumi.openreports.gateways.datastores.database
 
 package object entities {
   import slick.jdbc.PostgresProfile.api._

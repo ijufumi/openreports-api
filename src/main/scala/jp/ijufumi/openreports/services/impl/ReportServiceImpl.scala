@@ -2,8 +2,8 @@ package jp.ijufumi.openreports.services.impl
 
 import util.control.Breaks._
 import com.google.inject.Inject
-import jp.ijufumi.openreports.entities.{Report, ReportGroup, ReportGroupReport, Template}
-import jp.ijufumi.openreports.entities.enums.StorageTypes
+import jp.ijufumi.openreports.gateways.datastores.database.entities.{Report, ReportGroup, ReportGroupReport, Template}
+import jp.ijufumi.openreports.gateways.datastores.database.entities.enums.StorageTypes
 import jp.ijufumi.openreports.gateways.datastores.database.repositories.{
   ReportGroupReportRepository,
   ReportGroupRepository,

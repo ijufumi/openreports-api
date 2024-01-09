@@ -1,7 +1,7 @@
 package jp.ijufumi.openreports.gateways.datastores.database.repositories.impl
 
 import com.google.inject.Inject
-import jp.ijufumi.openreports.entities.{Report, Template}
+import jp.ijufumi.openreports.gateways.datastores.database.entities.{Report, Template}
 import queries.{reportQuery => query, templateQuery}
 import jp.ijufumi.openreports.gateways.datastores.database.repositories.ReportRepository
 import slick.jdbc.PostgresProfile.api._

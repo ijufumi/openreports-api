@@ -1,6 +1,6 @@
 package jp.ijufumi.openreports.services
 
-import jp.ijufumi.openreports.entities.enums.StorageTypes.StorageType
+import jp.ijufumi.openreports.gateways.datastores.database.entities.enums.StorageTypes.StorageType
 
 import java.io.File
 
