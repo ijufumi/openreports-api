@@ -1,5 +1,6 @@
 package jp.ijufumi.openreports.gateways.datastores.database.entities
 
+import jp.ijufumi.openreports.models.inputs.UpdateReportGroup
 import slick.jdbc.PostgresProfile.api._
 import jp.ijufumi.openreports.utils.Dates
 
@@ -10,7 +11,11 @@ case class ReportGroup(
     createdAt: Long = Dates.currentTimestamp(),
     updatedAt: Long = Dates.currentTimestamp(),
     versions: Long = 1,
-)
+) {
+  def copyForUpdate(input: UpdateReportGroup): ReportGroup = {
+    this.copy(name = input.name)
+  }
+}
 
 class ReportGroups(tag: Tag)
     extends EntityBase[ReportGroup](
