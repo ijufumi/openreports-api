@@ -1,6 +1,6 @@
 package jp.ijufumi.openreports.gateways.datastores.database.entities
 
-import jp.ijufumi.openreports.entities.enums.JdbcDriverClasses.JdbcDriverClass
+import jp.ijufumi.openreports.gateways.datastores.database.entities.enums.JdbcDriverClasses.JdbcDriverClass
 import jp.ijufumi.openreports.utils.Dates
 import slick.jdbc.PostgresProfile.api._
 
