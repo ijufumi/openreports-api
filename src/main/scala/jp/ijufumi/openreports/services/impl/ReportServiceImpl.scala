@@ -229,4 +229,9 @@ class ReportServiceImpl @Inject() (
 
     getGroup(workspaceId, id)
   }
+
+  override def deleteGroup(workspaceId: String, id: String): Unit = {
+    reportGroupReportRepository.deleteByReportGroupId(id)
+    reportGroupRepository.delete(workspaceId, id)
+  }
 }

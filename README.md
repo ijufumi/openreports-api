@@ -81,11 +81,11 @@ docker-compose exec api sbt flywayClean
     - [ ] create
     - [ ] update
     - [ ] delete
-  - [ ] report groups
+  - [x] report groups
     - [x] list
     - [x] create
     - [x] update
-    - [ ] delete
+    - [x] delete
   - [ ] scheduled_reports
     - [ ] list
     - [ ] create

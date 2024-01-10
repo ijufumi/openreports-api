@@ -2,7 +2,13 @@ package jp.ijufumi.openreports.apis.private_
 
 import com.google.inject.Inject
 import jp.ijufumi.openreports.apis.base.PrivateAPIServletBase
-import jp.ijufumi.openreports.models.inputs.{CreateReportGroup, CreateTemplate, UpdateReport, UpdateReportGroup, UpdateTemplate}
+import jp.ijufumi.openreports.models.inputs.{
+  CreateReportGroup,
+  CreateTemplate,
+  UpdateReport,
+  UpdateReportGroup,
+  UpdateTemplate,
+}
 import jp.ijufumi.openreports.services.{LoginService, ReportService}
 import org.scalatra.forms._
 
@@ -34,4 +40,9 @@ class ReportGroupServlet @Inject() (loginService: LoginService, reportService: R
     }
   }
 
+  delete("/:id") {
+    val id = params("id")
+    val _workspaceId = workspaceId()
+    ok(reportService.deleteGroup(_workspaceId, id))
+  }
 }

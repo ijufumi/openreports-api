@@ -36,4 +36,6 @@ trait ReportService {
   def createGroup(workspaceId: String, input: CreateReportGroup): Option[ReportGroup]
 
   def updateGroup(workspaceId: String, id: String, input: UpdateReportGroup): Option[ReportGroup]
+
+  def deleteGroup(workspaceId: String, id: String): Unit
 }
