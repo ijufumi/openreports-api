@@ -68,7 +68,7 @@ docker-compose exec api sbt flywayClean
   - [ ] members
     - [x] status (member info only)
     - [x] update (name, password)
-    - [ ] get permissions (including menus, groups)
+    - [ ] get permissions (including menus, groups and workspace)
   - [x] reports
     - [x] list
     - [x] get
