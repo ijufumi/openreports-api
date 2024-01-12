@@ -27,6 +27,12 @@ class WorkspaceMemberRepositoryImpl @Inject() (db: Database) extends WorkspaceMe
     Await.result(db.run(getById.result), queryTimeout)
   }
 
+  override def getsByMemberId(memberId: String): Seq[WorkspaceMember] = {
+    val getById = query
+      .filter(_.memberId === memberId)
+    Await.result(db.run(getById.result), queryTimeout)
+  }
+
   override def getByIdWithMember(
       workspaceId: String,
       memberId: String,

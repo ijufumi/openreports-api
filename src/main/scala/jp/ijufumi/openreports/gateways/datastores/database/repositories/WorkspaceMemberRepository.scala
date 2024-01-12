@@ -7,6 +7,8 @@ trait WorkspaceMemberRepository {
 
   def gets(workspaceId: String): Seq[WorkspaceMember]
 
+  def getsByMemberId(memberId: String): Seq[WorkspaceMember]
+
   def getByIdWithMember(workspaceId: String, memberId: String): Option[(WorkspaceMember, Member)]
 
   def getsWithMember(workspaceId: String): Seq[(WorkspaceMember, Member)]

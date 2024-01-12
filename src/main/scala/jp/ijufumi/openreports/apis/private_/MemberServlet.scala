@@ -11,10 +11,16 @@ class MemberServlet @Inject() (loginService: LoginService, memberService: Member
     ok(member())
   }
 
+  get("/permissions") {
+    val _memberId = memberId()
+    ok(memberService.permissions(_memberId))
+  }
+
   get("/logout") {
     val header = authorizationHeader()
     loginService.logout(header)
   }
+
   put("/update") {
     val requestParam = extractBody[UpdateMember]()
     val _member = member()
