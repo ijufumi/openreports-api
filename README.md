@@ -61,7 +61,7 @@ docker-compose exec api sbt flywayClean
     - [x] with ID / password
     - [x] Google login
   - [x] health
-  - [x] permission
+  - [x] role
 - [ ] private
   - [x] common
     - [x] logout
