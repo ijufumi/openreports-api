@@ -1,6 +1,11 @@
 name: code inspection
 on:
   push:
+    paths:
+      - 'src/**'
+      - 'project/**'
+      - build.sbt
+      - Dockerfile
   workflow_dispatch:
 jobs:
   test:
