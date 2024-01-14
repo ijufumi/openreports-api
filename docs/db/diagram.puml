@@ -33,7 +33,8 @@ entity roles {
 
 entity functions {
   * id
-  * name
+  * resource
+  * action
 }
 
 entity role_functions {
