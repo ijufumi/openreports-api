@@ -31,6 +31,16 @@ entity roles {
   * role_type
 }
 
+entity functions {
+  * id
+  * name
+}
+
+entity role_functions {
+  * role_id
+  * function_id
+}
+
 entity data_sources {
   * id
   * name
@@ -87,8 +97,10 @@ entity storage_s3s {
 }
 
 workspaces --r{ workspace_members
-workspace_members }-- members
-workspace_members }--{ roles
+workspace_members }--u members
+workspace_members }--r{ roles
+roles --{ role_functions
+role_functions --r{ functions
 workspaces --l{ data_sources
 workspaces --{ reports
 workspaces --{ report_templates
@@ -98,7 +110,7 @@ report_groups }--{ report_group_reports
 report_group_reports }--{ reports
 driver_types --{ data_sources
 data_sources --{ reports
-workspaces --{ storage_s3s
+workspaces --r{ storage_s3s
 storage_s3s --{ report_templates
 
 @enduml
