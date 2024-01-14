@@ -23,6 +23,12 @@ entity workspaces {
 entity workspace_members {
   * workspace_id
   * member_id
+  * role_id
+}
+
+entity roles {
+  * id
+  * role_type
 }
 
 entity data_sources {
@@ -82,6 +88,7 @@ entity storage_s3s {
 
 workspaces --r{ workspace_members
 workspace_members }-- members
+workspace_members }--{ roles
 workspaces --l{ data_sources
 workspaces --{ reports
 workspaces --{ report_templates
