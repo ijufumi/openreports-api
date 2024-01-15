@@ -38,6 +38,33 @@ create table roles
 
 create unique index role_IX1 on roles (role_type);
 
+-- create functions
+create table functions
+(
+  id         varchar(40) primary key,
+  resource   varchar(100) not null,
+  action     varchar(100) not null,
+  created_at bigint       not null default extract(epoch from current_timestamp at time zone 'UTC'),
+  updated_at bigint       not null default extract(epoch from current_timestamp at time zone 'UTC'),
+  versions   bigint       not null default 0
+);
+
+create unique index functions_IX1 on roles (resource, action);
+
+-- create role_functions
+create table role_functions
+(
+  role_id      varchar(40) not null,
+  function_id    varchar(40) not null,
+  created_at   bigint      not null default extract(epoch from current_timestamp at time zone 'UTC'),
+  updated_at   bigint      not null default extract(epoch from current_timestamp at time zone 'UTC'),
+  versions     bigint      not null default 0,
+
+  primary key (role_id, function_id),
+  foreign key (role_id) references roles (id),
+  foreign key (function_id) references functions (id)
+);
+
 -- create workspace_members
 create table workspace_members
 (
