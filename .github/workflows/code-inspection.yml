@@ -6,6 +6,7 @@ on:
       - 'project/**'
       - build.sbt
       - Dockerfile
+      - .github/workflows/code-inspection.yml
   workflow_dispatch:
 jobs:
   test:
