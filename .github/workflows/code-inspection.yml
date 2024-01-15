@@ -3,6 +3,7 @@ on:
   push:
     paths:
       - 'src/**'
+      - '!src/main/resources/db/migration/**'
       - 'project/**'
       - build.sbt
       - Dockerfile
