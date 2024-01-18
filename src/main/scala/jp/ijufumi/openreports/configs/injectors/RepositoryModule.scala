@@ -2,8 +2,36 @@ package jp.ijufumi.openreports.configs.injectors
 
 import jp.ijufumi.openreports.gateways.auth.google.GoogleRepository
 import jp.ijufumi.openreports.gateways.auth.google.impl.GoogleRepositoryImpl
-import jp.ijufumi.openreports.gateways.datastores.database.repositories.{DataSourceRepository, DriverTypeRepository, MemberRepository, ReportGroupReportRepository, ReportGroupRepository, ReportRepository, RoleRepository, StorageS3Repository, TemplateRepository, WorkspaceMemberRepository, WorkspaceRepository}
-import jp.ijufumi.openreports.gateways.datastores.database.repositories.impl.{DataSourceRepositoryImpl, DriverTypeRepositoryImpl, MemberRepositoryImpl, ReportGroupReportRepositoryImpl, ReportGroupRepositoryImpl, ReportRepositoryImpl, RoleRepositoryImpl, StorageS3RepositoryImpl, TemplateRepositoryImpl, WorkspaceMemberRepositoryImpl, WorkspaceRepositoryImpl}
+import jp.ijufumi.openreports.gateways.datastores.database.repositories.{
+  DataSourceRepository,
+  DriverTypeRepository,
+  FunctionRepository,
+  MemberRepository,
+  ReportGroupReportRepository,
+  ReportGroupRepository,
+  ReportRepository,
+  RoleFunctionRepository,
+  RoleRepository,
+  StorageS3Repository,
+  TemplateRepository,
+  WorkspaceMemberRepository,
+  WorkspaceRepository,
+}
+import jp.ijufumi.openreports.gateways.datastores.database.repositories.impl.{
+  DataSourceRepositoryImpl,
+  DriverTypeRepositoryImpl,
+  FunctionRepositoryImpl,
+  MemberRepositoryImpl,
+  ReportGroupReportRepositoryImpl,
+  ReportGroupRepositoryImpl,
+  ReportRepositoryImpl,
+  RoleFunctionRepositoryImpl,
+  RoleRepositoryImpl,
+  StorageS3RepositoryImpl,
+  TemplateRepositoryImpl,
+  WorkspaceMemberRepositoryImpl,
+  WorkspaceRepositoryImpl,
+}
 import jp.ijufumi.openreports.gateways.filestores.local.LocalFileRepository
 import jp.ijufumi.openreports.gateways.filestores.local.impl.LocalFileRepositoryImpl
 import jp.ijufumi.openreports.gateways.filestores.s3.AwsS3Repository
@@ -23,6 +51,8 @@ class RepositoryModule extends BaseModule {
     bindAsSingleton(classOf[TemplateRepository], classOf[TemplateRepositoryImpl])
     bindAsSingleton(classOf[StorageS3Repository], classOf[StorageS3RepositoryImpl])
     bindAsSingleton(classOf[RoleRepository], classOf[RoleRepositoryImpl])
+    bindAsSingleton(classOf[FunctionRepository], classOf[FunctionRepositoryImpl])
+    bindAsSingleton(classOf[RoleFunctionRepository], classOf[RoleFunctionRepositoryImpl])
     bindAsSingleton(classOf[DriverTypeRepository], classOf[DriverTypeRepositoryImpl])
     // auth
     bindAsSingleton(classOf[GoogleRepository], classOf[GoogleRepositoryImpl])
