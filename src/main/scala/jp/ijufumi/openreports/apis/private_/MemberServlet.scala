@@ -13,7 +13,8 @@ class MemberServlet @Inject() (loginService: LoginService, memberService: Member
 
   get("/permissions") {
     val _memberId = memberId()
-    ok(memberService.permissions(_memberId))
+    val _workspaceId = workspaceId()
+    ok(memberService.permissions(_memberId, _workspaceId))
   }
 
   get("/logout") {

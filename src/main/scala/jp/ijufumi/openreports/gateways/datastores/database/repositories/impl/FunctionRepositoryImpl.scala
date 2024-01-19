@@ -15,4 +15,8 @@ class FunctionRepositoryImpl @Inject() (db: Database) extends FunctionRepository
   override def getAll: Seq[Function] = {
     Await.result(db.run(query.result), queryTimeout)
   }
+
+  override def getsByIds(ids: Seq[String]): Seq[Function] = {
+    Await.result(db.run(query.filter(_.id.inSet(ids)).result), queryTimeout)
+  }
 }
