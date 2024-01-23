@@ -16,7 +16,7 @@
 | sttp client  | 3.8.15  | HTTP Client  |
 | jXls         | 2.12.0  | Reporting |
 
-## Features (not implemented yet)
+## Features (including not implemented yet)
 - [ ] Output reporting.
 - [ ] Output scheduled reporting.
 - [ ] Supporting template format are xls, xlsx.
@@ -56,7 +56,7 @@ docker-compose exec api sbt flywayClean
 ## Developer's memo.
 ### API list
 
-- [ ] public
+- [x] public
   - [x] login
     - [x] with ID / password
     - [x] Google login
@@ -65,7 +65,7 @@ docker-compose exec api sbt flywayClean
 - [ ] private
   - [x] common
     - [x] logout
-  - [ ] members
+  - [x] members
     - [x] status (member info only)
     - [x] update (name, password)
     - [x] get permissions (including menus and workspace)
