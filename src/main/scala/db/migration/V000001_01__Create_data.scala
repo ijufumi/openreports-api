@@ -1,6 +1,12 @@
 package db.migration
 
-import jp.ijufumi.openreports.gateways.datastores.database.entities.enums.{DBNameMappings, JdbcDriverClasses, RoleTypes}
+import jp.ijufumi.openreports.gateways.datastores.database.entities.enums.{
+  DBNameMappings,
+  JdbcDriverClasses,
+  RoleTypes,
+}
+import jp.ijufumi.openreports.models.value.enums.ActionTypes
+import jp.ijufumi.openreports.models.value.enums.ActionTypes.ActionType
 import org.flywaydb.core.api.migration.BaseJavaMigration
 import org.flywaydb.core.api.migration.Context
 import jp.ijufumi.openreports.utils.{Hash, IDs}
@@ -38,9 +44,48 @@ class V000001_01__Create_data extends BaseJavaMigration {
         statement.setString(2, value.toString)
         try statement.execute
         finally if (statement != null) statement.close()
+        ActionTypes.values.foreach { action =>
+          {
+            val functionId = function(context, "report", action)
+            roleFunction(context, id, functionId)
+          }
+        }
       }
     }
     roleId
+  }
+
+  private def function(
+      context: Context,
+      resource: String,
+      action: ActionType,
+  ): String = {
+    val id = IDs.ulid()
+    val statement = {
+      context.getConnection.prepareStatement(
+        s"INSERT INTO functions (id, resource, action) VALUES (?, ?, ?)",
+      )
+    }
+    statement.setString(1, id)
+    statement.setString(2, resource)
+    statement.setString(3, action.toString)
+    try statement.execute
+    finally if (statement != null) statement.close()
+    id
+  }
+
+  private def roleFunction(context: Context, roleId: String, fuctionId: String): Unit = {
+    val id = IDs.ulid()
+    val statement = {
+      context.getConnection.prepareStatement(
+        s"INSERT INTO role_functions (id, role_id, fuction_id) VALUES (?, ?, ?)",
+      )
+    }
+    statement.setString(1, id)
+    statement.setString(2, roleId)
+    statement.setString(3, fuctionId)
+    try statement.execute
+    finally if (statement != null) statement.close()
   }
 
   private def member(context: Context): String = {
