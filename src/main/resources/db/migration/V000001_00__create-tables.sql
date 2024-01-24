@@ -49,7 +49,7 @@ create table functions
   versions   bigint       not null default 0
 );
 
-create unique index functions_IX1 on roles (resource, action);
+create unique index functions_IX1 on functions (resource, action);
 
 -- create role_functions
 create table role_functions
