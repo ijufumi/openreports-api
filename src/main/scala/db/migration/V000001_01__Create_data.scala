@@ -11,12 +11,26 @@ import org.flywaydb.core.api.migration.BaseJavaMigration
 import org.flywaydb.core.api.migration.Context
 import jp.ijufumi.openreports.utils.{Hash, IDs}
 
+import scala.collection.mutable
+
 class V000001_01__Create_data extends BaseJavaMigration {
   override def migrate(context: Context): Unit = {
-    val roleId = role(context)
+    val roleIds = role(context)
+    var functionIds = mutable.Seq.empty[String]
+    ActionTypes.values.foreach { action =>
+      {
+        val functionId = function(context, "report", action)
+        functionIds = functionIds :+ functionId
+      }
+    }
+    roleIds.foreach(roleId => {
+      functionIds.foreach(functionId => {
+        roleFunction(context, roleId, functionId)
+      })
+    })
     val workspaceId = workspace(context)
     val memberId = member(context)
-    workspaceMember(context, workspaceId, memberId, roleId)
+    workspaceMember(context, workspaceId, memberId, roleIds(0))
     val driverTypeId = driverType(context)
     val dataSourceId = dataSource(context, driverTypeId, workspaceId)
     val reportGroupId = reportGroup(context, workspaceId)
@@ -27,14 +41,12 @@ class V000001_01__Create_data extends BaseJavaMigration {
     }
   }
 
-  private def role(context: Context): String = {
-    var roleId = ""
+  private def role(context: Context): mutable.Seq[String] = {
+    var roleIds = mutable.Seq.empty[String]
     RoleTypes.values.foreach { value =>
       {
         val id = IDs.ulid()
-        if (roleId.isEmpty) {
-          roleId = id
-        }
+        roleIds = roleIds :+ id
         val statement = {
           context.getConnection.prepareStatement(
             s"INSERT INTO roles (id, role_type) VALUES (?, ?)",
@@ -44,15 +56,9 @@ class V000001_01__Create_data extends BaseJavaMigration {
         statement.setString(2, value.toString)
         try statement.execute
         finally if (statement != null) statement.close()
-        ActionTypes.values.foreach { action =>
-          {
-            val functionId = function(context, "report", action)
-            roleFunction(context, id, functionId)
-          }
-        }
       }
     }
-    roleId
+    roleIds
   }
 
   private def function(
@@ -74,16 +80,14 @@ class V000001_01__Create_data extends BaseJavaMigration {
     id
   }
 
-  private def roleFunction(context: Context, roleId: String, fuctionId: String): Unit = {
-    val id = IDs.ulid()
+  private def roleFunction(context: Context, roleId: String, functionId: String): Unit = {
     val statement = {
       context.getConnection.prepareStatement(
-        s"INSERT INTO role_functions (id, role_id, fuction_id) VALUES (?, ?, ?)",
+        s"INSERT INTO role_functions (role_id, function_id) VALUES (?, ?)",
       )
     }
-    statement.setString(1, id)
-    statement.setString(2, roleId)
-    statement.setString(3, fuctionId)
+    statement.setString(1, roleId)
+    statement.setString(2, functionId)
     try statement.execute
     finally if (statement != null) statement.close()
   }
