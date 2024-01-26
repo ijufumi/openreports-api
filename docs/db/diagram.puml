@@ -76,6 +76,20 @@ entity report_templates {
   * file_size
 }
 
+entity report_parameters {
+  * id
+  * workspace_id
+  * parameter_type: [embedded_function, fixed_value]
+    embedded_function_type
+    value
+}
+
+entity report_report_parameters {
+  * id
+  * report_id
+  * report_parameter_id
+}
+
 entity report_groups {
   * id
   * workspace_id
@@ -109,6 +123,8 @@ workspaces --{ report_groups
 reports }-- report_templates
 report_groups }--{ report_group_reports
 report_group_reports }--{ reports
+reports }--{ report_report_parameters
+report_report_parameters }--{ report_parameters
 driver_types --{ data_sources
 data_sources --{ reports
 workspaces --r{ storage_s3s
