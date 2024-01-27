@@ -10,7 +10,7 @@ on:
       - .github/workflows/code-inspection.yml
   workflow_dispatch:
 jobs:
-  setup:
+  build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -24,9 +24,5 @@ jobs:
           cache-dependency-path: |
             build.sbt
             project/build.properties
-  build:
-    needs: setup
-    runs-on: ubuntu-latest
-    steps:
       - name: Build
         run: sbt compile

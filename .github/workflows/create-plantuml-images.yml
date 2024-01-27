@@ -16,17 +16,9 @@ jobs:
       - name: Install packages
         run: |
           brew install plantuml
-  create:
-    needs: setup
-    runs-on: macos-latest
-    steps:
       - name: Create image
         run: |
           cat ./docs/db/diagram.puml | plantuml -tsvg -p > ./docs/db/diagram.svg
-  commit:
-    needs: create
-    runs-on: macos-latest
-    steps:
       - name: Commit image
         uses: EndBug/add-and-commit@v9
         with:
