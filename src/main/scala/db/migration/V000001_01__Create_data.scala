@@ -81,13 +81,15 @@ class V000001_01__Create_data extends BaseJavaMigration {
   }
 
   private def roleFunction(context: Context, roleId: String, functionId: String): Unit = {
+    val id = IDs.ulid()
     val statement = {
       context.getConnection.prepareStatement(
-        s"INSERT INTO role_functions (role_id, function_id) VALUES (?, ?)",
+        s"INSERT INTO role_functions (id, role_id, function_id) VALUES (?, ?, ?)",
       )
     }
-    statement.setString(1, roleId)
-    statement.setString(2, functionId)
+    statement.setString(1, id)
+    statement.setString(2, roleId)
+    statement.setString(3, functionId)
     try statement.execute
     finally if (statement != null) statement.close()
   }
