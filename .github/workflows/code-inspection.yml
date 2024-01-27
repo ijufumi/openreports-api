@@ -1,4 +1,4 @@
-name: code inspection
+name: Code inspection
 on:
   push:
     paths:
@@ -10,7 +10,7 @@ on:
       - .github/workflows/code-inspection.yml
   workflow_dispatch:
 jobs:
-  test:
+  build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
