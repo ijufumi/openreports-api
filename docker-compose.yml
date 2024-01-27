@@ -2,23 +2,11 @@ name: openreports-api
 services:
   api:
     build:
-      context: /Users/ijufumi/workspaces/production/openreports-api
+      context: ./
       dockerfile: Dockerfile
     container_name: openreports-api
-    environment:
-      API_TOKEN_EXPIRATION_SEC: "3600"
-      CACHE_TTL_SEC: "3600"
-      DB_ENV: development
-      DB_HOST: db
-      DB_NAME: openreports
-      DB_PASS: password
-      DB_PORT: "5432"
-      DB_USER: postgres
-      GOOGLE_AUTH_STATE_CACHE_TTL_SEC: "60"
-      GOOGLE_CLIENT_ID: 847419419731-0o7ou57l9ss00i9pthhc9si9tfpiq63c.apps.googleusercontent.com
-      GOOGLE_CLIENT_SECRET: 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
-      PGPASSWORD: password
-      TEMPLATE_ROOT_PATH: /reports
+    env_file:
+      - .env.compose
     networks:
       default: null
     platform: linux/arm64
@@ -29,14 +17,14 @@ services:
         protocol: tcp
     volumes:
       - type: bind
-        source: /Users/ijufumi/workspaces/production/openreports-api/src/main/resources/db/migration
+        source: ./src/main/resources/db/migration:/app/src/main/resources/db/migration
         target: /app/src/main/resources/db/migration
         bind:
           create_host_path: true
     working_dir: /app
   db:
     build:
-      context: /Users/ijufumi/workspaces/production/openreports-api/docker/postgres
+      context: ./docker/postgres
       dockerfile: Dockerfile
     container_name: openreports-db
     environment:
