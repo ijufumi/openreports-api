@@ -1,4 +1,4 @@
-name: Create PlantUML Images
+name: Create PlantUML images
 
 on:
   push:
@@ -9,21 +9,29 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
+  setup:
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v2
       - name: Install packages
         run: |
           brew install plantuml
-      - name: Create Images
+  create:
+    needs: setup
+    runs-on: macos-latest
+    steps:
+      - name: Create image
         run: |
           cat ./docs/db/diagram.puml | plantuml -tsvg -p > ./docs/db/diagram.svg
-      - name: Commit changes
+  commit:
+    needs: create
+    runs-on: macos-latest
+    steps:
+      - name: Commit image
         uses: EndBug/add-and-commit@v9
         with:
           author_name: Takafumi Iju
           author_email: ijufumi@gmail.com
-          message: 'Create image files by GitHub Action(create-plantuml-images.yml).'
+          message: 'Create image file by GitHub Action(create-plantuml-images.yml).'
           add: './docs/db/diagram.svg'
           push: true
