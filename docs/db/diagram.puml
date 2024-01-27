@@ -38,6 +38,7 @@ entity functions {
 }
 
 entity role_functions {
+  * id
   * role_id
   * function_id
 }
