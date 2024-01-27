@@ -11,8 +11,8 @@ create table members
   versions   bigint       not null default 0
 );
 
-create unique index member_IX1 on members (email);
-create unique index member_IX2 on members (google_id);
+create unique index member_UIX1 on members (email);
+create unique index member_UIX2 on members (google_id);
 
 
 -- create workspaces
@@ -36,7 +36,7 @@ create table roles
   versions   bigint       not null default 0
 );
 
-create unique index role_IX1 on roles (role_type);
+create unique index role_UIX1 on roles (role_type);
 
 -- create functions
 create table functions
@@ -49,21 +49,23 @@ create table functions
   versions   bigint       not null default 0
 );
 
-create unique index functions_IX1 on functions (resource, action);
+create unique index functions_UIX1 on functions (resource, action);
 
 -- create role_functions
 create table role_functions
 (
-  role_id      varchar(40) not null,
-  function_id    varchar(40) not null,
-  created_at   bigint      not null default extract(epoch from current_timestamp at time zone 'UTC'),
-  updated_at   bigint      not null default extract(epoch from current_timestamp at time zone 'UTC'),
-  versions     bigint      not null default 0,
+  id          varchar(40) primary key,
+  role_id     varchar(40) not null,
+  function_id varchar(40) not null,
+  created_at  bigint      not null default extract(epoch from current_timestamp at time zone 'UTC'),
+  updated_at  bigint      not null default extract(epoch from current_timestamp at time zone 'UTC'),
+  versions    bigint      not null default 0,
 
-  primary key (role_id, function_id),
   foreign key (role_id) references roles (id),
   foreign key (function_id) references functions (id)
 );
+
+create unique index role_functions_UIX1 on role_functions (role_id, function_id);
 
 -- create workspace_members
 create table workspace_members
