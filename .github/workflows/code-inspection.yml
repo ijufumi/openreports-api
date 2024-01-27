@@ -25,6 +25,7 @@ jobs:
             build.sbt
             project/build.properties
   build:
+    needs: setup
     runs-on: ubuntu-latest
     steps:
       - name: Build
