@@ -1,38 +1,66 @@
-version: '3.8'
+name: openreports-api
 services:
   api:
+    build:
+      context: /Users/ijufumi/workspaces/production/openreports-api
+      dockerfile: Dockerfile
     container_name: openreports-api
-    build: ./
-    ports:
-      - "8080:8080"
-    env_file:
-      - .env.compose
-    working_dir: /app
-    volumes:
-      - ./src/main/resources/db/migration:/app/src/main/resources/db/migration
-    platform: linux/arm64
-  db:
-    container_name: openreports-db
-    build: ./docker/postgres
-    ports:
-      - "5432:5432"
     environment:
-      POSTGRES_USER: postgres
+      API_TOKEN_EXPIRATION_SEC: "3600"
+      CACHE_TTL_SEC: "3600"
+      DB_ENV: development
+      DB_HOST: db
+      DB_NAME: openreports
+      DB_PASS: password
+      DB_PORT: "5432"
+      DB_USER: postgres
+      GOOGLE_AUTH_STATE_CACHE_TTL_SEC: "60"
+      GOOGLE_CLIENT_ID: 847419419731-0o7ou57l9ss00i9pthhc9si9tfpiq63c.apps.googleusercontent.com
+      GOOGLE_CLIENT_SECRET: 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
+      PGPASSWORD: password
+      TEMPLATE_ROOT_PATH: /reports
+    networks:
+      default: null
+    platform: linux/arm64
+    ports:
+      - mode: ingress
+        target: 8080
+        published: "8080"
+        protocol: tcp
+    volumes:
+      - type: bind
+        source: /Users/ijufumi/workspaces/production/openreports-api/src/main/resources/db/migration
+        target: /app/src/main/resources/db/migration
+        bind:
+          create_host_path: true
+    working_dir: /app
+  db:
+    build:
+      context: /Users/ijufumi/workspaces/production/openreports-api/docker/postgres
+      dockerfile: Dockerfile
+    container_name: openreports-db
+    environment:
+      PGDATA: /var/lib/postgresql/data/pgdata
       POSTGRES_DB: postgres
       POSTGRES_PASSWORD: password
-      PGDATA: /var/lib/postgresql/data/pgdata
-      TZ: "Asia/Tokyo"
-    volumes:
-      - db-data:/var/lib/postgresql/data
+      POSTGRES_USER: postgres
+      TZ: Asia/Tokyo
+    networks:
+      default: null
     platform: linux/arm64
-#   libreoffice:
-#     build: ./docker/libreoffice
-#     environment:
-#       TZ: "Asia/Tokyo"
-
-volumes:
-  db-data:
-
+    ports:
+      - mode: ingress
+        target: 5432
+        published: "5432"
+        protocol: tcp
+    volumes:
+      - type: volume
+        source: db-data
+        target: /var/lib/postgresql/data
+        volume: {}
 networks:
   default:
     name: openreports
+volumes:
+  db-data:
+    name: openreports-api_db-data
