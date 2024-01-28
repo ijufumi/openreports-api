@@ -5,7 +5,7 @@
 .circleci
 .idea
 .scalafmt.conf
-docker-compose.yml
+compose.yaml
 LICENSE
 README.md
 
