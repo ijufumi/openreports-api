@@ -158,7 +158,7 @@ create table report_groups
   foreign key (workspace_id) references workspaces (id)
 );
 
--- create report_group_reports
+-- create report_parameters
 create table report_group_reports
 (
   id              varchar(40) primary key,
@@ -170,6 +170,34 @@ create table report_group_reports
 
   foreign key (report_id) references reports (id),
   foreign key (report_group_id) references report_groups (id)
+);
+
+-- create report_group_reports
+create table report_parameters
+(
+  id             varchar(40) primary key,
+  workspace_id   varchar(40)  not null,
+  parameter_type varchar(100) not null,
+  value          varchar(255) null,
+  created_at     bigint       not null default extract(epoch from current_timestamp at time zone 'UTC'),
+  updated_at     bigint       not null default extract(epoch from current_timestamp at time zone 'UTC'),
+  versions       bigint       not null default 0,
+
+  foreign key (workspace_id) references workspaces (id)
+);
+
+-- create report_report_parameters
+create table report_report_parameters
+(
+  id                  varchar(40) primary key,
+  report_id           varchar(40) not null,
+  report_parameter_id varchar(40) not null,
+  created_at          bigint      not null default extract(epoch from current_timestamp at time zone 'UTC'),
+  updated_at          bigint      not null default extract(epoch from current_timestamp at time zone 'UTC'),
+  versions            bigint      not null default 0,
+
+  foreign key (report_id) references reports (id),
+  foreign key (report_parameter_id) references report_parameters (id)
 );
 
 -- create storages
