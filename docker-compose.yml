@@ -16,11 +16,9 @@ services:
         published: "8080"
         protocol: tcp
     volumes:
-      - type: bind
-        source: ./src/main/resources/db/migration:/app/src/main/resources/db/migration
+      - type: volume
+        source: migration-data
         target: /app/src/main/resources/db/migration
-        bind:
-          create_host_path: true
     working_dir: /app
   db:
     build:
@@ -52,3 +50,9 @@ networks:
 volumes:
   db-data:
     name: openreports-api_db-data
+  migration-data:
+    driver: local
+    driver_opts:
+      type: 'none'
+      o: 'bind'
+      device: './src/main/resources/db/migration'
