@@ -1,11 +1,6 @@
 package db.migration
 
-import jp.ijufumi.openreports.gateways.datastores.database.entities.enums.{
-  DBNameMappings,
-  JdbcDriverClasses,
-  RoleTypes,
-}
-import jp.ijufumi.openreports.models.value.enums.ActionTypes
+import jp.ijufumi.openreports.models.value.enums.{ActionTypes, DBNames, JdbcDriverClasses, RoleTypes}
 import jp.ijufumi.openreports.models.value.enums.ActionTypes.ActionType
 import org.flywaydb.core.api.migration.BaseJavaMigration
 import org.flywaydb.core.api.migration.Context
@@ -156,7 +151,7 @@ class V000001_01__Create_data extends BaseJavaMigration {
       if (driverTypeId.isEmpty) {
         driverTypeId = id
       }
-      val name = DBNameMappings.getDbNameByDriverClass(value)
+      val name = DBNames.getDbNameByDriverClass(value)
       val driverClass = value.toString
       val statement = {
         context.getConnection.prepareStatement(

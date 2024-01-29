@@ -1,6 +1,6 @@
 package jp.ijufumi.openreports.gateways.datastores.database.entities
 
-import jp.ijufumi.openreports.gateways.datastores.database.entities.enums.RoleTypes.RoleType
+import jp.ijufumi.openreports.models.value.enums.RoleTypes.RoleType
 import jp.ijufumi.openreports.utils.Dates
 import slick.jdbc.PostgresProfile.api._
 
