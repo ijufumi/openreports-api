@@ -1,6 +1,6 @@
 package jp.ijufumi.openreports.models.outputs
 
-import jp.ijufumi.openreports.gateways.datastores.database.entities.enums.JdbcDriverClasses.JdbcDriverClass
+import jp.ijufumi.openreports.models.value.enums.JdbcDriverClasses.JdbcDriverClass
 import jp.ijufumi.openreports.gateways.datastores.database.entities.{DriverType => DriverTypeEntity}
 
 case class DriverType(

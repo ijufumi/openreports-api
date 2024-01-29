@@ -3,7 +3,7 @@ package jp.ijufumi.openreports.gateways.datastores.database.pool
 import jp.ijufumi.openreports.exceptions.NotFoundException
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.pool.HikariPool
-import jp.ijufumi.openreports.gateways.datastores.database.entities.enums.JdbcDriverClasses.JdbcDriverClass
+import jp.ijufumi.openreports.models.value.enums.JdbcDriverClasses.JdbcDriverClass
 
 import java.sql.Connection
 import scala.collection.mutable

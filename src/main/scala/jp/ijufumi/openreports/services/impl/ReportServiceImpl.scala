@@ -8,7 +8,6 @@ import jp.ijufumi.openreports.gateways.datastores.database.entities.{
   ReportGroupReport,
   Template,
 }
-import jp.ijufumi.openreports.gateways.datastores.database.entities.enums.StorageTypes
 import jp.ijufumi.openreports.gateways.datastores.database.repositories.{
   ReportGroupReportRepository,
   ReportGroupRepository,
@@ -36,6 +35,7 @@ import jp.ijufumi.openreports.models.outputs.{
   ReportGroup => ReportGroupResponse,
   Template => TemplateResponse,
 }
+import jp.ijufumi.openreports.models.value.enums.StorageTypes
 import org.scalatra.servlet.FileItem
 
 import java.io.File
