@@ -6,7 +6,9 @@ import jp.ijufumi.openreports.models.value.enums.StorageTypes.StorageType
 import slick.jdbc.JdbcType
 import jp.ijufumi.openreports.models.value.enums.{
   ActionTypes,
+  EmbeddedFunctionTypes,
   JdbcDriverClasses,
+  ParameterTypes,
   RoleTypes,
   StorageTypes,
 }
@@ -45,6 +47,22 @@ package object entities {
     MappedColumnType.base[ActionTypes.ActionType, String](
       e => e.toString,
       s => ActionTypes.withName(s),
+    )
+  }
+
+  implicit val parameterTypeMapper
+      : JdbcType[ParameterTypes.ParameterType] with BaseTypedType[ParameterTypes.ParameterType] = {
+    MappedColumnType.base[ParameterTypes.ParameterType, String](
+      e => e.toString,
+      s => ParameterTypes.withName(s),
+    )
+  }
+
+  implicit val embeddedFunctionTypeMapper: JdbcType[EmbeddedFunctionTypes.EmbeddedFunctionType]
+    with BaseTypedType[EmbeddedFunctionTypes.EmbeddedFunctionType] = {
+    MappedColumnType.base[EmbeddedFunctionTypes.EmbeddedFunctionType, String](
+      e => e.toString,
+      s => EmbeddedFunctionTypes.withName(s),
     )
   }
 }

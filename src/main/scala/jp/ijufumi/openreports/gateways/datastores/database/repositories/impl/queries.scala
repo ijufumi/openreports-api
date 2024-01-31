@@ -7,6 +7,8 @@ private[impl] object queries {
   val reportQuery = TableQuery[Reports]
   val reportGroupQuery = TableQuery[ReportGroups]
   val reportGroupReportQuery = TableQuery[ReportGroupReports]
+  val reportParameterQuery = TableQuery[ReportParameters]
+  val reportReportParameterQuery = TableQuery[ReportReportParameters]
   val dataSourceQuery = TableQuery[DataSources]
   val driverTypeQuery = TableQuery[DriverTypes]
   val memberQuery = TableQuery[Members]
