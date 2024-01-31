@@ -9,6 +9,8 @@ import jp.ijufumi.openreports.gateways.datastores.database.repositories.{
   MemberRepository,
   ReportGroupReportRepository,
   ReportGroupRepository,
+  ReportParameterRepository,
+  ReportReportParameterRepository,
   ReportRepository,
   RoleFunctionRepository,
   RoleRepository,
@@ -24,6 +26,8 @@ import jp.ijufumi.openreports.gateways.datastores.database.repositories.impl.{
   MemberRepositoryImpl,
   ReportGroupReportRepositoryImpl,
   ReportGroupRepositoryImpl,
+  ReportParameterRepositoryImpl,
+  ReportReportParameterRepositoryImpl,
   ReportRepositoryImpl,
   RoleFunctionRepositoryImpl,
   RoleRepositoryImpl,
@@ -48,6 +52,11 @@ class RepositoryModule extends BaseModule {
     bindAsSingleton(classOf[ReportRepository], classOf[ReportRepositoryImpl])
     bindAsSingleton(classOf[ReportGroupRepository], classOf[ReportGroupRepositoryImpl])
     bindAsSingleton(classOf[ReportGroupReportRepository], classOf[ReportGroupReportRepositoryImpl])
+    bindAsSingleton(classOf[ReportParameterRepository], classOf[ReportParameterRepositoryImpl])
+    bindAsSingleton(
+      classOf[ReportReportParameterRepository],
+      classOf[ReportReportParameterRepositoryImpl],
+    )
     bindAsSingleton(classOf[TemplateRepository], classOf[TemplateRepositoryImpl])
     bindAsSingleton(classOf[StorageS3Repository], classOf[StorageS3RepositoryImpl])
     bindAsSingleton(classOf[RoleRepository], classOf[RoleRepositoryImpl])
