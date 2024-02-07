@@ -1,7 +1,7 @@
 package jp.ijufumi.openreports.gateways.datastores.database.repositories.impl
 
 import com.google.inject.Inject
-import jp.ijufumi.openreports.gateways.datastores.database.entities.Function
+import jp.ijufumi.openreports.models.outputs.Function
 import jp.ijufumi.openreports.gateways.datastores.database.repositories.FunctionRepository
 import jp.ijufumi.openreports.gateways.datastores.database.repositories.impl.queries.{
   functionQuery => query,
@@ -13,10 +13,10 @@ import scala.concurrent.Await
 
 class FunctionRepositoryImpl @Inject() (db: Database) extends FunctionRepository {
   override def getAll: Seq[Function] = {
-    Await.result(db.run(query.result), queryTimeout)
+    Await.result(db.run(query.result), queryTimeout).map(f => Function(f))
   }
 
   override def getsByIds(ids: Seq[String]): Seq[Function] = {
-    Await.result(db.run(query.filter(_.id.inSet(ids)).result), queryTimeout)
+    Await.result(db.run(query.filter(_.id.inSet(ids)).result), queryTimeout).map(f => Function(f))
   }
 }
