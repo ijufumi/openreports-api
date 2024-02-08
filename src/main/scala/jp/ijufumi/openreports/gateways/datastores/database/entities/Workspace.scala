@@ -11,11 +11,7 @@ case class Workspace(
     createdAt: Long = Dates.currentTimestamp(),
     updatedAt: Long = Dates.currentTimestamp(),
     versions: Long = 1,
-) {
-  def copyForUpdate(input: UpdateWorkspace): Workspace = {
-    this.copy(name = input.name)
-  }
-}
+)
 
 class Workspaces(tag: Tag)
     extends EntityBase[Workspace](
