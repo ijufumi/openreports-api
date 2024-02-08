@@ -1,11 +1,7 @@
 package jp.ijufumi.openreports.services.impl
 
 import com.google.inject.Inject
-import jp.ijufumi.openreports.models.outputs.{
-  Member => MemberResponse,
-  Permissions,
-  Workspace => WorkspaceResponse,
-}
+import jp.ijufumi.openreports.models.outputs.{Member => MemberResponse, Permissions}
 import jp.ijufumi.openreports.gateways.datastores.database.repositories.{
   FunctionRepository,
   MemberRepository,
@@ -42,7 +38,6 @@ class MemberServiceImpl @Inject() (
     val functionIds =
       roleFunctionRepository.getByRoleId(workspaceMember.roleId).map(m => m.functionId)
     val functions = functionRepository.getsByIds(functionIds)
-    val workspaceResponses = workspaces.map(w => WorkspaceResponse(w))
-    Some(Permissions(workspaceResponses, functions))
+    Some(Permissions(workspaces, functions))
   }
 }

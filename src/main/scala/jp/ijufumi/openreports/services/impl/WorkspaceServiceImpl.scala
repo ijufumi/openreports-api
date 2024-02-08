@@ -2,30 +2,54 @@ package jp.ijufumi.openreports.services.impl
 
 import com.google.inject.Inject
 import jp.ijufumi.openreports.configs.Config
-import jp.ijufumi.openreports.gateways.datastores.database.entities.{Report, StorageS3, Template, Workspace, WorkspaceMember}
+import jp.ijufumi.openreports.gateways.datastores.database.entities.{
+  Report,
+  StorageS3,
+  Template,
+  WorkspaceMember,
+}
 import jp.ijufumi.openreports.exceptions.NotFoundException
-import jp.ijufumi.openreports.gateways.datastores.database.repositories.{ReportRepository, RoleRepository, StorageS3Repository, TemplateRepository, WorkspaceMemberRepository, WorkspaceRepository}
-import jp.ijufumi.openreports.models.inputs.{CreateWorkspace, CreateWorkspaceMember, UpdateWorkspace, UpdateWorkspaceMember}
-import jp.ijufumi.openreports.models.outputs.{Lists, Workspace => WorkspaceResponse, WorkspaceMember => WorkspaceMemberResponse}
+import jp.ijufumi.openreports.gateways.datastores.database.repositories.{
+  ReportRepository,
+  RoleRepository,
+  StorageS3Repository,
+  TemplateRepository,
+  WorkspaceMemberRepository,
+  WorkspaceRepository,
+}
+import jp.ijufumi.openreports.models.inputs.{
+  CreateWorkspace,
+  CreateWorkspaceMember,
+  UpdateWorkspace,
+  UpdateWorkspaceMember,
+}
+import jp.ijufumi.openreports.models.outputs.{
+  Lists,
+  Workspace,
+  WorkspaceMember => WorkspaceMemberResponse,
+}
 import jp.ijufumi.openreports.models.value.enums.{RoleTypes, StorageTypes}
 import jp.ijufumi.openreports.services.{StorageService, WorkspaceService}
 import jp.ijufumi.openreports.utils.{IDs, Strings}
 import slick.jdbc.PostgresProfile.api._
 
 class WorkspaceServiceImpl @Inject() (
-                                       workspaceRepository: WorkspaceRepository,
-                                       workspaceMemberRepository: WorkspaceMemberRepository,
-                                       storageRepository: StorageS3Repository,
-                                       reportRepository: ReportRepository,
-                                       reportTemplateRepository: TemplateRepository,
-                                       storageService: StorageService,
-                                       permissionRepository: RoleRepository,
+    workspaceRepository: WorkspaceRepository,
+    workspaceMemberRepository: WorkspaceMemberRepository,
+    storageRepository: StorageS3Repository,
+    reportRepository: ReportRepository,
+    reportTemplateRepository: TemplateRepository,
+    storageService: StorageService,
+    permissionRepository: RoleRepository,
 ) extends WorkspaceService {
-  override def createAndRelevant(input: CreateWorkspace, memberId: String): Option[WorkspaceResponse] = {
+  override def createAndRelevant(
+      input: CreateWorkspace,
+      memberId: String,
+  ): Option[Workspace] = {
     createAndRelevant(input.name, memberId)
   }
 
-  override def createAndRelevant(name: String, memberId: String): Option[WorkspaceResponse] = {
+  override def createAndRelevant(name: String, memberId: String): Option[Workspace] = {
     var workspaceOpt = Option.empty[Workspace]
     try {
       val workspace = Workspace(IDs.ulid(), name, Strings.generateSlug())
@@ -51,30 +75,30 @@ class WorkspaceServiceImpl @Inject() (
         throw e
     }
 
-    workspaceOpt.map(v => WorkspaceResponse(v))
+    workspaceOpt
   }
 
-  override def getWorkspace(id: String): Option[WorkspaceResponse] = {
-    workspaceRepository.getById(id).map(v => WorkspaceResponse(v))
+  override def getWorkspace(id: String): Option[Workspace] = {
+    workspaceRepository.getById(id)
   }
 
-  override def getWorkspacesByMemberId(memberId: String): Lists[WorkspaceResponse] = {
+  override def getWorkspacesByMemberId(memberId: String): Lists[Workspace] = {
     val workspaces = workspaceRepository.getsByMemberId(memberId)
     Lists(
-      workspaces.map(v => WorkspaceResponse(v)),
+      workspaces,
       0,
       workspaces.size,
-      workspaces.size
+      workspaces.size,
     )
   }
 
-  override def updateWorkspace(id: String, input: UpdateWorkspace): Option[WorkspaceResponse] = {
+  override def updateWorkspace(id: String, input: UpdateWorkspace): Option[Workspace] = {
     val workspaceOpt = workspaceRepository.getById(id)
     if (workspaceOpt.isEmpty) {
       return None
     }
-    val newWorkspace = workspaceOpt.get.copyForUpdate(input)
-    workspaceRepository.update(newWorkspace).map(v => WorkspaceResponse(v))
+    val newWorkspace = workspaceOpt.get.mergeForUpdate(input)
+    workspaceRepository.update(newWorkspace)
   }
 
   override def getWorkspaceMembers(id: String): Lists[WorkspaceMemberResponse] = {
@@ -83,7 +107,7 @@ class WorkspaceServiceImpl @Inject() (
       results.map(v => WorkspaceMemberResponse(v._1, v._2)),
       0,
       results.size,
-      results.size
+      results.size,
     )
   }
 

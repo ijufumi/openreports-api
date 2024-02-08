@@ -1,7 +1,7 @@
 package jp.ijufumi.openreports.gateways.datastores.database.repositories.impl
 
 import com.google.inject.Inject
-import jp.ijufumi.openreports.gateways.datastores.database.entities.Workspace
+import jp.ijufumi.openreports.models.outputs.Workspace
 import queries.{workspaceMemberQuery, workspaceQuery => query}
 import jp.ijufumi.openreports.gateways.datastores.database.repositories.WorkspaceRepository
 import slick.jdbc.JdbcBackend.Database
@@ -17,24 +17,24 @@ class WorkspaceRepositoryImpl @Inject() (db: Database) extends WorkspaceReposito
     if (workspaces.isEmpty) {
       return None
     }
-    Some(workspaces.head)
+    Some(workspaces.head).map(w => Workspace(w))
   }
 
   override def getsByMemberId(memberId: String): Seq[Workspace] = {
     val getsByMemberId =
       query.join(workspaceMemberQuery).on(_.id === _.workspaceId).filter(_._2.memberId === memberId)
     val workspaces = Await.result(db.run(getsByMemberId.result), queryTimeout)
-    workspaces.map(m => m._1)
+    workspaces.map(m => Workspace(m._1))
   }
 
   override def register(workspace: Workspace): Option[Workspace] = {
-    val register = (query += workspace).withPinnedSession
+    val register = (query += workspace.toEntity).withPinnedSession
     Await.result(db.run(register), queryTimeout)
     getById(workspace.id)
   }
 
   override def update(workspace: Workspace): Option[Workspace] = {
-    query.insertOrUpdate(workspace).withPinnedSession
+    query.insertOrUpdate(workspace.toEntity).withPinnedSession
     getById(workspace.id)
   }
 }
