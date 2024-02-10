@@ -1,6 +1,9 @@
 package jp.ijufumi.openreports.models.outputs
 
-import jp.ijufumi.openreports.gateways.datastores.database.entities.{Report, Report => ReportEntity, Template => ReportTemplateEntity}
+import jp.ijufumi.openreports.gateways.datastores.database.entities.{
+  Report => ReportEntity,
+  Template => ReportTemplateEntity,
+}
 import jp.ijufumi.openreports.models.inputs.UpdateReport
 import jp.ijufumi.openreports.utils.Dates
 
