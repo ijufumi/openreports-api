@@ -2,7 +2,7 @@ package jp.ijufumi.openreports.gateways.datastores.database.repositories.impl
 
 import com.google.inject.Inject
 import scala.concurrent.Await
-import jp.ijufumi.openreports.gateways.datastores.database.entities.Member
+import jp.ijufumi.openreports.models.outputs.Member
 import queries.{memberQuery => query}
 import jp.ijufumi.openreports.gateways.datastores.database.repositories.MemberRepository
 import slick.jdbc.JdbcBackend.Database
@@ -16,7 +16,7 @@ class MemberRepositoryImpl @Inject() (db: Database) extends MemberRepository {
     if (members.isEmpty) {
       return None
     }
-    Some(members.head)
+    Some(members.head).map(m => Member(m))
   }
 
   override def getByGoogleId(googleId: String): Option[Member] = {
@@ -26,7 +26,7 @@ class MemberRepositoryImpl @Inject() (db: Database) extends MemberRepository {
     if (members.isEmpty) {
       return None
     }
-    Some(members.head)
+    Some(members.head).map(m => Member(m))
   }
 
   override def getMemberByEmail(email: String): Option[Member] = {
@@ -36,16 +36,16 @@ class MemberRepositoryImpl @Inject() (db: Database) extends MemberRepository {
     if (members.isEmpty) {
       return None
     }
-    Some(members.head)
+    Some(members.head).map(m => Member(m))
   }
 
   override def register(member: Member): Option[Member] = {
-    val register = (query += member).withPinnedSession
+    val register = (query += member.toEntity).withPinnedSession
     Await.result(db.run(register), queryTimeout)
     getById(member.id)
   }
 
   override def update(member: Member): Unit = {
-    query.insertOrUpdate(member).withPinnedSession
+    query.insertOrUpdate(member.toEntity).withPinnedSession
   }
 }

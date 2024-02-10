@@ -1,7 +1,7 @@
 package jp.ijufumi.openreports.services.impl
 
 import com.google.inject.Inject
-import jp.ijufumi.openreports.models.outputs.{Member => MemberResponse, Permissions}
+import jp.ijufumi.openreports.models.outputs.{Member, Permissions}
 import jp.ijufumi.openreports.gateways.datastores.database.repositories.{
   FunctionRepository,
   MemberRepository,
@@ -18,14 +18,14 @@ class MemberServiceImpl @Inject() (
     functionRepository: FunctionRepository,
     workspaceRepository: WorkspaceRepository,
 ) extends MemberService {
-  override def update(memberId: String, name: String, password: String): Option[MemberResponse] = {
+  override def update(memberId: String, name: String, password: String): Option[Member] = {
     val memberOpt = memberRepository.getById(memberId)
     if (memberOpt.isEmpty) {
       return None
     }
     val newMember = memberOpt.get.copy(name = name, password = password)
     memberRepository.update(newMember)
-    Some(MemberResponse(memberRepository.getById(memberId).get, Seq.empty, ""))
+    memberRepository.getById(memberId)
   }
 
   override def permissions(memberId: String, workspaceId: String): Option[Permissions] = {

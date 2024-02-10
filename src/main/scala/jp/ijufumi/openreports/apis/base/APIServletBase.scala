@@ -1,5 +1,6 @@
 package jp.ijufumi.openreports.apis.base
 
+import jp.ijufumi.openreports.models.outputs.Member
 import jp.ijufumi.openreports.utils.Logging
 import jp.ijufumi.openreports.models.value.enums.{JdbcDriverClasses, RoleTypes, StorageTypes}
 import org.json4s.{DefaultFormats, Formats}
@@ -35,7 +36,7 @@ abstract class APIServletBase
         new EnumNameSerializer(RoleTypes),
         new EnumNameSerializer(JdbcDriverClasses),
       ),
-    ).flatten
+    ).flatten + Member.memberSerializer
   }
 
   before() {
