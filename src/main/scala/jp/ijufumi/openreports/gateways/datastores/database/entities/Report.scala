@@ -13,11 +13,7 @@ case class Report(
     createdAt: Long = Dates.currentTimestamp(),
     updatedAt: Long = Dates.currentTimestamp(),
     versions: Long = 1,
-) {
-  def copyForUpdate(input: UpdateReport): Report = {
-    this.copy(name = input.name, templateId = input.templateId, dataSourceId = input.dataSourceId)
-  }
-}
+)
 
 class Reports(tag: Tag)
     extends EntityBase[Report](

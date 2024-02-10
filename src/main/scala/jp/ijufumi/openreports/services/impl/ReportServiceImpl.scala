@@ -3,7 +3,6 @@ package jp.ijufumi.openreports.services.impl
 import util.control.Breaks._
 import com.google.inject.Inject
 import jp.ijufumi.openreports.gateways.datastores.database.entities.{
-  Report,
   ReportGroup,
   ReportGroupReport,
   Template,
@@ -31,7 +30,7 @@ import jp.ijufumi.openreports.models.inputs.{
 }
 import jp.ijufumi.openreports.models.outputs.{
   Lists,
-  Report => ReportResponse,
+  Report,
   ReportGroup => ReportGroupResponse,
   Template => TemplateResponse,
 }
@@ -55,20 +54,19 @@ class ReportServiceImpl @Inject() (
       page: Int,
       limit: Int,
       templateId: String = "",
-  ): Lists[ReportResponse] = {
+  ): Lists[Report] = {
     val offset = List(page * limit, 0).max
     val (results, count) = reportRepository.getsWithTemplate(workspaceId, offset, limit, templateId)
-    val items = results.map(r => ReportResponse(r))
-    Lists(items, offset, limit, count)
+    Lists(results, offset, limit, count)
   }
 
-  override def getReport(workspaceId: String, id: String): Option[ReportResponse] = {
+  override def getReport(workspaceId: String, id: String): Option[Report] = {
     val result = reportRepository.getByIdWithTemplate(workspaceId, id)
     if (result.isEmpty) {
       return None
     }
 
-    Some(ReportResponse(result.get))
+    Some(result.get)
   }
 
   override def getTemplates(workspaceId: String, page: Int, limit: Int): Lists[TemplateResponse] = {
@@ -91,11 +89,12 @@ class ReportServiceImpl @Inject() (
     if (result.isEmpty) {
       return None
     }
-    val (report, template) = result.get
+    val report = result.get
+    val template = report.reportTemplate.get
     outputService.output(workspaceId, template.filePath, template.storageType, report.dataSourceId)
   }
 
-  override def createReport(workspaceId: String, input: CreateReport): Option[ReportResponse] = {
+  override def createReport(workspaceId: String, input: CreateReport): Option[Report] = {
     if (input.dataSourceId.isDefined) {
       val dataSourceOpt = dataSourceService.getDataSource(workspaceId, input.dataSourceId.get)
       if (dataSourceOpt.isEmpty) {
@@ -111,7 +110,7 @@ class ReportServiceImpl @Inject() (
       workspaceId: String,
       id: String,
       input: UpdateReport,
-  ): Option[ReportResponse] = {
+  ): Option[Report] = {
     val reportOpt = reportRepository.getById(workspaceId, id)
     if (reportOpt.isEmpty) {
       return None

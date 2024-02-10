@@ -1,7 +1,7 @@
 package jp.ijufumi.openreports.gateways.datastores.database.repositories.impl
 
 import com.google.inject.Inject
-import jp.ijufumi.openreports.gateways.datastores.database.entities.{Report, Template}
+import jp.ijufumi.openreports.models.outputs.Report
 import queries.{reportQuery => query, templateQuery}
 import jp.ijufumi.openreports.gateways.datastores.database.repositories.ReportRepository
 import slick.jdbc.PostgresProfile.api._
@@ -25,7 +25,7 @@ class ReportRepositoryImpl @Inject() (db: Database) extends ReportRepository {
     if (limit > 0) {
       filtered = filtered.take(limit)
     }
-    (Await.result(db.run(filtered.result), queryTimeout), count)
+    (Await.result(db.run(filtered.result), queryTimeout).map(r => Report(r)), count)
   }
 
   override def getsWithTemplate(
@@ -33,7 +33,7 @@ class ReportRepositoryImpl @Inject() (db: Database) extends ReportRepository {
       offset: Int = 0,
       limit: Int = -1,
       templateId: String = "",
-  ): (Seq[(Report, Template)], Int) = {
+  ): (Seq[Report], Int) = {
     var getById = query
       .filter(_.workspaceId === workspaceId)
       .join(templateQuery)
@@ -51,7 +51,7 @@ class ReportRepositoryImpl @Inject() (db: Database) extends ReportRepository {
       getById = getById.take(limit)
     }
 
-    (Await.result(db.run(getById.result), queryTimeout), count)
+    (Await.result(db.run(getById.result), queryTimeout).map(r => Report(r._1, r._2)), count)
   }
 
   override def getById(workspaceId: String, id: String): Option[Report] = {
@@ -62,13 +62,13 @@ class ReportRepositoryImpl @Inject() (db: Database) extends ReportRepository {
     if (models.isEmpty) {
       return None
     }
-    Some(models.head)
+    Some(models.head).map(r => Report(r))
   }
 
   override def getByIdWithTemplate(
       workspaceId: String,
       id: String,
-  ): Option[(Report, Template)] = {
+  ): Option[Report] = {
     val getById = query
       .filter(_.id === id)
       .join(templateQuery)
@@ -77,18 +77,18 @@ class ReportRepositoryImpl @Inject() (db: Database) extends ReportRepository {
     if (models.isEmpty) {
       return None
     }
-    Some(models.head)
+    Some(models.head).map(r => Report(r._1, r._2))
   }
 
   override def register(model: Report): Option[Report] = {
-    val register = (query += model).withPinnedSession
+    val register = (query += model.toEntity).withPinnedSession
     Await.result(db.run(register), queryTimeout)
     getById(model.workspaceId, model.id)
   }
 
   override def update(model: Report): Unit = {
     val newModel = model.copy(updatedAt = Dates.currentTimestamp())
-    val updateQuery = query.insertOrUpdate(newModel).withPinnedSession
+    val updateQuery = query.insertOrUpdate(newModel.toEntity).withPinnedSession
     Await.result(db.run(updateQuery), queryTimeout)
   }
 
