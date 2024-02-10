@@ -4,8 +4,7 @@ import jp.ijufumi.openreports.services.{LoginService, WorkspaceService}
 import com.google.inject.{Inject, Singleton}
 import jp.ijufumi.openreports.configs.Config
 import jp.ijufumi.openreports.utils.{Hash, IDs, Logging, Strings}
-import jp.ijufumi.openreports.models.outputs.{Member => MemberReponse}
-import jp.ijufumi.openreports.gateways.datastores.database.entities._
+import jp.ijufumi.openreports.models.outputs.Member
 import jp.ijufumi.openreports.gateways.auth.google.GoogleRepository
 import jp.ijufumi.openreports.gateways.datastores.cache.{CacheKeys, CacheWrapper}
 import jp.ijufumi.openreports.gateways.datastores.database.repositories.{
@@ -24,7 +23,7 @@ class LoginServiceImpl @Inject() (
     workspaceService: WorkspaceService,
 ) extends LoginService
     with Logging {
-  override def login(input: Login): Option[MemberReponse] = {
+  override def login(input: Login): Option[Member] = {
     val email = input.email
     val password = input.password
     val memberOpt = memberRepository.getMemberByEmail(email)
@@ -73,7 +72,7 @@ class LoginServiceImpl @Inject() (
 
   override def getAuthorizationUrl: String = googleRepository.getAuthorizationUrl()
 
-  override def loginWithGoogle(input: GoogleLogin): Option[MemberReponse] = {
+  override def loginWithGoogle(input: GoogleLogin): Option[Member] = {
     val tokenOpt = googleRepository.fetchToken(input.code)
     if (tokenOpt.isEmpty) {
       logger.info("Missing token")
@@ -104,6 +103,7 @@ class LoginServiceImpl @Inject() (
       id = IDs.ulid(),
       googleId = Some(userInfo.id),
       email = userInfo.email,
+      password = "",
       name = userInfo.name,
     )
 
@@ -119,7 +119,10 @@ class LoginServiceImpl @Inject() (
     }
   }
 
-  def getMemberByToken(authorizationHeader: String, generateToken: Boolean = true): Option[MemberReponse] = {
+  def getMemberByToken(
+      authorizationHeader: String,
+      generateToken: Boolean = true,
+  ): Option[Member] = {
     val memberOpt = getMember(authorizationHeader)
     if (memberOpt.isEmpty) {
       return None
@@ -127,15 +130,15 @@ class LoginServiceImpl @Inject() (
     if (generateToken) {
       return makeResponse(memberOpt.get)
     }
-    Some(MemberReponse(memberOpt.get, Seq.empty, ""))
+    memberOpt
   }
 
-  private def makeResponse(member: Member): Option[MemberReponse] = {
+  private def makeResponse(member: Member): Option[Member] = {
     val apiToken = Hash.generateJWT(member.id, Config.API_TOKEN_EXPIRATION_SEC)
     cacheWrapper.put(CacheKeys.ApiToken, apiToken, member.id)
     val workspaces = workspaceRepository.getsByMemberId(member.id)
     Some(
-      MemberReponse(member, workspaces, apiToken),
+      member.withApiToken(apiToken).withWorkspace(workspaces),
     )
   }
 
