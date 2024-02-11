@@ -5,7 +5,6 @@ import jp.ijufumi.openreports.configs.Config
 import jp.ijufumi.openreports.gateways.datastores.database.entities.{
   StorageS3,
   Template,
-  WorkspaceMember,
 }
 import jp.ijufumi.openreports.exceptions.NotFoundException
 import jp.ijufumi.openreports.gateways.datastores.database.repositories.{
@@ -26,7 +25,7 @@ import jp.ijufumi.openreports.models.outputs.{
   Lists,
   Report,
   Workspace,
-  WorkspaceMember => WorkspaceMemberResponse,
+  WorkspaceMember,
 }
 import jp.ijufumi.openreports.models.value.enums.{RoleTypes, StorageTypes}
 import jp.ijufumi.openreports.services.{StorageService, WorkspaceService}
@@ -101,10 +100,10 @@ class WorkspaceServiceImpl @Inject() (
     workspaceRepository.update(newWorkspace)
   }
 
-  override def getWorkspaceMembers(id: String): Lists[WorkspaceMemberResponse] = {
+  override def getWorkspaceMembers(id: String): Lists[WorkspaceMember] = {
     val results = workspaceMemberRepository.getsWithMember(id)
     Lists(
-      results.map(v => WorkspaceMemberResponse(v._1, v._2)),
+      results,
       0,
       results.size,
       results.size,
@@ -114,15 +113,14 @@ class WorkspaceServiceImpl @Inject() (
   override def getWorkspaceMember(
       workspaceId: String,
       memberId: String,
-  ): Option[WorkspaceMemberResponse] = {
-    val results = workspaceMemberRepository.getByIdWithMember(workspaceId, memberId)
-    results.map(v => WorkspaceMemberResponse(v._1, v._2))
+  ): Option[WorkspaceMember] = {
+    workspaceMemberRepository.getByIdWithMember(workspaceId, memberId)
   }
 
   override def createWorkspaceMember(
       workspaceId: String,
       input: CreateWorkspaceMember,
-  ): Option[WorkspaceMemberResponse] = {
+  ): Option[WorkspaceMember] = {
     val workspaceMember = WorkspaceMember(
       workspaceId,
       input.memberId,
@@ -136,7 +134,7 @@ class WorkspaceServiceImpl @Inject() (
       workspaceId: String,
       memberId: String,
       input: UpdateWorkspaceMember,
-  ): Option[WorkspaceMemberResponse] = {
+  ): Option[WorkspaceMember] = {
     val workspaceMemberOpt = workspaceMemberRepository.getById(workspaceId, memberId)
     if (workspaceMemberOpt.isEmpty) {
       return None
