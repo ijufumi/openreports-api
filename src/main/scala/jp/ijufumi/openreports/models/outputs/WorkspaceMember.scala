@@ -2,7 +2,6 @@ package jp.ijufumi.openreports.models.outputs
 
 import jp.ijufumi.openreports.gateways.datastores.database.entities.{
   Member => MemberEntity,
-  WorkspaceMember,
   WorkspaceMember => WorkspaceMemberEntity,
 }
 import jp.ijufumi.openreports.models.inputs.UpdateWorkspaceMember
