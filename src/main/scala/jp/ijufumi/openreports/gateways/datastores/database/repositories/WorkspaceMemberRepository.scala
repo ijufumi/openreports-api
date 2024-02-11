@@ -1,6 +1,6 @@
 package jp.ijufumi.openreports.gateways.datastores.database.repositories
 
-import jp.ijufumi.openreports.gateways.datastores.database.entities.{Member, WorkspaceMember}
+import jp.ijufumi.openreports.models.outputs.WorkspaceMember
 
 trait WorkspaceMemberRepository {
   def getById(workspaceId: String, memberId: String): Option[WorkspaceMember]
@@ -9,9 +9,9 @@ trait WorkspaceMemberRepository {
 
   def getsByMemberId(memberId: String): Seq[WorkspaceMember]
 
-  def getByIdWithMember(workspaceId: String, memberId: String): Option[(WorkspaceMember, Member)]
+  def getByIdWithMember(workspaceId: String, memberId: String): Option[WorkspaceMember]
 
-  def getsWithMember(workspaceId: String): Seq[(WorkspaceMember, Member)]
+  def getsWithMember(workspaceId: String): Seq[WorkspaceMember]
 
   def register(workspaceMember: WorkspaceMember): Option[WorkspaceMember]
 
