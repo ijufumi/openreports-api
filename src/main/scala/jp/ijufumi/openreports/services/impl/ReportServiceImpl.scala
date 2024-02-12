@@ -2,7 +2,6 @@ package jp.ijufumi.openreports.services.impl
 
 import util.control.Breaks._
 import com.google.inject.Inject
-import jp.ijufumi.openreports.gateways.datastores.database.entities.ReportGroupReport
 import jp.ijufumi.openreports.gateways.datastores.database.repositories.{
   ReportGroupReportRepository,
   ReportGroupRepository,
@@ -24,7 +23,13 @@ import jp.ijufumi.openreports.models.inputs.{
   UpdateReportGroup,
   UpdateTemplate,
 }
-import jp.ijufumi.openreports.models.outputs.{Lists, Report, ReportGroup, Template}
+import jp.ijufumi.openreports.models.outputs.{
+  Lists,
+  Report,
+  ReportGroup,
+  ReportGroupReport,
+  Template,
+}
 import jp.ijufumi.openreports.models.value.enums.StorageTypes
 import org.scalatra.servlet.FileItem
 
