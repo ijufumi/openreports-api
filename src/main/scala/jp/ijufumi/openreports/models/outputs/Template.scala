@@ -2,7 +2,6 @@ package jp.ijufumi.openreports.models.outputs
 
 import jp.ijufumi.openreports.models.value.enums.StorageTypes.StorageType
 import jp.ijufumi.openreports.gateways.datastores.database.entities.{
-  Template,
   Template => ReportTemplateEntity,
 }
 import jp.ijufumi.openreports.models.inputs.UpdateTemplate
