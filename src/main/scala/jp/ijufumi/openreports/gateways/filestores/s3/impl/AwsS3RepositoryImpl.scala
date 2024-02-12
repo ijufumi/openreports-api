@@ -2,7 +2,7 @@ package jp.ijufumi.openreports.gateways.filestores.s3.impl
 
 import com.google.inject.Inject
 import jp.ijufumi.openreports.configs.Config
-import jp.ijufumi.openreports.gateways.datastores.database.entities.StorageS3
+import jp.ijufumi.openreports.models.outputs.StorageS3
 import jp.ijufumi.openreports.exceptions.NotFoundException
 import jp.ijufumi.openreports.gateways.datastores.database.repositories.StorageS3Repository
 import jp.ijufumi.openreports.gateways.filestores.s3.AwsS3Repository
@@ -17,7 +17,8 @@ import java.nio.file.{Files, Path}
 import java.time.Duration
 import scala.util.Using
 
-class AwsS3RepositoryImpl @Inject() (storageRepository: StorageS3Repository) extends AwsS3Repository {
+class AwsS3RepositoryImpl @Inject() (storageRepository: StorageS3Repository)
+    extends AwsS3Repository {
   override def get(workspaceId: String, key: String): Path = {
     val storage = this.getStorage(workspaceId)
     val request = GetObjectRequest.builder().bucket(storage.s3BucketName).key(key).build()
