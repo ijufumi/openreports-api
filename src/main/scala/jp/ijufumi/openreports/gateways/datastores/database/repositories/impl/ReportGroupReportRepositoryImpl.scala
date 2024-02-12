@@ -1,7 +1,7 @@
 package jp.ijufumi.openreports.gateways.datastores.database.repositories.impl
 
 import com.google.inject.Inject
-import jp.ijufumi.openreports.gateways.datastores.database.entities.ReportGroupReport
+import jp.ijufumi.openreports.models.outputs.ReportGroupReport
 import jp.ijufumi.openreports.gateways.datastores.database.repositories.ReportGroupReportRepository
 import jp.ijufumi.openreports.gateways.datastores.database.repositories.impl.queries.{
   reportGroupReportQuery => query,
@@ -22,7 +22,7 @@ class ReportGroupReportRepositoryImpl @Inject() (db: Database) extends ReportGro
     if (limit > 0) {
       filtered = filtered.take(limit)
     }
-    (Await.result(db.run(filtered.result), queryTimeout), count)
+    (Await.result(db.run(filtered.result), queryTimeout).map(r => ReportGroupReport(r)), count)
   }
 
   override def getById(id: String): Option[ReportGroupReport] = {
@@ -32,23 +32,23 @@ class ReportGroupReportRepositoryImpl @Inject() (db: Database) extends ReportGro
     if (models.isEmpty) {
       return None
     }
-    Some(models.head)
+    Some(models.head).map(r => ReportGroupReport(r))
   }
 
   override def getByIds(ids: Seq[String]): Seq[ReportGroupReport] = {
     val getById = query
       .filter(_.id.inSet(ids))
-    Await.result(db.run(getById.result), queryTimeout)
+    Await.result(db.run(getById.result), queryTimeout).map(r => ReportGroupReport(r))
   }
 
   override def register(model: ReportGroupReport): Option[ReportGroupReport] = {
-    val register = (query += model).withPinnedSession
+    val register = (query += model.toEntity).withPinnedSession
     Await.result(db.run(register), queryTimeout)
     getById(model.id)
   }
 
   override def registerInBatch(model: Seq[ReportGroupReport]): Seq[ReportGroupReport] = {
-    val register = (query ++= model).withPinnedSession
+    val register = (query ++= model.map(r => r.toEntity)).withPinnedSession
     Await.result(db.run(register), queryTimeout)
     val ids = model.map(m => m.id)
     getByIds(ids)
@@ -56,7 +56,7 @@ class ReportGroupReportRepositoryImpl @Inject() (db: Database) extends ReportGro
 
   override def update(model: ReportGroupReport): Unit = {
     val newModel = model.copy(updatedAt = Dates.currentTimestamp())
-    val updateQuery = query.insertOrUpdate(newModel).withPinnedSession
+    val updateQuery = query.insertOrUpdate(newModel.toEntity).withPinnedSession
     Await.result(db.run(updateQuery), queryTimeout)
   }
 
