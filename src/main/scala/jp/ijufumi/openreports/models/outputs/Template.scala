@@ -2,8 +2,11 @@ package jp.ijufumi.openreports.models.outputs
 
 import jp.ijufumi.openreports.models.value.enums.StorageTypes.StorageType
 import jp.ijufumi.openreports.gateways.datastores.database.entities.{
+  Template,
   Template => ReportTemplateEntity,
 }
+import jp.ijufumi.openreports.models.inputs.UpdateTemplate
+import jp.ijufumi.openreports.utils.Dates
 
 case class Template(
     id: String,
@@ -12,9 +15,27 @@ case class Template(
     workspaceId: String,
     storageType: StorageType,
     fileSize: Long,
-    createdAt: Long,
-    updatedAt: Long,
-)
+    createdAt: Long = Dates.currentTimestamp(),
+    updatedAt: Long = Dates.currentTimestamp(),
+    versions: Long = 1,
+) {
+  def toEntity: ReportTemplateEntity = {
+    ReportTemplateEntity(
+      this.id,
+      this.name,
+      this.filePath,
+      this.workspaceId,
+      this.storageType,
+      this.fileSize,
+      this.createdAt,
+      this.updatedAt,
+      this.versions,
+    )
+  }
+  def copyForUpdate(input: UpdateTemplate): Template = {
+    this.copy(name = input.name)
+  }
+}
 
 object Template {
   def apply(entity: ReportTemplateEntity): Template = {
@@ -27,6 +48,7 @@ object Template {
       entity.fileSize,
       entity.createdAt,
       entity.updatedAt,
+      entity.versions,
     )
   }
 }
