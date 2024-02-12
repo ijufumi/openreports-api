@@ -2,7 +2,7 @@ package jp.ijufumi.openreports.services.impl
 
 import util.control.Breaks._
 import com.google.inject.Inject
-import jp.ijufumi.openreports.gateways.datastores.database.entities.{ReportGroup, ReportGroupReport}
+import jp.ijufumi.openreports.gateways.datastores.database.entities.ReportGroupReport
 import jp.ijufumi.openreports.gateways.datastores.database.repositories.{
   ReportGroupReportRepository,
   ReportGroupRepository,
@@ -24,12 +24,7 @@ import jp.ijufumi.openreports.models.inputs.{
   UpdateReportGroup,
   UpdateTemplate,
 }
-import jp.ijufumi.openreports.models.outputs.{
-  Lists,
-  Report,
-  ReportGroup => ReportGroupResponse,
-  Template,
-}
+import jp.ijufumi.openreports.models.outputs.{Lists, Report, ReportGroup, Template}
 import jp.ijufumi.openreports.models.value.enums.StorageTypes
 import org.scalatra.servlet.FileItem
 
@@ -162,22 +157,20 @@ class ReportServiceImpl @Inject() (
     storageService.delete(workspaceId, template.filePath, template.storageType)
   }
 
-  override def getGroups(workspaceId: String, page: Int, limit: Int): Lists[ReportGroupResponse] = {
+  override def getGroups(workspaceId: String, page: Int, limit: Int): Lists[ReportGroup] = {
     val offset = List(page * limit, 0).max
     val (results, count) = reportGroupRepository.gets(workspaceId, offset, limit)
-    val items = results.map(r => ReportGroupResponse(r))
-    Lists(items, offset, limit, count)
+    Lists(results, offset, limit, count)
   }
 
-  override def getGroup(workspaceId: String, id: String): Option[ReportGroupResponse] = {
-    val report = reportGroupRepository.getById(workspaceId, id)
-    report.map(r => ReportGroupResponse(r))
+  override def getGroup(workspaceId: String, id: String): Option[ReportGroup] = {
+    reportGroupRepository.getById(workspaceId, id)
   }
 
   override def createGroup(
       workspaceId: String,
       input: CreateReportGroup,
-  ): Option[ReportGroupResponse] = {
+  ): Option[ReportGroup] = {
     val reportGroup = ReportGroup(IDs.ulid(), input.name, workspaceId)
     reportGroupRepository.register(reportGroup)
     for (reportId <- input.reportIds) {
@@ -197,7 +190,7 @@ class ReportServiceImpl @Inject() (
       workspaceId: String,
       id: String,
       input: UpdateReportGroup,
-  ): Option[ReportGroupResponse] = {
+  ): Option[ReportGroup] = {
     val reportGroupOpt = reportGroupRepository.getById(workspaceId, id)
     if (reportGroupOpt.isEmpty) {
       return None
