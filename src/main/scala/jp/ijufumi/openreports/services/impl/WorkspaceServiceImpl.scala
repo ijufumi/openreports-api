@@ -2,7 +2,6 @@ package jp.ijufumi.openreports.services.impl
 
 import com.google.inject.Inject
 import jp.ijufumi.openreports.configs.Config
-import jp.ijufumi.openreports.gateways.datastores.database.entities.StorageS3
 import jp.ijufumi.openreports.exceptions.NotFoundException
 import jp.ijufumi.openreports.gateways.datastores.database.repositories.{
   ReportRepository,
@@ -18,7 +17,14 @@ import jp.ijufumi.openreports.models.inputs.{
   UpdateWorkspace,
   UpdateWorkspaceMember,
 }
-import jp.ijufumi.openreports.models.outputs.{Lists, Report, Template, Workspace, WorkspaceMember}
+import jp.ijufumi.openreports.models.outputs.{
+  Lists,
+  Report,
+  StorageS3,
+  Template,
+  Workspace,
+  WorkspaceMember,
+}
 import jp.ijufumi.openreports.models.value.enums.{RoleTypes, StorageTypes}
 import jp.ijufumi.openreports.services.{StorageService, WorkspaceService}
 import jp.ijufumi.openreports.utils.{IDs, Strings}
