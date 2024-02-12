@@ -11,11 +11,7 @@ case class ReportGroup(
     createdAt: Long = Dates.currentTimestamp(),
     updatedAt: Long = Dates.currentTimestamp(),
     versions: Long = 1,
-) {
-  def copyForUpdate(input: UpdateReportGroup): ReportGroup = {
-    this.copy(name = input.name)
-  }
-}
+)
 
 class ReportGroups(tag: Tag)
     extends EntityBase[ReportGroup](
