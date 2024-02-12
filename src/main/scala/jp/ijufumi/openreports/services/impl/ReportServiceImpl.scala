@@ -2,11 +2,7 @@ package jp.ijufumi.openreports.services.impl
 
 import util.control.Breaks._
 import com.google.inject.Inject
-import jp.ijufumi.openreports.gateways.datastores.database.entities.{
-  ReportGroup,
-  ReportGroupReport,
-  Template,
-}
+import jp.ijufumi.openreports.gateways.datastores.database.entities.{ReportGroup, ReportGroupReport}
 import jp.ijufumi.openreports.gateways.datastores.database.repositories.{
   ReportGroupReportRepository,
   ReportGroupRepository,
@@ -32,7 +28,7 @@ import jp.ijufumi.openreports.models.outputs.{
   Lists,
   Report,
   ReportGroup => ReportGroupResponse,
-  Template => TemplateResponse,
+  Template,
 }
 import jp.ijufumi.openreports.models.value.enums.StorageTypes
 import org.scalatra.servlet.FileItem
@@ -69,19 +65,14 @@ class ReportServiceImpl @Inject() (
     Some(result.get)
   }
 
-  override def getTemplates(workspaceId: String, page: Int, limit: Int): Lists[TemplateResponse] = {
+  override def getTemplates(workspaceId: String, page: Int, limit: Int): Lists[Template] = {
     val offset = List(page * limit, 0).max
     val (results, count) = templateRepository.gets(workspaceId, offset, limit)
-    val items = results.map(r => TemplateResponse(r))
-    Lists(items, offset, limit, count)
+    Lists(results, offset, limit, count)
   }
 
-  override def getTemplate(workspaceId: String, id: String): Option[TemplateResponse] = {
-    val result = templateRepository.getById(workspaceId, id)
-    if (result.isEmpty) {
-      return None
-    }
-    Some(TemplateResponse(result.get))
+  override def getTemplate(workspaceId: String, id: String): Option[Template] = {
+    templateRepository.getById(workspaceId, id)
   }
 
   override def outputReport(workspaceId: String, id: String): Option[File] = {
@@ -135,7 +126,7 @@ class ReportServiceImpl @Inject() (
       workspaceId: String,
       req: CreateTemplate,
       fileItem: FileItem,
-  ): Option[TemplateResponse] = {
+  ): Option[Template] = {
     val key = Strings.generateRandomSting(10)()
     val storageType = StorageTypes.Local
     Using(TemporaryFiles.createDir()) { tmpDir =>
@@ -145,21 +136,20 @@ class ReportServiceImpl @Inject() (
     }
     val template = Template(IDs.ulid(), req.name, key, workspaceId, storageType, fileItem.size)
     templateRepository.register(template)
-    Some(TemplateResponse(template))
   }
 
   override def updateTemplate(
       workspaceId: String,
       id: String,
       input: UpdateTemplate,
-  ): Option[TemplateResponse] = {
+  ): Option[Template] = {
     val templateOpt = templateRepository.getById(workspaceId, id)
     if (templateOpt.isEmpty) {
       return None
     }
     val template = templateOpt.get.copyForUpdate(input)
     templateRepository.update(template)
-    Some(TemplateResponse(template))
+    this.getTemplate(workspaceId, id)
   }
 
   override def deleteTemplate(workspaceId: String, id: String): Unit = {

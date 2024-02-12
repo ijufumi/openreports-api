@@ -1,6 +1,6 @@
 package jp.ijufumi.openreports.gateways.datastores.database.repositories
 
-import jp.ijufumi.openreports.gateways.datastores.database.entities.Template
+import jp.ijufumi.openreports.models.outputs.Template
 
 trait TemplateRepository {
 
