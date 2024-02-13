@@ -15,11 +15,7 @@ case class DataSource(
     createdAt: Long = Dates.currentTimestamp(),
     updatedAt: Long = Dates.currentTimestamp(),
     versions: Long = 1,
-) {
-  def copyForUpdate(input: UpdateDataSource): DataSource = {
-    this.copy(name = input.name)
-  }
-}
+)
 
 class DataSources(tag: Tag)
     extends EntityBase[DataSource](

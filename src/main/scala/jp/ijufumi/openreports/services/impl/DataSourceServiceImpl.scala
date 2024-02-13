@@ -1,12 +1,11 @@
 package jp.ijufumi.openreports.services.impl
 
 import com.google.inject.Inject
-import jp.ijufumi.openreports.gateways.datastores.database.entities.DataSource
 import jp.ijufumi.openreports.exceptions.NotFoundException
 import jp.ijufumi.openreports.gateways.datastores.database.repositories.DataSourceRepository
 import jp.ijufumi.openreports.services.DataSourceService
 import jp.ijufumi.openreports.models.inputs.{CreateDataSource, UpdateDataSource}
-import jp.ijufumi.openreports.models.outputs.{DataSource => DataSourceResponse, Lists}
+import jp.ijufumi.openreports.models.outputs.{DataSource, Lists}
 import jp.ijufumi.openreports.utils.IDs
 import jp.ijufumi.openreports.gateways.datastores.database.pool.ConnectionPool
 
@@ -19,35 +18,34 @@ class DataSourceServiceImpl @Inject() (dataSourceRepository: DataSourceRepositor
     if (dataSourceOpt.isEmpty) {
       throw new NotFoundException()
     }
-    val (dataSource, driverType) = dataSourceOpt.get
+    val dataSource = dataSourceOpt.get
     ConnectionPool.newConnection(
       dataSource.name,
       dataSource.username,
       dataSource.password,
       dataSource.url,
-      driverType.jdbcDriverClass,
+      dataSource.driverType.get.jdbcDriverClass,
     )
   }
 
-  override def getDataSources(workspaceId: String): Lists[DataSourceResponse] = {
+  override def getDataSources(workspaceId: String): Lists[DataSource] = {
     val dataSources = dataSourceRepository.getAllWithDriverType(workspaceId)
     Lists(
-      dataSources.map(d => DataSourceResponse(d._1, d._2)),
+      dataSources,
       0,
       dataSources.size,
       dataSources.size,
     )
   }
 
-  override def getDataSource(workspaceId: String, id: String): Option[DataSourceResponse] = {
-    val dataSource = dataSourceRepository.getByIdWithDriverType(workspaceId, id)
-    dataSource.map(v => DataSourceResponse(v._1, v._2))
+  override def getDataSource(workspaceId: String, id: String): Option[DataSource] = {
+    dataSourceRepository.getByIdWithDriverType(workspaceId, id)
   }
 
   override def registerDataSource(
       workspaceId: String,
       requestVal: CreateDataSource,
-  ): Option[DataSourceResponse] = {
+  ): Option[DataSource] = {
     val dataSource = DataSource(
       IDs.ulid(),
       requestVal.name,
@@ -65,7 +63,7 @@ class DataSourceServiceImpl @Inject() (dataSourceRepository: DataSourceRepositor
       workspaceId: String,
       id: String,
       requestVal: UpdateDataSource,
-  ): Option[DataSourceResponse] = {
+  ): Option[DataSource] = {
     val dataSource = dataSourceRepository.getById(workspaceId, id)
     if (dataSource.isEmpty) {
       return None
