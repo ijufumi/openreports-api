@@ -1,7 +1,7 @@
 package jp.ijufumi.openreports.gateways.datastores.database.repositories.impl
 
 import com.google.inject.Inject
-import jp.ijufumi.openreports.gateways.datastores.database.entities.ReportParameter
+import jp.ijufumi.openreports.models.outputs.ReportParameter
 import jp.ijufumi.openreports.gateways.datastores.database.repositories.ReportParameterRepository
 import jp.ijufumi.openreports.gateways.datastores.database.repositories.impl.queries.{
   reportParameterQuery => query,
@@ -23,7 +23,7 @@ class ReportParameterRepositoryImpl @Inject() (db: Database) extends ReportParam
     if (limit > 0) {
       filtered = filtered.take(limit)
     }
-    (Await.result(db.run(filtered.result), queryTimeout), count)
+    (Await.result(db.run(filtered.result), queryTimeout).map(r => ReportParameter(r)), count)
   }
 
   override def getById(workspaceId: String, id: String): Option[ReportParameter] = {
@@ -34,18 +34,18 @@ class ReportParameterRepositoryImpl @Inject() (db: Database) extends ReportParam
     if (models.isEmpty) {
       return None
     }
-    Some(models.head)
+    Some(models.head).map(r => ReportParameter(r))
   }
 
   override def register(model: ReportParameter): Option[ReportParameter] = {
-    val register = (query += model).withPinnedSession
+    val register = (query += model.toEntity).withPinnedSession
     Await.result(db.run(register), queryTimeout)
     getById(model.workspaceId, model.id)
   }
 
   override def update(model: ReportParameter): Unit = {
     val newModel = model.copy(updatedAt = Dates.currentTimestamp())
-    val updateQuery = query.insertOrUpdate(newModel).withPinnedSession
+    val updateQuery = query.insertOrUpdate(newModel.toEntity).withPinnedSession
     Await.result(db.run(updateQuery), queryTimeout)
   }
 
