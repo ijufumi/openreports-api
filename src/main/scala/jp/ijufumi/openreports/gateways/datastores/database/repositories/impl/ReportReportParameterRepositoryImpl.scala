@@ -43,7 +43,7 @@ class ReportReportParameterRepositoryImpl @Inject() (db: Database)
   }
 
   override def register(model: ReportReportParameter): Option[ReportReportParameter] = {
-    val register = (query += model).withPinnedSession
+    val register = (query += model.toEntity).withPinnedSession
     Await.result(db.run(register), queryTimeout)
     getById(model.id)
   }
