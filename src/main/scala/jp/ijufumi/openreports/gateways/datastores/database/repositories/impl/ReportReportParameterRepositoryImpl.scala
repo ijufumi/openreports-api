@@ -1,7 +1,7 @@
 package jp.ijufumi.openreports.gateways.datastores.database.repositories.impl
 
 import com.google.inject.Inject
-import jp.ijufumi.openreports.gateways.datastores.database.entities.ReportReportParameter
+import jp.ijufumi.openreports.models.outputs.ReportReportParameter
 import jp.ijufumi.openreports.gateways.datastores.database.repositories.ReportReportParameterRepository
 import jp.ijufumi.openreports.gateways.datastores.database.repositories.impl.queries.{
   reportReportParameterQuery => query,
@@ -23,7 +23,7 @@ class ReportReportParameterRepositoryImpl @Inject() (db: Database)
     if (limit > 0) {
       filtered = filtered.take(limit)
     }
-    (Await.result(db.run(filtered.result), queryTimeout), count)
+    (Await.result(db.run(filtered.result), queryTimeout).map(r => ReportReportParameter(r)), count)
   }
 
   override def getById(id: String): Option[ReportReportParameter] = {
@@ -33,13 +33,13 @@ class ReportReportParameterRepositoryImpl @Inject() (db: Database)
     if (models.isEmpty) {
       return None
     }
-    Some(models.head)
+    Some(models.head).map(r => ReportReportParameter(r))
   }
 
   override def getByIds(ids: Seq[String]): Seq[ReportReportParameter] = {
     val getById = query
       .filter(_.id.inSet(ids))
-    Await.result(db.run(getById.result), queryTimeout)
+    Await.result(db.run(getById.result), queryTimeout).map(r => ReportReportParameter(r))
   }
 
   override def register(model: ReportReportParameter): Option[ReportReportParameter] = {
@@ -49,7 +49,7 @@ class ReportReportParameterRepositoryImpl @Inject() (db: Database)
   }
 
   override def registerInBatch(model: Seq[ReportReportParameter]): Seq[ReportReportParameter] = {
-    val register = (query ++= model).withPinnedSession
+    val register = (query ++= model.map(r => r.toEntity)).withPinnedSession
     Await.result(db.run(register), queryTimeout)
     val ids = model.map(m => m.id)
     getByIds(ids)
@@ -57,7 +57,7 @@ class ReportReportParameterRepositoryImpl @Inject() (db: Database)
 
   override def update(model: ReportReportParameter): Unit = {
     val newModel = model.copy(updatedAt = Dates.currentTimestamp())
-    val updateQuery = query.insertOrUpdate(newModel).withPinnedSession
+    val updateQuery = query.insertOrUpdate(newModel.toEntity).withPinnedSession
     Await.result(db.run(updateQuery), queryTimeout)
   }
 
