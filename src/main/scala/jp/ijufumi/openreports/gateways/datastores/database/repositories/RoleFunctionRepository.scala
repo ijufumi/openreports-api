@@ -1,6 +1,6 @@
 package jp.ijufumi.openreports.gateways.datastores.database.repositories
 
-import jp.ijufumi.openreports.gateways.datastores.database.entities.RoleFunction
+import jp.ijufumi.openreports.models.outputs.RoleFunction
 
 trait RoleFunctionRepository {
   def getAll(
