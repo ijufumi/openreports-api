@@ -1,8 +1,8 @@
 package jp.ijufumi.openreports.gateways.datastores.database.repositories.impl
 
 import com.google.inject.Inject
-import jp.ijufumi.openreports.models.outputs.{DriverType => DriverTypeModel}
 import jp.ijufumi.openreports.gateways.datastores.database.repositories.DriverTypeRepository
+import jp.ijufumi.openreports.interfaces.models.outputs.{DriverType => DriverTypeModel}
 import queries.{driverTypeQuery => query}
 import slick.jdbc.JdbcBackend.Database
 import slick.jdbc.PostgresProfile.api._

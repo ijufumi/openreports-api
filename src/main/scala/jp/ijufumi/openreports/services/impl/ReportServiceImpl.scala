@@ -8,6 +8,9 @@ import jp.ijufumi.openreports.gateways.datastores.database.repositories.{
   ReportRepository,
   TemplateRepository,
 }
+import jp.ijufumi.openreports.interfaces.models.inputs.{CreateReport, CreateReportGroup, CreateTemplate, UpdateReport, UpdateReportGroup, UpdateTemplate}
+import jp.ijufumi.openreports.interfaces.models.outputs.{Lists, Report, ReportGroup, ReportGroupReport, Template}
+import jp.ijufumi.openreports.interfaces.models.value.enums.StorageTypes
 import jp.ijufumi.openreports.services.{
   DataSourceService,
   OutputService,
@@ -15,22 +18,6 @@ import jp.ijufumi.openreports.services.{
   StorageService,
 }
 import jp.ijufumi.openreports.utils.{IDs, Strings, TemporaryFiles}
-import jp.ijufumi.openreports.models.inputs.{
-  CreateReport,
-  CreateReportGroup,
-  CreateTemplate,
-  UpdateReport,
-  UpdateReportGroup,
-  UpdateTemplate,
-}
-import jp.ijufumi.openreports.models.outputs.{
-  Lists,
-  Report,
-  ReportGroup,
-  ReportGroupReport,
-  Template,
-}
-import jp.ijufumi.openreports.models.value.enums.StorageTypes
 import org.scalatra.servlet.FileItem
 
 import java.io.File

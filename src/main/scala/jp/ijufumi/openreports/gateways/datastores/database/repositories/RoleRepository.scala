@@ -1,7 +1,7 @@
 package jp.ijufumi.openreports.gateways.datastores.database.repositories
 
 import jp.ijufumi.openreports.gateways.datastores.database.entities.Role
-import jp.ijufumi.openreports.models.value.enums.RoleTypes._
+import jp.ijufumi.openreports.interfaces.models.value.enums.RoleTypes._
 
 trait RoleRepository {
   def getAll: Seq[Role]

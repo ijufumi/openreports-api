@@ -1,11 +1,11 @@
 package jp.ijufumi.openreports.gateways.datastores.database.repositories.impl
 
 import com.google.inject.Inject
-import jp.ijufumi.openreports.models.outputs.ReportReportParameter
 import jp.ijufumi.openreports.gateways.datastores.database.repositories.ReportReportParameterRepository
 import jp.ijufumi.openreports.gateways.datastores.database.repositories.impl.queries.{
   reportReportParameterQuery => query,
 }
+import jp.ijufumi.openreports.interfaces.models.outputs.ReportReportParameter
 import jp.ijufumi.openreports.utils.Dates
 import slick.jdbc.JdbcBackend.Database
 import slick.jdbc.PostgresProfile.api._

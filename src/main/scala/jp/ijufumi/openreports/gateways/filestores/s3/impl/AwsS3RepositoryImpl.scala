@@ -2,10 +2,10 @@ package jp.ijufumi.openreports.gateways.filestores.s3.impl
 
 import com.google.inject.Inject
 import jp.ijufumi.openreports.configs.Config
-import jp.ijufumi.openreports.models.outputs.StorageS3
 import jp.ijufumi.openreports.exceptions.NotFoundException
 import jp.ijufumi.openreports.gateways.datastores.database.repositories.StorageS3Repository
 import jp.ijufumi.openreports.gateways.filestores.s3.AwsS3Repository
+import jp.ijufumi.openreports.interfaces.models.outputs.StorageS3
 import software.amazon.awssdk.auth.credentials.{AwsBasicCredentials, StaticCredentialsProvider}
 import software.amazon.awssdk.regions.Region
 import software.amazon.awssdk.services.s3.S3Client

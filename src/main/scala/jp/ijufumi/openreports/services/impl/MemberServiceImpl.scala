@@ -1,7 +1,6 @@
 package jp.ijufumi.openreports.services.impl
 
 import com.google.inject.Inject
-import jp.ijufumi.openreports.models.outputs.{Member, Permissions}
 import jp.ijufumi.openreports.gateways.datastores.database.repositories.{
   FunctionRepository,
   MemberRepository,
@@ -9,6 +8,7 @@ import jp.ijufumi.openreports.gateways.datastores.database.repositories.{
   WorkspaceMemberRepository,
   WorkspaceRepository,
 }
+import jp.ijufumi.openreports.interfaces.models.outputs.{Member, Permissions}
 import jp.ijufumi.openreports.services.MemberService
 
 class MemberServiceImpl @Inject() (

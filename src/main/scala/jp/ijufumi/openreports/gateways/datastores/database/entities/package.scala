@@ -1,17 +1,10 @@
 package jp.ijufumi.openreports.gateways.datastores.database
 
-import jp.ijufumi.openreports.models.value.enums.JdbcDriverClasses.JdbcDriverClass
-import jp.ijufumi.openreports.models.value.enums.RoleTypes.RoleType
-import jp.ijufumi.openreports.models.value.enums.StorageTypes.StorageType
+import jp.ijufumi.openreports.interfaces.models.value.enums.{ActionTypes, EmbeddedFunctionTypes, JdbcDriverClasses, ParameterTypes, RoleTypes, StorageTypes}
+import jp.ijufumi.openreports.interfaces.models.value.enums.JdbcDriverClasses.JdbcDriverClass
+import jp.ijufumi.openreports.interfaces.models.value.enums.RoleTypes.RoleType
+import jp.ijufumi.openreports.interfaces.models.value.enums.StorageTypes.StorageType
 import slick.jdbc.JdbcType
-import jp.ijufumi.openreports.models.value.enums.{
-  ActionTypes,
-  EmbeddedFunctionTypes,
-  JdbcDriverClasses,
-  ParameterTypes,
-  RoleTypes,
-  StorageTypes,
-}
 import slick.ast.BaseTypedType
 
 package object entities {

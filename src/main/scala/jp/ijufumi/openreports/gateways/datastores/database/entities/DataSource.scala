@@ -1,6 +1,6 @@
 package jp.ijufumi.openreports.gateways.datastores.database.entities
 
-import jp.ijufumi.openreports.models.inputs.UpdateDataSource
+import jp.ijufumi.openreports.interfaces.models.inputs.UpdateDataSource
 import jp.ijufumi.openreports.utils.Dates
 import slick.jdbc.PostgresProfile.api._
 

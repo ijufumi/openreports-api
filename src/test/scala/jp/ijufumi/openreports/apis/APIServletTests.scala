@@ -1,6 +1,6 @@
 package jp.ijufumi.openreports.apis
 
-import jp.ijufumi.openreports.apis.public_.HealthServlet
+import jp.ijufumi.openreports.interfaces.controllers.public_.HealthServlet
 import org.scalatra.test.scalatest._
 
 class APIServletTests extends ScalatraFunSuite {

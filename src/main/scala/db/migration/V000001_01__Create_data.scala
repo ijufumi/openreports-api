@@ -1,7 +1,7 @@
 package db.migration
 
-import jp.ijufumi.openreports.models.value.enums.{ActionTypes, DBNames, JdbcDriverClasses, RoleTypes}
-import jp.ijufumi.openreports.models.value.enums.ActionTypes.ActionType
+import jp.ijufumi.openreports.interfaces.models.value.enums.{ActionTypes, DBNames, JdbcDriverClasses, RoleTypes}
+import jp.ijufumi.openreports.interfaces.models.value.enums.ActionTypes.ActionType
 import org.flywaydb.core.api.migration.BaseJavaMigration
 import org.flywaydb.core.api.migration.Context
 import jp.ijufumi.openreports.utils.{Hash, IDs}

@@ -1,6 +1,6 @@
 package jp.ijufumi.openreports.services
 
-import jp.ijufumi.openreports.models.value.enums.StorageTypes.StorageType
+import jp.ijufumi.openreports.interfaces.models.value.enums.StorageTypes.StorageType
 
 import java.io.File
 

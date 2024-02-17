@@ -1,9 +1,9 @@
 package jp.ijufumi.openreports.gateways.datastores.database.repositories.impl
 
 import com.google.inject.Inject
-import jp.ijufumi.openreports.models.outputs.Workspace
 import queries.{workspaceMemberQuery, workspaceQuery => query}
 import jp.ijufumi.openreports.gateways.datastores.database.repositories.WorkspaceRepository
+import jp.ijufumi.openreports.interfaces.models.outputs.Workspace
 import slick.jdbc.JdbcBackend.Database
 import slick.jdbc.PostgresProfile.api._
 
