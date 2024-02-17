@@ -53,19 +53,19 @@ object DataSource {
       entity.versions,
     )
   }
-  def apply(entity: DataSourceEntity, driverType: DriverTypeEntity): DataSource = {
+  def apply(entity: (DataSourceEntity, DriverTypeEntity)): DataSource = {
     DataSource(
-      entity.id,
-      entity.name,
-      entity.url,
-      entity.username,
-      entity.password,
-      entity.driverTypeId,
-      entity.workspaceId,
-      entity.createdAt,
-      entity.updatedAt,
-      entity.versions,
-      Some(DriverType(driverType)),
+      entity._1.id,
+      entity._1.name,
+      entity._1.url,
+      entity._1.username,
+      entity._1.password,
+      entity._1.driverTypeId,
+      entity._1.workspaceId,
+      entity._1.createdAt,
+      entity._1.updatedAt,
+      entity._1.versions,
+      Some(DriverType(entity._2)),
     )
   }
 }

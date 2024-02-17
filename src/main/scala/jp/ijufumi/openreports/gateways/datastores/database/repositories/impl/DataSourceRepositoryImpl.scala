@@ -37,7 +37,7 @@ class DataSourceRepositoryImpl @Inject() (db: Database) extends DataSourceReposi
     if (dataSources.isEmpty) {
       return None
     }
-    Some(dataSources.head).map(d => DataSource(d._1, d._2))
+    Some(dataSources.head).map(d => DataSource(d))
   }
 
   override def getAllWithDriverType(workspaceId: String): Seq[DataSource] = {
@@ -45,7 +45,7 @@ class DataSourceRepositoryImpl @Inject() (db: Database) extends DataSourceReposi
       .join(driverTypeQuery)
       .on(_.driverTypeId === _.id)
       .filter(_._1.workspaceId === workspaceId)
-    Await.result(db.run(getDataSources.result), queryTimeout).map(d => DataSource(d._1, d._2))
+    Await.result(db.run(getDataSources.result), queryTimeout).map(d => DataSource(d))
   }
 
   override def register(dataSource: DataSource): Option[DataSource] = {
