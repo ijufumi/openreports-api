@@ -51,7 +51,7 @@ class ReportRepositoryImpl @Inject() (db: Database) extends ReportRepository {
       getById = getById.take(limit)
     }
 
-    (Await.result(db.run(getById.result), queryTimeout).map(r => Report(r._1, r._2)), count)
+    (Await.result(db.run(getById.result), queryTimeout).map(r => Report(r)), count)
   }
 
   override def getById(workspaceId: String, id: String): Option[Report] = {
@@ -77,7 +77,7 @@ class ReportRepositoryImpl @Inject() (db: Database) extends ReportRepository {
     if (models.isEmpty) {
       return None
     }
-    Some(models.head).map(r => Report(r._1, r._2))
+    Some(models.head).map(r => Report(r))
   }
 
   override def register(model: Report): Option[Report] = {

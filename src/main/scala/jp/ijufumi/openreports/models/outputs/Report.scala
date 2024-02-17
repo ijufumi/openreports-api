@@ -48,17 +48,17 @@ object Report {
       entity.versions,
     )
   }
-  def apply(entity: ReportEntity, template: ReportTemplateEntity): Report = {
+  def apply(entity: (ReportEntity, ReportTemplateEntity)): Report = {
     Report(
-      entity.id,
-      entity.name,
-      entity.templateId,
-      entity.dataSourceId,
-      entity.workspaceId,
-      entity.createdAt,
-      entity.updatedAt,
-      entity.versions,
-      Some(Template(template)),
+      entity._1.id,
+      entity._1.name,
+      entity._1.templateId,
+      entity._1.dataSourceId,
+      entity._1.workspaceId,
+      entity._1.createdAt,
+      entity._1.updatedAt,
+      entity._1.versions,
+      Some(Template(entity._2)),
     )
   }
 }
