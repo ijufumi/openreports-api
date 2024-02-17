@@ -1,8 +1,8 @@
 package jp.ijufumi.openreports.gateways.datastores.database.entities
 
-import jp.ijufumi.openreports.models.inputs.UpdateReport
-import jp.ijufumi.openreports.models.value.enums.EmbeddedFunctionTypes.EmbeddedFunctionType
-import jp.ijufumi.openreports.models.value.enums.ParameterTypes.ParameterType
+import jp.ijufumi.openreports.interfaces.models.inputs.UpdateReport
+import jp.ijufumi.openreports.interfaces.models.value.enums.EmbeddedFunctionTypes.EmbeddedFunctionType
+import jp.ijufumi.openreports.interfaces.models.value.enums.ParameterTypes.ParameterType
 import slick.jdbc.PostgresProfile.api._
 import jp.ijufumi.openreports.utils.Dates
 

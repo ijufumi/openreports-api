@@ -1,6 +1,6 @@
 package jp.ijufumi.openreports.gateways.datastores.database.repositories
 
-import jp.ijufumi.openreports.models.outputs.ReportReportParameter
+import jp.ijufumi.openreports.interfaces.models.outputs.ReportReportParameter
 
 trait ReportReportParameterRepository {
 

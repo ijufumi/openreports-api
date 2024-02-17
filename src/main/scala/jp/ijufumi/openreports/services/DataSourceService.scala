@@ -1,9 +1,9 @@
 package jp.ijufumi.openreports.services
 
-import jp.ijufumi.openreports.models.inputs.{CreateDataSource, UpdateDataSource}
+import jp.ijufumi.openreports.interfaces.models.inputs.{CreateDataSource, UpdateDataSource}
+import jp.ijufumi.openreports.interfaces.models.outputs.{DataSource, Lists}
 
 import java.sql.Connection
-import jp.ijufumi.openreports.models.outputs.{DataSource, Lists}
 
 trait DataSourceService {
   def connection(workspaceId: String, dataSourceId: String): Connection

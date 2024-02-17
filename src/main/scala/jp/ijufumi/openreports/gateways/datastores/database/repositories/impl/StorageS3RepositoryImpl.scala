@@ -2,9 +2,9 @@ package jp.ijufumi.openreports.gateways.datastores.database.repositories.impl
 
 import com.google.inject.Inject
 import slick.jdbc.PostgresProfile.api._
-import jp.ijufumi.openreports.models.outputs.StorageS3
 import queries.{storageQuery => query}
 import jp.ijufumi.openreports.gateways.datastores.database.repositories.StorageS3Repository
+import jp.ijufumi.openreports.interfaces.models.outputs.StorageS3
 import jp.ijufumi.openreports.utils.Dates
 import slick.jdbc.JdbcBackend.Database
 

@@ -1,7 +1,7 @@
 package jp.ijufumi.openreports.services
 
-import jp.ijufumi.openreports.models.inputs.{CreateReport, CreateReportGroup, CreateTemplate, UpdateReport, UpdateReportGroup, UpdateTemplate}
-import jp.ijufumi.openreports.models.outputs.{Lists, Report, ReportGroup, Template}
+import jp.ijufumi.openreports.interfaces.models.inputs.{CreateReport, CreateReportGroup, CreateTemplate, UpdateReport, UpdateReportGroup, UpdateTemplate}
+import jp.ijufumi.openreports.interfaces.models.outputs.{Lists, Report, ReportGroup, Template}
 import org.scalatra.servlet.FileItem
 
 import java.io.File

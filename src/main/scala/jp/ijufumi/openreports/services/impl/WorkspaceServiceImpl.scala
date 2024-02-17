@@ -11,21 +11,9 @@ import jp.ijufumi.openreports.gateways.datastores.database.repositories.{
   WorkspaceMemberRepository,
   WorkspaceRepository,
 }
-import jp.ijufumi.openreports.models.inputs.{
-  CreateWorkspace,
-  CreateWorkspaceMember,
-  UpdateWorkspace,
-  UpdateWorkspaceMember,
-}
-import jp.ijufumi.openreports.models.outputs.{
-  Lists,
-  Report,
-  StorageS3,
-  Template,
-  Workspace,
-  WorkspaceMember,
-}
-import jp.ijufumi.openreports.models.value.enums.{RoleTypes, StorageTypes}
+import jp.ijufumi.openreports.interfaces.models.inputs.{CreateWorkspace, CreateWorkspaceMember, UpdateWorkspace, UpdateWorkspaceMember}
+import jp.ijufumi.openreports.interfaces.models.outputs.{Lists, Report, StorageS3, Template, Workspace, WorkspaceMember}
+import jp.ijufumi.openreports.interfaces.models.value.enums.{RoleTypes, StorageTypes}
 import jp.ijufumi.openreports.services.{StorageService, WorkspaceService}
 import jp.ijufumi.openreports.utils.{IDs, Strings}
 import slick.jdbc.PostgresProfile.api._

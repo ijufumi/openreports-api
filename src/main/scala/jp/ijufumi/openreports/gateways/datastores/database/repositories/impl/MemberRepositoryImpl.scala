@@ -2,9 +2,9 @@ package jp.ijufumi.openreports.gateways.datastores.database.repositories.impl
 
 import com.google.inject.Inject
 import scala.concurrent.Await
-import jp.ijufumi.openreports.models.outputs.Member
 import queries.{memberQuery => query}
 import jp.ijufumi.openreports.gateways.datastores.database.repositories.MemberRepository
+import jp.ijufumi.openreports.interfaces.models.outputs.Member
 import slick.jdbc.JdbcBackend.Database
 import slick.jdbc.PostgresProfile.api._
 

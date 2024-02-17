@@ -3,7 +3,7 @@ package jp.ijufumi.openreports.gateways.datastores.database.entities
 import slick.jdbc.PostgresProfile.api._
 import jp.ijufumi.openreports.utils.Dates
 import slick.lifted.ProvenShape
-import jp.ijufumi.openreports.models.value.enums.ActionTypes.ActionType
+import jp.ijufumi.openreports.interfaces.models.value.enums.ActionTypes.ActionType
 
 case class Function(
     id: String,

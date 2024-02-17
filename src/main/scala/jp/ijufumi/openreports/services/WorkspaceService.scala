@@ -1,7 +1,7 @@
 package jp.ijufumi.openreports.services
 
-import jp.ijufumi.openreports.models.inputs.{CreateWorkspace, CreateWorkspaceMember, UpdateWorkspace, UpdateWorkspaceMember}
-import jp.ijufumi.openreports.models.outputs.{Lists, Workspace, WorkspaceMember}
+import jp.ijufumi.openreports.interfaces.models.inputs.{CreateWorkspace, CreateWorkspaceMember, UpdateWorkspace, UpdateWorkspaceMember}
+import jp.ijufumi.openreports.interfaces.models.outputs.{Lists, Workspace, WorkspaceMember}
 
 trait WorkspaceService {
   def createAndRelevant(input: CreateWorkspace, memberId: String): Option[Workspace]

@@ -1,7 +1,7 @@
 package jp.ijufumi.openreports.gateways.datastores.database.entities
 
-import jp.ijufumi.openreports.models.value.enums.StorageTypes._
-import jp.ijufumi.openreports.models.inputs.UpdateTemplate
+import jp.ijufumi.openreports.interfaces.models.inputs.UpdateTemplate
+import jp.ijufumi.openreports.interfaces.models.value.enums.StorageTypes._
 import jp.ijufumi.openreports.utils.Dates
 import slick.jdbc.PostgresProfile.api._
 

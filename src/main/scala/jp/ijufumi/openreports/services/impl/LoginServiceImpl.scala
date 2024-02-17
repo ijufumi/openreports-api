@@ -4,14 +4,14 @@ import jp.ijufumi.openreports.services.{LoginService, WorkspaceService}
 import com.google.inject.{Inject, Singleton}
 import jp.ijufumi.openreports.configs.Config
 import jp.ijufumi.openreports.utils.{Hash, IDs, Logging, Strings}
-import jp.ijufumi.openreports.models.outputs.Member
 import jp.ijufumi.openreports.gateways.auth.google.GoogleRepository
 import jp.ijufumi.openreports.gateways.datastores.cache.{CacheKeys, CacheWrapper}
 import jp.ijufumi.openreports.gateways.datastores.database.repositories.{
   MemberRepository,
   WorkspaceRepository,
 }
-import jp.ijufumi.openreports.models.inputs.{GoogleLogin, Login}
+import jp.ijufumi.openreports.interfaces.models.inputs.{GoogleLogin, Login}
+import jp.ijufumi.openreports.interfaces.models.outputs.Member
 import slick.jdbc.PostgresProfile.api._
 
 @Singleton

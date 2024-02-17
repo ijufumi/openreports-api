@@ -4,10 +4,10 @@ import com.google.inject.Inject
 import jp.ijufumi.openreports.exceptions.NotFoundException
 import jp.ijufumi.openreports.gateways.datastores.database.repositories.DataSourceRepository
 import jp.ijufumi.openreports.services.DataSourceService
-import jp.ijufumi.openreports.models.inputs.{CreateDataSource, UpdateDataSource}
-import jp.ijufumi.openreports.models.outputs.{DataSource, Lists}
 import jp.ijufumi.openreports.utils.IDs
 import jp.ijufumi.openreports.gateways.datastores.database.pool.ConnectionPool
+import jp.ijufumi.openreports.interfaces.models.inputs.{CreateDataSource, UpdateDataSource}
+import jp.ijufumi.openreports.interfaces.models.outputs.{DataSource, Lists}
 
 import java.sql.Connection
 

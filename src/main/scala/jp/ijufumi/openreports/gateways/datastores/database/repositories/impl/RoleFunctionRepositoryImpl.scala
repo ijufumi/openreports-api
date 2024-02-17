@@ -1,11 +1,11 @@
 package jp.ijufumi.openreports.gateways.datastores.database.repositories.impl
 
 import com.google.inject.Inject
-import jp.ijufumi.openreports.models.outputs.RoleFunction
 import jp.ijufumi.openreports.gateways.datastores.database.repositories.RoleFunctionRepository
 import jp.ijufumi.openreports.gateways.datastores.database.repositories.impl.queries.{
   roleFunctionQuery => query,
 }
+import jp.ijufumi.openreports.interfaces.models.outputs.RoleFunction
 import slick.jdbc.JdbcBackend.Database
 import slick.jdbc.PostgresProfile.api._
 
