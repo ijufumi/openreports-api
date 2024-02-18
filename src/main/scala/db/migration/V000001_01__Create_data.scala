@@ -58,7 +58,7 @@ class V000001_01__Create_data extends BaseJavaMigration {
   private def function(
       context: Context,
       resource: String,
-      action: ActionType,
+      action: ActionTypes.ActionType,
   ): String = {
     val id = IDs.ulid()
     val statement = {
