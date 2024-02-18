@@ -1,5 +1,6 @@
 package jp.ijufumi.openreports.presentation.models.responses
 
+import jp.ijufumi.openreports.domain.models.value.enums.StorageTypes
 import jp.ijufumi.openreports.infrastructure.datastores.database.entities.{
   Template => ReportTemplateEntity,
 }
@@ -11,7 +12,7 @@ case class Template(
     name: String,
     filePath: String,
     workspaceId: String,
-    storageType: StorageType,
+    storageType: StorageTypes.StorageType,
     fileSize: Long,
     createdAt: Long = Dates.currentTimestamp(),
     updatedAt: Long = Dates.currentTimestamp(),

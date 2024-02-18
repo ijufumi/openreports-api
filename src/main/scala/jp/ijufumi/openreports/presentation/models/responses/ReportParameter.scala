@@ -1,5 +1,6 @@
 package jp.ijufumi.openreports.presentation.models.responses
 
+import jp.ijufumi.openreports.domain.models.value.enums.{EmbeddedFunctionTypes, ParameterTypes}
 import jp.ijufumi.openreports.infrastructure.datastores.database.entities.{
   ReportParameter => ReportParameterEntity,
 }
@@ -8,8 +9,8 @@ import jp.ijufumi.openreports.utils.Dates
 case class ReportParameter(
     id: String,
     workspaceId: String,
-    parameterType: ParameterType,
-    embeddedFunctionType: Option[EmbeddedFunctionType],
+    parameterType: ParameterTypes.ParameterType,
+    embeddedFunctionType: Option[EmbeddedFunctionTypes.EmbeddedFunctionType],
     value: Option[String],
     createdAt: Long = Dates.currentTimestamp(),
     updatedAt: Long = Dates.currentTimestamp(),
