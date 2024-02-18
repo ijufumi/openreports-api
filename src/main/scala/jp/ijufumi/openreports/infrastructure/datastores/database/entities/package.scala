@@ -1,6 +1,13 @@
 package jp.ijufumi.openreports.infrastructure.datastores.database
 
-import jp.ijufumi.openreports.domain.models.value.enums.{ActionTypes, EmbeddedFunctionTypes, JdbcDriverClasses, ParameterTypes, RoleTypes, StorageTypes}
+import jp.ijufumi.openreports.domain.models.value.enums.{
+  ActionTypes,
+  EmbeddedFunctionTypes,
+  JdbcDriverClasses,
+  ParameterTypes,
+  RoleTypes,
+  StorageTypes,
+}
 import slick.jdbc.JdbcType
 import slick.ast.BaseTypedType
 
@@ -13,20 +20,21 @@ package object entities {
     def versions = column[Long]("versions")
   }
 
-  implicit val jdbcDriverClassMapper
-      : JdbcType[JdbcDriverClass] with BaseTypedType[JdbcDriverClass] =
-    MappedColumnType.base[JdbcDriverClass, String](
+  implicit val jdbcDriverClassMapper: JdbcType[JdbcDriverClasses.JdbcDriverClass]
+    with BaseTypedType[JdbcDriverClasses.JdbcDriverClass] =
+    MappedColumnType.base[JdbcDriverClasses.JdbcDriverClass, String](
       e => e.toString,
       s => JdbcDriverClasses.withName(s),
     )
 
-  implicit val roleTypeMapper: JdbcType[RoleType] with BaseTypedType[RoleType] =
+  implicit val roleTypeMapper: JdbcType[RoleTypes.RoleType] with BaseTypedType[RoleTypes.RoleType] =
     MappedColumnType.base[RoleTypes.RoleType, String](
       e => e.toString,
       s => RoleTypes.withName(s),
     )
 
-  implicit val storageTypeMapper: JdbcType[StorageType] with BaseTypedType[StorageType] =
+  implicit val storageTypeMapper
+      : JdbcType[StorageTypes.StorageType] with BaseTypedType[StorageTypes.StorageType] =
     MappedColumnType.base[StorageTypes.StorageType, String](
       e => e.toString,
       s => StorageTypes.withName(s),

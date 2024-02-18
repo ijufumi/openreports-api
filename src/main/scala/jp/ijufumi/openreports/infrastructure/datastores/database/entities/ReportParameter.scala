@@ -1,14 +1,14 @@
 package jp.ijufumi.openreports.infrastructure.datastores.database.entities
 
-import jp.ijufumi.openreports.presentation.models.requests.UpdateReport
+import jp.ijufumi.openreports.domain.models.value.enums.{ParameterTypes, EmbeddedFunctionTypes}
 import slick.jdbc.PostgresProfile.api._
 import jp.ijufumi.openreports.utils.Dates
 
 case class ReportParameter(
     id: String,
     workspaceId: String,
-    parameterType: ParameterType,
-    embeddedFunctionType: Option[EmbeddedFunctionType],
+    parameterType: ParameterTypes.ParameterType,
+    embeddedFunctionType: Option[EmbeddedFunctionTypes.EmbeddedFunctionType],
     value: Option[String],
     createdAt: Long = Dates.currentTimestamp(),
     updatedAt: Long = Dates.currentTimestamp(),
@@ -22,8 +22,8 @@ class ReportParameters(tag: Tag)
     ) {
   def id = column[String]("id", O.PrimaryKey)
   def workspaceId = column[String]("workspace_id")
-  def parameterType = column[ParameterType]("parameter_type")
-  def embeddedFunctionType = column[Option[EmbeddedFunctionType]]("embedded_function_type")
+  def parameterType = column[ParameterTypes.ParameterType]("parameter_type")
+  def embeddedFunctionType = column[Option[EmbeddedFunctionTypes.EmbeddedFunctionType]]("embedded_function_type")
   def value = column[Option[String]]("value")
 
   override def * =
