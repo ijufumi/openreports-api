@@ -1,6 +1,7 @@
 package jp.ijufumi.openreports.infrastructure.datastores.database.pool
 
 import jp.ijufumi.openreports.exceptions.NotFoundException
+import jp.ijufumi.openreports.domain.models.value.enums.JdbcDriverClasses
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.pool.HikariPool
 
@@ -15,7 +16,7 @@ object ConnectionPool {
       username: String,
       password: String,
       url: String,
-      jdbcDriverClass: JdbcDriverClass,
+      jdbcDriverClass: JdbcDriverClasses.JdbcDriverClass,
   ): Connection = {
     if (has(name)) {
       return pool(name).getConnection
