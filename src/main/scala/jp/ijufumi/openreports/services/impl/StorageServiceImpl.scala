@@ -13,9 +13,9 @@ class StorageServiceImpl @Inject() (
     awsS3Repository: AwsS3Repository,
 ) extends StorageService {
 
-  override def url(workspaceId: String, key: String, storageType: StorageType): String = ???
+  override def url(workspaceId: String, key: String, storageType: StorageTypes.StorageType): String = ???
 
-  override def get(workspaceId: String, key: String, storageType: StorageType): Path = {
+  override def get(workspaceId: String, key: String, storageType: StorageTypes.StorageType): Path = {
     storageType match {
       case StorageTypes.Local => localFileRepository.get(workspaceId, key)
       case StorageTypes.S3    => awsS3Repository.get(workspaceId, key)
@@ -26,7 +26,7 @@ class StorageServiceImpl @Inject() (
   override def create(
       workspaceId: String,
       key: String,
-      storageType: StorageType,
+      storageType: StorageTypes.StorageType,
       file: Path,
   ): Unit = {
     storageType match {
@@ -35,5 +35,5 @@ class StorageServiceImpl @Inject() (
     }
   }
 
-  override def delete(workspaceId: String, key: String, storageType: StorageType): Unit = ???
+  override def delete(workspaceId: String, key: String, storageType: StorageTypes.StorageType): Unit = ???
 }
