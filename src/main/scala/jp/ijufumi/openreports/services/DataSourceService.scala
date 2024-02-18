@@ -1,7 +1,7 @@
 package jp.ijufumi.openreports.services
 
-import jp.ijufumi.openreports.interfaces.models.inputs.{CreateDataSource, UpdateDataSource}
-import jp.ijufumi.openreports.interfaces.models.outputs.{DataSource, Lists}
+import jp.ijufumi.openreports.presentation.models.requests.{CreateDataSource, UpdateDataSource}
+import jp.ijufumi.openreports.presentation.models.responses.{DataSource, Lists}
 
 import java.sql.Connection
 

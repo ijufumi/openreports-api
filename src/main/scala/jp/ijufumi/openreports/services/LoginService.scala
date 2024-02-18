@@ -1,7 +1,7 @@
 package jp.ijufumi.openreports.services
 
-import jp.ijufumi.openreports.interfaces.models.inputs.{GoogleLogin, Login}
-import jp.ijufumi.openreports.interfaces.models.outputs.Member
+import jp.ijufumi.openreports.presentation.models.requests.{GoogleLogin, Login}
+import jp.ijufumi.openreports.presentation.models.responses.Member
 
 trait LoginService {
   def login(input: Login): Option[Member]

@@ -1,7 +1,5 @@
 package jp.ijufumi.openreports.services
 
-import jp.ijufumi.openreports.interfaces.models.value.enums.StorageTypes.StorageType
-
 import java.nio.file.Path
 
 trait StorageService {
