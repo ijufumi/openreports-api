@@ -32,7 +32,7 @@ class DataSourceServiceImpl @Inject() (dataSourceRepository: DataSourceRepositor
   override def getDataSources(workspaceId: String): Lists[DataSource] = {
     val dataSources = dataSourceRepository.getAllWithDriverType(workspaceId)
     Lists(
-      dataSources,
+      dataSources.map(d => DataSource(d)),
       0,
       dataSources.size,
       dataSources.size,
