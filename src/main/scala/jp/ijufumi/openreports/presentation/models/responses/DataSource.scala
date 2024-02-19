@@ -1,11 +1,10 @@
 package jp.ijufumi.openreports.presentation.models.responses
 
-import jp.ijufumi.openreports.infrastructure.datastores.database.entities.{
+import jp.ijufumi.openreports.domain.models.entity.{
   DataSource => DataSourceEntity,
   DriverType => DriverTypeEntity,
 }
-import jp.ijufumi.openreports.presentation.models.requests.UpdateDataSource
-import jp.ijufumi.openreports.utils.Dates
+
 case class DataSource(
     id: String,
     name: String,
@@ -13,30 +12,8 @@ case class DataSource(
     username: String,
     password: String,
     driverTypeId: String,
-    workspaceId: String,
-    createdAt: Long = Dates.currentTimestamp(),
-    updatedAt: Long = Dates.currentTimestamp(),
-    versions: Long = 1,
     driverType: Option[DriverType] = None,
-) {
-  def toEntity: DataSourceEntity = {
-    DataSourceEntity(
-      this.id,
-      this.name,
-      this.url,
-      this.username,
-      this.password,
-      this.driverTypeId,
-      this.workspaceId,
-      this.createdAt,
-      this.updatedAt,
-      this.versions,
-    )
-  }
-  def copyForUpdate(input: UpdateDataSource): DataSource = {
-    this.copy(name = input.name)
-  }
-}
+)
 
 object DataSource {
   def apply(entity: DataSourceEntity): DataSource = {
@@ -47,10 +24,6 @@ object DataSource {
       entity.username,
       entity.password,
       entity.driverTypeId,
-      entity.workspaceId,
-      entity.createdAt,
-      entity.updatedAt,
-      entity.versions,
     )
   }
   def apply(entity: (DataSourceEntity, DriverTypeEntity)): DataSource = {
@@ -61,10 +34,6 @@ object DataSource {
       entity._1.username,
       entity._1.password,
       entity._1.driverTypeId,
-      entity._1.workspaceId,
-      entity._1.createdAt,
-      entity._1.updatedAt,
-      entity._1.versions,
       Some(DriverType(entity._2)),
     )
   }

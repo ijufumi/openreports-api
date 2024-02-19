@@ -1,6 +1,6 @@
 package jp.ijufumi.openreports.infrastructure.datastores.database.repositories
 
-import jp.ijufumi.openreports.presentation.models.responses.DataSource
+import jp.ijufumi.openreports.domain.models.entity.DataSource
 
 trait DataSourceRepository {
   def getById(workspaceId: String, id: String): Option[DataSource]
