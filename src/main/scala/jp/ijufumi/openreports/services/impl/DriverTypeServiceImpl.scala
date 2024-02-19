@@ -8,6 +8,6 @@ import jp.ijufumi.openreports.presentation.models.responses.DriverType
 class DriverTypeServiceImpl @Inject() (driverTypeRepository: DriverTypeRepository)
     extends DriverTypeService {
   override def getAll: Seq[DriverType] = {
-    driverTypeRepository.getAll
+    driverTypeRepository.getAll.map(d => DriverType(d))
   }
 }
