@@ -1,6 +1,6 @@
 package jp.ijufumi.openreports.configs.injectors
 
-import jp.ijufumi.openreports.gateways.datastores.database.db.DatabaseFactory
+import jp.ijufumi.openreports.infrastructure.datastores.database.db.DatabaseFactory
 import slick.jdbc.JdbcBackend.Database
 
 class DatabaseModule extends BaseModule {

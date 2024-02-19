@@ -1,7 +1,6 @@
 package db.migration
 
-import jp.ijufumi.openreports.interfaces.models.value.enums.{ActionTypes, DBNames, JdbcDriverClasses, RoleTypes}
-import jp.ijufumi.openreports.interfaces.models.value.enums.ActionTypes.ActionType
+import jp.ijufumi.openreports.domain.models.value.enums.{ActionTypes, DBNames, JdbcDriverClasses, RoleTypes}
 import org.flywaydb.core.api.migration.BaseJavaMigration
 import org.flywaydb.core.api.migration.Context
 import jp.ijufumi.openreports.utils.{Hash, IDs}
@@ -59,7 +58,7 @@ class V000001_01__Create_data extends BaseJavaMigration {
   private def function(
       context: Context,
       resource: String,
-      action: ActionType,
+      action: ActionTypes.ActionType,
   ): String = {
     val id = IDs.ulid()
     val statement = {

@@ -2,9 +2,9 @@ package jp.ijufumi.openreports.services.impl
 
 import com.google.inject.Inject
 import jp.ijufumi.openreports.configs.Config
-import jp.ijufumi.openreports.interfaces.models.value.enums.StorageTypes.StorageType
 import jp.ijufumi.openreports.services.{DataSourceService, OutputService, StorageService}
 import jp.ijufumi.openreports.utils.{Dates, Logging}
+import jp.ijufumi.openreports.domain.models.value.enums.StorageTypes
 
 import scala.util.Using
 import org.jxls.common.Context
@@ -23,7 +23,7 @@ class OutputServiceImpl @Inject() (
   override def output(
       workspaceId: String,
       filePath: String,
-      storageType: StorageType,
+      storageType: StorageTypes.StorageType,
       dataSourceId: Option[String],
   ): Option[File] = {
     val inputFileName = new File(filePath).getName
@@ -61,7 +61,7 @@ class OutputServiceImpl @Inject() (
   private def outputWithDataSource(
       workspaceId: String,
       filePath: String,
-      storageType: StorageType,
+      storageType: StorageTypes.StorageType,
       dataSourceId: String,
       outputFile: Path,
       context: Context,
@@ -77,7 +77,7 @@ class OutputServiceImpl @Inject() (
   private def output(
       workspaceId: String,
       filePath: String,
-      storageType: StorageType,
+      storageType: StorageTypes.StorageType,
       outputFile: Path,
       context: Context,
   ): Unit = {

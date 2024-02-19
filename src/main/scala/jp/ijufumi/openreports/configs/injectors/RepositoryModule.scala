@@ -1,8 +1,6 @@
 package jp.ijufumi.openreports.configs.injectors
 
-import jp.ijufumi.openreports.gateways.auth.google.GoogleRepository
-import jp.ijufumi.openreports.gateways.auth.google.impl.GoogleRepositoryImpl
-import jp.ijufumi.openreports.gateways.datastores.database.repositories.{
+import jp.ijufumi.openreports.infrastructure.datastores.database.repositories.{
   DataSourceRepository,
   DriverTypeRepository,
   FunctionRepository,
@@ -19,7 +17,7 @@ import jp.ijufumi.openreports.gateways.datastores.database.repositories.{
   WorkspaceMemberRepository,
   WorkspaceRepository,
 }
-import jp.ijufumi.openreports.gateways.datastores.database.repositories.impl.{
+import jp.ijufumi.openreports.infrastructure.datastores.database.repositories.impl.{
   DataSourceRepositoryImpl,
   DriverTypeRepositoryImpl,
   FunctionRepositoryImpl,
@@ -36,10 +34,12 @@ import jp.ijufumi.openreports.gateways.datastores.database.repositories.impl.{
   WorkspaceMemberRepositoryImpl,
   WorkspaceRepositoryImpl,
 }
-import jp.ijufumi.openreports.gateways.filestores.local.LocalFileRepository
-import jp.ijufumi.openreports.gateways.filestores.local.impl.LocalFileRepositoryImpl
-import jp.ijufumi.openreports.gateways.filestores.s3.AwsS3Repository
-import jp.ijufumi.openreports.gateways.filestores.s3.impl.AwsS3RepositoryImpl
+import jp.ijufumi.openreports.infrastructure.filestores.local.LocalFileRepository
+import jp.ijufumi.openreports.infrastructure.filestores.local.impl.LocalFileRepositoryImpl
+import jp.ijufumi.openreports.infrastructure.filestores.s3.AwsS3Repository
+import jp.ijufumi.openreports.infrastructure.filestores.s3.impl.AwsS3RepositoryImpl
+import jp.ijufumi.openreports.infrastructure.google.auth.GoogleRepository
+import jp.ijufumi.openreports.infrastructure.google.auth.impl.GoogleRepositoryImpl
 
 class RepositoryModule extends BaseModule {
   override def configure(): Unit = {

@@ -2,15 +2,15 @@ package jp.ijufumi.openreports.services.impl
 
 import util.control.Breaks._
 import com.google.inject.Inject
-import jp.ijufumi.openreports.gateways.datastores.database.repositories.{
+import jp.ijufumi.openreports.domain.models.value.enums.StorageTypes
+import jp.ijufumi.openreports.infrastructure.datastores.database.repositories.{
   ReportGroupReportRepository,
   ReportGroupRepository,
   ReportRepository,
   TemplateRepository,
 }
-import jp.ijufumi.openreports.interfaces.models.inputs.{CreateReport, CreateReportGroup, CreateTemplate, UpdateReport, UpdateReportGroup, UpdateTemplate}
-import jp.ijufumi.openreports.interfaces.models.outputs.{Lists, Report, ReportGroup, ReportGroupReport, Template}
-import jp.ijufumi.openreports.interfaces.models.value.enums.StorageTypes
+import jp.ijufumi.openreports.presentation.models.requests.{CreateReport, CreateReportGroup, CreateTemplate, UpdateReport, UpdateReportGroup, UpdateTemplate}
+import jp.ijufumi.openreports.presentation.models.responses.{Lists, Report, ReportGroup, ReportGroupReport, Template}
 import jp.ijufumi.openreports.services.{
   DataSourceService,
   OutputService,
