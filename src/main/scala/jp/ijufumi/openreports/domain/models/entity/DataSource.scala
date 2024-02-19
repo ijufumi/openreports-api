@@ -1,8 +1,14 @@
 package jp.ijufumi.openreports.domain.models.entity
 
-import jp.ijufumi.openreports.infrastructure.datastores.database.entities.{DataSource => DataSourceEntity, DriverType => DriverTypeEntity}
+import jp.ijufumi.openreports.infrastructure.datastores.database.entities.{
+  DataSource => DataSourceEntity,
+  DriverType => DriverTypeEntity,
+}
 import jp.ijufumi.openreports.presentation.models.requests.UpdateDataSource
 import jp.ijufumi.openreports.utils.Dates
+import jp.ijufumi.openreports.presentation.models.responses.{DataSource => DataSourceResponse}
+import scala.language.implicitConversions
+
 case class DataSource(
     id: String,
     name: String,
@@ -30,6 +36,12 @@ case class DataSource(
       this.versions,
     )
   }
+  implicit def toResponse: DataSourceResponse = {
+    DataSourceResponse(
+      this,
+    )
+  }
+
   def copyForUpdate(input: UpdateDataSource): DataSource = {
     this.copy(name = input.name)
   }

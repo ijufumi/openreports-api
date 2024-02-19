@@ -24,17 +24,7 @@ object DataSource {
       entity.username,
       entity.password,
       entity.driverTypeId,
-    )
-  }
-  def apply(entity: (DataSourceEntity, DriverTypeEntity)): DataSource = {
-    DataSource(
-      entity._1.id,
-      entity._1.name,
-      entity._1.url,
-      entity._1.username,
-      entity._1.password,
-      entity._1.driverTypeId,
-      Some(DriverType(entity._2)),
+      entity.driverType.map(d => DriverType(d)),
     )
   }
 }
