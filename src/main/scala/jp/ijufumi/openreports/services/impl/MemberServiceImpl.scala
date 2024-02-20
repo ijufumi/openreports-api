@@ -38,6 +38,6 @@ class MemberServiceImpl @Inject() (
     val functionIds =
       roleFunctionRepository.getByRoleId(workspaceMember.roleId).map(m => m.functionId)
     val functions = functionRepository.getsByIds(functionIds)
-    Some(Permissions(workspaces, functions))
+    Some(Permissions(workspaces, functions.map((f => f.toResponse))))
   }
 }

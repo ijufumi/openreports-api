@@ -5,7 +5,7 @@ import jp.ijufumi.openreports.infrastructure.datastores.database.repositories.Fu
 import jp.ijufumi.openreports.infrastructure.datastores.database.repositories.impl.queries.{
   functionQuery => query,
 }
-import jp.ijufumi.openreports.presentation.models.responses.Function
+import jp.ijufumi.openreports.domain.models.entity.Function
 import slick.jdbc.JdbcBackend.Database
 import slick.jdbc.PostgresProfile.api._
 
