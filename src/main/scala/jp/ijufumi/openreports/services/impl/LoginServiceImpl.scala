@@ -12,6 +12,7 @@ import jp.ijufumi.openreports.infrastructure.datastores.database.repositories.{
 import jp.ijufumi.openreports.infrastructure.google.auth.GoogleRepository
 import jp.ijufumi.openreports.presentation.models.requests.{GoogleLogin, Login}
 import jp.ijufumi.openreports.presentation.models.responses.Member
+import jp.ijufumi.openreports.domain.models.entity.{Member => MemberModel}
 import slick.jdbc.PostgresProfile.api._
 
 @Singleton
@@ -37,7 +38,7 @@ class LoginServiceImpl @Inject() (
       logger.info(s"$email's password does not match")
       return None
     }
-    makeResponse(member)
+    makeResponse(member.toResponse)
   }
 
   override def logout(authorizationHeader: String): Unit = {
@@ -88,7 +89,7 @@ class LoginServiceImpl @Inject() (
 
     val memberOptById = memberRepository.getByGoogleId(userInfo.id)
     if (memberOptById.isDefined) {
-      return makeResponse(memberOptById.get)
+      return makeResponse(memberOptById.get.toResponse)
     }
 
     val memberOptByEmail = memberRepository.getMemberByEmail(userInfo.email)
@@ -96,10 +97,10 @@ class LoginServiceImpl @Inject() (
       val member = memberOptByEmail.get
       val newMember = member.copy(googleId = Some(userInfo.id))
       memberRepository.update(newMember)
-      return makeResponse(newMember)
+      return makeResponse(newMember.toResponse)
     }
 
-    val member = Member(
+    val member = MemberModel(
       id = IDs.ulid(),
       googleId = Some(userInfo.id),
       email = userInfo.email,
@@ -111,7 +112,7 @@ class LoginServiceImpl @Inject() (
       val newMemberOpt = memberRepository.register(member)
       val workspaceName = Strings.nameFromEmail(member.email) + "'s workspace"
       workspaceService.createAndRelevant(workspaceName, member.id)
-      makeResponse(newMemberOpt.get)
+      makeResponse(newMemberOpt.get.toResponse)
     } catch {
       case e: Throwable =>
         SimpleDBIO(_.connection.rollback()).withPinnedSession
@@ -163,6 +164,6 @@ class LoginServiceImpl @Inject() (
     if (memberId == "") {
       return None
     }
-    memberRepository.getById(memberId)
+    memberRepository.getById(memberId).map(m => m.toResponse)
   }
 }

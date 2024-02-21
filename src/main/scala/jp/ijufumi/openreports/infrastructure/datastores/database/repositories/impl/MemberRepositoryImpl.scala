@@ -4,7 +4,7 @@ import com.google.inject.Inject
 import scala.concurrent.Await
 import queries.{memberQuery => query}
 import jp.ijufumi.openreports.infrastructure.datastores.database.repositories.MemberRepository
-import jp.ijufumi.openreports.presentation.models.responses.Member
+import jp.ijufumi.openreports.domain.models.entity.Member
 import slick.jdbc.JdbcBackend.Database
 import slick.jdbc.PostgresProfile.api._
 
