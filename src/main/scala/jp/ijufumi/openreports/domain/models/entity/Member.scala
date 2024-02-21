@@ -1,6 +1,7 @@
 package jp.ijufumi.openreports.domain.models.entity
 
 import jp.ijufumi.openreports.infrastructure.datastores.database.entities.{Member => MemberEntity}
+import jp.ijufumi.openreports.presentation.models.responses.{Member => MemberResponse}
 import jp.ijufumi.openreports.utils.Dates
 import org.json4s.FieldSerializer
 
@@ -28,6 +29,19 @@ case class Member(
       this.versions,
     )
   }
+  def toResponse: MemberResponse = {
+    MemberResponse(
+      this.id,
+      this.googleId,
+      this.email,
+      this.password,
+      this.name,
+      this.createdAt,
+      this.updatedAt,
+      this.versions,
+    )
+  }
+
   def withApiToken(apiToken: String): Member = {
     copy(apiToken = apiToken)
   }
