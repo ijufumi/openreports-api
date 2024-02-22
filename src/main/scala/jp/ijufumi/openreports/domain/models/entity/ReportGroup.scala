@@ -3,6 +3,7 @@ package jp.ijufumi.openreports.domain.models.entity
 import jp.ijufumi.openreports.infrastructure.datastores.database.entities.{ReportGroup => ReportGroupEntity}
 import jp.ijufumi.openreports.presentation.models.requests.UpdateReportGroup
 import jp.ijufumi.openreports.utils.Dates
+import jp.ijufumi.openreports.presentation.models.responses.{ReportGroup => ReportGroupResponse}
 
 case class ReportGroup(
     id: String,
@@ -20,6 +21,12 @@ case class ReportGroup(
       this.createdAt,
       this.updatedAt,
       this.versions,
+    )
+  }
+  def toResponse: ReportGroupResponse = {
+    ReportGroupResponse(
+      this.id,
+      this.name,
     )
   }
   def copyForUpdate(input: UpdateReportGroup): ReportGroup = {
