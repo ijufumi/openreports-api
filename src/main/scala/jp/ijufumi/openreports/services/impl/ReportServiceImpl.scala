@@ -163,7 +163,7 @@ class ReportServiceImpl @Inject() (
   override def getGroups(workspaceId: String, page: Int, limit: Int): Lists[ReportGroup] = {
     val offset = List(page * limit, 0).max
     val (results, count) = reportGroupRepository.gets(workspaceId, offset, limit)
-    Lists(results, offset, limit, count)
+    Lists(results.map(r => r.toResponse), offset, limit, count)
   }
 
   override def getGroup(workspaceId: String, id: String): Option[ReportGroup] = {
