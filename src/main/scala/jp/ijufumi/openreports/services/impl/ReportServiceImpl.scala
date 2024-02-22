@@ -9,14 +9,28 @@ import jp.ijufumi.openreports.infrastructure.datastores.database.repositories.{
   ReportRepository,
   TemplateRepository,
 }
-import jp.ijufumi.openreports.presentation.models.requests.{CreateReport, CreateReportGroup, CreateTemplate, UpdateReport, UpdateReportGroup, UpdateTemplate}
-import jp.ijufumi.openreports.presentation.models.responses.{Lists, Report, ReportGroup, ReportGroupReport, Template}
+import jp.ijufumi.openreports.presentation.models.requests.{
+  CreateReport,
+  CreateReportGroup,
+  CreateTemplate,
+  UpdateReport,
+  UpdateReportGroup,
+  UpdateTemplate,
+}
+import jp.ijufumi.openreports.presentation.models.responses.{
+  Lists,
+  Report,
+  ReportGroup,
+  ReportGroupReport,
+  Template,
+}
 import jp.ijufumi.openreports.services.{
   DataSourceService,
   OutputService,
   ReportService,
   StorageService,
 }
+import jp.ijufumi.openreports.domain.models.entity.{ReportGroupReport => ReportGroupReportModel}
 import jp.ijufumi.openreports.utils.{IDs, Strings, TemporaryFiles}
 import org.scalatra.servlet.FileItem
 
@@ -171,7 +185,7 @@ class ReportServiceImpl @Inject() (
         if (reportOpt.isEmpty) {
           break
         }
-        val reportGroupReport = ReportGroupReport(IDs.ulid(), reportId, reportGroup.id)
+        val reportGroupReport = ReportGroupReportModel(IDs.ulid(), reportId, reportGroup.id)
         reportGroupReportRepository.register(reportGroupReport)
       }
     }
@@ -196,7 +210,7 @@ class ReportServiceImpl @Inject() (
         if (reportOpt.isEmpty) {
           break
         }
-        val reportGroupReport = ReportGroupReport(IDs.ulid(), reportId, id)
+        val reportGroupReport = ReportGroupReportModel(IDs.ulid(), reportId, id)
         reportGroupReportRepository.register(reportGroupReport)
       }
     }
