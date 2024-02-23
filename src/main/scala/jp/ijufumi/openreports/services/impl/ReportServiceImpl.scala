@@ -17,20 +17,17 @@ import jp.ijufumi.openreports.presentation.models.requests.{
   UpdateReportGroup,
   UpdateTemplate,
 }
-import jp.ijufumi.openreports.presentation.models.responses.{
-  Lists,
-  Report,
-  ReportGroup,
-  ReportGroupReport,
-  Template,
-}
+import jp.ijufumi.openreports.presentation.models.responses.{Lists, Report, ReportGroup, Template}
 import jp.ijufumi.openreports.services.{
   DataSourceService,
   OutputService,
   ReportService,
   StorageService,
 }
-import jp.ijufumi.openreports.domain.models.entity.{ReportGroupReport => ReportGroupReportModel}
+import jp.ijufumi.openreports.domain.models.entity.{
+  ReportGroup => ReportGroupModel,
+  ReportGroupReport => ReportGroupReportModel,
+}
 import jp.ijufumi.openreports.utils.{IDs, Strings, TemporaryFiles}
 import org.scalatra.servlet.FileItem
 
@@ -166,18 +163,18 @@ class ReportServiceImpl @Inject() (
   override def getGroups(workspaceId: String, page: Int, limit: Int): Lists[ReportGroup] = {
     val offset = List(page * limit, 0).max
     val (results, count) = reportGroupRepository.gets(workspaceId, offset, limit)
-    Lists(results, offset, limit, count)
+    Lists(results.map(r => r.toResponse), offset, limit, count)
   }
 
   override def getGroup(workspaceId: String, id: String): Option[ReportGroup] = {
-    reportGroupRepository.getById(workspaceId, id)
+    reportGroupRepository.getById(workspaceId, id).map(r => r.toResponse)
   }
 
   override def createGroup(
       workspaceId: String,
       input: CreateReportGroup,
   ): Option[ReportGroup] = {
-    val reportGroup = ReportGroup(IDs.ulid(), input.name, workspaceId)
+    val reportGroup = ReportGroupModel(IDs.ulid(), input.name, workspaceId)
     reportGroupRepository.register(reportGroup)
     for (reportId <- input.reportIds) {
       breakable {

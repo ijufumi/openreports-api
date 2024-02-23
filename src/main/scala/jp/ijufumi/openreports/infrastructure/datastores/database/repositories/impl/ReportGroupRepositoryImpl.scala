@@ -5,7 +5,7 @@ import jp.ijufumi.openreports.infrastructure.datastores.database.repositories.Re
 import jp.ijufumi.openreports.infrastructure.datastores.database.repositories.impl.queries.{
   reportGroupQuery => query,
 }
-import jp.ijufumi.openreports.presentation.models.responses.ReportGroup
+import jp.ijufumi.openreports.domain.models.entity.ReportGroup
 import jp.ijufumi.openreports.utils.Dates
 import slick.jdbc.JdbcBackend.Database
 import slick.jdbc.PostgresProfile.api._
