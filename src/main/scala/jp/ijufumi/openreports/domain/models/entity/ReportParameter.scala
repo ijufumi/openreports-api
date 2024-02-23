@@ -4,6 +4,9 @@ import jp.ijufumi.openreports.domain.models.value.enums.{EmbeddedFunctionTypes, 
 import jp.ijufumi.openreports.infrastructure.datastores.database.entities.{
   ReportParameter => ReportParameterEntity,
 }
+import jp.ijufumi.openreports.presentation.models.responses.{
+  ReportParameter => ReportParameterResponse,
+}
 import jp.ijufumi.openreports.utils.Dates
 
 case class ReportParameter(
@@ -26,6 +29,14 @@ case class ReportParameter(
       this.createdAt,
       this.updatedAt,
       this.versions,
+    )
+  }
+  def toResponse: ReportParameterResponse = {
+    ReportParameterResponse(
+      this.id,
+      this.parameterType,
+      this.embeddedFunctionType,
+      this.value,
     )
   }
 }
