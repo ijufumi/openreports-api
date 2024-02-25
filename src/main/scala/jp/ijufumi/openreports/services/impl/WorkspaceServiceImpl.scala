@@ -12,8 +12,20 @@ import jp.ijufumi.openreports.infrastructure.datastores.database.repositories.{
   WorkspaceMemberRepository,
   WorkspaceRepository,
 }
-import jp.ijufumi.openreports.presentation.models.requests.{CreateWorkspace, CreateWorkspaceMember, UpdateWorkspace, UpdateWorkspaceMember}
-import jp.ijufumi.openreports.presentation.models.responses.{Lists, Report, StorageS3, Template, Workspace, WorkspaceMember}
+import jp.ijufumi.openreports.presentation.models.requests.{
+  CreateWorkspace,
+  CreateWorkspaceMember,
+  UpdateWorkspace,
+  UpdateWorkspaceMember,
+}
+import jp.ijufumi.openreports.presentation.models.responses.{
+  Lists,
+  StorageS3,
+  Template,
+  Workspace,
+  WorkspaceMember,
+}
+import jp.ijufumi.openreports.domain.models.entity.{Report => ReportModel}
 import jp.ijufumi.openreports.services.{StorageService, WorkspaceService}
 import jp.ijufumi.openreports.utils.{IDs, Strings}
 import slick.jdbc.PostgresProfile.api._
@@ -52,7 +64,7 @@ class WorkspaceServiceImpl @Inject() (
       val reportTemplate =
         Template(IDs.ulid(), "copy of sample", key, workspace.id, StorageTypes.Local, 1)
       reportTemplateRepository.register(reportTemplate)
-      val report = Report(IDs.ulid(), "copy of sample", reportTemplate.id, null, workspace.id)
+      val report = ReportModel(IDs.ulid(), "copy of sample", reportTemplate.id, null, workspace.id)
       reportRepository.register(report)
     } catch {
       case e: Throwable =>
