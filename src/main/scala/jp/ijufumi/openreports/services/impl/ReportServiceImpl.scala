@@ -25,6 +25,7 @@ import jp.ijufumi.openreports.services.{
   StorageService,
 }
 import jp.ijufumi.openreports.domain.models.entity.{
+  Report => ReportModel,
   ReportGroup => ReportGroupModel,
   ReportGroupReport => ReportGroupReportModel,
 }
@@ -60,7 +61,7 @@ class ReportServiceImpl @Inject() (
       return None
     }
 
-    Some(result.get)
+    result.map(r => r.toResponse)
   }
 
   override def getTemplates(workspaceId: String, page: Int, limit: Int): Lists[Template] = {
@@ -90,7 +91,8 @@ class ReportServiceImpl @Inject() (
         return None
       }
     }
-    val report = Report(IDs.ulid(), input.name, input.templateId, input.dataSourceId, workspaceId)
+    val report =
+      ReportModel(IDs.ulid(), input.name, input.templateId, input.dataSourceId, workspaceId)
     reportRepository.register(report)
     this.getReport(workspaceId, report.id)
   }

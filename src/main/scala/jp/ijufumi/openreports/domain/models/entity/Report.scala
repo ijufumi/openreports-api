@@ -1,6 +1,7 @@
 package jp.ijufumi.openreports.domain.models.entity
 
 import jp.ijufumi.openreports.infrastructure.datastores.database.entities.{Report => ReportEntity, Template => ReportTemplateEntity}
+import jp.ijufumi.openreports.presentation.models.responses.{Report => ReportResponse}
 import jp.ijufumi.openreports.presentation.models.requests.UpdateReport
 import jp.ijufumi.openreports.utils.Dates
 
@@ -25,6 +26,14 @@ case class Report(
       this.createdAt,
       this.updatedAt,
       this.versions,
+    )
+  }
+  def toResponse: ReportResponse = {
+    ReportResponse(
+      this.id,
+      this.name,
+      this.templateId,
+      this.dataSourceId,
     )
   }
   def copyForUpdate(input: UpdateReport): Report = {
