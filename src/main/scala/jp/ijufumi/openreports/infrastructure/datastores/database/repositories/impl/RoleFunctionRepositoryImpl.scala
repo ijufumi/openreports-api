@@ -5,7 +5,7 @@ import jp.ijufumi.openreports.infrastructure.datastores.database.repositories.Ro
 import jp.ijufumi.openreports.infrastructure.datastores.database.repositories.impl.queries.{
   roleFunctionQuery => query,
 }
-import jp.ijufumi.openreports.presentation.models.responses.RoleFunction
+import jp.ijufumi.openreports.domain.models.entity.RoleFunction
 import slick.jdbc.JdbcBackend.Database
 import slick.jdbc.PostgresProfile.api._
 
