@@ -1,7 +1,10 @@
 package jp.ijufumi.openreports.domain.models.entity
 
-import jp.ijufumi.openreports.infrastructure.datastores.database.entities.{StorageS3 => StorageS3Entity}
+import jp.ijufumi.openreports.infrastructure.datastores.database.entities.{
+  StorageS3 => StorageS3Entity,
+}
 import jp.ijufumi.openreports.utils.Dates
+import jp.ijufumi.openreports.presentation.models.responses.{StorageS3 => StorageS3Response}
 
 case class StorageS3(
     id: String,
@@ -25,6 +28,12 @@ case class StorageS3(
       this.createdAt,
       this.updatedAt,
       this.versions,
+    )
+  }
+  def toResponse: StorageS3Response = {
+    StorageS3Response(
+      this.id,
+      this.s3BucketName,
     )
   }
 }
