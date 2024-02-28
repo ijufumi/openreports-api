@@ -5,9 +5,8 @@ import jp.ijufumi.openreports.infrastructure.datastores.database.repositories.Ro
 import jp.ijufumi.openreports.presentation.models.responses.Role
 import jp.ijufumi.openreports.services.RoleService
 
-class RoleServiceImpl @Inject()(roleRepository: RoleRepository)
-    extends RoleService {
+class RoleServiceImpl @Inject() (roleRepository: RoleRepository) extends RoleService {
   override def getRoles: Seq[Role] = {
-    roleRepository.getAll.map(v => Role(v))
+    roleRepository.getAll.map(r => r.toResponse)
   }
 }
