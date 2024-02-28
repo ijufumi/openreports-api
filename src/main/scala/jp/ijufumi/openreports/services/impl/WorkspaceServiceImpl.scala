@@ -20,12 +20,14 @@ import jp.ijufumi.openreports.presentation.models.requests.{
 }
 import jp.ijufumi.openreports.presentation.models.responses.{
   Lists,
-  StorageS3,
   Template,
   Workspace,
   WorkspaceMember,
 }
-import jp.ijufumi.openreports.domain.models.entity.{Report => ReportModel}
+import jp.ijufumi.openreports.domain.models.entity.{
+  Report => ReportModel,
+  StorageS3 => StorageS3Model,
+}
 import jp.ijufumi.openreports.services.{StorageService, WorkspaceService}
 import jp.ijufumi.openreports.utils.{IDs, Strings}
 import slick.jdbc.PostgresProfile.api._
@@ -58,7 +60,7 @@ class WorkspaceServiceImpl @Inject() (
       }
       val workspaceMember = WorkspaceMember(workspace.id, memberId, permission.get.id)
       workspaceMemberRepository.register(workspaceMember)
-      val storage = StorageS3(IDs.ulid(), workspace.id)
+      val storage = StorageS3Model(IDs.ulid(), workspace.id)
       storageRepository.register(storage)
       val key = this.copySample(workspace.id)
       val reportTemplate =

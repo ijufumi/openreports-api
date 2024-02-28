@@ -4,7 +4,7 @@ import com.google.inject.Inject
 import slick.jdbc.PostgresProfile.api._
 import queries.{storageQuery => query}
 import jp.ijufumi.openreports.infrastructure.datastores.database.repositories.StorageS3Repository
-import jp.ijufumi.openreports.presentation.models.responses.StorageS3
+import jp.ijufumi.openreports.domain.models.entity.StorageS3
 import jp.ijufumi.openreports.utils.Dates
 import slick.jdbc.JdbcBackend.Database
 

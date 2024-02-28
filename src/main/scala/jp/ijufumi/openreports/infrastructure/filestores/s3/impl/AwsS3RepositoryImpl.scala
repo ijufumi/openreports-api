@@ -5,7 +5,7 @@ import jp.ijufumi.openreports.configs.Config
 import jp.ijufumi.openreports.exceptions.NotFoundException
 import jp.ijufumi.openreports.infrastructure.datastores.database.repositories.StorageS3Repository
 import jp.ijufumi.openreports.infrastructure.filestores.s3.AwsS3Repository
-import jp.ijufumi.openreports.presentation.models.responses.StorageS3
+import jp.ijufumi.openreports.domain.models.entity.{StorageS3 => StorageS3Model}
 import software.amazon.awssdk.auth.credentials.{AwsBasicCredentials, StaticCredentialsProvider}
 import software.amazon.awssdk.regions.Region
 import software.amazon.awssdk.services.s3.S3Client
@@ -59,7 +59,7 @@ class AwsS3RepositoryImpl @Inject() (storageRepository: StorageS3Repository)
     }.get.url().toString
   }
 
-  private def getStorage(workspaceId: String): StorageS3 = {
+  private def getStorage(workspaceId: String): StorageS3Model = {
     val storageList = storageRepository.gets(workspaceId)
     if (storageList.isEmpty) {
       throw new NotFoundException(s"storage doesn't exist. workspaceId: $workspaceId")
@@ -67,7 +67,7 @@ class AwsS3RepositoryImpl @Inject() (storageRepository: StorageS3Repository)
     storageList.head
   }
 
-  private def createClient(storage: StorageS3): S3Client = {
+  private def createClient(storage: StorageS3Model): S3Client = {
     val credentials = AwsBasicCredentials.create(storage.awsAccessKeyId, storage.awsSecretAccessKey)
     val region = Region.of(storage.awsRegion)
     S3Client
@@ -77,7 +77,7 @@ class AwsS3RepositoryImpl @Inject() (storageRepository: StorageS3Repository)
       .build()
   }
 
-  private def createPresignerClient(storage: StorageS3): S3Presigner = {
+  private def createPresignerClient(storage: StorageS3Model): S3Presigner = {
     val credentials = AwsBasicCredentials.create(storage.awsAccessKeyId, storage.awsSecretAccessKey)
     val region = Region.of(storage.awsRegion)
     S3Presigner
