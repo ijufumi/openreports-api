@@ -4,6 +4,7 @@ import jp.ijufumi.openreports.domain.models.value.enums.StorageTypes
 import jp.ijufumi.openreports.infrastructure.datastores.database.entities.{
   Template => ReportTemplateEntity,
 }
+import jp.ijufumi.openreports.presentation.models.responses.{Template => TemplateResponse}
 import jp.ijufumi.openreports.presentation.models.requests.UpdateTemplate
 import jp.ijufumi.openreports.utils.Dates
 
@@ -29,6 +30,15 @@ case class Template(
       this.createdAt,
       this.updatedAt,
       this.versions,
+    )
+  }
+  def toResponse: TemplateResponse = {
+    TemplateResponse(
+      this.id,
+      this.name,
+      this.filePath,
+      this.storageType,
+      this.fileSize,
     )
   }
   def copyForUpdate(input: UpdateTemplate): Template = {

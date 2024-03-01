@@ -18,15 +18,11 @@ import jp.ijufumi.openreports.presentation.models.requests.{
   UpdateWorkspace,
   UpdateWorkspaceMember,
 }
-import jp.ijufumi.openreports.presentation.models.responses.{
-  Lists,
-  Template,
-  Workspace,
-  WorkspaceMember,
-}
+import jp.ijufumi.openreports.presentation.models.responses.{Lists, Workspace, WorkspaceMember}
 import jp.ijufumi.openreports.domain.models.entity.{
   Report => ReportModel,
   StorageS3 => StorageS3Model,
+  Template => TemplateModel,
 }
 import jp.ijufumi.openreports.services.{StorageService, WorkspaceService}
 import jp.ijufumi.openreports.utils.{IDs, Strings}
@@ -64,7 +60,7 @@ class WorkspaceServiceImpl @Inject() (
       storageRepository.register(storage)
       val key = this.copySample(workspace.id)
       val reportTemplate =
-        Template(IDs.ulid(), "copy of sample", key, workspace.id, StorageTypes.Local, 1)
+        TemplateModel(IDs.ulid(), "copy of sample", key, workspace.id, StorageTypes.Local, 1)
       reportTemplateRepository.register(reportTemplate)
       val report = ReportModel(IDs.ulid(), "copy of sample", reportTemplate.id, null, workspace.id)
       reportRepository.register(report)

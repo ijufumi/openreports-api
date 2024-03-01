@@ -28,6 +28,7 @@ import jp.ijufumi.openreports.domain.models.entity.{
   Report => ReportModel,
   ReportGroup => ReportGroupModel,
   ReportGroupReport => ReportGroupReportModel,
+  Template => TemplateModel,
 }
 import jp.ijufumi.openreports.utils.{IDs, Strings, TemporaryFiles}
 import org.scalatra.servlet.FileItem
@@ -67,11 +68,11 @@ class ReportServiceImpl @Inject() (
   override def getTemplates(workspaceId: String, page: Int, limit: Int): Lists[Template] = {
     val offset = List(page * limit, 0).max
     val (results, count) = templateRepository.gets(workspaceId, offset, limit)
-    Lists(results, offset, limit, count)
+    Lists(results.map(t => t.toResponse), offset, limit, count)
   }
 
   override def getTemplate(workspaceId: String, id: String): Option[Template] = {
-    templateRepository.getById(workspaceId, id)
+    templateRepository.getById(workspaceId, id).map(t => t.toResponse)
   }
 
   override def outputReport(workspaceId: String, id: String): Option[File] = {
@@ -134,8 +135,9 @@ class ReportServiceImpl @Inject() (
       tmpFile.write(fileItem.get())
       storageService.create(workspaceId, key, storageType, tmpFile.path())
     }
-    val template = Template(IDs.ulid(), req.name, key, workspaceId, storageType, fileItem.size)
+    val template = TemplateModel(IDs.ulid(), req.name, key, workspaceId, storageType, fileItem.size)
     templateRepository.register(template)
+    this.getTemplate(workspaceId, template.id)
   }
 
   override def updateTemplate(
