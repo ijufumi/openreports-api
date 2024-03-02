@@ -23,6 +23,7 @@ import jp.ijufumi.openreports.domain.models.entity.{
   Report => ReportModel,
   StorageS3 => StorageS3Model,
   Template => TemplateModel,
+  Workspace => WorkspaceModel,
   WorkspaceMember => WorkspaceMemberModel,
 }
 import jp.ijufumi.openreports.services.{StorageService, WorkspaceService}
@@ -48,8 +49,8 @@ class WorkspaceServiceImpl @Inject() (
   override def createAndRelevant(name: String, memberId: String): Option[Workspace] = {
     var workspaceOpt = Option.empty[Workspace]
     try {
-      val workspace = Workspace(IDs.ulid(), name, Strings.generateSlug())
-      workspaceOpt = Some(workspace)
+      val workspace = WorkspaceModel(IDs.ulid(), name, Strings.generateSlug())
+      workspaceOpt = Some(workspace.toResponse)
       workspaceRepository.register(workspace)
       val permission = permissionRepository.getByType(RoleTypes.Admin)
       if (permission.isEmpty) {
@@ -75,13 +76,13 @@ class WorkspaceServiceImpl @Inject() (
   }
 
   override def getWorkspace(id: String): Option[Workspace] = {
-    workspaceRepository.getById(id)
+    workspaceRepository.getById(id).map(w => w.toResponse)
   }
 
   override def getWorkspacesByMemberId(memberId: String): Lists[Workspace] = {
     val workspaces = workspaceRepository.getsByMemberId(memberId)
     Lists(
-      workspaces,
+      workspaces.map(w => w.toResponse),
       0,
       workspaces.size,
       workspaces.size,
@@ -95,6 +96,7 @@ class WorkspaceServiceImpl @Inject() (
     }
     val newWorkspace = workspaceOpt.get.mergeForUpdate(input)
     workspaceRepository.update(newWorkspace)
+    this.getWorkspace(id)
   }
 
   override def getWorkspaceMembers(id: String): Lists[WorkspaceMember] = {

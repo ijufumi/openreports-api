@@ -1,6 +1,9 @@
 package jp.ijufumi.openreports.domain.models.entity
 
-import jp.ijufumi.openreports.infrastructure.datastores.database.entities.{Workspace => WorkspaceEntity}
+import jp.ijufumi.openreports.infrastructure.datastores.database.entities.{
+  Workspace => WorkspaceEntity,
+}
+import jp.ijufumi.openreports.presentation.models.responses.{Workspace => WorkspaceResponse}
 import jp.ijufumi.openreports.presentation.models.requests.UpdateWorkspace
 import jp.ijufumi.openreports.utils.Dates
 
@@ -20,6 +23,13 @@ case class Workspace(
       this.createdAt,
       this.updatedAt,
       this.versions,
+    )
+  }
+  def toResponse: WorkspaceResponse = {
+    WorkspaceResponse(
+      this.id,
+      this.name,
+      this.slug,
     )
   }
   def mergeForUpdate(input: UpdateWorkspace): Workspace = {
