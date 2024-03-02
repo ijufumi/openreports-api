@@ -23,6 +23,7 @@ import jp.ijufumi.openreports.domain.models.entity.{
   Report => ReportModel,
   StorageS3 => StorageS3Model,
   Template => TemplateModel,
+  WorkspaceMember => WorkspaceMemberModel,
 }
 import jp.ijufumi.openreports.services.{StorageService, WorkspaceService}
 import jp.ijufumi.openreports.utils.{IDs, Strings}
@@ -54,7 +55,7 @@ class WorkspaceServiceImpl @Inject() (
       if (permission.isEmpty) {
         throw new NotFoundException("permission not found")
       }
-      val workspaceMember = WorkspaceMember(workspace.id, memberId, permission.get.id)
+      val workspaceMember = WorkspaceMemberModel(workspace.id, memberId, permission.get.id)
       workspaceMemberRepository.register(workspaceMember)
       val storage = StorageS3Model(IDs.ulid(), workspace.id)
       storageRepository.register(storage)
@@ -110,14 +111,14 @@ class WorkspaceServiceImpl @Inject() (
       workspaceId: String,
       memberId: String,
   ): Option[WorkspaceMember] = {
-    workspaceMemberRepository.getByIdWithMember(workspaceId, memberId)
+    workspaceMemberRepository.getByIdWithMember(workspaceId, memberId).map((m => m.toResponse))
   }
 
   override def createWorkspaceMember(
       workspaceId: String,
       input: CreateWorkspaceMember,
   ): Option[WorkspaceMember] = {
-    val workspaceMember = WorkspaceMember(
+    val workspaceMember = WorkspaceMemberModel(
       workspaceId,
       input.memberId,
       input.permissionId,

@@ -3,7 +3,7 @@ package jp.ijufumi.openreports.infrastructure.datastores.database.repositories.i
 import com.google.inject.Inject
 import queries.{memberQuery, workspaceMemberQuery => query}
 import jp.ijufumi.openreports.infrastructure.datastores.database.repositories.WorkspaceMemberRepository
-import jp.ijufumi.openreports.presentation.models.responses.WorkspaceMember
+import jp.ijufumi.openreports.domain.models.entity.WorkspaceMember
 import slick.jdbc.JdbcBackend.Database
 import slick.jdbc.PostgresProfile.api._
 
