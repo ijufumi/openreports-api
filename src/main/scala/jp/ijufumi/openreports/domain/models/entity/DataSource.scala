@@ -77,4 +77,7 @@ object DataSource {
       Some(DriverType(entity._2)),
     )
   }
+  implicit def toEntity(model: DataSource): DataSourceEntity = {
+    model.toEntity
+  }
 }

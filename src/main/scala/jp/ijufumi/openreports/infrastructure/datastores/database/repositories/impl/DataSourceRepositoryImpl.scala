@@ -4,6 +4,7 @@ import com.google.inject.Inject
 import queries.{dataSourceQuery => query, driverTypeQuery}
 import jp.ijufumi.openreports.infrastructure.datastores.database.repositories.DataSourceRepository
 import jp.ijufumi.openreports.domain.models.entity.DataSource
+import jp.ijufumi.openreports.domain.models.entity.DataSource._
 import slick.jdbc.JdbcBackend.Database
 import slick.jdbc.PostgresProfile.api._
 
@@ -49,12 +50,12 @@ class DataSourceRepositoryImpl @Inject() (db: Database) extends DataSourceReposi
   }
 
   override def register(dataSource: DataSource): Option[DataSource] = {
-    Await.result(db.run((query += dataSource.toEntity).withPinnedSession), queryTimeout)
+    Await.result(db.run((query += dataSource).withPinnedSession), queryTimeout)
     getById(dataSource.workspaceId, dataSource.id)
   }
 
   override def update(dataSource: DataSource): Unit = {
-    query.insertOrUpdate(dataSource.toEntity).withPinnedSession
+    query.insertOrUpdate(dataSource).withPinnedSession
   }
 
   override def delete(workspaceId: String, id: String): Unit = {
