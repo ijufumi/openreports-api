@@ -9,6 +9,7 @@ import jp.ijufumi.openreports.infrastructure.datastores.database.pool.Connection
 import jp.ijufumi.openreports.presentation.models.requests.{CreateDataSource, UpdateDataSource}
 import jp.ijufumi.openreports.presentation.models.responses.{DataSource, Lists}
 import jp.ijufumi.openreports.domain.models.entity.{DataSource => DataSourceModel}
+import jp.ijufumi.openreports.domain.models.entity.DataSource.conversions._
 
 import java.sql.Connection
 
@@ -32,7 +33,7 @@ class DataSourceServiceImpl @Inject() (dataSourceRepository: DataSourceRepositor
   override def getDataSources(workspaceId: String): Lists[DataSource] = {
     val dataSources = dataSourceRepository.getAllWithDriverType(workspaceId)
     Lists(
-      dataSources.map(d => DataSource(d)),
+      dataSources,
       0,
       dataSources.size,
       dataSources.size,
@@ -40,7 +41,7 @@ class DataSourceServiceImpl @Inject() (dataSourceRepository: DataSourceRepositor
   }
 
   override def getDataSource(workspaceId: String, id: String): Option[DataSource] = {
-    dataSourceRepository.getByIdWithDriverType(workspaceId, id).map(d => DataSource(d))
+    dataSourceRepository.getByIdWithDriverType(workspaceId, id)
   }
 
   override def registerDataSource(

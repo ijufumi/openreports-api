@@ -36,9 +36,15 @@ case class DataSource(
       this.versions,
     )
   }
-  implicit def toResponse: DataSourceResponse = {
+  def toResponse: DataSourceResponse = {
     DataSourceResponse(
-      this,
+      this.id,
+      this.name,
+      this.url,
+      this.username,
+      this.password,
+      this.driverTypeId,
+      this.driverType.map(d => d.toResponse),
     )
   }
 
@@ -77,7 +83,18 @@ object DataSource {
       Some(DriverType(entity._2)),
     )
   }
-  implicit def toEntity(model: DataSource): DataSourceEntity = {
-    model.toEntity
+  object conversions {
+    implicit def toEntity(model: DataSource): DataSourceEntity = {
+      model.toEntity
+    }
+    implicit def toResponse(model: DataSource): DataSourceResponse = {
+      model.toResponse
+    }
+    implicit def toResponse(model: Option[DataSource]): Option[DataSourceResponse] = {
+      model.map(m => m.toResponse)
+    }
+    implicit def toResponses(model: Seq[DataSource]): Seq[DataSourceResponse] = {
+      model.map(m => m.toResponse)
+    }
   }
 }

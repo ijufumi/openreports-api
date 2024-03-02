@@ -4,7 +4,7 @@ import com.google.inject.Inject
 import queries.{dataSourceQuery => query, driverTypeQuery}
 import jp.ijufumi.openreports.infrastructure.datastores.database.repositories.DataSourceRepository
 import jp.ijufumi.openreports.domain.models.entity.DataSource
-import jp.ijufumi.openreports.domain.models.entity.DataSource._
+import jp.ijufumi.openreports.domain.models.entity.DataSource.conversions._
 import slick.jdbc.JdbcBackend.Database
 import slick.jdbc.PostgresProfile.api._
 
