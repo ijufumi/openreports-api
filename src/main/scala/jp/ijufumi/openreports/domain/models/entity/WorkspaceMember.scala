@@ -1,6 +1,12 @@
 package jp.ijufumi.openreports.domain.models.entity
 
-import jp.ijufumi.openreports.infrastructure.datastores.database.entities.{Member => MemberEntity, WorkspaceMember => WorkspaceMemberEntity}
+import jp.ijufumi.openreports.infrastructure.datastores.database.entities.{
+  Member => MemberEntity,
+  WorkspaceMember => WorkspaceMemberEntity,
+}
+import jp.ijufumi.openreports.presentation.models.responses.{
+  WorkspaceMember => WorkspaceMemberResponse,
+}
 import jp.ijufumi.openreports.presentation.models.requests.UpdateWorkspaceMember
 import jp.ijufumi.openreports.utils.Dates
 
@@ -21,6 +27,14 @@ case class WorkspaceMember(
       this.createdAt,
       this.updatedAt,
       this.versions,
+    )
+  }
+  def toResponse: WorkspaceMemberResponse = {
+    WorkspaceMemberResponse(
+      this.workspaceId,
+      this.memberId,
+      this.roleId,
+      this.member.map(m => m.toResponse),
     )
   }
   def copyForUpdate(input: UpdateWorkspaceMember): WorkspaceMember = {

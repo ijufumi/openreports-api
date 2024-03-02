@@ -1,6 +1,6 @@
 package jp.ijufumi.openreports.infrastructure.datastores.database.repositories
 
-import jp.ijufumi.openreports.presentation.models.responses.WorkspaceMember
+import jp.ijufumi.openreports.domain.models.entity.WorkspaceMember
 
 trait WorkspaceMemberRepository {
   def getById(workspaceId: String, memberId: String): Option[WorkspaceMember]
