@@ -7,7 +7,6 @@ import jp.ijufumi.openreports.infrastructure.datastores.database.entities.{
 import jp.ijufumi.openreports.presentation.models.requests.UpdateDataSource
 import jp.ijufumi.openreports.utils.Dates
 import jp.ijufumi.openreports.presentation.models.responses.{DataSource => DataSourceResponse}
-import scala.language.implicitConversions
 
 case class DataSource(
     id: String,
@@ -84,6 +83,8 @@ object DataSource {
     )
   }
   object conversions {
+    import scala.language.implicitConversions
+
     implicit def toEntity(model: DataSource): DataSourceEntity = {
       model.toEntity
     }
