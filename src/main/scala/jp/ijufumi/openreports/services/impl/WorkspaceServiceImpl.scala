@@ -82,7 +82,7 @@ class WorkspaceServiceImpl @Inject() (
   override def getWorkspacesByMemberId(memberId: String): Lists[Workspace] = {
     val workspaces = workspaceRepository.getsByMemberId(memberId)
     Lists(
-      workspaces,
+      workspaces.map(w => w.toResponse),
       0,
       workspaces.size,
       workspaces.size,
