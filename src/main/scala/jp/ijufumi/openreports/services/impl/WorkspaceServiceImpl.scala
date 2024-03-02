@@ -100,7 +100,7 @@ class WorkspaceServiceImpl @Inject() (
   override def getWorkspaceMembers(id: String): Lists[WorkspaceMember] = {
     val results = workspaceMemberRepository.getsWithMember(id)
     Lists(
-      results,
+      results.map(m => m.toResponse),
       0,
       results.size,
       results.size,
