@@ -7,7 +7,6 @@ import jp.ijufumi.openreports.infrastructure.datastores.database.entities.{
 import jp.ijufumi.openreports.presentation.models.requests.UpdateDataSource
 import jp.ijufumi.openreports.utils.Dates
 import jp.ijufumi.openreports.presentation.models.responses.{DataSource => DataSourceResponse}
-import scala.language.implicitConversions
 
 case class DataSource(
     id: String,
@@ -36,9 +35,15 @@ case class DataSource(
       this.versions,
     )
   }
-  implicit def toResponse: DataSourceResponse = {
+  def toResponse: DataSourceResponse = {
     DataSourceResponse(
-      this,
+      this.id,
+      this.name,
+      this.url,
+      this.username,
+      this.password,
+      this.driverTypeId,
+      this.driverType.map(d => d.toResponse),
     )
   }
 
@@ -76,5 +81,21 @@ object DataSource {
       entity._1.versions,
       Some(DriverType(entity._2)),
     )
+  }
+  object conversions {
+    import scala.language.implicitConversions
+
+    implicit def toEntity(model: DataSource): DataSourceEntity = {
+      model.toEntity
+    }
+    implicit def toResponse(model: DataSource): DataSourceResponse = {
+      model.toResponse
+    }
+    implicit def toResponse(model: Option[DataSource]): Option[DataSourceResponse] = {
+      model.map(m => m.toResponse)
+    }
+    implicit def toResponses(model: Seq[DataSource]): Seq[DataSourceResponse] = {
+      model.map(m => m.toResponse)
+    }
   }
 }
