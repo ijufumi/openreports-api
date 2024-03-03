@@ -5,7 +5,6 @@ import jp.ijufumi.openreports.infrastructure.datastores.database.entities.{
   DriverType => DriverTypeEntity,
 }
 import jp.ijufumi.openreports.presentation.models.responses.{DriverType => DriverTypeResponse}
-import scala.language.implicitConversions
 
 case class DriverType(
     id: String,
@@ -27,6 +26,8 @@ object DriverType {
   }
 
   object conversions {
+    import scala.language.implicitConversions
+
     implicit def toResponse(model: DriverType): DriverTypeResponse = {
       model.toResponse
     }
