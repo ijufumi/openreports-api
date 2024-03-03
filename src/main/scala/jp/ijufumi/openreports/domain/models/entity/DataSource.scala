@@ -115,7 +115,7 @@ object DataSource {
     implicit def toResponse(model: DataSource): DataSourceResponse = {
       model.toResponse
     }
-    implicit def toResponse(model: Option[DataSource]): Option[DataSourceResponse] = {
+    implicit def toResponse2(model: Option[DataSource]): Option[DataSourceResponse] = {
       model.map(m => m.toResponse)
     }
     implicit def toResponses(model: Seq[DataSource]): Seq[DataSourceResponse] = {
