@@ -83,6 +83,7 @@ object DataSource {
       Some(DriverType(entity._2)),
     )
   }
+
   object conversions {
     import scala.language.implicitConversions
 

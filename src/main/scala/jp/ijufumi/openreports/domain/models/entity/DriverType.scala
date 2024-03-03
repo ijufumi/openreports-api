@@ -31,7 +31,7 @@ object DriverType {
     implicit def toResponse(model: DriverType): DriverTypeResponse = {
       model.toResponse
     }
-    implicit def toResponse(model: Option[DriverType]): Option[DriverTypeResponse] = {
+    implicit def toResponse2(model: Option[DriverType]): Option[DriverTypeResponse] = {
       model.map(d => d.toResponse)
     }
   }
