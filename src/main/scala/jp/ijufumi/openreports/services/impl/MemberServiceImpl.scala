@@ -27,7 +27,8 @@ class MemberServiceImpl @Inject() (
     }
     val newMember = memberOpt.get.copy(name = name, password = password)
     memberRepository.update(newMember)
-    memberRepository.getById(memberId)
+    val result = memberRepository.getById(memberId)
+    result
   }
 
   override def permissions(memberId: String, workspaceId: String): Option[Permissions] = {
