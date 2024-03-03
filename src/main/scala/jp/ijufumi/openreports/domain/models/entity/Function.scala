@@ -6,7 +6,6 @@ import jp.ijufumi.openreports.infrastructure.datastores.database.entities.{
 }
 import jp.ijufumi.openreports.presentation.models.responses.{Function => FunctionResponse}
 import jp.ijufumi.openreports.utils.Dates
-import scala.language.implicitConversions
 
 case class Function(
     id: String,
@@ -37,6 +36,8 @@ object Function {
   }
 
   object conversions {
+    import scala.language.implicitConversions
+
     implicit def fromFunctionEntity(entity: FunctionEntity): Function = {
       Function(entity)
     }
