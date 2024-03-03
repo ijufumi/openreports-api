@@ -7,6 +7,7 @@ import jp.ijufumi.openreports.infrastructure.datastores.database.entities.{
 import jp.ijufumi.openreports.presentation.models.requests.UpdateDataSource
 import jp.ijufumi.openreports.utils.Dates
 import jp.ijufumi.openreports.presentation.models.responses.{DataSource => DataSourceResponse}
+import jp.ijufumi.openreports.domain.models.entity.DriverType.conversions._
 
 case class DataSource(
     id: String,
@@ -43,7 +44,7 @@ case class DataSource(
       this.username,
       this.password,
       this.driverTypeId,
-      this.driverType.map(d => d.toResponse),
+      this.driverType,
     )
   }
 
@@ -82,16 +83,39 @@ object DataSource {
       Some(DriverType(entity._2)),
     )
   }
+
   object conversions {
     import scala.language.implicitConversions
 
+    implicit def fromEntity(model: DataSourceEntity): DataSource = {
+      DataSource(model)
+    }
+    implicit def fromEntity2(model: (DataSourceEntity, DriverTypeEntity)): DataSource = {
+      DataSource(model)
+    }
+    implicit def fromEntity(model: Option[DataSourceEntity]): Option[DataSource] = {
+      model.map(d => DataSource(d))
+    }
+    implicit def fromEntity2(
+        model: Option[(DataSourceEntity, DriverTypeEntity)],
+    ): Option[DataSource] = {
+      model.map(d => DataSource(d))
+    }
+    implicit def fromEntities(model: Seq[DataSourceEntity]): Seq[DataSource] = {
+      model.map(d => DataSource(d))
+    }
+    implicit def fromEntities2(
+        model: Seq[(DataSourceEntity, DriverTypeEntity)],
+    ): Seq[DataSource] = {
+      model.map(d => DataSource(d))
+    }
     implicit def toEntity(model: DataSource): DataSourceEntity = {
       model.toEntity
     }
     implicit def toResponse(model: DataSource): DataSourceResponse = {
       model.toResponse
     }
-    implicit def toResponse(model: Option[DataSource]): Option[DataSourceResponse] = {
+    implicit def toResponse2(model: Option[DataSource]): Option[DataSourceResponse] = {
       model.map(m => m.toResponse)
     }
     implicit def toResponses(model: Seq[DataSource]): Seq[DataSourceResponse] = {

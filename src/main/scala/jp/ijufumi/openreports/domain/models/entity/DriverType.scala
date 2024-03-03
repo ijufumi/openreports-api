@@ -5,14 +5,13 @@ import jp.ijufumi.openreports.infrastructure.datastores.database.entities.{
   DriverType => DriverTypeEntity,
 }
 import jp.ijufumi.openreports.presentation.models.responses.{DriverType => DriverTypeResponse}
-import scala.language.implicitConversions
 
 case class DriverType(
     id: String,
     name: String,
     jdbcDriverClass: JdbcDriverClasses.JdbcDriverClass,
 ) {
-  implicit def toResponse: DriverTypeResponse = {
+  def toResponse: DriverTypeResponse = {
     DriverTypeResponse(this)
   }
 }
@@ -24,5 +23,16 @@ object DriverType {
       entity.name,
       entity.jdbcDriverClass,
     )
+  }
+
+  object conversions {
+    import scala.language.implicitConversions
+
+    implicit def toResponse(model: DriverType): DriverTypeResponse = {
+      model.toResponse
+    }
+    implicit def toResponse2(model: Option[DriverType]): Option[DriverTypeResponse] = {
+      model.map(d => d.toResponse)
+    }
   }
 }

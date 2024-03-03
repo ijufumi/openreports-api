@@ -16,13 +16,15 @@ class DataSourceRepositoryImpl @Inject() (db: Database) extends DataSourceReposi
       .filter(_.id === id)
       .filter(_.workspaceId === workspaceId)
     val dataSources = Await.result(db.run(getDataSources.result), queryTimeout)
-    Some(dataSources.head).map(d => DataSource(d))
+    Some(dataSources.head)
   }
 
   override def getAll(workspaceId: String): Seq[DataSource] = {
     val getDataSources = query
       .filter(_.workspaceId === workspaceId)
-    Await.result(db.run(getDataSources.result), queryTimeout).map(d => DataSource(d))
+    // using variable is needed to use implicit converting
+    val result = Await.result(db.run(getDataSources.result), queryTimeout)
+    result
   }
 
   override def getByIdWithDriverType(
@@ -38,7 +40,7 @@ class DataSourceRepositoryImpl @Inject() (db: Database) extends DataSourceReposi
     if (dataSources.isEmpty) {
       return None
     }
-    Some(dataSources.head).map(d => DataSource(d))
+    Some(dataSources.head)
   }
 
   override def getAllWithDriverType(workspaceId: String): Seq[DataSource] = {
@@ -46,7 +48,9 @@ class DataSourceRepositoryImpl @Inject() (db: Database) extends DataSourceReposi
       .join(driverTypeQuery)
       .on(_.driverTypeId === _.id)
       .filter(_._1.workspaceId === workspaceId)
-    Await.result(db.run(getDataSources.result), queryTimeout).map(d => DataSource(d))
+    // using variable is needed to use implicit converting
+    val result = Await.result(db.run(getDataSources.result), queryTimeout)
+    result
   }
 
   override def register(dataSource: DataSource): Option[DataSource] = {
