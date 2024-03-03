@@ -3,7 +3,6 @@ package jp.ijufumi.openreports.domain.models.entity
 import jp.ijufumi.openreports.infrastructure.datastores.database.entities.{Member => MemberEntity}
 import jp.ijufumi.openreports.presentation.models.responses.{Member => MemberResponse}
 import jp.ijufumi.openreports.utils.Dates
-import org.json4s.FieldSerializer
 
 case class Member(
     id: String,
@@ -32,53 +31,37 @@ case class Member(
   def toResponse: MemberResponse = {
     MemberResponse(
       this.id,
-      this.googleId,
       this.email,
-      this.password,
       this.name,
-      this.createdAt,
-      this.updatedAt,
-      this.versions,
     )
-  }
-
-  def withApiToken(apiToken: String): Member = {
-    copy(apiToken = apiToken)
-  }
-  def withWorkspace(workspaces: Seq[Workspace]): Member = {
-    copy(workspaces = workspaces)
   }
 }
 
 object Member {
-  val memberSerializer: FieldSerializer[Member] = FieldSerializer[Member](
-    FieldSerializer.ignore("password") orElse FieldSerializer.ignore("googleId"),
-  )
-
-  def apply(member: MemberEntity, workspaces: Seq[Workspace], apiToken: String): Member = {
+  def apply(entity: (MemberEntity, Seq[Workspace]), apiToken: String): Member = {
     Member(
-      member.id,
-      member.googleId,
-      member.email,
-      member.password,
-      member.name,
-      member.createdAt,
-      member.updatedAt,
-      member.versions,
+      entity._1.id,
+      entity._1.googleId,
+      entity._1.email,
+      entity._1.password,
+      entity._1.name,
+      entity._1.createdAt,
+      entity._1.updatedAt,
+      entity._1.versions,
       apiToken,
-      workspaces,
+      entity._2,
     )
   }
-  def apply(member: MemberEntity): Member = {
+  def apply(entity: MemberEntity): Member = {
     Member(
-      member.id,
-      member.googleId,
-      member.email,
-      member.password,
-      member.name,
-      member.createdAt,
-      member.updatedAt,
-      member.versions,
+      entity.id,
+      entity.googleId,
+      entity.email,
+      entity.password,
+      entity.name,
+      entity.createdAt,
+      entity.updatedAt,
+      entity.versions,
     )
   }
 }
