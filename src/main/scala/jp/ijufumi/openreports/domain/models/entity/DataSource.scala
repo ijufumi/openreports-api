@@ -86,6 +86,28 @@ object DataSource {
   object conversions {
     import scala.language.implicitConversions
 
+    implicit def fromEntity(model: DataSourceEntity): DataSource = {
+      DataSource(model)
+    }
+    implicit def fromEntity2(model: (DataSourceEntity, DriverTypeEntity)): DataSource = {
+      DataSource(model)
+    }
+    implicit def fromEntity(model: Option[DataSourceEntity]): Option[DataSource] = {
+      model.map(d => DataSource(d))
+    }
+    implicit def fromEntity2(
+        model: Option[(DataSourceEntity, DriverTypeEntity)],
+    ): Option[DataSource] = {
+      model.map(d => DataSource(d))
+    }
+    implicit def fromEntities(model: Seq[DataSourceEntity]): Seq[DataSource] = {
+      model.map(d => DataSource(d))
+    }
+    implicit def fromEntities2(
+        model: Seq[(DataSourceEntity, DriverTypeEntity)],
+    ): Seq[DataSource] = {
+      model.map(d => DataSource(d))
+    }
     implicit def toEntity(model: DataSource): DataSourceEntity = {
       model.toEntity
     }
