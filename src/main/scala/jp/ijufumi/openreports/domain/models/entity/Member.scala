@@ -68,31 +68,31 @@ object Member {
 
   object conversions {
 
-    implicit def fromEntity(entity: MemberEntity): Member = {
+    implicit def fromMemberEntity(entity: MemberEntity): Member = {
       Member(entity)
     }
 
-    implicit def fromEntity2(entity: Option[MemberEntity]): Option[Member] = {
+    implicit def fromMemberEntity2(entity: Option[MemberEntity]): Option[Member] = {
       entity.map(e => Member(e))
     }
 
-    implicit def fromEntities(entity: Seq[MemberEntity]): Seq[Member] = {
+    implicit def fromMemberEntities(entity: Seq[MemberEntity]): Seq[Member] = {
       entity.map(e => Member(e))
     }
 
-    implicit def toEntity(model: Member): MemberEntity = {
+    implicit def toMemberEntity(model: Member): MemberEntity = {
       model.toEntity
     }
 
-    implicit def toResponse(model: Member): MemberResponse = {
+    implicit def toMemberResponse(model: Member): MemberResponse = {
       model.toResponse
     }
 
-    implicit def toResponse2(model: Option[Member]): Option[MemberResponse] = {
+    implicit def toMemberResponse2(model: Option[Member]): Option[MemberResponse] = {
       model.map(m => m.toResponse)
     }
 
-    implicit def toResponses(model: Seq[Member]): Seq[MemberResponse] = {
+    implicit def toMemberResponses(model: Seq[Member]): Seq[MemberResponse] = {
       model.map(m => m.toResponse)
     }
   }
