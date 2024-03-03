@@ -3,6 +3,7 @@ package jp.ijufumi.openreports.domain.models.entity
 import jp.ijufumi.openreports.infrastructure.datastores.database.entities.{Member => MemberEntity}
 import jp.ijufumi.openreports.presentation.models.responses.{Member => MemberResponse}
 import jp.ijufumi.openreports.utils.Dates
+import scala.language.implicitConversions
 
 case class Member(
     id: String,
@@ -66,7 +67,6 @@ object Member {
   }
 
   object conversions {
-    import scala.language.implicitConversions
 
     implicit def fromEntity(entity: MemberEntity): Member = {
       Member(entity)
