@@ -34,4 +34,28 @@ object Function {
       entity.versions,
     )
   }
+
+  object conversions {
+    import scala.language.implicitConversions
+
+    implicit def fromEntity(entity: FunctionEntity): Function = {
+      Function(entity)
+    }
+    implicit def fromEntity2(entity: Option[FunctionEntity]): Option[Function] = {
+      entity.map(e => Function(e))
+    }
+    implicit def fromEntities(entity: Seq[FunctionEntity]): Seq[Function] = {
+      entity.map(e => Function(e))
+    }
+
+    implicit def toResponse(model: Function): FunctionResponse = {
+      model.toResponse
+    }
+    implicit def toResponse2(model: Option[Function]): Option[FunctionResponse] = {
+      model.map(m => m.toResponse)
+    }
+    implicit def toResponses(model: Seq[Function]): Seq[FunctionResponse] = {
+      model.map(m => m.toResponse)
+    }
+  }
 }

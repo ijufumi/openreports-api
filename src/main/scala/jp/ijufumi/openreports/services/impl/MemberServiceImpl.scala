@@ -10,6 +10,7 @@ import jp.ijufumi.openreports.infrastructure.datastores.database.repositories.{
 }
 import jp.ijufumi.openreports.presentation.models.responses.{Member, Permissions}
 import jp.ijufumi.openreports.services.MemberService
+import jp.ijufumi.openreports.domain.models.entity.Function.conversions._
 
 class MemberServiceImpl @Inject() (
     memberRepository: MemberRepository,
@@ -38,6 +39,6 @@ class MemberServiceImpl @Inject() (
     val functionIds =
       roleFunctionRepository.getByRoleId(workspaceMember.roleId).map(m => m.functionId)
     val functions = functionRepository.getsByIds(functionIds)
-    Some(Permissions(workspaces, functions.map((f => f.toResponse))))
+    Some(Permissions(workspaces, functions))
   }
 }

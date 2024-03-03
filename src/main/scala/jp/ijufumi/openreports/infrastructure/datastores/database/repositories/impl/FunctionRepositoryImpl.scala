@@ -6,6 +6,7 @@ import jp.ijufumi.openreports.infrastructure.datastores.database.repositories.im
   functionQuery => query,
 }
 import jp.ijufumi.openreports.domain.models.entity.Function
+import jp.ijufumi.openreports.domain.models.entity.Function.conversions._
 import slick.jdbc.JdbcBackend.Database
 import slick.jdbc.PostgresProfile.api._
 
@@ -13,10 +14,12 @@ import scala.concurrent.Await
 
 class FunctionRepositoryImpl @Inject() (db: Database) extends FunctionRepository {
   override def getAll: Seq[Function] = {
-    Await.result(db.run(query.result), queryTimeout).map(f => Function(f))
+    val result = Await.result(db.run(query.result), queryTimeout)
+    result
   }
 
   override def getsByIds(ids: Seq[String]): Seq[Function] = {
-    Await.result(db.run(query.filter(_.id.inSet(ids)).result), queryTimeout).map(f => Function(f))
+    val result = Await.result(db.run(query.filter(_.id.inSet(ids)).result), queryTimeout)
+    result
   }
 }
