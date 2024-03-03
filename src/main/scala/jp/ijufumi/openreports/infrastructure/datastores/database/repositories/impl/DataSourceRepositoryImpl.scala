@@ -22,6 +22,7 @@ class DataSourceRepositoryImpl @Inject() (db: Database) extends DataSourceReposi
   override def getAll(workspaceId: String): Seq[DataSource] = {
     val getDataSources = query
       .filter(_.workspaceId === workspaceId)
+    // using variable is needed to use implicit converting
     val result = Await.result(db.run(getDataSources.result), queryTimeout)
     result
   }
@@ -47,6 +48,7 @@ class DataSourceRepositoryImpl @Inject() (db: Database) extends DataSourceReposi
       .join(driverTypeQuery)
       .on(_.driverTypeId === _.id)
       .filter(_._1.workspaceId === workspaceId)
+    // using variable is needed to use implicit converting
     val result = Await.result(db.run(getDataSources.result), queryTimeout)
     result
   }
