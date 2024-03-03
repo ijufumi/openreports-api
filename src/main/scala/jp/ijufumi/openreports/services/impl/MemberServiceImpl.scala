@@ -11,6 +11,7 @@ import jp.ijufumi.openreports.infrastructure.datastores.database.repositories.{
 import jp.ijufumi.openreports.presentation.models.responses.{Member, Permissions}
 import jp.ijufumi.openreports.services.MemberService
 import jp.ijufumi.openreports.domain.models.entity.Function.conversions._
+import jp.ijufumi.openreports.domain.models.entity.Member.conversions._
 
 class MemberServiceImpl @Inject() (
     memberRepository: MemberRepository,
@@ -26,7 +27,7 @@ class MemberServiceImpl @Inject() (
     }
     val newMember = memberOpt.get.copy(name = name, password = password)
     memberRepository.update(newMember)
-    memberRepository.getById(memberId).map(m => m.toResponse)
+    memberRepository.getById(memberId)
   }
 
   override def permissions(memberId: String, workspaceId: String): Option[Permissions] = {

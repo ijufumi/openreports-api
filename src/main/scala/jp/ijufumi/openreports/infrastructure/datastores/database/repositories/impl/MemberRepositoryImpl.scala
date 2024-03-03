@@ -7,6 +7,7 @@ import jp.ijufumi.openreports.infrastructure.datastores.database.repositories.Me
 import jp.ijufumi.openreports.domain.models.entity.Member
 import slick.jdbc.JdbcBackend.Database
 import slick.jdbc.PostgresProfile.api._
+import jp.ijufumi.openreports.domain.models.entity.Member.conversions._
 
 class MemberRepositoryImpl @Inject() (db: Database) extends MemberRepository {
   override def getById(id: String): Option[Member] = {
@@ -16,7 +17,7 @@ class MemberRepositoryImpl @Inject() (db: Database) extends MemberRepository {
     if (members.isEmpty) {
       return None
     }
-    Some(members.head).map(m => Member(m))
+    Some(members.head)
   }
 
   override def getByGoogleId(googleId: String): Option[Member] = {
@@ -26,7 +27,7 @@ class MemberRepositoryImpl @Inject() (db: Database) extends MemberRepository {
     if (members.isEmpty) {
       return None
     }
-    Some(members.head).map(m => Member(m))
+    Some(members.head)
   }
 
   override def getMemberByEmail(email: String): Option[Member] = {
@@ -36,16 +37,16 @@ class MemberRepositoryImpl @Inject() (db: Database) extends MemberRepository {
     if (members.isEmpty) {
       return None
     }
-    Some(members.head).map(m => Member(m))
+    Some(members.head)
   }
 
   override def register(member: Member): Option[Member] = {
-    val register = (query += member.toEntity).withPinnedSession
+    val register = (query += member).withPinnedSession
     Await.result(db.run(register), queryTimeout)
     getById(member.id)
   }
 
   override def update(member: Member): Unit = {
-    query.insertOrUpdate(member.toEntity).withPinnedSession
+    query.insertOrUpdate(member).withPinnedSession
   }
 }

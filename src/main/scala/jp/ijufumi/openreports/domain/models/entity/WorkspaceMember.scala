@@ -9,6 +9,7 @@ import jp.ijufumi.openreports.presentation.models.responses.{
 }
 import jp.ijufumi.openreports.presentation.models.requests.UpdateWorkspaceMember
 import jp.ijufumi.openreports.utils.Dates
+import jp.ijufumi.openreports.domain.models.entity.Member.conversions._
 
 case class WorkspaceMember(
     workspaceId: String,
@@ -34,7 +35,7 @@ case class WorkspaceMember(
       this.workspaceId,
       this.memberId,
       this.roleId,
-      this.member.map(m => m.toResponse),
+      this.member,
     )
   }
   def copyForUpdate(input: UpdateWorkspaceMember): WorkspaceMember = {
