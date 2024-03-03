@@ -64,4 +64,36 @@ object Member {
       entity.versions,
     )
   }
+
+  object conversions {
+    import scala.language.implicitConversions
+
+    implicit def fromMemberEntity(entity: MemberEntity): Member = {
+      Member(entity)
+    }
+
+    implicit def fromMemberEntity2(entity: Option[MemberEntity]): Option[Member] = {
+      entity.map(e => Member(e))
+    }
+
+    implicit def fromMemberEntities(entity: Seq[MemberEntity]): Seq[Member] = {
+      entity.map(e => Member(e))
+    }
+
+    implicit def toMemberEntity(model: Member): MemberEntity = {
+      model.toEntity
+    }
+
+    implicit def toMemberResponse(model: Member): MemberResponse = {
+      model.toResponse
+    }
+
+    implicit def toMemberResponse2(model: Option[Member]): Option[MemberResponse] = {
+      model.map(m => m.toResponse)
+    }
+
+    implicit def toMemberResponses(model: Seq[Member]): Seq[MemberResponse] = {
+      model.map(m => m.toResponse)
+    }
+  }
 }

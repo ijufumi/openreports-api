@@ -14,6 +14,7 @@ import jp.ijufumi.openreports.presentation.models.requests.{GoogleLogin, Login}
 import jp.ijufumi.openreports.presentation.models.responses.Member
 import jp.ijufumi.openreports.domain.models.entity.{Member => MemberModel}
 import slick.jdbc.PostgresProfile.api._
+import jp.ijufumi.openreports.domain.models.entity.Member.conversions._
 
 @Singleton
 class LoginServiceImpl @Inject() (
@@ -38,7 +39,7 @@ class LoginServiceImpl @Inject() (
       logger.info(s"$email's password does not match")
       return None
     }
-    makeResponse(member.toResponse)
+    makeResponse(member)
   }
 
   override def logout(authorizationHeader: String): Unit = {
@@ -89,7 +90,7 @@ class LoginServiceImpl @Inject() (
 
     val memberOptById = memberRepository.getByGoogleId(userInfo.id)
     if (memberOptById.isDefined) {
-      return makeResponse(memberOptById.get.toResponse)
+      return makeResponse(memberOptById.get)
     }
 
     val memberOptByEmail = memberRepository.getMemberByEmail(userInfo.email)
@@ -97,7 +98,7 @@ class LoginServiceImpl @Inject() (
       val member = memberOptByEmail.get
       val newMember = member.copy(googleId = Some(userInfo.id))
       memberRepository.update(newMember)
-      return makeResponse(newMember.toResponse)
+      return makeResponse(newMember)
     }
 
     val member = MemberModel(
@@ -112,7 +113,7 @@ class LoginServiceImpl @Inject() (
       val newMemberOpt = memberRepository.register(member)
       val workspaceName = Strings.nameFromEmail(member.email) + "'s workspace"
       workspaceService.createAndRelevant(workspaceName, member.id)
-      makeResponse(newMemberOpt.get.toResponse)
+      makeResponse(newMemberOpt.get)
     } catch {
       case e: Throwable =>
         SimpleDBIO(_.connection.rollback()).withPinnedSession
@@ -164,6 +165,6 @@ class LoginServiceImpl @Inject() (
     if (memberId == "") {
       return None
     }
-    memberRepository.getById(memberId).map(m => m.toResponse)
+    memberRepository.getById(memberId)
   }
 }

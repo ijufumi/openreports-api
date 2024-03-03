@@ -87,38 +87,38 @@ object DataSource {
   object conversions {
     import scala.language.implicitConversions
 
-    implicit def fromEntity(model: DataSourceEntity): DataSource = {
+    implicit def fromDataSourceEntity(model: DataSourceEntity): DataSource = {
       DataSource(model)
     }
-    implicit def fromEntity2(model: (DataSourceEntity, DriverTypeEntity)): DataSource = {
+    implicit def fromDataSourceEntity2(model: (DataSourceEntity, DriverTypeEntity)): DataSource = {
       DataSource(model)
     }
-    implicit def fromEntity(model: Option[DataSourceEntity]): Option[DataSource] = {
+    implicit def fromDataSourceEntity(model: Option[DataSourceEntity]): Option[DataSource] = {
       model.map(d => DataSource(d))
     }
-    implicit def fromEntity2(
+    implicit def fromDataSourceEntity2(
         model: Option[(DataSourceEntity, DriverTypeEntity)],
     ): Option[DataSource] = {
       model.map(d => DataSource(d))
     }
-    implicit def fromEntities(model: Seq[DataSourceEntity]): Seq[DataSource] = {
+    implicit def fromDataSourceEntities(model: Seq[DataSourceEntity]): Seq[DataSource] = {
       model.map(d => DataSource(d))
     }
-    implicit def fromEntities2(
+    implicit def fromDataSourceEntities2(
         model: Seq[(DataSourceEntity, DriverTypeEntity)],
     ): Seq[DataSource] = {
       model.map(d => DataSource(d))
     }
-    implicit def toEntity(model: DataSource): DataSourceEntity = {
+    implicit def toDataSourceEntity(model: DataSource): DataSourceEntity = {
       model.toEntity
     }
-    implicit def toResponse(model: DataSource): DataSourceResponse = {
+    implicit def toDataSourceResponse(model: DataSource): DataSourceResponse = {
       model.toResponse
     }
-    implicit def toResponse2(model: Option[DataSource]): Option[DataSourceResponse] = {
+    implicit def toDataSourceResponse2(model: Option[DataSource]): Option[DataSourceResponse] = {
       model.map(m => m.toResponse)
     }
-    implicit def toResponses(model: Seq[DataSource]): Seq[DataSourceResponse] = {
+    implicit def toDataSourceResponses(model: Seq[DataSource]): Seq[DataSourceResponse] = {
       model.map(m => m.toResponse)
     }
   }
