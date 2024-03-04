@@ -9,6 +9,7 @@ import jp.ijufumi.openreports.domain.models.entity.ReportGroupReport
 import jp.ijufumi.openreports.utils.Dates
 import slick.jdbc.JdbcBackend.Database
 import slick.jdbc.PostgresProfile.api._
+import jp.ijufumi.openreports.domain.models.entity.ReportGroupReport.conversions._
 
 import scala.concurrent.Await
 
@@ -22,7 +23,7 @@ class ReportGroupReportRepositoryImpl @Inject() (db: Database) extends ReportGro
     if (limit > 0) {
       filtered = filtered.take(limit)
     }
-    (Await.result(db.run(filtered.result), queryTimeout).map(r => ReportGroupReport(r)), count)
+    (Await.result(db.run(filtered.result), queryTimeout), count)
   }
 
   override def getById(id: String): Option[ReportGroupReport] = {
@@ -32,7 +33,7 @@ class ReportGroupReportRepositoryImpl @Inject() (db: Database) extends ReportGro
     if (models.isEmpty) {
       return None
     }
-    Some(models.head).map(r => ReportGroupReport(r))
+    Some(models.head)
   }
 
   override def getByIds(ids: Seq[String]): Seq[ReportGroupReport] = {
@@ -48,7 +49,7 @@ class ReportGroupReportRepositoryImpl @Inject() (db: Database) extends ReportGro
   }
 
   override def registerInBatch(model: Seq[ReportGroupReport]): Seq[ReportGroupReport] = {
-    val register = (query ++= model.map(r => r.toEntity)).withPinnedSession
+    val register = (query ++= model).withPinnedSession
     Await.result(db.run(register), queryTimeout)
     val ids = model.map(m => m.id)
     getByIds(ids)
@@ -56,7 +57,7 @@ class ReportGroupReportRepositoryImpl @Inject() (db: Database) extends ReportGro
 
   override def update(model: ReportGroupReport): Unit = {
     val newModel = model.copy(updatedAt = Dates.currentTimestamp())
-    val updateQuery = query.insertOrUpdate(newModel.toEntity).withPinnedSession
+    val updateQuery = query.insertOrUpdate(newModel).withPinnedSession
     Await.result(db.run(updateQuery), queryTimeout)
   }
 
