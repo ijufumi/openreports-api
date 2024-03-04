@@ -23,7 +23,8 @@ class ReportGroupReportRepositoryImpl @Inject() (db: Database) extends ReportGro
     if (limit > 0) {
       filtered = filtered.take(limit)
     }
-    (Await.result(db.run(filtered.result), queryTimeout), count)
+    val result = Await.result(db.run(filtered.result), queryTimeout)
+    (result, count)
   }
 
   override def getById(id: String): Option[ReportGroupReport] = {
