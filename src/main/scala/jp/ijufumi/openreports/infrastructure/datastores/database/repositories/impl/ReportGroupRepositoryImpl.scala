@@ -6,6 +6,7 @@ import jp.ijufumi.openreports.infrastructure.datastores.database.repositories.im
   reportGroupQuery => query,
 }
 import jp.ijufumi.openreports.domain.models.entity.ReportGroup
+import jp.ijufumi.openreports.domain.models.entity.ReportGroup.conversions._
 import jp.ijufumi.openreports.utils.Dates
 import slick.jdbc.JdbcBackend.Database
 import slick.jdbc.PostgresProfile.api._
@@ -23,7 +24,8 @@ class ReportGroupRepositoryImpl @Inject() (db: Database) extends ReportGroupRepo
     if (limit > 0) {
       filtered = filtered.take(limit)
     }
-    (Await.result(db.run(filtered.result), queryTimeout).map(r => ReportGroup(r)), count)
+    val result = Await.result(db.run(filtered.result), queryTimeout)
+    (result, count)
   }
 
   override def getById(workspaceId: String, id: String): Option[ReportGroup] = {
@@ -34,18 +36,18 @@ class ReportGroupRepositoryImpl @Inject() (db: Database) extends ReportGroupRepo
     if (models.isEmpty) {
       return None
     }
-    Some(models.head).map(r => ReportGroup(r))
+    Some(models.head)
   }
 
   override def register(model: ReportGroup): Option[ReportGroup] = {
-    val register = (query += model.toEntity).withPinnedSession
+    val register = (query += model).withPinnedSession
     Await.result(db.run(register), queryTimeout)
     getById(model.workspaceId, model.id)
   }
 
   override def update(model: ReportGroup): Unit = {
     val newModel = model.copy(updatedAt = Dates.currentTimestamp())
-    val updateQuery = query.insertOrUpdate(newModel.toEntity).withPinnedSession
+    val updateQuery = query.insertOrUpdate(newModel).withPinnedSession
     Await.result(db.run(updateQuery), queryTimeout)
   }
 

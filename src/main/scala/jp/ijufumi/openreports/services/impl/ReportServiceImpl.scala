@@ -30,6 +30,7 @@ import jp.ijufumi.openreports.domain.models.entity.{
   ReportGroupReport => ReportGroupReportModel,
   Template => TemplateModel,
 }
+import jp.ijufumi.openreports.domain.models.entity.ReportGroup.conversions._
 import jp.ijufumi.openreports.utils.{IDs, Strings, TemporaryFiles}
 import org.scalatra.servlet.FileItem
 
@@ -167,11 +168,11 @@ class ReportServiceImpl @Inject() (
   override def getGroups(workspaceId: String, page: Int, limit: Int): Lists[ReportGroup] = {
     val offset = List(page * limit, 0).max
     val (results, count) = reportGroupRepository.gets(workspaceId, offset, limit)
-    Lists(results.map(r => r.toResponse), offset, limit, count)
+    Lists(results, offset, limit, count)
   }
 
   override def getGroup(workspaceId: String, id: String): Option[ReportGroup] = {
-    reportGroupRepository.getById(workspaceId, id).map(r => r.toResponse)
+    reportGroupRepository.getById(workspaceId, id)
   }
 
   override def createGroup(
