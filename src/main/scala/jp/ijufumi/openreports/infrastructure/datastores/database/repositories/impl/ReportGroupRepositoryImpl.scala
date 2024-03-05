@@ -24,7 +24,8 @@ class ReportGroupRepositoryImpl @Inject() (db: Database) extends ReportGroupRepo
     if (limit > 0) {
       filtered = filtered.take(limit)
     }
-    (Await.result(db.run(filtered.result), queryTimeout), count)
+    val result = Await.result(db.run(filtered.result), queryTimeout)
+    (result, count)
   }
 
   override def getById(workspaceId: String, id: String): Option[ReportGroup] = {
