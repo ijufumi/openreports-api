@@ -53,4 +53,44 @@ object ReportParameter {
       entity.updatedAt,
     )
   }
+
+  object conversions {
+    import scala.language.implicitConversions
+
+    implicit def toReportParameterEntity(model: ReportParameter): ReportParameterEntity = {
+      model.toEntity
+    }
+
+    implicit def fromReportParameterEntity(entity: ReportParameterEntity): ReportParameter = {
+      ReportParameter(entity)
+    }
+
+    implicit def fromReportParameterEntity2(
+        entity: Option[ReportParameterEntity],
+    ): Option[ReportParameter] = {
+      entity.map(e => ReportParameter(e))
+    }
+
+    implicit def fromReportParameterEntities(
+        entity: Seq[ReportParameterEntity],
+    ): Seq[ReportParameter] = {
+      entity.map(e => ReportParameter(e))
+    }
+
+    implicit def toReportParameterResponse(model: ReportParameter): ReportParameterResponse = {
+      model.toResponse
+    }
+
+    implicit def toReportParameterResponse2(
+        model: Option[ReportParameter],
+    ): Option[ReportParameterResponse] = {
+      model.map(m => m.toResponse)
+    }
+
+    implicit def toReportParameterResponses(
+        model: Seq[ReportParameter],
+    ): Seq[ReportParameterResponse] = {
+      model.map(m => m.toResponse)
+    }
+  }
 }

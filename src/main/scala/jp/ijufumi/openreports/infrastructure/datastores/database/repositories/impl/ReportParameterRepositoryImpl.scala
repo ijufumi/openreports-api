@@ -6,6 +6,7 @@ import jp.ijufumi.openreports.infrastructure.datastores.database.repositories.im
   reportParameterQuery => query,
 }
 import jp.ijufumi.openreports.domain.models.entity.ReportParameter
+import jp.ijufumi.openreports.domain.models.entity.ReportParameter.conversions._
 import jp.ijufumi.openreports.utils.Dates
 import slick.jdbc.JdbcBackend.Database
 import slick.jdbc.PostgresProfile.api._
@@ -23,7 +24,8 @@ class ReportParameterRepositoryImpl @Inject() (db: Database) extends ReportParam
     if (limit > 0) {
       filtered = filtered.take(limit)
     }
-    (Await.result(db.run(filtered.result), queryTimeout).map(r => ReportParameter(r)), count)
+    val result = Await.result(db.run(filtered.result), queryTimeout)
+    (result, count)
   }
 
   override def getById(workspaceId: String, id: String): Option[ReportParameter] = {
@@ -34,18 +36,18 @@ class ReportParameterRepositoryImpl @Inject() (db: Database) extends ReportParam
     if (models.isEmpty) {
       return None
     }
-    Some(models.head).map(r => ReportParameter(r))
+    Some(models.head)
   }
 
   override def register(model: ReportParameter): Option[ReportParameter] = {
-    val register = (query += model.toEntity).withPinnedSession
+    val register = (query += model).withPinnedSession
     Await.result(db.run(register), queryTimeout)
     getById(model.workspaceId, model.id)
   }
 
   override def update(model: ReportParameter): Unit = {
     val newModel = model.copy(updatedAt = Dates.currentTimestamp())
-    val updateQuery = query.insertOrUpdate(newModel.toEntity).withPinnedSession
+    val updateQuery = query.insertOrUpdate(newModel).withPinnedSession
     Await.result(db.run(updateQuery), queryTimeout)
   }
 
