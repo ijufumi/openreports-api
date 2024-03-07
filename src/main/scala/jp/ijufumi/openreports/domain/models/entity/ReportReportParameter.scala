@@ -1,6 +1,8 @@
 package jp.ijufumi.openreports.domain.models.entity
 
-import jp.ijufumi.openreports.infrastructure.datastores.database.entities.{ReportReportParameter => ReportReportParameterEntity}
+import jp.ijufumi.openreports.infrastructure.datastores.database.entities.{
+  ReportReportParameter => ReportReportParameterEntity,
+}
 import jp.ijufumi.openreports.utils.Dates
 
 case class ReportReportParameter(
@@ -33,5 +35,21 @@ object ReportReportParameter {
       entity.updatedAt,
       entity.versions,
     )
+  }
+
+  object conversions {
+    import scala.language.implicitConversions
+
+    implicit def toReportReportParameterEntity(
+        model: ReportReportParameter,
+    ): ReportReportParameterEntity = {
+      model.toEntity
+    }
+
+    implicit def toReportReportParameterEntities(
+        model: Seq[ReportReportParameter],
+    ): Seq[ReportReportParameterEntity] = {
+      model.map(m => m.toEntity)
+    }
   }
 }
