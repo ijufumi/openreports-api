@@ -6,6 +6,7 @@ import jp.ijufumi.openreports.infrastructure.datastores.database.repositories.im
   reportReportParameterQuery => query,
 }
 import jp.ijufumi.openreports.domain.models.entity.ReportReportParameter
+import jp.ijufumi.openreports.domain.models.entity.ReportReportParameter.conversions._
 import jp.ijufumi.openreports.utils.Dates
 import slick.jdbc.JdbcBackend.Database
 import slick.jdbc.PostgresProfile.api._
@@ -43,13 +44,13 @@ class ReportReportParameterRepositoryImpl @Inject() (db: Database)
   }
 
   override def register(model: ReportReportParameter): Option[ReportReportParameter] = {
-    val register = (query += model.toEntity).withPinnedSession
+    val register = (query += model).withPinnedSession
     Await.result(db.run(register), queryTimeout)
     getById(model.id)
   }
 
   override def registerInBatch(model: Seq[ReportReportParameter]): Seq[ReportReportParameter] = {
-    val register = (query ++= model.map(r => r.toEntity)).withPinnedSession
+    val register = (query ++= model).withPinnedSession
     Await.result(db.run(register), queryTimeout)
     val ids = model.map(m => m.id)
     getByIds(ids)
@@ -57,7 +58,7 @@ class ReportReportParameterRepositoryImpl @Inject() (db: Database)
 
   override def update(model: ReportReportParameter): Unit = {
     val newModel = model.copy(updatedAt = Dates.currentTimestamp())
-    val updateQuery = query.insertOrUpdate(newModel.toEntity).withPinnedSession
+    val updateQuery = query.insertOrUpdate(newModel).withPinnedSession
     Await.result(db.run(updateQuery), queryTimeout)
   }
 
