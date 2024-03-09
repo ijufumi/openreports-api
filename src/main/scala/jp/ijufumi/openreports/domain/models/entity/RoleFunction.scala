@@ -1,9 +1,9 @@
 package jp.ijufumi.openreports.domain.models.entity
 
-import jp.ijufumi.openreports.infrastructure.datastores.database.entities.{RoleFunction => RoleFunctionEntity}
+import jp.ijufumi.openreports.infrastructure.datastores.database.entities.{
+  RoleFunction => RoleFunctionEntity,
+}
 import jp.ijufumi.openreports.utils.Dates
-
-import scala.language.implicitConversions
 
 case class RoleFunction(
     id: String,
@@ -36,19 +36,28 @@ object RoleFunction {
       entity.versions,
     )
   }
-  implicit def toEntity(model: RoleFunction): RoleFunctionEntity = {
-    model.toEntity
-  }
 
-  implicit def toModel(entity: RoleFunctionEntity): RoleFunction = {
-    RoleFunction(
-      entity.id,
-      entity.roleId,
-      entity.functionId,
-      entity.createdAt,
-      entity.updatedAt,
-      entity.versions,
-    )
-  }
+  object conversions {
+    import scala.language.implicitConversions
 
+    implicit def toRoleFunctionEntity(model: RoleFunction): RoleFunctionEntity = {
+      model.toEntity
+    }
+
+    implicit def fromRoleFunctionEntity(entity: RoleFunctionEntity): RoleFunction = {
+      RoleFunction(entity)
+    }
+
+    implicit def fromRoleFunctionEntity2(
+        entity: Option[RoleFunctionEntity],
+    ): Option[RoleFunction] = {
+      entity.map(e => RoleFunction(e))
+    }
+
+    implicit def fromRoleFunctionEntities(
+        entity: Seq[RoleFunctionEntity],
+    ): Seq[RoleFunction] = {
+      entity.map(e => RoleFunction(e))
+    }
+  }
 }
