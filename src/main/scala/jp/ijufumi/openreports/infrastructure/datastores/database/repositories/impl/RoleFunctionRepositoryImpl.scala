@@ -6,25 +6,27 @@ import jp.ijufumi.openreports.infrastructure.datastores.database.repositories.im
   roleFunctionQuery => query,
 }
 import jp.ijufumi.openreports.domain.models.entity.RoleFunction
+import jp.ijufumi.openreports.domain.models.entity.RoleFunction.conversions._
 import slick.jdbc.JdbcBackend.Database
 import slick.jdbc.PostgresProfile.api._
 
 import scala.concurrent.Await
 
 class RoleFunctionRepositoryImpl @Inject() (db: Database) extends RoleFunctionRepository {
-  override def getAll: Seq[RoleFunction] = {
-    Await.result(db.run(query.result), queryTimeout).map(r => RoleFunction(r))
+  override def getAll(): Seq[RoleFunction] = {
+    val result = Await.result(db.run(query.result), queryTimeout)
+    result
   }
 
   override def getByRoleId(roleId: String): Seq[RoleFunction] = {
-    Await
+    val result = Await
       .result(db.run(query.filter(_.roleId === roleId).result), queryTimeout)
-      .map(r => RoleFunction(r))
+    result
   }
 
   override def getByFunctionId(functionId: String): Seq[RoleFunction] = {
-    Await
+    val result = Await
       .result(db.run(query.filter(_.functionId === functionId).result), queryTimeout)
-      .map(r => RoleFunction(r))
+    result
   }
 }
