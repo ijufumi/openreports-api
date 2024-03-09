@@ -2,7 +2,7 @@ package jp.ijufumi.openreports.domain.models.entity
 
 import jp.ijufumi.openreports.domain.models.value.enums.StorageTypes
 import jp.ijufumi.openreports.infrastructure.datastores.database.entities.{
-  Template => ReportTemplateEntity,
+  Template => TemplateEntity,
 }
 import jp.ijufumi.openreports.presentation.models.responses.{Template => TemplateResponse}
 import jp.ijufumi.openreports.presentation.models.requests.UpdateTemplate
@@ -19,8 +19,8 @@ case class Template(
     updatedAt: Long = Dates.currentTimestamp(),
     versions: Long = 1,
 ) {
-  def toEntity: ReportTemplateEntity = {
-    ReportTemplateEntity(
+  def toEntity: TemplateEntity = {
+    TemplateEntity(
       this.id,
       this.name,
       this.filePath,
@@ -47,7 +47,7 @@ case class Template(
 }
 
 object Template {
-  def apply(entity: ReportTemplateEntity): Template = {
+  def apply(entity: TemplateEntity): Template = {
     Template(
       entity.id,
       entity.name,
@@ -59,5 +59,37 @@ object Template {
       entity.updatedAt,
       entity.versions,
     )
+  }
+
+  object conversions {
+    import scala.language.implicitConversions
+
+    implicit def toTemplateEntity(model: Template): TemplateEntity = {
+      model.toEntity
+    }
+
+    implicit def fromTemplateEntity(entity: TemplateEntity): Template = {
+      Template(entity)
+    }
+
+    implicit def fromTemplateEntity2(entity: Option[TemplateEntity]): Option[Template] = {
+      entity.map(e => Template(e))
+    }
+
+    implicit def fromTemplateEntities(entity: Seq[TemplateEntity]): Seq[Template] = {
+      entity.map(e => Template(e))
+    }
+
+    implicit def toTemplateResponse(model: Template): TemplateResponse = {
+      model.toResponse
+    }
+
+    implicit def toTemplateResponse2(model: Option[Template]): Option[TemplateResponse] = {
+      model.map(m => m.toResponse)
+    }
+
+    implicit def toTemplateResponses(model: Seq[Template]): Seq[TemplateResponse] = {
+      model.map(m => m.toResponse)
+    }
   }
 }

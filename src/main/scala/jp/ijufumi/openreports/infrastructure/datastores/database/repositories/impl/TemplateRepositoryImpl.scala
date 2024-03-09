@@ -4,6 +4,7 @@ import com.google.inject.Inject
 import queries.{templateQuery => query}
 import jp.ijufumi.openreports.infrastructure.datastores.database.repositories.TemplateRepository
 import jp.ijufumi.openreports.domain.models.entity.Template
+import jp.ijufumi.openreports.domain.models.entity.Template.conversions._
 import slick.jdbc.JdbcBackend.Database
 import slick.jdbc.PostgresProfile.api._
 
@@ -16,7 +17,8 @@ class TemplateRepositoryImpl @Inject() (db: Database) extends TemplateRepository
     if (limit > 0) {
       filtered = filtered.take(limit)
     }
-    (Await.result(db.run(filtered.result), queryTimeout).map(t => Template(t)), count)
+    val result = Await.result(db.run(filtered.result), queryTimeout)
+    (result, count)
   }
 
   override def getById(workspaceId: String, id: String): Option[Template] = {
@@ -27,18 +29,18 @@ class TemplateRepositoryImpl @Inject() (db: Database) extends TemplateRepository
     if (models.isEmpty) {
       return None
     }
-    Some(models.head).map(t => Template(t))
+    Some(models.head)
 
   }
 
   override def register(model: Template): Option[Template] = {
-    val register = (query += model.toEntity).withPinnedSession
+    val register = (query += model).withPinnedSession
     Await.result(db.run(register), queryTimeout)
     getById(model.workspaceId, model.id)
   }
 
   override def update(model: Template): Unit = {
-    query.insertOrUpdate(model.toEntity).withPinnedSession
+    query.insertOrUpdate(model).withPinnedSession
   }
 
   override def delete(workspaceId: String, id: String): Unit = {
