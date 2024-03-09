@@ -4,6 +4,7 @@ import com.google.inject.Inject
 import queries.{reportQuery => query, templateQuery}
 import jp.ijufumi.openreports.infrastructure.datastores.database.repositories.ReportRepository
 import jp.ijufumi.openreports.domain.models.entity.Report
+import jp.ijufumi.openreports.domain.models.entity.Report.conversions._
 import slick.jdbc.PostgresProfile.api._
 import jp.ijufumi.openreports.utils.Dates
 import slick.jdbc.JdbcBackend.Database
@@ -25,7 +26,8 @@ class ReportRepositoryImpl @Inject() (db: Database) extends ReportRepository {
     if (limit > 0) {
       filtered = filtered.take(limit)
     }
-    (Await.result(db.run(filtered.result), queryTimeout).map(r => Report(r)), count)
+    val result = Await.result(db.run(filtered.result), queryTimeout)
+    (result, count)
   }
 
   override def getsWithTemplate(
@@ -51,7 +53,8 @@ class ReportRepositoryImpl @Inject() (db: Database) extends ReportRepository {
       getById = getById.take(limit)
     }
 
-    (Await.result(db.run(getById.result), queryTimeout).map(r => Report(r)), count)
+    val result = Await.result(db.run(getById.result), queryTimeout)
+    (result, count)
   }
 
   override def getById(workspaceId: String, id: String): Option[Report] = {
@@ -62,7 +65,7 @@ class ReportRepositoryImpl @Inject() (db: Database) extends ReportRepository {
     if (models.isEmpty) {
       return None
     }
-    Some(models.head).map(r => Report(r))
+    Some(models.head)
   }
 
   override def getByIdWithTemplate(
@@ -77,18 +80,18 @@ class ReportRepositoryImpl @Inject() (db: Database) extends ReportRepository {
     if (models.isEmpty) {
       return None
     }
-    Some(models.head).map(r => Report(r))
+    Some(models.head)
   }
 
   override def register(model: Report): Option[Report] = {
-    val register = (query += model.toEntity).withPinnedSession
+    val register = (query += model).withPinnedSession
     Await.result(db.run(register), queryTimeout)
     getById(model.workspaceId, model.id)
   }
 
   override def update(model: Report): Unit = {
     val newModel = model.copy(updatedAt = Dates.currentTimestamp())
-    val updateQuery = query.insertOrUpdate(newModel.toEntity).withPinnedSession
+    val updateQuery = query.insertOrUpdate(newModel).withPinnedSession
     Await.result(db.run(updateQuery), queryTimeout)
   }
 
