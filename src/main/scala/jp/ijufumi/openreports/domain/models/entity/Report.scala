@@ -67,4 +67,48 @@ object Report {
       Some(Template(entity._2)),
     )
   }
+
+  object conversions {
+    import scala.language.implicitConversions
+
+    implicit def toReportEntity(model: Report): ReportEntity = {
+      model.toEntity
+    }
+
+    implicit def fromReportEntity(entity: ReportEntity): Report = {
+      Report(entity)
+    }
+
+    implicit def fromReportEntity2(entity: Option[ReportEntity]): Option[Report] = {
+      entity.map(e => Report(e))
+    }
+
+    implicit def fromReportEntity3(entity: (ReportEntity, ReportTemplateEntity)): Report = {
+      Report(entity)
+    }
+
+    implicit def fromReportEntity4(entity: Option[(ReportEntity, ReportTemplateEntity)]): Option[Report] = {
+      entity.map(e => Report(e))
+    }
+
+    implicit def fromReportEntities(entity: Seq[ReportEntity]): Seq[Report] = {
+      entity.map(e => Report(e))
+    }
+
+    implicit def fromReportEntities2(entity: Seq[(ReportEntity, ReportTemplateEntity)]): Seq[Report] = {
+      entity.map(e => Report(e))
+    }
+
+    implicit def toReportResponse(model: Report): ReportResponse = {
+      model.toResponse
+    }
+
+    implicit def toReportResponse2(model: Option[Report]): Option[ReportResponse] = {
+      model.map(m => m.toResponse)
+    }
+
+    implicit def toReportResponses(model: Seq[Report]): Seq[ReportResponse] = {
+      model.map(m => m.toResponse)
+    }
+  }
 }
