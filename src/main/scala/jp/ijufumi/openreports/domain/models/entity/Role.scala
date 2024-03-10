@@ -24,4 +24,32 @@ object Role {
   def apply(entity: RoleEntity): Role = {
     Role(entity.id, entity.roleType, entity.createdAt, entity.updatedAt, entity.versions)
   }
+
+  object conversions {
+    import scala.language.implicitConversions
+
+    implicit def fromRoleEntity(entity: RoleEntity): Role = {
+      Role(entity)
+    }
+
+    implicit def fromRoleEntity2(entity: Option[RoleEntity]): Option[Role] = {
+      entity.map(e => Role(e))
+    }
+
+    implicit def fromRoleEntities(entity: Seq[RoleEntity]): Seq[Role] = {
+      entity.map(e => Role(e))
+    }
+
+    implicit def toRoleResponse(model: Role): RoleResponse = {
+      model.toResponse
+    }
+
+    implicit def toRoleResponse2(model: Option[Role]): Option[RoleResponse] = {
+      model.map(m => m.toResponse)
+    }
+
+    implicit def toRoleResponses(model: Seq[Role]): Seq[RoleResponse] = {
+      model.map(m => m.toResponse)
+    }
+  }
 }
