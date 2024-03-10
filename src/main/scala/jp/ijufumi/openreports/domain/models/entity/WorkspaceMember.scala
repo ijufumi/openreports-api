@@ -65,4 +65,48 @@ object WorkspaceMember {
       entity.versions,
     )
   }
+
+  object conversions {
+    import scala.language.implicitConversions
+
+    implicit def toWorkspaceMemberEntity(model: WorkspaceMember): WorkspaceMemberEntity = {
+      model.toEntity
+    }
+
+    implicit def fromWorkspaceMemberEntity(entity: WorkspaceMemberEntity): WorkspaceMember = {
+      WorkspaceMember(entity)
+    }
+
+    implicit def fromWorkspaceMemberEntity2(entity: Option[WorkspaceMemberEntity]): Option[WorkspaceMember] = {
+      entity.map(e => WorkspaceMember(e))
+    }
+
+    implicit def fromWorkspaceMemberEntity3(entity: (WorkspaceMemberEntity, MemberEntity)): WorkspaceMember = {
+      WorkspaceMember(entity)
+    }
+
+    implicit def fromWorkspaceMemberEntity4(entity: Option[(WorkspaceMemberEntity, MemberEntity)]): Option[WorkspaceMember] = {
+      entity.map(e => WorkspaceMember(e))
+    }
+
+    implicit def fromWorkspaceMemberEntities(entity: Seq[WorkspaceMemberEntity]): Seq[WorkspaceMember] = {
+      entity.map(e => WorkspaceMember(e))
+    }
+
+    implicit def fromWorkspaceMemberEntities2(entity: Seq[(WorkspaceMemberEntity, MemberEntity)]): Seq[WorkspaceMember] = {
+      entity.map(e => WorkspaceMember(e))
+    }
+
+    implicit def toWorkspaceMemberResponse(model: WorkspaceMember): WorkspaceMemberResponse = {
+      model.toResponse
+    }
+
+    implicit def toWorkspaceMemberResponse2(model: Option[WorkspaceMember]): Option[WorkspaceMemberResponse] = {
+      model.map(m => m.toResponse)
+    }
+
+    implicit def toWorkspaceMemberResponses(model: Seq[WorkspaceMember]): Seq[WorkspaceMemberResponse] = {
+      model.map(m => m.toResponse)
+    }
+  }
 }
