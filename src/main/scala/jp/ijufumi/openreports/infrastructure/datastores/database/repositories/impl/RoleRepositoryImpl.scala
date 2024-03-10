@@ -2,6 +2,7 @@ package jp.ijufumi.openreports.infrastructure.datastores.database.repositories.i
 
 import com.google.inject.Inject
 import jp.ijufumi.openreports.domain.models.entity.Role
+import jp.ijufumi.openreports.domain.models.entity.Role.conversions._
 import jp.ijufumi.openreports.infrastructure.datastores.database.repositories.RoleRepository
 import jp.ijufumi.openreports.domain.models.value.enums.RoleTypes
 import jp.ijufumi.openreports.infrastructure.datastores.database.entities.roleTypeMapper
@@ -13,7 +14,8 @@ import scala.concurrent.Await
 
 class RoleRepositoryImpl @Inject() (db: Database) extends RoleRepository {
   override def getAll: Seq[Role] = {
-    Await.result(db.run(query.result), queryTimeout).map(r => Role(r))
+    val result = Await.result(db.run(query.result), queryTimeout)
+    result
   }
 
   override def getByType(roleType: RoleTypes.RoleType): Option[Role] = {
@@ -22,6 +24,6 @@ class RoleRepositoryImpl @Inject() (db: Database) extends RoleRepository {
     if (result.isEmpty) {
       return None
     }
-    Some(result.head).map(r => Role(r))
+    Some(result.head)
   }
 }
