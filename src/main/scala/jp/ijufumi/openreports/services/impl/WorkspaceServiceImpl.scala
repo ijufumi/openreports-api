@@ -19,6 +19,7 @@ import jp.ijufumi.openreports.presentation.models.requests.{
   UpdateWorkspaceMember,
 }
 import jp.ijufumi.openreports.presentation.models.responses.{Lists, Workspace, WorkspaceMember}
+import jp.ijufumi.openreports.domain.models.entity.WorkspaceMember.conversions._
 import jp.ijufumi.openreports.domain.models.entity.{
   Report => ReportModel,
   StorageS3 => StorageS3Model,
@@ -102,7 +103,7 @@ class WorkspaceServiceImpl @Inject() (
   override def getWorkspaceMembers(id: String): Lists[WorkspaceMember] = {
     val results = workspaceMemberRepository.getsWithMember(id)
     Lists(
-      results.map(m => m.toResponse),
+      results,
       0,
       results.size,
       results.size,
@@ -113,7 +114,7 @@ class WorkspaceServiceImpl @Inject() (
       workspaceId: String,
       memberId: String,
   ): Option[WorkspaceMember] = {
-    workspaceMemberRepository.getByIdWithMember(workspaceId, memberId).map((m => m.toResponse))
+    workspaceMemberRepository.getByIdWithMember(workspaceId, memberId)
   }
 
   override def createWorkspaceMember(
