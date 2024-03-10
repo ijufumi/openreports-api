@@ -52,4 +52,24 @@ object StorageS3 {
       entity.versions,
     )
   }
+
+  object conversions {
+    import scala.language.implicitConversions
+
+    implicit def toStorageS3Entity(model: StorageS3): StorageS3Entity = {
+      model.toEntity
+    }
+
+    implicit def fromStorageS3Entity(entity: StorageS3Entity): StorageS3 = {
+      StorageS3(entity)
+    }
+
+    implicit def fromStorageS3Entity2(entity: Option[StorageS3Entity]): Option[StorageS3] = {
+      entity.map((e => StorageS3(e)))
+    }
+
+    implicit def fromStorageS3Entities(entity: Seq[StorageS3Entity]): Seq[StorageS3] = {
+      entity.map((e => StorageS3(e)))
+    }
+  }
 }
