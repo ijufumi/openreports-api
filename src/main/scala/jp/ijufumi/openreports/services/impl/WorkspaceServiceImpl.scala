@@ -20,6 +20,7 @@ import jp.ijufumi.openreports.presentation.models.requests.{
 }
 import jp.ijufumi.openreports.presentation.models.responses.{Lists, Workspace, WorkspaceMember}
 import jp.ijufumi.openreports.domain.models.entity.WorkspaceMember.conversions._
+import jp.ijufumi.openreports.domain.models.entity.Workspace.conversions._
 import jp.ijufumi.openreports.domain.models.entity.{
   Report => ReportModel,
   StorageS3 => StorageS3Model,
@@ -48,10 +49,8 @@ class WorkspaceServiceImpl @Inject() (
   }
 
   override def createAndRelevant(name: String, memberId: String): Option[Workspace] = {
-    var workspaceOpt = Option.empty[Workspace]
     try {
       val workspace = WorkspaceModel(IDs.ulid(), name, Strings.generateSlug())
-      workspaceOpt = Some(workspace.toResponse)
       workspaceRepository.register(workspace)
       val permission = permissionRepository.getByType(RoleTypes.Admin)
       if (permission.isEmpty) {
@@ -67,23 +66,23 @@ class WorkspaceServiceImpl @Inject() (
       reportTemplateRepository.register(reportTemplate)
       val report = ReportModel(IDs.ulid(), "copy of sample", reportTemplate.id, null, workspace.id)
       reportRepository.register(report)
+
+      this.getWorkspace(workspace.id)
     } catch {
       case e: Throwable =>
         SimpleDBIO(_.connection.rollback()).withPinnedSession
         throw e
     }
-
-    workspaceOpt
   }
 
   override def getWorkspace(id: String): Option[Workspace] = {
-    workspaceRepository.getById(id).map(w => w.toResponse)
+    workspaceRepository.getById(id)
   }
 
   override def getWorkspacesByMemberId(memberId: String): Lists[Workspace] = {
     val workspaces = workspaceRepository.getsByMemberId(memberId)
     Lists(
-      workspaces.map(w => w.toResponse),
+      workspaces,
       0,
       workspaces.size,
       workspaces.size,
