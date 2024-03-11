@@ -15,6 +15,7 @@ import jp.ijufumi.openreports.presentation.models.responses.Member
 import jp.ijufumi.openreports.domain.models.entity.{Member => MemberModel}
 import slick.jdbc.PostgresProfile.api._
 import jp.ijufumi.openreports.domain.models.entity.Member.conversions._
+import jp.ijufumi.openreports.domain.models.entity.Workspace.conversions._
 
 @Singleton
 class LoginServiceImpl @Inject() (
@@ -138,7 +139,7 @@ class LoginServiceImpl @Inject() (
   private def makeResponse(member: Member): Option[Member] = {
     val apiToken = Hash.generateJWT(member.id, Config.API_TOKEN_EXPIRATION_SEC)
     cacheWrapper.put(CacheKeys.ApiToken, apiToken, member.id)
-    val workspaces = workspaceRepository.getsByMemberId(member.id).map(w => w.toResponse)
+    val workspaces = workspaceRepository.getsByMemberId(member.id)
     Some(
       member.withApiToken(apiToken).withWorkspace(workspaces),
     )

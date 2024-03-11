@@ -12,6 +12,7 @@ import jp.ijufumi.openreports.presentation.models.responses.{Member, Permissions
 import jp.ijufumi.openreports.services.MemberService
 import jp.ijufumi.openreports.domain.models.entity.Function.conversions._
 import jp.ijufumi.openreports.domain.models.entity.Member.conversions._
+import jp.ijufumi.openreports.domain.models.entity.Workspace.conversions._
 
 class MemberServiceImpl @Inject() (
     memberRepository: MemberRepository,
@@ -32,7 +33,7 @@ class MemberServiceImpl @Inject() (
   }
 
   override def permissions(memberId: String, workspaceId: String): Option[Permissions] = {
-    val workspaces = workspaceRepository.getsByMemberId(memberId).map(w => w.toResponse)
+    val workspaces = workspaceRepository.getsByMemberId(memberId)
     val workspaceMemberOpt = workspaceMemberRepository.getById(workspaceId, memberId)
     if (workspaceMemberOpt.isEmpty) {
       return None
