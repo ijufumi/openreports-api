@@ -16,7 +16,8 @@ val FlywayVersion = "9.22.3"
 val AWSSDKVersion = "2.20.76"
 val jXlsVersion = "2.12.0"
 val Auth0Version = "2.3.0"
-val GuiceVersion = "6.0.0"
+val GuiceVersion = "7.0.0"
+val GuiceExtensionVersion = "6.0.0"
 val DotEnvJavaVersion = "3.0.0"
 val JettyVersion = "10.0.18"
 val PostgresVersion = "42.6.0"
@@ -46,7 +47,7 @@ lazy val root = (project in file("."))
       "org.postgresql" % "postgresql" % PostgresVersion,
       "org.flywaydb" % "flyway-core" % FlywayVersion,
       "com.google.inject" % "guice" % GuiceVersion,
-      "com.google.inject.extensions" % "guice-servlet" % GuiceVersion,
+      "com.google.inject.extensions" % "guice-servlet" % GuiceExtensionVersion,
       "org.json4s" %% "json4s-jackson" % Json4sVersion,
       "org.json4s" %% "json4s-native" % Json4sVersion,
       "org.json4s" %% "json4s-ext" % Json4sVersion,
