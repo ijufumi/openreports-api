@@ -6,6 +6,6 @@ import slick.jdbc.JdbcBackend.Database
 class DatabaseModule extends BaseModule {
   override def configure(): Unit = {
     super.configure()
-    bindProvider(classOf[Database], () => DatabaseFactory.createDatabase())
+    bindProvider(classOf[Database], () => DatabaseFactory.createDatabase(), RequestScope)
   }
 }
