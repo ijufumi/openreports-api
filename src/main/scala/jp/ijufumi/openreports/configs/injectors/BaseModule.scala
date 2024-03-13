@@ -1,8 +1,14 @@
 package jp.ijufumi.openreports.configs.injectors
 
-import com.google.inject.{AbstractModule, Provider, Singleton}
+import com.google.inject.servlet.RequestScoped
+import com.google.inject.{AbstractModule, Provider, Scope, Singleton}
+
+import java.lang.annotation.Annotation
 
 abstract class BaseModule extends AbstractModule {
+  val SingletonScope = classOf[Singleton]
+  val RequestScope = classOf[RequestScoped]
+
   override def configure(): Unit = {
     super.configure()
   }
@@ -13,19 +19,19 @@ abstract class BaseModule extends AbstractModule {
   ): Unit = {
     bind(interfaceClass)
       .to(implementClass)
-      .in(classOf[Singleton])
+      .in(SingletonScope)
   }
 
   def bindInstance[T](interfaceClass: java.lang.Class[T], instance: T): Unit = {
     bind(interfaceClass).toInstance(instance)
   }
 
-  def bindProvider[T](interfaceClass: java.lang.Class[T], f: CustomProvider[T]): Unit = {
+  def bindProvider[T](interfaceClass: java.lang.Class[T], f: CustomProvider[T], scope: Class[_ <: Annotation] = SingletonScope): Unit = {
     bind(interfaceClass).toProvider(new Provider[T]() {
       override def get(): T = {
         f.provide()
       }
-    })
+    }).in(scope)
   }
 }
 
