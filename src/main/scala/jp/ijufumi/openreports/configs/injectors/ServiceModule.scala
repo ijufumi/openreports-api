@@ -26,14 +26,14 @@ import jp.ijufumi.openreports.services.{
 class ServiceModule extends BaseModule {
   override def configure(): Unit = {
     super.configure()
-    bindAsSingleton(classOf[LoginService], classOf[LoginServiceImpl])
-    bindAsSingleton(classOf[MemberService], classOf[MemberServiceImpl])
-    bindAsSingleton(classOf[ReportService], classOf[ReportServiceImpl])
-    bindAsSingleton(classOf[OutputService], classOf[OutputServiceImpl])
-    bindAsSingleton(classOf[DataSourceService], classOf[DataSourceServiceImpl])
-    bindAsSingleton(classOf[StorageService], classOf[StorageServiceImpl])
-    bindAsSingleton(classOf[WorkspaceService], classOf[WorkspaceServiceImpl])
-    bindAsSingleton(classOf[RoleService], classOf[RoleServiceImpl])
-    bindAsSingleton(classOf[DriverTypeService], classOf[DriverTypeServiceImpl])
+    bind(classOf[LoginService], classOf[LoginServiceImpl])
+    bind(classOf[MemberService], classOf[MemberServiceImpl])
+    bind(classOf[ReportService], classOf[ReportServiceImpl])
+    bind(classOf[OutputService], classOf[OutputServiceImpl])
+    bind(classOf[DataSourceService], classOf[DataSourceServiceImpl])
+    bind(classOf[StorageService], classOf[StorageServiceImpl])
+    bind(classOf[WorkspaceService], classOf[WorkspaceServiceImpl])
+    bind(classOf[RoleService], classOf[RoleServiceImpl])
+    bind(classOf[DriverTypeService], classOf[DriverTypeServiceImpl])
   }
 }
