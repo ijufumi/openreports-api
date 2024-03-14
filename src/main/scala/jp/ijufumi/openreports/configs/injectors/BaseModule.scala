@@ -13,13 +13,14 @@ abstract class BaseModule extends AbstractModule {
     super.configure()
   }
 
-  def bindAsSingleton[T](
+  def bind[T](
       interfaceClass: java.lang.Class[T],
       implementClass: java.lang.Class[_ <: T],
+      scope: Class[_ <: Annotation] = SingletonScope
   ): Unit = {
     bind(interfaceClass)
       .to(implementClass)
-      .in(SingletonScope)
+      .in(scope)
   }
 
   def bindInstance[T](interfaceClass: java.lang.Class[T], instance: T): Unit = {

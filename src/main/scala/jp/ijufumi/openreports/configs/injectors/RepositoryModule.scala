@@ -45,28 +45,28 @@ class RepositoryModule extends BaseModule {
   override def configure(): Unit = {
     super.configure()
     // db
-    bindAsSingleton(classOf[MemberRepository], classOf[MemberRepositoryImpl])
-    bindAsSingleton(classOf[WorkspaceRepository], classOf[WorkspaceRepositoryImpl])
-    bindAsSingleton(classOf[WorkspaceMemberRepository], classOf[WorkspaceMemberRepositoryImpl])
-    bindAsSingleton(classOf[DataSourceRepository], classOf[DataSourceRepositoryImpl])
-    bindAsSingleton(classOf[ReportRepository], classOf[ReportRepositoryImpl])
-    bindAsSingleton(classOf[ReportGroupRepository], classOf[ReportGroupRepositoryImpl])
-    bindAsSingleton(classOf[ReportGroupReportRepository], classOf[ReportGroupReportRepositoryImpl])
-    bindAsSingleton(classOf[ReportParameterRepository], classOf[ReportParameterRepositoryImpl])
-    bindAsSingleton(
+    bind(classOf[MemberRepository], classOf[MemberRepositoryImpl])
+    bind(classOf[WorkspaceRepository], classOf[WorkspaceRepositoryImpl])
+    bind(classOf[WorkspaceMemberRepository], classOf[WorkspaceMemberRepositoryImpl])
+    bind(classOf[DataSourceRepository], classOf[DataSourceRepositoryImpl])
+    bind(classOf[ReportRepository], classOf[ReportRepositoryImpl])
+    bind(classOf[ReportGroupRepository], classOf[ReportGroupRepositoryImpl])
+    bind(classOf[ReportGroupReportRepository], classOf[ReportGroupReportRepositoryImpl])
+    bind(classOf[ReportParameterRepository], classOf[ReportParameterRepositoryImpl])
+    bind(
       classOf[ReportReportParameterRepository],
       classOf[ReportReportParameterRepositoryImpl],
     )
-    bindAsSingleton(classOf[TemplateRepository], classOf[TemplateRepositoryImpl])
-    bindAsSingleton(classOf[StorageS3Repository], classOf[StorageS3RepositoryImpl])
-    bindAsSingleton(classOf[RoleRepository], classOf[RoleRepositoryImpl])
-    bindAsSingleton(classOf[FunctionRepository], classOf[FunctionRepositoryImpl])
-    bindAsSingleton(classOf[RoleFunctionRepository], classOf[RoleFunctionRepositoryImpl])
-    bindAsSingleton(classOf[DriverTypeRepository], classOf[DriverTypeRepositoryImpl])
+    bind(classOf[TemplateRepository], classOf[TemplateRepositoryImpl])
+    bind(classOf[StorageS3Repository], classOf[StorageS3RepositoryImpl])
+    bind(classOf[RoleRepository], classOf[RoleRepositoryImpl])
+    bind(classOf[FunctionRepository], classOf[FunctionRepositoryImpl])
+    bind(classOf[RoleFunctionRepository], classOf[RoleFunctionRepositoryImpl])
+    bind(classOf[DriverTypeRepository], classOf[DriverTypeRepositoryImpl])
     // auth
-    bindAsSingleton(classOf[GoogleRepository], classOf[GoogleRepositoryImpl])
+    bind(classOf[GoogleRepository], classOf[GoogleRepositoryImpl])
     // file store
-    bindAsSingleton(classOf[LocalFileRepository], classOf[LocalFileRepositoryImpl])
-    bindAsSingleton(classOf[AwsS3Repository], classOf[AwsS3RepositoryImpl])
+    bind(classOf[LocalFileRepository], classOf[LocalFileRepositoryImpl])
+    bind(classOf[AwsS3Repository], classOf[AwsS3RepositoryImpl])
   }
 }
