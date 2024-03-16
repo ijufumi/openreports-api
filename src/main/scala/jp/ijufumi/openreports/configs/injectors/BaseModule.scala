@@ -6,14 +6,14 @@ import com.google.inject.{AbstractModule, Provider, Scope, Singleton}
 import java.lang.annotation.Annotation
 
 abstract class BaseModule extends AbstractModule {
-  val SingletonScope = classOf[Singleton]
-  val RequestScope = classOf[RequestScoped]
+  val SingletonScope: Class[Singleton] = classOf[Singleton]
+  val RequestScope: Class[RequestScoped] = classOf[RequestScoped]
 
   override def configure(): Unit = {
     super.configure()
   }
 
-  def bind[T](
+  def bindClass[T](
       interfaceClass: java.lang.Class[T],
       implementClass: java.lang.Class[_ <: T],
       scope: Class[_ <: Annotation] = SingletonScope

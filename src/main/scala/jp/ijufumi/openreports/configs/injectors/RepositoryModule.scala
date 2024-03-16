@@ -45,28 +45,28 @@ class RepositoryModule extends BaseModule {
   override def configure(): Unit = {
     super.configure()
     // db
-    bind(classOf[MemberRepository], classOf[MemberRepositoryImpl])
-    bind(classOf[WorkspaceRepository], classOf[WorkspaceRepositoryImpl])
-    bind(classOf[WorkspaceMemberRepository], classOf[WorkspaceMemberRepositoryImpl])
-    bind(classOf[DataSourceRepository], classOf[DataSourceRepositoryImpl])
-    bind(classOf[ReportRepository], classOf[ReportRepositoryImpl])
-    bind(classOf[ReportGroupRepository], classOf[ReportGroupRepositoryImpl])
-    bind(classOf[ReportGroupReportRepository], classOf[ReportGroupReportRepositoryImpl])
-    bind(classOf[ReportParameterRepository], classOf[ReportParameterRepositoryImpl])
-    bind(
+    bindClass(classOf[MemberRepository], classOf[MemberRepositoryImpl])
+    bindClass(classOf[WorkspaceRepository], classOf[WorkspaceRepositoryImpl])
+    bindClass(classOf[WorkspaceMemberRepository], classOf[WorkspaceMemberRepositoryImpl])
+    bindClass(classOf[DataSourceRepository], classOf[DataSourceRepositoryImpl])
+    bindClass(classOf[ReportRepository], classOf[ReportRepositoryImpl])
+    bindClass(classOf[ReportGroupRepository], classOf[ReportGroupRepositoryImpl])
+    bindClass(classOf[ReportGroupReportRepository], classOf[ReportGroupReportRepositoryImpl])
+    bindClass(classOf[ReportParameterRepository], classOf[ReportParameterRepositoryImpl])
+    bindClass(
       classOf[ReportReportParameterRepository],
       classOf[ReportReportParameterRepositoryImpl],
     )
-    bind(classOf[TemplateRepository], classOf[TemplateRepositoryImpl])
-    bind(classOf[StorageS3Repository], classOf[StorageS3RepositoryImpl])
-    bind(classOf[RoleRepository], classOf[RoleRepositoryImpl])
-    bind(classOf[FunctionRepository], classOf[FunctionRepositoryImpl])
-    bind(classOf[RoleFunctionRepository], classOf[RoleFunctionRepositoryImpl])
-    bind(classOf[DriverTypeRepository], classOf[DriverTypeRepositoryImpl])
+    bindClass(classOf[TemplateRepository], classOf[TemplateRepositoryImpl])
+    bindClass(classOf[StorageS3Repository], classOf[StorageS3RepositoryImpl])
+    bindClass(classOf[RoleRepository], classOf[RoleRepositoryImpl])
+    bindClass(classOf[FunctionRepository], classOf[FunctionRepositoryImpl])
+    bindClass(classOf[RoleFunctionRepository], classOf[RoleFunctionRepositoryImpl])
+    bindClass(classOf[DriverTypeRepository], classOf[DriverTypeRepositoryImpl])
     // auth
-    bind(classOf[GoogleRepository], classOf[GoogleRepositoryImpl])
+    bindClass(classOf[GoogleRepository], classOf[GoogleRepositoryImpl])
     // file store
-    bind(classOf[LocalFileRepository], classOf[LocalFileRepositoryImpl])
-    bind(classOf[AwsS3Repository], classOf[AwsS3RepositoryImpl])
+    bindClass(classOf[LocalFileRepository], classOf[LocalFileRepositoryImpl])
+    bindClass(classOf[AwsS3Repository], classOf[AwsS3RepositoryImpl])
   }
 }
