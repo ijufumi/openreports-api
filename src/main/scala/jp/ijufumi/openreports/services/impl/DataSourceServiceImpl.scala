@@ -10,13 +10,14 @@ import jp.ijufumi.openreports.presentation.models.requests.{CreateDataSource, Up
 import jp.ijufumi.openreports.presentation.models.responses.{DataSource, Lists}
 import jp.ijufumi.openreports.domain.models.entity.{DataSource => DataSourceModel}
 import jp.ijufumi.openreports.domain.models.entity.DataSource.conversions._
+import slick.jdbc.JdbcBackend.Database
 
 import java.sql.Connection
 
-class DataSourceServiceImpl @Inject() (dataSourceRepository: DataSourceRepository)
+class DataSourceServiceImpl @Inject() (db: Database, dataSourceRepository: DataSourceRepository)
     extends DataSourceService {
   def connection(workspaceId: String, dataSourceId: String): Connection = {
-    val dataSourceOpt = dataSourceRepository.getByIdWithDriverType(workspaceId, dataSourceId)
+    val dataSourceOpt = dataSourceRepository.getByIdWithDriverType(db, workspaceId, dataSourceId)
     if (dataSourceOpt.isEmpty) {
       throw new NotFoundException()
     }
@@ -31,7 +32,7 @@ class DataSourceServiceImpl @Inject() (dataSourceRepository: DataSourceRepositor
   }
 
   override def getDataSources(workspaceId: String): Lists[DataSource] = {
-    val dataSources = dataSourceRepository.getAllWithDriverType(workspaceId)
+    val dataSources = dataSourceRepository.getAllWithDriverType(db, workspaceId)
     Lists(
       dataSources,
       0,
@@ -41,7 +42,7 @@ class DataSourceServiceImpl @Inject() (dataSourceRepository: DataSourceRepositor
   }
 
   override def getDataSource(workspaceId: String, id: String): Option[DataSource] = {
-    dataSourceRepository.getByIdWithDriverType(workspaceId, id)
+    dataSourceRepository.getByIdWithDriverType(db, workspaceId, id)
   }
 
   override def registerDataSource(
@@ -57,7 +58,7 @@ class DataSourceServiceImpl @Inject() (dataSourceRepository: DataSourceRepositor
       requestVal.driverTypeId,
       workspaceId,
     )
-    dataSourceRepository.register(dataSource)
+    dataSourceRepository.register(db, dataSource)
     getDataSource(workspaceId, dataSource.id)
   }
 
@@ -66,16 +67,16 @@ class DataSourceServiceImpl @Inject() (dataSourceRepository: DataSourceRepositor
       id: String,
       requestVal: UpdateDataSource,
   ): Option[DataSource] = {
-    val dataSource = dataSourceRepository.getById(workspaceId, id)
+    val dataSource = dataSourceRepository.getById(db, workspaceId, id)
     if (dataSource.isEmpty) {
       return None
     }
     val newDataSource = dataSource.get.copyForUpdate(requestVal)
-    dataSourceRepository.update(newDataSource)
+    dataSourceRepository.update(db, newDataSource)
     getDataSource(workspaceId, newDataSource.id)
   }
 
   override def deleteDataSource(workspaceId: String, id: String): Unit = {
-    dataSourceRepository.delete(workspaceId, id)
+    dataSourceRepository.delete(db, workspaceId, id)
   }
 }
