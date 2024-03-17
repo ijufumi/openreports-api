@@ -10,8 +10,8 @@ import slick.jdbc.PostgresProfile.api._
 
 import scala.concurrent.Await
 
-class DataSourceRepositoryImpl @Inject() (db: Database) extends DataSourceRepository {
-  override def getById(workspaceId: String, id: String): Option[DataSource] = {
+class DataSourceRepositoryImpl extends DataSourceRepository {
+  override def getById(db: Database, workspaceId: String, id: String): Option[DataSource] = {
     val getDataSources = query
       .filter(_.id === id)
       .filter(_.workspaceId === workspaceId)
@@ -19,7 +19,7 @@ class DataSourceRepositoryImpl @Inject() (db: Database) extends DataSourceReposi
     Some(dataSources.head)
   }
 
-  override def getAll(workspaceId: String): Seq[DataSource] = {
+  override def getAll(db: Database, workspaceId: String): Seq[DataSource] = {
     val getDataSources = query
       .filter(_.workspaceId === workspaceId)
     // using variable is needed to use implicit converting
@@ -28,6 +28,7 @@ class DataSourceRepositoryImpl @Inject() (db: Database) extends DataSourceReposi
   }
 
   override def getByIdWithDriverType(
+      db: Database,
       workspaceId: String,
       id: String,
   ): Option[DataSource] = {
@@ -43,7 +44,7 @@ class DataSourceRepositoryImpl @Inject() (db: Database) extends DataSourceReposi
     Some(dataSources.head)
   }
 
-  override def getAllWithDriverType(workspaceId: String): Seq[DataSource] = {
+  override def getAllWithDriverType(db: Database, workspaceId: String): Seq[DataSource] = {
     val getDataSources = query
       .join(driverTypeQuery)
       .on(_.driverTypeId === _.id)
@@ -53,16 +54,16 @@ class DataSourceRepositoryImpl @Inject() (db: Database) extends DataSourceReposi
     result
   }
 
-  override def register(dataSource: DataSource): Option[DataSource] = {
+  override def register(db: Database, dataSource: DataSource): Option[DataSource] = {
     Await.result(db.run((query += dataSource).withPinnedSession), queryTimeout)
-    getById(dataSource.workspaceId, dataSource.id)
+    getById(db, dataSource.workspaceId, dataSource.id)
   }
 
-  override def update(dataSource: DataSource): Unit = {
+  override def update(db: Database, dataSource: DataSource): Unit = {
     query.insertOrUpdate(dataSource).withPinnedSession
   }
 
-  override def delete(workspaceId: String, id: String): Unit = {
+  override def delete(db: Database, workspaceId: String, id: String): Unit = {
     val getDataSources = query
       .filter(_.id === id)
       .filter(_.workspaceId === workspaceId)
