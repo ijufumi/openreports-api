@@ -56,7 +56,7 @@ class DataSourceRepositoryImpl extends DataSourceRepository {
 
   override def register(db: Database, dataSource: DataSource): Option[DataSource] = {
     Await.result(db.run((query += dataSource).withPinnedSession), queryTimeout)
-    getById(dataSource.workspaceId, dataSource.id)
+    getById(db, dataSource.workspaceId, dataSource.id)
   }
 
   override def update(db: Database, dataSource: DataSource): Unit = {
