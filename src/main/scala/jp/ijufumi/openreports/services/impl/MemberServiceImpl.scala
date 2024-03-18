@@ -13,8 +13,10 @@ import jp.ijufumi.openreports.services.MemberService
 import jp.ijufumi.openreports.domain.models.entity.Function.conversions._
 import jp.ijufumi.openreports.domain.models.entity.Member.conversions._
 import jp.ijufumi.openreports.domain.models.entity.Workspace.conversions._
+import slick.jdbc.JdbcBackend.Database
 
 class MemberServiceImpl @Inject() (
+    db: Database,
     memberRepository: MemberRepository,
     workspaceMemberRepository: WorkspaceMemberRepository,
     roleFunctionRepository: RoleFunctionRepository,
@@ -41,7 +43,7 @@ class MemberServiceImpl @Inject() (
     val workspaceMember = workspaceMemberOpt.get
     val functionIds =
       roleFunctionRepository.getByRoleId(workspaceMember.roleId).map(m => m.functionId)
-    val functions = functionRepository.getsByIds(functionIds)
+    val functions = functionRepository.getsByIds(db, functionIds)
     Some(Permissions(workspaces, functions))
   }
 }
