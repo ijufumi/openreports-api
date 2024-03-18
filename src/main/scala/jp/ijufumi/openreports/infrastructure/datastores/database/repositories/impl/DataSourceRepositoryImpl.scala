@@ -1,6 +1,5 @@
 package jp.ijufumi.openreports.infrastructure.datastores.database.repositories.impl
 
-import com.google.inject.Inject
 import queries.{dataSourceQuery => query, driverTypeQuery}
 import jp.ijufumi.openreports.infrastructure.datastores.database.repositories.DataSourceRepository
 import jp.ijufumi.openreports.domain.models.entity.DataSource
