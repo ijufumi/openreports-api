@@ -96,7 +96,7 @@ class LoginServiceImpl @Inject() (
       return makeResponse(memberOptById.get)
     }
 
-    val memberOptByEmail = memberRepository.getMemberByEmail(userInfo.email)
+    val memberOptByEmail = memberRepository.getMemberByEmail(db, userInfo.email)
     if (memberOptByEmail.isDefined) {
       val member = memberOptByEmail.get
       val newMember = member.copy(googleId = Some(userInfo.id))
