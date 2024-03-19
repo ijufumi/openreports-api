@@ -13,8 +13,9 @@ import jp.ijufumi.openreports.domain.models.entity.ReportGroupReport.conversions
 
 import scala.concurrent.Await
 
-class ReportGroupReportRepositoryImpl @Inject() (db: Database) extends ReportGroupReportRepository {
+class ReportGroupReportRepositoryImpl extends ReportGroupReportRepository {
   override def gets(
+                     db: Database,
       offset: Int = 0,
       limit: Int = -1,
   ): (Seq[ReportGroupReport], Int) = {
@@ -27,7 +28,7 @@ class ReportGroupReportRepositoryImpl @Inject() (db: Database) extends ReportGro
     (result, count)
   }
 
-  override def getById(id: String): Option[ReportGroupReport] = {
+  override def getById(db: Database,id: String): Option[ReportGroupReport] = {
     val getById = query
       .filter(_.id === id)
     val models = Await.result(db.run(getById.result), queryTimeout)
@@ -37,44 +38,44 @@ class ReportGroupReportRepositoryImpl @Inject() (db: Database) extends ReportGro
     Some(models.head)
   }
 
-  override def getByIds(ids: Seq[String]): Seq[ReportGroupReport] = {
+  override def getByIds(db: Database,ids: Seq[String]): Seq[ReportGroupReport] = {
     val getById = query
       .filter(_.id.inSet(ids))
     Await.result(db.run(getById.result), queryTimeout).map(r => ReportGroupReport(r))
   }
 
-  override def register(model: ReportGroupReport): Option[ReportGroupReport] = {
+  override def register(db: Database,model: ReportGroupReport): Option[ReportGroupReport] = {
     val register = (query += model.toEntity).withPinnedSession
     Await.result(db.run(register), queryTimeout)
-    getById(model.id)
+    getById(db, model.id)
   }
 
-  override def registerInBatch(model: Seq[ReportGroupReport]): Seq[ReportGroupReport] = {
+  override def registerInBatch(db: Database,model: Seq[ReportGroupReport]): Seq[ReportGroupReport] = {
     val register = (query ++= model).withPinnedSession
     Await.result(db.run(register), queryTimeout)
     val ids = model.map(m => m.id)
-    getByIds(ids)
+    getByIds(db, ids)
   }
 
-  override def update(model: ReportGroupReport): Unit = {
+  override def update(db: Database,model: ReportGroupReport): Unit = {
     val newModel = model.copy(updatedAt = Dates.currentTimestamp())
     val updateQuery = query.insertOrUpdate(newModel).withPinnedSession
     Await.result(db.run(updateQuery), queryTimeout)
   }
 
-  override def delete(id: String): Unit = {
+  override def delete(db: Database,id: String): Unit = {
     val getById = query
       .filter(_.id === id)
     Await.result(db.run(getById.delete), queryTimeout)
   }
 
-  override def deleteByReportId(id: String): Unit = {
+  override def deleteByReportId(db: Database,id: String): Unit = {
     val getById = query
       .filter(_.reportId === id)
     Await.result(db.run(getById.delete), queryTimeout)
   }
 
-  override def deleteByReportGroupId(id: String): Unit = {
+  override def deleteByReportGroupId(db: Database,id: String): Unit = {
     val getById = query
       .filter(_.reportGroupId === id)
     Await.result(db.run(getById.delete), queryTimeout)
