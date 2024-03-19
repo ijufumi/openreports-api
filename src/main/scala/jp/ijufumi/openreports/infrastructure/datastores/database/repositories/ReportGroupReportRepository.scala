@@ -1,27 +1,29 @@
 package jp.ijufumi.openreports.infrastructure.datastores.database.repositories
 
 import jp.ijufumi.openreports.domain.models.entity.ReportGroupReport
+import slick.jdbc.JdbcBackend.Database
 
 trait ReportGroupReportRepository {
 
   def gets(
+      db: Database,
       offset: Int,
       limit: Int,
   ): (Seq[ReportGroupReport], Int)
 
-  def getById(id: String): Option[ReportGroupReport]
+  def getById(db: Database, id: String): Option[ReportGroupReport]
 
-  def getByIds(ids: Seq[String]): Seq[ReportGroupReport]
+  def getByIds(db: Database, ids: Seq[String]): Seq[ReportGroupReport]
 
-  def register(model: ReportGroupReport): Option[ReportGroupReport]
+  def register(db: Database, model: ReportGroupReport): Option[ReportGroupReport]
 
-  def registerInBatch(model: Seq[ReportGroupReport]): Seq[ReportGroupReport]
+  def registerInBatch(db: Database, model: Seq[ReportGroupReport]): Seq[ReportGroupReport]
 
-  def update(model: ReportGroupReport): Unit
+  def update(db: Database, model: ReportGroupReport): Unit
 
-  def delete(id: String): Unit
+  def delete(db: Database, id: String): Unit
 
-  def deleteByReportId(id: String): Unit
+  def deleteByReportId(db: Database, id: String): Unit
 
-  def deleteByReportGroupId(id: String): Unit
+  def deleteByReportGroupId(db: Database, id: String): Unit
 }

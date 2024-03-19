@@ -35,11 +35,13 @@ import jp.ijufumi.openreports.domain.models.entity.Report.conversions._
 import jp.ijufumi.openreports.domain.models.entity.Template.conversions._
 import jp.ijufumi.openreports.utils.{IDs, Strings, TemporaryFiles}
 import org.scalatra.servlet.FileItem
+import slick.jdbc.JdbcBackend.Database
 
 import java.io.File
 import scala.util.Using
 
 class ReportServiceImpl @Inject() (
+    db: Database,
     reportRepository: ReportRepository,
     templateRepository: TemplateRepository,
     reportGroupRepository: ReportGroupRepository,
@@ -185,7 +187,7 @@ class ReportServiceImpl @Inject() (
           break
         }
         val reportGroupReport = ReportGroupReportModel(IDs.ulid(), reportId, reportGroup.id)
-        reportGroupReportRepository.register(reportGroupReport)
+        reportGroupReportRepository.register(db, reportGroupReport)
       }
     }
     getGroup(workspaceId, reportGroup.id)
@@ -202,7 +204,7 @@ class ReportServiceImpl @Inject() (
     }
     val newReportGroup = reportGroupOpt.get.copyForUpdate(input)
     reportGroupRepository.update(newReportGroup)
-    reportGroupReportRepository.deleteByReportGroupId(id)
+    reportGroupReportRepository.deleteByReportGroupId(db, id)
     for (reportId <- input.reportIds) {
       breakable {
         val reportOpt = reportRepository.getById(workspaceId, reportId)
@@ -210,7 +212,7 @@ class ReportServiceImpl @Inject() (
           break
         }
         val reportGroupReport = ReportGroupReportModel(IDs.ulid(), reportId, id)
-        reportGroupReportRepository.register(reportGroupReport)
+        reportGroupReportRepository.register(db, reportGroupReport)
       }
     }
 
@@ -218,7 +220,7 @@ class ReportServiceImpl @Inject() (
   }
 
   override def deleteGroup(workspaceId: String, id: String): Unit = {
-    reportGroupReportRepository.deleteByReportGroupId(id)
+    reportGroupReportRepository.deleteByReportGroupId(db, id)
     reportGroupRepository.delete(workspaceId, id)
   }
 }
