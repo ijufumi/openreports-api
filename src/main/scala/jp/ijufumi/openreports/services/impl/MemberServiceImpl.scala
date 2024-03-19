@@ -24,13 +24,13 @@ class MemberServiceImpl @Inject() (
     workspaceRepository: WorkspaceRepository,
 ) extends MemberService {
   override def update(memberId: String, name: String, password: String): Option[Member] = {
-    val memberOpt = memberRepository.getById(memberId)
+    val memberOpt = memberRepository.getById(db, memberId)
     if (memberOpt.isEmpty) {
       return None
     }
     val newMember = memberOpt.get.copy(name = name, password = password)
-    memberRepository.update(newMember)
-    val result = memberRepository.getById(memberId)
+    memberRepository.update(db, newMember)
+    val result = memberRepository.getById(db, memberId)
     result
   }
 
