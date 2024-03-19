@@ -16,9 +16,11 @@ import jp.ijufumi.openreports.domain.models.entity.{Member => MemberModel}
 import slick.jdbc.PostgresProfile.api._
 import jp.ijufumi.openreports.domain.models.entity.Member.conversions._
 import jp.ijufumi.openreports.domain.models.entity.Workspace.conversions._
+import slick.jdbc.JdbcBackend.Database
 
 @Singleton
 class LoginServiceImpl @Inject() (
+    db: Database,
     cacheWrapper: CacheWrapper,
     memberRepository: MemberRepository,
     workspaceRepository: WorkspaceRepository,
@@ -29,7 +31,7 @@ class LoginServiceImpl @Inject() (
   override def login(input: Login): Option[Member] = {
     val email = input.email
     val password = input.password
-    val memberOpt = memberRepository.getMemberByEmail(email)
+    val memberOpt = memberRepository.getMemberByEmail(db, email)
     if (memberOpt.isEmpty) {
       logger.info(s"$email does not exist")
       return None
@@ -89,7 +91,7 @@ class LoginServiceImpl @Inject() (
 
     val userInfo = userInfoOpt.get
 
-    val memberOptById = memberRepository.getByGoogleId(userInfo.id)
+    val memberOptById = memberRepository.getByGoogleId(db, userInfo.id)
     if (memberOptById.isDefined) {
       return makeResponse(memberOptById.get)
     }
@@ -98,7 +100,7 @@ class LoginServiceImpl @Inject() (
     if (memberOptByEmail.isDefined) {
       val member = memberOptByEmail.get
       val newMember = member.copy(googleId = Some(userInfo.id))
-      memberRepository.update(newMember)
+      memberRepository.update(db, newMember)
       return makeResponse(newMember)
     }
 
@@ -111,7 +113,7 @@ class LoginServiceImpl @Inject() (
     )
 
     try {
-      val newMemberOpt = memberRepository.register(member)
+      val newMemberOpt = memberRepository.register(db, member)
       val workspaceName = Strings.nameFromEmail(member.email) + "'s workspace"
       workspaceService.createAndRelevant(workspaceName, member.id)
       makeResponse(newMemberOpt.get)
@@ -166,6 +168,6 @@ class LoginServiceImpl @Inject() (
     if (memberId == "") {
       return None
     }
-    memberRepository.getById(memberId)
+    memberRepository.getById(db, memberId)
   }
 }

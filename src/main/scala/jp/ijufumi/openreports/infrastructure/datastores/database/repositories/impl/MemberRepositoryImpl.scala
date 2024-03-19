@@ -1,6 +1,5 @@
 package jp.ijufumi.openreports.infrastructure.datastores.database.repositories.impl
 
-import com.google.inject.Inject
 import scala.concurrent.Await
 import queries.{memberQuery => query}
 import jp.ijufumi.openreports.infrastructure.datastores.database.repositories.MemberRepository
@@ -9,8 +8,8 @@ import slick.jdbc.JdbcBackend.Database
 import slick.jdbc.PostgresProfile.api._
 import jp.ijufumi.openreports.domain.models.entity.Member.conversions._
 
-class MemberRepositoryImpl @Inject() (db: Database) extends MemberRepository {
-  override def getById(id: String): Option[Member] = {
+class MemberRepositoryImpl extends MemberRepository {
+  override def getById(db: Database, id: String): Option[Member] = {
     val getMembers = query
       .filter(_.id === id)
     val members = Await.result(db.run(getMembers.result), queryTimeout)
@@ -20,7 +19,7 @@ class MemberRepositoryImpl @Inject() (db: Database) extends MemberRepository {
     Some(members.head)
   }
 
-  override def getByGoogleId(googleId: String): Option[Member] = {
+  override def getByGoogleId(db: Database, googleId: String): Option[Member] = {
     val getMembers = query
       .filter(_.googleId === googleId)
     val members = Await.result(db.run(getMembers.result), queryTimeout)
@@ -30,7 +29,7 @@ class MemberRepositoryImpl @Inject() (db: Database) extends MemberRepository {
     Some(members.head)
   }
 
-  override def getMemberByEmail(email: String): Option[Member] = {
+  override def getMemberByEmail(db: Database, email: String): Option[Member] = {
     val getMembers = query
       .filter(_.email === email)
     val members = Await.result(db.run(getMembers.result), queryTimeout)
@@ -40,13 +39,13 @@ class MemberRepositoryImpl @Inject() (db: Database) extends MemberRepository {
     Some(members.head)
   }
 
-  override def register(member: Member): Option[Member] = {
+  override def register(db: Database, member: Member): Option[Member] = {
     val register = (query += member).withPinnedSession
     Await.result(db.run(register), queryTimeout)
-    getById(member.id)
+    getById(db, member.id)
   }
 
-  override def update(member: Member): Unit = {
+  override def update(db: Database, member: Member): Unit = {
     query.insertOrUpdate(member).withPinnedSession
   }
 }
