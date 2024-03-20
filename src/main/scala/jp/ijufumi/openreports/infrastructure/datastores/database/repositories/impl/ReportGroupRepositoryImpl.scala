@@ -13,8 +13,9 @@ import slick.jdbc.PostgresProfile.api._
 
 import scala.concurrent.Await
 
-class ReportGroupRepositoryImpl @Inject() (db: Database) extends ReportGroupRepository {
+class ReportGroupRepositoryImpl extends ReportGroupRepository {
   override def gets(
+      db: Database,
       workspaceId: String,
       offset: Int = 0,
       limit: Int = -1,
@@ -28,7 +29,7 @@ class ReportGroupRepositoryImpl @Inject() (db: Database) extends ReportGroupRepo
     (result, count)
   }
 
-  override def getById(workspaceId: String, id: String): Option[ReportGroup] = {
+  override def getById(db: Database, workspaceId: String, id: String): Option[ReportGroup] = {
     val getById = query
       .filter(_.workspaceId === workspaceId)
       .filter(_.id === id)
@@ -39,19 +40,19 @@ class ReportGroupRepositoryImpl @Inject() (db: Database) extends ReportGroupRepo
     Some(models.head)
   }
 
-  override def register(model: ReportGroup): Option[ReportGroup] = {
+  override def register(db: Database, model: ReportGroup): Option[ReportGroup] = {
     val register = (query += model).withPinnedSession
     Await.result(db.run(register), queryTimeout)
-    getById(model.workspaceId, model.id)
+    getById(db, model.workspaceId, model.id)
   }
 
-  override def update(model: ReportGroup): Unit = {
+  override def update(db: Database, model: ReportGroup): Unit = {
     val newModel = model.copy(updatedAt = Dates.currentTimestamp())
     val updateQuery = query.insertOrUpdate(newModel).withPinnedSession
     Await.result(db.run(updateQuery), queryTimeout)
   }
 
-  override def delete(workspaceId: String, id: String): Unit = {
+  override def delete(db: Database, workspaceId: String, id: String): Unit = {
     val getById = query
       .filter(_.workspaceId === workspaceId)
       .filter(_.id === id)

@@ -166,12 +166,12 @@ class ReportServiceImpl @Inject() (
 
   override def getGroups(workspaceId: String, page: Int, limit: Int): Lists[ReportGroup] = {
     val offset = List(page * limit, 0).max
-    val (results, count) = reportGroupRepository.gets(workspaceId, offset, limit)
+    val (results, count) = reportGroupRepository.gets(db, workspaceId, offset, limit)
     Lists(results, offset, limit, count)
   }
 
   override def getGroup(workspaceId: String, id: String): Option[ReportGroup] = {
-    reportGroupRepository.getById(workspaceId, id)
+    reportGroupRepository.getById(db, workspaceId, id)
   }
 
   override def createGroup(
@@ -179,7 +179,7 @@ class ReportServiceImpl @Inject() (
       input: CreateReportGroup,
   ): Option[ReportGroup] = {
     val reportGroup = ReportGroupModel(IDs.ulid(), input.name, workspaceId)
-    reportGroupRepository.register(reportGroup)
+    reportGroupRepository.register(db, reportGroup)
     for (reportId <- input.reportIds) {
       breakable {
         val reportOpt = reportRepository.getById(workspaceId, reportId)
@@ -198,12 +198,12 @@ class ReportServiceImpl @Inject() (
       id: String,
       input: UpdateReportGroup,
   ): Option[ReportGroup] = {
-    val reportGroupOpt = reportGroupRepository.getById(workspaceId, id)
+    val reportGroupOpt = reportGroupRepository.getById(db, workspaceId, id)
     if (reportGroupOpt.isEmpty) {
       return None
     }
     val newReportGroup = reportGroupOpt.get.copyForUpdate(input)
-    reportGroupRepository.update(newReportGroup)
+    reportGroupRepository.update(db, newReportGroup)
     reportGroupReportRepository.deleteByReportGroupId(db, id)
     for (reportId <- input.reportIds) {
       breakable {
@@ -221,6 +221,6 @@ class ReportServiceImpl @Inject() (
 
   override def deleteGroup(workspaceId: String, id: String): Unit = {
     reportGroupReportRepository.deleteByReportGroupId(db, id)
-    reportGroupRepository.delete(workspaceId, id)
+    reportGroupRepository.delete(db, workspaceId, id)
   }
 }
