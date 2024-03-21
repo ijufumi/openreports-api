@@ -1,6 +1,5 @@
 package jp.ijufumi.openreports.infrastructure.datastores.database.repositories.impl
 
-import com.google.inject.Inject
 import jp.ijufumi.openreports.infrastructure.datastores.database.repositories.ReportReportParameterRepository
 import jp.ijufumi.openreports.infrastructure.datastores.database.repositories.impl.queries.{
   reportReportParameterQuery => query,
