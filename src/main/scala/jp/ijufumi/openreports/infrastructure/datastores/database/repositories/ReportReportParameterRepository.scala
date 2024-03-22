@@ -1,27 +1,29 @@
 package jp.ijufumi.openreports.infrastructure.datastores.database.repositories
 
 import jp.ijufumi.openreports.domain.models.entity.ReportReportParameter
+import slick.jdbc.JdbcBackend.Database
 
 trait ReportReportParameterRepository {
 
   def gets(
+      db: Database,
       offset: Int,
       limit: Int,
   ): (Seq[ReportReportParameter], Int)
 
-  def getById(id: String): Option[ReportReportParameter]
+  def getById(db: Database, id: String): Option[ReportReportParameter]
 
-  def getByIds(ids: Seq[String]): Seq[ReportReportParameter]
+  def getByIds(db: Database, ids: Seq[String]): Seq[ReportReportParameter]
 
-  def register(model: ReportReportParameter): Option[ReportReportParameter]
+  def register(db: Database, model: ReportReportParameter): Option[ReportReportParameter]
 
-  def registerInBatch(model: Seq[ReportReportParameter]): Seq[ReportReportParameter]
+  def registerInBatch(db: Database, model: Seq[ReportReportParameter]): Seq[ReportReportParameter]
 
-  def update(model: ReportReportParameter): Unit
+  def update(db: Database, model: ReportReportParameter): Unit
 
-  def delete(id: String): Unit
+  def delete(db: Database, id: String): Unit
 
-  def deleteByReportId(id: String): Unit
+  def deleteByReportId(db: Database, id: String): Unit
 
-  def deleteByReportParameterId(id: String): Unit
+  def deleteByReportParameterId(db: Database, id: String): Unit
 }
