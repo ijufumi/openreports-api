@@ -57,12 +57,13 @@ class ReportServiceImpl @Inject() (
       templateId: String = "",
   ): Lists[Report] = {
     val offset = List(page * limit, 0).max
-    val (results, count) = reportRepository.getsWithTemplate(workspaceId, offset, limit, templateId)
+    val (results, count) =
+      reportRepository.getsWithTemplate(db, workspaceId, offset, limit, templateId)
     Lists(results, offset, limit, count)
   }
 
   override def getReport(workspaceId: String, id: String): Option[Report] = {
-    reportRepository.getByIdWithTemplate(workspaceId, id)
+    reportRepository.getByIdWithTemplate(db, workspaceId, id)
   }
 
   override def getTemplates(workspaceId: String, page: Int, limit: Int): Lists[Template] = {
@@ -76,7 +77,7 @@ class ReportServiceImpl @Inject() (
   }
 
   override def outputReport(workspaceId: String, id: String): Option[File] = {
-    val result = reportRepository.getByIdWithTemplate(workspaceId, id)
+    val result = reportRepository.getByIdWithTemplate(db, workspaceId, id)
     if (result.isEmpty) {
       return None
     }
@@ -94,7 +95,7 @@ class ReportServiceImpl @Inject() (
     }
     val report =
       ReportModel(IDs.ulid(), input.name, input.templateId, input.dataSourceId, workspaceId)
-    reportRepository.register(report)
+    reportRepository.register(db, report)
     this.getReport(workspaceId, report.id)
   }
 
@@ -103,7 +104,7 @@ class ReportServiceImpl @Inject() (
       id: String,
       input: UpdateReport,
   ): Option[Report] = {
-    val reportOpt = reportRepository.getById(workspaceId, id)
+    val reportOpt = reportRepository.getById(db, workspaceId, id)
     if (reportOpt.isEmpty) {
       return None
     }
@@ -115,12 +116,12 @@ class ReportServiceImpl @Inject() (
     }
     val report = reportOpt.get
     val newReport = report.copyForUpdate(input)
-    reportRepository.update(newReport)
+    reportRepository.update(db, newReport)
     this.getReport(workspaceId, id)
   }
 
   override def deleteReport(workspaceId: String, id: String): Unit = {
-    reportRepository.delete(workspaceId, id)
+    reportRepository.delete(db, workspaceId, id)
   }
 
   override def createTemplate(
@@ -182,7 +183,7 @@ class ReportServiceImpl @Inject() (
     reportGroupRepository.register(db, reportGroup)
     for (reportId <- input.reportIds) {
       breakable {
-        val reportOpt = reportRepository.getById(workspaceId, reportId)
+        val reportOpt = reportRepository.getById(db, workspaceId, reportId)
         if (reportOpt.isEmpty) {
           break
         }
@@ -207,7 +208,7 @@ class ReportServiceImpl @Inject() (
     reportGroupReportRepository.deleteByReportGroupId(db, id)
     for (reportId <- input.reportIds) {
       breakable {
-        val reportOpt = reportRepository.getById(workspaceId, reportId)
+        val reportOpt = reportRepository.getById(db, workspaceId, reportId)
         if (reportOpt.isEmpty) {
           break
         }

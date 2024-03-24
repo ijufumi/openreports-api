@@ -4,35 +4,19 @@ import com.google.inject.Inject
 import jp.ijufumi.openreports.configs.Config
 import jp.ijufumi.openreports.domain.models.value.enums.{RoleTypes, StorageTypes}
 import jp.ijufumi.openreports.exceptions.NotFoundException
-import jp.ijufumi.openreports.infrastructure.datastores.database.repositories.{
-  ReportRepository,
-  RoleRepository,
-  StorageS3Repository,
-  TemplateRepository,
-  WorkspaceMemberRepository,
-  WorkspaceRepository,
-}
-import jp.ijufumi.openreports.presentation.models.requests.{
-  CreateWorkspace,
-  CreateWorkspaceMember,
-  UpdateWorkspace,
-  UpdateWorkspaceMember,
-}
+import jp.ijufumi.openreports.infrastructure.datastores.database.repositories.{ReportRepository, RoleRepository, StorageS3Repository, TemplateRepository, WorkspaceMemberRepository, WorkspaceRepository}
+import jp.ijufumi.openreports.presentation.models.requests.{CreateWorkspace, CreateWorkspaceMember, UpdateWorkspace, UpdateWorkspaceMember}
 import jp.ijufumi.openreports.presentation.models.responses.{Lists, Workspace, WorkspaceMember}
 import jp.ijufumi.openreports.domain.models.entity.WorkspaceMember.conversions._
 import jp.ijufumi.openreports.domain.models.entity.Workspace.conversions._
-import jp.ijufumi.openreports.domain.models.entity.{
-  Report => ReportModel,
-  StorageS3 => StorageS3Model,
-  Template => TemplateModel,
-  Workspace => WorkspaceModel,
-  WorkspaceMember => WorkspaceMemberModel,
-}
+import jp.ijufumi.openreports.domain.models.entity.{Report => ReportModel, StorageS3 => StorageS3Model, Template => TemplateModel, Workspace => WorkspaceModel, WorkspaceMember => WorkspaceMemberModel}
 import jp.ijufumi.openreports.services.{StorageService, WorkspaceService}
 import jp.ijufumi.openreports.utils.{IDs, Strings}
+import slick.jdbc.JdbcBackend.Database
 import slick.jdbc.PostgresProfile.api._
 
 class WorkspaceServiceImpl @Inject() (
+                                       db: Database,
     workspaceRepository: WorkspaceRepository,
     workspaceMemberRepository: WorkspaceMemberRepository,
     storageRepository: StorageS3Repository,
@@ -65,7 +49,7 @@ class WorkspaceServiceImpl @Inject() (
         TemplateModel(IDs.ulid(), "copy of sample", key, workspace.id, StorageTypes.Local, 1)
       reportTemplateRepository.register(reportTemplate)
       val report = ReportModel(IDs.ulid(), "copy of sample", reportTemplate.id, null, workspace.id)
-      reportRepository.register(report)
+      reportRepository.register(db, report)
 
       this.getWorkspace(workspace.id)
     } catch {
