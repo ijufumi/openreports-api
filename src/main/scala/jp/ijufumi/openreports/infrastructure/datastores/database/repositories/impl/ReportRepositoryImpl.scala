@@ -1,6 +1,5 @@
 package jp.ijufumi.openreports.infrastructure.datastores.database.repositories.impl
 
-import com.google.inject.Inject
 import queries.{reportQuery => query, templateQuery}
 import jp.ijufumi.openreports.infrastructure.datastores.database.repositories.ReportRepository
 import jp.ijufumi.openreports.domain.models.entity.Report

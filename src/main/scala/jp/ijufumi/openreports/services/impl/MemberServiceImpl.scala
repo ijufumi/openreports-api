@@ -42,7 +42,7 @@ class MemberServiceImpl @Inject() (
     }
     val workspaceMember = workspaceMemberOpt.get
     val functionIds =
-      roleFunctionRepository.getByRoleId(workspaceMember.roleId).map(m => m.functionId)
+      roleFunctionRepository.getByRoleId(db, workspaceMember.roleId).map(m => m.functionId)
     val functions = functionRepository.getsByIds(db, functionIds)
     Some(Permissions(workspaces, functions))
   }
