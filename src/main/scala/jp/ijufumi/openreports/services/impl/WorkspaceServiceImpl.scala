@@ -4,26 +4,44 @@ import com.google.inject.Inject
 import jp.ijufumi.openreports.configs.Config
 import jp.ijufumi.openreports.domain.models.value.enums.{RoleTypes, StorageTypes}
 import jp.ijufumi.openreports.exceptions.NotFoundException
-import jp.ijufumi.openreports.infrastructure.datastores.database.repositories.{ReportRepository, RoleRepository, StorageS3Repository, TemplateRepository, WorkspaceMemberRepository, WorkspaceRepository}
-import jp.ijufumi.openreports.presentation.models.requests.{CreateWorkspace, CreateWorkspaceMember, UpdateWorkspace, UpdateWorkspaceMember}
+import jp.ijufumi.openreports.infrastructure.datastores.database.repositories.{
+  ReportRepository,
+  RoleRepository,
+  StorageS3Repository,
+  TemplateRepository,
+  WorkspaceMemberRepository,
+  WorkspaceRepository,
+}
+import jp.ijufumi.openreports.presentation.models.requests.{
+  CreateWorkspace,
+  CreateWorkspaceMember,
+  UpdateWorkspace,
+  UpdateWorkspaceMember,
+}
 import jp.ijufumi.openreports.presentation.models.responses.{Lists, Workspace, WorkspaceMember}
 import jp.ijufumi.openreports.domain.models.entity.WorkspaceMember.conversions._
 import jp.ijufumi.openreports.domain.models.entity.Workspace.conversions._
-import jp.ijufumi.openreports.domain.models.entity.{Report => ReportModel, StorageS3 => StorageS3Model, Template => TemplateModel, Workspace => WorkspaceModel, WorkspaceMember => WorkspaceMemberModel}
+import jp.ijufumi.openreports.domain.models.entity.{
+  Report => ReportModel,
+  StorageS3 => StorageS3Model,
+  Template => TemplateModel,
+  Workspace => WorkspaceModel,
+  WorkspaceMember => WorkspaceMemberModel,
+}
 import jp.ijufumi.openreports.services.{StorageService, WorkspaceService}
 import jp.ijufumi.openreports.utils.{IDs, Strings}
 import slick.jdbc.JdbcBackend.Database
 import slick.jdbc.PostgresProfile.api._
 
 class WorkspaceServiceImpl @Inject() (
-                                       db: Database,
+    db: Database,
     workspaceRepository: WorkspaceRepository,
     workspaceMemberRepository: WorkspaceMemberRepository,
     storageRepository: StorageS3Repository,
     reportRepository: ReportRepository,
     reportTemplateRepository: TemplateRepository,
     storageService: StorageService,
-    permissionRepository: RoleRepository,
+    repository: RoleRepository,
 ) extends WorkspaceService {
   override def createAndRelevant(
       input: CreateWorkspace,
@@ -36,7 +54,7 @@ class WorkspaceServiceImpl @Inject() (
     try {
       val workspace = WorkspaceModel(IDs.ulid(), name, Strings.generateSlug())
       workspaceRepository.register(workspace)
-      val permission = permissionRepository.getByType(RoleTypes.Admin)
+      val permission = repository.getByType(db, RoleTypes.Admin)
       if (permission.isEmpty) {
         throw new NotFoundException("permission not found")
       }
