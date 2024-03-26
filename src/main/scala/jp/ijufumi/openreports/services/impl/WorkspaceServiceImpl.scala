@@ -61,7 +61,7 @@ class WorkspaceServiceImpl @Inject() (
       val workspaceMember = WorkspaceMemberModel(workspace.id, memberId, permission.get.id)
       workspaceMemberRepository.register(workspaceMember)
       val storage = StorageS3Model(IDs.ulid(), workspace.id)
-      storageRepository.register(storage)
+      storageRepository.register(db, storage)
       val key = this.copySample(workspace.id)
       val reportTemplate =
         TemplateModel(IDs.ulid(), "copy of sample", key, workspace.id, StorageTypes.Local, 1)
