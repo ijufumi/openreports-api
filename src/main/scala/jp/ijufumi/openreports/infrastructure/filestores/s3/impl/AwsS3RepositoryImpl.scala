@@ -6,6 +6,7 @@ import jp.ijufumi.openreports.exceptions.NotFoundException
 import jp.ijufumi.openreports.infrastructure.datastores.database.repositories.StorageS3Repository
 import jp.ijufumi.openreports.infrastructure.filestores.s3.AwsS3Repository
 import jp.ijufumi.openreports.domain.models.entity.{StorageS3 => StorageS3Model}
+import slick.jdbc.JdbcBackend.Database
 import software.amazon.awssdk.auth.credentials.{AwsBasicCredentials, StaticCredentialsProvider}
 import software.amazon.awssdk.regions.Region
 import software.amazon.awssdk.services.s3.S3Client
@@ -17,7 +18,7 @@ import java.nio.file.{Files, Path}
 import java.time.Duration
 import scala.util.Using
 
-class AwsS3RepositoryImpl @Inject() (storageRepository: StorageS3Repository)
+class AwsS3RepositoryImpl @Inject() (db: Database, storageRepository: StorageS3Repository)
     extends AwsS3Repository {
   override def get(workspaceId: String, key: String): Path = {
     val storage = this.getStorage(workspaceId)
@@ -60,7 +61,7 @@ class AwsS3RepositoryImpl @Inject() (storageRepository: StorageS3Repository)
   }
 
   private def getStorage(workspaceId: String): StorageS3Model = {
-    val storageList = storageRepository.gets(workspaceId)
+    val storageList = storageRepository.gets(db, workspaceId)
     if (storageList.isEmpty) {
       throw new NotFoundException(s"storage doesn't exist. workspaceId: $workspaceId")
     }
