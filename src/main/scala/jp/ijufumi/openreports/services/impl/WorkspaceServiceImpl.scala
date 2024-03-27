@@ -65,7 +65,7 @@ class WorkspaceServiceImpl @Inject() (
       val key = this.copySample(workspace.id)
       val reportTemplate =
         TemplateModel(IDs.ulid(), "copy of sample", key, workspace.id, StorageTypes.Local, 1)
-      reportTemplateRepository.register(reportTemplate)
+      reportTemplateRepository.register(db, reportTemplate)
       val report = ReportModel(IDs.ulid(), "copy of sample", reportTemplate.id, null, workspace.id)
       reportRepository.register(db, report)
 

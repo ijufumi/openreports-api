@@ -68,12 +68,12 @@ class ReportServiceImpl @Inject() (
 
   override def getTemplates(workspaceId: String, page: Int, limit: Int): Lists[Template] = {
     val offset = List(page * limit, 0).max
-    val (results, count) = templateRepository.gets(workspaceId, offset, limit)
+    val (results, count) = templateRepository.gets(db, workspaceId, offset, limit)
     Lists(results, offset, limit, count)
   }
 
   override def getTemplate(workspaceId: String, id: String): Option[Template] = {
-    templateRepository.getById(workspaceId, id)
+    templateRepository.getById(db, workspaceId, id)
   }
 
   override def outputReport(workspaceId: String, id: String): Option[File] = {
@@ -137,7 +137,7 @@ class ReportServiceImpl @Inject() (
       storageService.create(workspaceId, key, storageType, tmpFile.path())
     }
     val template = TemplateModel(IDs.ulid(), req.name, key, workspaceId, storageType, fileItem.size)
-    templateRepository.register(template)
+    templateRepository.register(db, template)
     this.getTemplate(workspaceId, template.id)
   }
 
@@ -146,22 +146,22 @@ class ReportServiceImpl @Inject() (
       id: String,
       input: UpdateTemplate,
   ): Option[Template] = {
-    val templateOpt = templateRepository.getById(workspaceId, id)
+    val templateOpt = templateRepository.getById(db, workspaceId, id)
     if (templateOpt.isEmpty) {
       return None
     }
     val template = templateOpt.get.copyForUpdate(input)
-    templateRepository.update(template)
+    templateRepository.update(db, template)
     this.getTemplate(workspaceId, id)
   }
 
   override def deleteTemplate(workspaceId: String, id: String): Unit = {
-    val templateOpt = templateRepository.getById(workspaceId, id)
+    val templateOpt = templateRepository.getById(db, workspaceId, id)
     if (templateOpt.isEmpty) {
       return
     }
     val template = templateOpt.get
-    templateRepository.delete(workspaceId, id)
+    templateRepository.delete(db, workspaceId, id)
     storageService.delete(workspaceId, template.filePath, template.storageType)
   }
 
