@@ -1,6 +1,5 @@
 package jp.ijufumi.openreports.infrastructure.datastores.database.repositories.impl
 
-import com.google.inject.Inject
 import queries.{templateQuery => query}
 import jp.ijufumi.openreports.infrastructure.datastores.database.repositories.TemplateRepository
 import jp.ijufumi.openreports.domain.models.entity.Template
@@ -10,8 +9,13 @@ import slick.jdbc.PostgresProfile.api._
 
 import scala.concurrent.Await
 
-class TemplateRepositoryImpl @Inject() (db: Database) extends TemplateRepository {
-  override def gets(workspaceId: String, offset: Int, limit: Int): (Seq[Template], Int) = {
+class TemplateRepositoryImpl extends TemplateRepository {
+  override def gets(
+      db: Database,
+      workspaceId: String,
+      offset: Int,
+      limit: Int,
+  ): (Seq[Template], Int) = {
     var filtered = query.filter(_.workspaceId === workspaceId).drop(offset)
     val count = Await.result(db.run(query.length.result), queryTimeout)
     if (limit > 0) {
@@ -21,7 +25,7 @@ class TemplateRepositoryImpl @Inject() (db: Database) extends TemplateRepository
     (result, count)
   }
 
-  override def getById(workspaceId: String, id: String): Option[Template] = {
+  override def getById(db: Database, workspaceId: String, id: String): Option[Template] = {
     val getById = query
       .filter(_.workspaceId === workspaceId)
       .filter(_.id === id)
@@ -33,17 +37,17 @@ class TemplateRepositoryImpl @Inject() (db: Database) extends TemplateRepository
 
   }
 
-  override def register(model: Template): Option[Template] = {
+  override def register(db: Database, model: Template): Option[Template] = {
     val register = (query += model).withPinnedSession
     Await.result(db.run(register), queryTimeout)
-    getById(model.workspaceId, model.id)
+    getById(db, model.workspaceId, model.id)
   }
 
-  override def update(model: Template): Unit = {
+  override def update(db: Database, model: Template): Unit = {
     query.insertOrUpdate(model).withPinnedSession
   }
 
-  override def delete(workspaceId: String, id: String): Unit = {
+  override def delete(db: Database, workspaceId: String, id: String): Unit = {
     val getById = query
       .filter(_.workspaceId === workspaceId)
       .filter(_.id === id)
