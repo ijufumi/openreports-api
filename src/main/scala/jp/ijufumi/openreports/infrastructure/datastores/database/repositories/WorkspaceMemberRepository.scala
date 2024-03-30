@@ -1,21 +1,22 @@
 package jp.ijufumi.openreports.infrastructure.datastores.database.repositories
 
 import jp.ijufumi.openreports.domain.models.entity.WorkspaceMember
+import slick.jdbc.JdbcBackend.Database
 
 trait WorkspaceMemberRepository {
-  def getById(workspaceId: String, memberId: String): Option[WorkspaceMember]
+  def getById(db: Database, workspaceId: String, memberId: String): Option[WorkspaceMember]
 
-  def gets(workspaceId: String): Seq[WorkspaceMember]
+  def gets(db: Database, workspaceId: String): Seq[WorkspaceMember]
 
-  def getsByMemberId(memberId: String): Seq[WorkspaceMember]
+  def getsByMemberId(db: Database, memberId: String): Seq[WorkspaceMember]
 
-  def getByIdWithMember(workspaceId: String, memberId: String): Option[WorkspaceMember]
+  def getByIdWithMember(db: Database, workspaceId: String, memberId: String): Option[WorkspaceMember]
 
-  def getsWithMember(workspaceId: String): Seq[WorkspaceMember]
+  def getsWithMember(db: Database, workspaceId: String): Seq[WorkspaceMember]
 
-  def register(workspaceMember: WorkspaceMember): Option[WorkspaceMember]
+  def register(db: Database, workspaceMember: WorkspaceMember): Option[WorkspaceMember]
 
-  def update(workspaceMember: WorkspaceMember): Unit
+  def update(db: Database, workspaceMember: WorkspaceMember): Unit
 
-  def delete(workspaceId: String, memberId: String): Unit
+  def delete(db: Database, workspaceId: String, memberId: String): Unit
 }
