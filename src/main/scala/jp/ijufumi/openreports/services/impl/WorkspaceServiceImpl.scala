@@ -59,7 +59,7 @@ class WorkspaceServiceImpl @Inject() (
         throw new NotFoundException("permission not found")
       }
       val workspaceMember = WorkspaceMemberModel(workspace.id, memberId, permission.get.id)
-      workspaceMemberRepository.register(workspaceMember)
+      workspaceMemberRepository.register(db, workspaceMember)
       val storage = StorageS3Model(IDs.ulid(), workspace.id)
       storageRepository.register(db, storage)
       val key = this.copySample(workspace.id)
@@ -102,7 +102,7 @@ class WorkspaceServiceImpl @Inject() (
   }
 
   override def getWorkspaceMembers(id: String): Lists[WorkspaceMember] = {
-    val results = workspaceMemberRepository.getsWithMember(id)
+    val results = workspaceMemberRepository.getsWithMember(db, id)
     Lists(
       results,
       0,
@@ -115,7 +115,7 @@ class WorkspaceServiceImpl @Inject() (
       workspaceId: String,
       memberId: String,
   ): Option[WorkspaceMember] = {
-    workspaceMemberRepository.getByIdWithMember(workspaceId, memberId)
+    workspaceMemberRepository.getByIdWithMember(db, workspaceId, memberId)
   }
 
   override def createWorkspaceMember(
@@ -127,7 +127,7 @@ class WorkspaceServiceImpl @Inject() (
       input.memberId,
       input.permissionId,
     )
-    workspaceMemberRepository.register(workspaceMember)
+    workspaceMemberRepository.register(db, workspaceMember)
     this.getWorkspaceMember(workspaceId, input.memberId)
   }
 
@@ -136,17 +136,17 @@ class WorkspaceServiceImpl @Inject() (
       memberId: String,
       input: UpdateWorkspaceMember,
   ): Option[WorkspaceMember] = {
-    val workspaceMemberOpt = workspaceMemberRepository.getById(workspaceId, memberId)
+    val workspaceMemberOpt = workspaceMemberRepository.getById(db, workspaceId, memberId)
     if (workspaceMemberOpt.isEmpty) {
       return None
     }
     val newWorkspaceMember = workspaceMemberOpt.get.copyForUpdate(input)
-    workspaceMemberRepository.update(newWorkspaceMember)
+    workspaceMemberRepository.update(db, newWorkspaceMember)
     this.getWorkspaceMember(workspaceId, memberId)
   }
 
   override def deleteWorkspaceMember(workspaceId: String, memberId: String): Unit = {
-    workspaceMemberRepository.delete(workspaceId, memberId)
+    workspaceMemberRepository.delete(db, workspaceId, memberId)
   }
 
   private def copySample(workspaceId: String): String = {

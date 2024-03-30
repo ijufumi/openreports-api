@@ -1,6 +1,5 @@
 package jp.ijufumi.openreports.infrastructure.datastores.database.repositories.impl
 
-import com.google.inject.Inject
 import queries.{memberQuery, workspaceMemberQuery => query}
 import jp.ijufumi.openreports.infrastructure.datastores.database.repositories.WorkspaceMemberRepository
 import jp.ijufumi.openreports.domain.models.entity.WorkspaceMember
@@ -10,8 +9,12 @@ import slick.jdbc.PostgresProfile.api._
 
 import scala.concurrent.Await
 
-class WorkspaceMemberRepositoryImpl @Inject() (db: Database) extends WorkspaceMemberRepository {
-  override def getById(workspaceId: String, memberId: String): Option[WorkspaceMember] = {
+class WorkspaceMemberRepositoryImpl extends WorkspaceMemberRepository {
+  override def getById(
+      db: Database,
+      workspaceId: String,
+      memberId: String,
+  ): Option[WorkspaceMember] = {
     val getById = query
       .filter(_.workspaceId === workspaceId)
       .filter(_.memberId === memberId)
@@ -22,14 +25,14 @@ class WorkspaceMemberRepositoryImpl @Inject() (db: Database) extends WorkspaceMe
     Some(workspaceMembers.head)
   }
 
-  override def gets(workspaceId: String): Seq[WorkspaceMember] = {
+  override def gets(db: Database, workspaceId: String): Seq[WorkspaceMember] = {
     val getById = query
       .filter(_.workspaceId === workspaceId)
     val result = Await.result(db.run(getById.result), queryTimeout)
     result
   }
 
-  override def getsByMemberId(memberId: String): Seq[WorkspaceMember] = {
+  override def getsByMemberId(db: Database, memberId: String): Seq[WorkspaceMember] = {
     val getById = query
       .filter(_.memberId === memberId)
     val result = Await.result(db.run(getById.result), queryTimeout)
@@ -37,6 +40,7 @@ class WorkspaceMemberRepositoryImpl @Inject() (db: Database) extends WorkspaceMe
   }
 
   override def getByIdWithMember(
+      db: Database,
       workspaceId: String,
       memberId: String,
   ): Option[WorkspaceMember] = {
@@ -52,7 +56,7 @@ class WorkspaceMemberRepositoryImpl @Inject() (db: Database) extends WorkspaceMe
     Some(workspaceMembers.head)
   }
 
-  override def getsWithMember(workspaceId: String): Seq[WorkspaceMember] = {
+  override def getsWithMember(db: Database, workspaceId: String): Seq[WorkspaceMember] = {
     val getById = query
       .join(memberQuery)
       .on(_.memberId === _.id)
@@ -61,17 +65,17 @@ class WorkspaceMemberRepositoryImpl @Inject() (db: Database) extends WorkspaceMe
     result
   }
 
-  override def register(workspaceMember: WorkspaceMember): Option[WorkspaceMember] = {
+  override def register(db: Database, workspaceMember: WorkspaceMember): Option[WorkspaceMember] = {
     val register = (query += workspaceMember).withPinnedSession
     Await.result(db.run(register), queryTimeout)
-    getById(workspaceMember.workspaceId, workspaceMember.memberId)
+    getById(db, workspaceMember.workspaceId, workspaceMember.memberId)
   }
 
-  override def update(workspaceMember: WorkspaceMember): Unit = {
+  override def update(db: Database, workspaceMember: WorkspaceMember): Unit = {
     query.insertOrUpdate(workspaceMember).withPinnedSession
   }
 
-  override def delete(workspaceId: String, memberId: String): Unit = {
+  override def delete(db: Database, workspaceId: String, memberId: String): Unit = {
     val getById = query
       .filter(_.workspaceId === workspaceId)
     Await.result(db.run(getById.delete.withPinnedSession), queryTimeout)
