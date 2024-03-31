@@ -53,7 +53,7 @@ class WorkspaceServiceImpl @Inject() (
   override def createAndRelevant(name: String, memberId: String): Option[Workspace] = {
     try {
       val workspace = WorkspaceModel(IDs.ulid(), name, Strings.generateSlug())
-      workspaceRepository.register(workspace)
+      workspaceRepository.register(db, workspace)
       val permission = repository.getByType(db, RoleTypes.Admin)
       if (permission.isEmpty) {
         throw new NotFoundException("permission not found")
@@ -78,11 +78,11 @@ class WorkspaceServiceImpl @Inject() (
   }
 
   override def getWorkspace(id: String): Option[Workspace] = {
-    workspaceRepository.getById(id)
+    workspaceRepository.getById(db, id)
   }
 
   override def getWorkspacesByMemberId(memberId: String): Lists[Workspace] = {
-    val workspaces = workspaceRepository.getsByMemberId(memberId)
+    val workspaces = workspaceRepository.getsByMemberId(db, memberId)
     Lists(
       workspaces,
       0,
@@ -92,12 +92,12 @@ class WorkspaceServiceImpl @Inject() (
   }
 
   override def updateWorkspace(id: String, input: UpdateWorkspace): Option[Workspace] = {
-    val workspaceOpt = workspaceRepository.getById(id)
+    val workspaceOpt = workspaceRepository.getById(db, id)
     if (workspaceOpt.isEmpty) {
       return None
     }
     val newWorkspace = workspaceOpt.get.mergeForUpdate(input)
-    workspaceRepository.update(newWorkspace)
+    workspaceRepository.update(db, newWorkspace)
     this.getWorkspace(id)
   }
 
