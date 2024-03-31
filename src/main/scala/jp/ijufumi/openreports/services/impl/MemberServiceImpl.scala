@@ -35,7 +35,7 @@ class MemberServiceImpl @Inject() (
   }
 
   override def permissions(memberId: String, workspaceId: String): Option[Permissions] = {
-    val workspaces = workspaceRepository.getsByMemberId(memberId)
+    val workspaces = workspaceRepository.getsByMemberId(db, memberId)
     val workspaceMemberOpt = workspaceMemberRepository.getById(db, workspaceId, memberId)
     if (workspaceMemberOpt.isEmpty) {
       return None
