@@ -1,6 +1,5 @@
 package jp.ijufumi.openreports.infrastructure.datastores.database.entities
 
-import jp.ijufumi.openreports.presentation.models.requests.UpdateWorkspace
 import jp.ijufumi.openreports.utils.Dates
 import slick.jdbc.PostgresProfile.api._
 
