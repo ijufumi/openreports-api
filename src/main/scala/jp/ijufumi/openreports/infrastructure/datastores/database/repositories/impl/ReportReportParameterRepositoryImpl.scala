@@ -1,9 +1,6 @@
 package jp.ijufumi.openreports.infrastructure.datastores.database.repositories.impl
 
 import jp.ijufumi.openreports.infrastructure.datastores.database.repositories.ReportReportParameterRepository
-import jp.ijufumi.openreports.infrastructure.datastores.database.repositories.impl.queries.{
-  reportReportParameterQuery => query,
-}
 import jp.ijufumi.openreports.domain.models.entity.ReportReportParameter
 import jp.ijufumi.openreports.domain.models.entity.ReportReportParameter.conversions._
 import jp.ijufumi.openreports.utils.Dates
@@ -18,8 +15,8 @@ class ReportReportParameterRepositoryImpl extends ReportReportParameterRepositor
       offset: Int = 0,
       limit: Int = -1,
   ): (Seq[ReportReportParameter], Int) = {
-    var filtered = query.drop(offset)
-    val count = Await.result(db.run(query.length.result), queryTimeout)
+    var filtered = reportReportParameterQuery.drop(offset)
+    val count = Await.result(db.run(filtered.length.result), queryTimeout)
     if (limit > 0) {
       filtered = filtered.take(limit)
     }
@@ -27,7 +24,7 @@ class ReportReportParameterRepositoryImpl extends ReportReportParameterRepositor
   }
 
   override def getById(db: Database, id: String): Option[ReportReportParameter] = {
-    val getById = query
+    val getById = reportReportParameterQuery
       .filter(_.id === id)
     val models = Await.result(db.run(getById.result), queryTimeout)
     if (models.isEmpty) {
@@ -37,7 +34,7 @@ class ReportReportParameterRepositoryImpl extends ReportReportParameterRepositor
   }
 
   override def getByIds(db: Database, ids: Seq[String]): Seq[ReportReportParameter] = {
-    val getById = query
+    val getById = reportReportParameterQuery
       .filter(_.id.inSet(ids))
     Await.result(db.run(getById.result), queryTimeout).map(r => ReportReportParameter(r))
   }
@@ -46,7 +43,7 @@ class ReportReportParameterRepositoryImpl extends ReportReportParameterRepositor
       db: Database,
       model: ReportReportParameter,
   ): Option[ReportReportParameter] = {
-    val register = (query += model).withPinnedSession
+    val register = (reportReportParameterQuery += model).withPinnedSession
     Await.result(db.run(register), queryTimeout)
     getById(db, model.id)
   }
@@ -55,7 +52,7 @@ class ReportReportParameterRepositoryImpl extends ReportReportParameterRepositor
       db: Database,
       model: Seq[ReportReportParameter],
   ): Seq[ReportReportParameter] = {
-    val register = (query ++= model).withPinnedSession
+    val register = (reportReportParameterQuery ++= model).withPinnedSession
     Await.result(db.run(register), queryTimeout)
     val ids = model.map(m => m.id)
     getByIds(db, ids)
@@ -63,24 +60,24 @@ class ReportReportParameterRepositoryImpl extends ReportReportParameterRepositor
 
   override def update(db: Database, model: ReportReportParameter): Unit = {
     val newModel = model.copy(updatedAt = Dates.currentTimestamp())
-    val updateQuery = query.insertOrUpdate(newModel).withPinnedSession
+    val updateQuery = reportReportParameterQuery.insertOrUpdate(newModel).withPinnedSession
     Await.result(db.run(updateQuery), queryTimeout)
   }
 
   override def delete(db: Database, id: String): Unit = {
-    val getById = query
+    val getById = reportReportParameterQuery
       .filter(_.id === id)
     Await.result(db.run(getById.delete), queryTimeout)
   }
 
   override def deleteByReportId(db: Database, id: String): Unit = {
-    val getById = query
+    val getById = reportReportParameterQuery
       .filter(_.reportId === id)
     Await.result(db.run(getById.delete), queryTimeout)
   }
 
   override def deleteByReportParameterId(db: Database, id: String): Unit = {
-    val getById = query
+    val getById = reportReportParameterQuery
       .filter(_.reportParameterId === id)
     Await.result(db.run(getById.delete), queryTimeout)
   }
