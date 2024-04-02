@@ -1,6 +1,5 @@
 package jp.ijufumi.openreports.infrastructure.datastores.database.repositories.impl
 
-import queries.{memberQuery, workspaceMemberQuery => query}
 import jp.ijufumi.openreports.infrastructure.datastores.database.repositories.WorkspaceMemberRepository
 import jp.ijufumi.openreports.domain.models.entity.WorkspaceMember
 import jp.ijufumi.openreports.domain.models.entity.WorkspaceMember.conversions._
@@ -15,7 +14,7 @@ class WorkspaceMemberRepositoryImpl extends WorkspaceMemberRepository {
       workspaceId: String,
       memberId: String,
   ): Option[WorkspaceMember] = {
-    val getById = query
+    val getById = workspaceMemberQuery
       .filter(_.workspaceId === workspaceId)
       .filter(_.memberId === memberId)
     val workspaceMembers = Await.result(db.run(getById.result), queryTimeout)
@@ -26,14 +25,14 @@ class WorkspaceMemberRepositoryImpl extends WorkspaceMemberRepository {
   }
 
   override def gets(db: Database, workspaceId: String): Seq[WorkspaceMember] = {
-    val getById = query
+    val getById = workspaceMemberQuery
       .filter(_.workspaceId === workspaceId)
     val result = Await.result(db.run(getById.result), queryTimeout)
     result
   }
 
   override def getsByMemberId(db: Database, memberId: String): Seq[WorkspaceMember] = {
-    val getById = query
+    val getById = workspaceMemberQuery
       .filter(_.memberId === memberId)
     val result = Await.result(db.run(getById.result), queryTimeout)
     result
@@ -44,7 +43,7 @@ class WorkspaceMemberRepositoryImpl extends WorkspaceMemberRepository {
       workspaceId: String,
       memberId: String,
   ): Option[WorkspaceMember] = {
-    val getById = query
+    val getById = workspaceMemberQuery
       .join(memberQuery)
       .on(_.memberId === _.id)
       .filter(_._1.workspaceId === workspaceId)
@@ -57,7 +56,7 @@ class WorkspaceMemberRepositoryImpl extends WorkspaceMemberRepository {
   }
 
   override def getsWithMember(db: Database, workspaceId: String): Seq[WorkspaceMember] = {
-    val getById = query
+    val getById = workspaceMemberQuery
       .join(memberQuery)
       .on(_.memberId === _.id)
       .filter(_._1.workspaceId === workspaceId)
@@ -66,17 +65,17 @@ class WorkspaceMemberRepositoryImpl extends WorkspaceMemberRepository {
   }
 
   override def register(db: Database, workspaceMember: WorkspaceMember): Option[WorkspaceMember] = {
-    val register = (query += workspaceMember).withPinnedSession
+    val register = (workspaceMemberQuery += workspaceMember).withPinnedSession
     Await.result(db.run(register), queryTimeout)
     getById(db, workspaceMember.workspaceId, workspaceMember.memberId)
   }
 
   override def update(db: Database, workspaceMember: WorkspaceMember): Unit = {
-    query.insertOrUpdate(workspaceMember).withPinnedSession
+    workspaceMemberQuery.insertOrUpdate(workspaceMember).withPinnedSession
   }
 
   override def delete(db: Database, workspaceId: String, memberId: String): Unit = {
-    val getById = query
+    val getById = workspaceMemberQuery
       .filter(_.workspaceId === workspaceId)
     Await.result(db.run(getById.delete.withPinnedSession), queryTimeout)
   }

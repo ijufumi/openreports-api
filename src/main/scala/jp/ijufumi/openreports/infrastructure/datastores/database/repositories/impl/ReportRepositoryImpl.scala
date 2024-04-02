@@ -1,6 +1,5 @@
 package jp.ijufumi.openreports.infrastructure.datastores.database.repositories.impl
 
-import queries.{reportQuery => query, templateQuery}
 import jp.ijufumi.openreports.infrastructure.datastores.database.repositories.ReportRepository
 import jp.ijufumi.openreports.domain.models.entity.Report
 import jp.ijufumi.openreports.domain.models.entity.Report.conversions._
@@ -18,11 +17,11 @@ class ReportRepositoryImpl extends ReportRepository {
       limit: Int = -1,
       templateId: String = "",
   ): (Seq[Report], Int) = {
-    var filtered = query.filter(_.workspaceId === workspaceId).drop(offset)
+    var filtered = reportQuery.filter(_.workspaceId === workspaceId).drop(offset)
     if (templateId.nonEmpty) {
       filtered = filtered.filter(_.templateId === templateId)
     }
-    val count = Await.result(db.run(query.length.result), queryTimeout)
+    val count = Await.result(db.run(filtered.length.result), queryTimeout)
     if (limit > 0) {
       filtered = filtered.take(limit)
     }
@@ -37,7 +36,7 @@ class ReportRepositoryImpl extends ReportRepository {
       limit: Int = -1,
       templateId: String = "",
   ): (Seq[Report], Int) = {
-    var getById = query
+    var getById = reportQuery
       .filter(_.workspaceId === workspaceId)
       .join(templateQuery)
       .on(_.templateId === _.id)
@@ -59,7 +58,7 @@ class ReportRepositoryImpl extends ReportRepository {
   }
 
   override def getById(db: Database, workspaceId: String, id: String): Option[Report] = {
-    val getById = query
+    val getById = reportQuery
       .filter(_.workspaceId === workspaceId)
       .filter(_.id === id)
     val models = Await.result(db.run(getById.result), queryTimeout)
@@ -74,7 +73,7 @@ class ReportRepositoryImpl extends ReportRepository {
       workspaceId: String,
       id: String,
   ): Option[Report] = {
-    val getById = query
+    val getById = reportQuery
       .filter(_.id === id)
       .join(templateQuery)
       .on(_.templateId === _.id)
@@ -86,19 +85,19 @@ class ReportRepositoryImpl extends ReportRepository {
   }
 
   override def register(db: Database, model: Report): Option[Report] = {
-    val register = (query += model).withPinnedSession
+    val register = (reportQuery += model).withPinnedSession
     Await.result(db.run(register), queryTimeout)
     getById(db, model.workspaceId, model.id)
   }
 
   override def update(db: Database, model: Report): Unit = {
     val newModel = model.copy(updatedAt = Dates.currentTimestamp())
-    val updateQuery = query.insertOrUpdate(newModel).withPinnedSession
+    val updateQuery = reportQuery.insertOrUpdate(newModel).withPinnedSession
     Await.result(db.run(updateQuery), queryTimeout)
   }
 
   override def delete(db: Database, workspaceId: String, id: String): Unit = {
-    val getById = query
+    val getById = reportQuery
       .filter(_.workspaceId === workspaceId)
       .filter(_.id === id)
     Await.result(db.run(getById.delete), queryTimeout)

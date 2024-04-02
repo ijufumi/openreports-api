@@ -1,9 +1,6 @@
 package jp.ijufumi.openreports.infrastructure.datastores.database.repositories.impl
 
 import jp.ijufumi.openreports.infrastructure.datastores.database.repositories.ReportGroupRepository
-import jp.ijufumi.openreports.infrastructure.datastores.database.repositories.impl.queries.{
-  reportGroupQuery => query,
-}
 import jp.ijufumi.openreports.domain.models.entity.ReportGroup
 import jp.ijufumi.openreports.domain.models.entity.ReportGroup.conversions._
 import jp.ijufumi.openreports.utils.Dates
@@ -19,8 +16,8 @@ class ReportGroupRepositoryImpl extends ReportGroupRepository {
       offset: Int = 0,
       limit: Int = -1,
   ): (Seq[ReportGroup], Int) = {
-    var filtered = query.filter(_.workspaceId === workspaceId).drop(offset)
-    val count = Await.result(db.run(query.length.result), queryTimeout)
+    var filtered = reportGroupQuery.filter(_.workspaceId === workspaceId).drop(offset)
+    val count = Await.result(db.run(filtered.length.result), queryTimeout)
     if (limit > 0) {
       filtered = filtered.take(limit)
     }
@@ -29,7 +26,7 @@ class ReportGroupRepositoryImpl extends ReportGroupRepository {
   }
 
   override def getById(db: Database, workspaceId: String, id: String): Option[ReportGroup] = {
-    val getById = query
+    val getById = reportGroupQuery
       .filter(_.workspaceId === workspaceId)
       .filter(_.id === id)
     val models = Await.result(db.run(getById.result), queryTimeout)
@@ -40,19 +37,19 @@ class ReportGroupRepositoryImpl extends ReportGroupRepository {
   }
 
   override def register(db: Database, model: ReportGroup): Option[ReportGroup] = {
-    val register = (query += model).withPinnedSession
+    val register = (reportGroupQuery += model).withPinnedSession
     Await.result(db.run(register), queryTimeout)
     getById(db, model.workspaceId, model.id)
   }
 
   override def update(db: Database, model: ReportGroup): Unit = {
     val newModel = model.copy(updatedAt = Dates.currentTimestamp())
-    val updateQuery = query.insertOrUpdate(newModel).withPinnedSession
+    val updateQuery = reportGroupQuery.insertOrUpdate(newModel).withPinnedSession
     Await.result(db.run(updateQuery), queryTimeout)
   }
 
   override def delete(db: Database, workspaceId: String, id: String): Unit = {
-    val getById = query
+    val getById = reportGroupQuery
       .filter(_.workspaceId === workspaceId)
       .filter(_.id === id)
     Await.result(db.run(getById.delete), queryTimeout)
