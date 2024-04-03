@@ -18,27 +18,30 @@ object ConnectionPool {
       url: String,
       jdbcDriverClass: JdbcDriverClasses.JdbcDriverClass,
   ): Connection = {
-    if (has(name)) {
-      return getConnection(name)
+    this.synchronized {
+      if (has(name)) {
+        return getConnection(name)
+      }
+      val config = new HikariConfig()
+      config.setUsername(username)
+      config.setPassword(password)
+      config.setJdbcUrl(url)
+      config.setAutoCommit(false)
+      config.setDriverClassName(jdbcDriverClass.toString)
+      pool += (name -> new HikariPool(config))
+
+      getConnection(name)
     }
-
-    val config = new HikariConfig()
-    config.setUsername(username)
-    config.setPassword(password)
-    config.setJdbcUrl(url)
-    config.setAutoCommit(false)
-    config.setDriverClassName(jdbcDriverClass.toString)
-    pool += (name -> new HikariPool(config))
-
-    getConnection(name)
   }
 
   def newConnection(name: String): Connection = {
-    if (!has(name)) {
-      throw new NotFoundException
-    }
+    this.synchronized {
+      if (!has(name)) {
+        throw new NotFoundException
+      }
 
-    getConnection(name)
+      getConnection(name)
+    }
   }
 
   private def has(name: String): Boolean = {
