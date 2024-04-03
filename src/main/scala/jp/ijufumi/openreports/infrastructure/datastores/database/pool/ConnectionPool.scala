@@ -19,7 +19,7 @@ object ConnectionPool {
       jdbcDriverClass: JdbcDriverClasses.JdbcDriverClass,
   ): Connection = {
     if (has(name)) {
-      return pool(name).getConnection
+      return getConnection(name)
     }
 
     val config = new HikariConfig()
@@ -30,7 +30,7 @@ object ConnectionPool {
     config.setDriverClassName(jdbcDriverClass.toString)
     pool += (name -> new HikariPool(config))
 
-    newConnection(name)
+    getConnection(name)
   }
 
   def newConnection(name: String): Connection = {
@@ -38,10 +38,14 @@ object ConnectionPool {
       throw new NotFoundException
     }
 
-    pool(name).getConnection()
+    getConnection(name)
   }
 
-  def has(name: String): Boolean = {
+  private def has(name: String): Boolean = {
     pool.contains(name)
+  }
+
+  private def getConnection(name: String): Connection = {
+    pool(name).getConnection()
   }
 }
