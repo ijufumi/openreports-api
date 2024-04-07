@@ -138,12 +138,16 @@ class LoginServiceImpl @Inject() (
     memberOpt
   }
 
+  def generateApiToken(memberId: String): String = {
+    val apiToken = Hash.generateJWT(memberId, Config.API_TOKEN_EXPIRATION_SEC)
+    cacheWrapper.put(CacheKeys.ApiToken, apiToken, memberId)
+    apiToken
+  }
+
   private def makeResponse(member: Member): Option[Member] = {
-    val apiToken = Hash.generateJWT(member.id, Config.API_TOKEN_EXPIRATION_SEC)
-    cacheWrapper.put(CacheKeys.ApiToken, apiToken, member.id)
     val workspaces = workspaceRepository.getsByMemberId(db, member.id)
     Some(
-      member.withApiToken(apiToken).withWorkspace(workspaces),
+      member.withWorkspace(workspaces),
     )
   }
 
