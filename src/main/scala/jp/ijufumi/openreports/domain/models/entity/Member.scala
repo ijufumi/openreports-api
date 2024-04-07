@@ -13,7 +13,6 @@ case class Member(
     createdAt: Long = Dates.currentTimestamp(),
     updatedAt: Long = Dates.currentTimestamp(),
     versions: Long = 1,
-    apiToken: String = "",
     workspaces: Seq[Workspace] = Seq.empty,
 ) {
   def toEntity: MemberEntity = {
@@ -38,7 +37,7 @@ case class Member(
 }
 
 object Member {
-  def apply(entity: (MemberEntity, Seq[Workspace]), apiToken: String): Member = {
+  def apply(entity: (MemberEntity, Seq[Workspace])): Member = {
     Member(
       entity._1.id,
       entity._1.googleId,
@@ -48,7 +47,6 @@ object Member {
       entity._1.createdAt,
       entity._1.updatedAt,
       entity._1.versions,
-      apiToken,
       entity._2,
     )
   }

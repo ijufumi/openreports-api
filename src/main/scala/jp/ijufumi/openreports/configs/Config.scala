@@ -32,7 +32,8 @@ object Config {
     getEnvIntValue("PRESIGNED_URL_EXPIRATION", 3600)
   // for api
   val AUTHORIZATION_HEADER = "Authorization"
-  val WORKSPACE_ID_HEADER = "workspaceid"
+  val WORKSPACE_ID_HEADER = "x-workspace-id"
+  val API_TOKEN_HEADER = "x-api-token"
 
   // for google auth
   val GOOGLE_CLIENT_ID: String = getEnvValue("GOOGLE_CLIENT_ID", "")

@@ -21,7 +21,12 @@ abstract class PrivateAPIServletBase(loginService: LoginService)
   }
 
   after() {
-    request.removeAttribute("member")
+    val _member = memberOpt()
+    if (_member != null) {
+      val apiToken = loginService.generateApiToken(_member.get.id)
+      request.removeAttribute("member")
+      response.setHeader(Config.API_TOKEN_HEADER, apiToken)
+    }
   }
 
   def authorizationHeader(): String = {
@@ -38,5 +43,13 @@ abstract class PrivateAPIServletBase(loginService: LoginService)
 
   def member(): Member = {
     request.getAttribute("name").asInstanceOf[Member]
+  }
+
+  def memberOpt(): Option[Member] = {
+    val _member = request.getAttribute("member")
+    if (_member != null) {
+      return Some(_member.asInstanceOf[Member])
+    }
+    None
   }
 }
