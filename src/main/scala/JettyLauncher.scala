@@ -21,10 +21,11 @@ object JettyLauncher {
     "Authorization",
     "Accept",
     "Content-Type",
-    "WorkspaceId",
+    "X-Workspace-Id",
+    "X-API-Token",
   )
 
-  def main(args: Array[String]) {
+  def main(args: Array[String]): Unit = {
     val port = sys.env.getOrElse("PORT", "8080").toInt
 
     val server = new Server(port)
