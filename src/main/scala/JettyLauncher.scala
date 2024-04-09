@@ -2,6 +2,10 @@ import org.eclipse.jetty.server.Server
 import org.eclipse.jetty.servlet.{DefaultServlet, ServletContextHandler}
 import org.eclipse.jetty.webapp.WebAppContext
 import org.scalatra.servlet.ScalatraListener
+import com.google.inject.servlet.GuiceFilter
+
+import java.util
+import javax.servlet.DispatcherType
 
 object JettyLauncher {
   private val CORS_HEADERS = Seq(
@@ -35,6 +39,7 @@ object JettyLauncher {
     context.setInitParameter(ScalatraListener.LifeCycleKey, "ScalatraBootstrap")
     context.addEventListener(new ScalatraListener)
     context.addServlet(classOf[DefaultServlet], "/")
+    context.addFilter(classOf[GuiceFilter], "/", util.EnumSet.of(DispatcherType.REQUEST))
     context.setInitParameter("org.scalatra.cors.allowedOrigins", "*")
     context.setInitParameter("org.scalatra.cors.allowedHeaders", CORS_HEADERS.mkString(","))
     context.setInitParameter("org.scalatra.cors.allowCredentials", "false")
