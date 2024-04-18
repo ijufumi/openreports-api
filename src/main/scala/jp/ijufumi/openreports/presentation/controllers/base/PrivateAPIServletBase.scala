@@ -22,7 +22,7 @@ abstract class PrivateAPIServletBase(loginService: LoginService)
 
   after() {
     val _member = memberOpt()
-    if (_member != null) {
+    if (_member.isDefined) {
       val apiToken = loginService.generateApiToken(_member.get.id)
       request.removeAttribute("member")
       response.setHeader(Config.API_TOKEN_HEADER, apiToken)
