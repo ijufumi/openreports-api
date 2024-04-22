@@ -3,6 +3,7 @@ import org.eclipse.jetty.servlet.{DefaultServlet, ServletContextHandler}
 import org.eclipse.jetty.webapp.WebAppContext
 import org.scalatra.servlet.ScalatraListener
 import com.google.inject.servlet.GuiceFilter
+import jp.ijufumi.openreports.configs.Config
 
 import java.util
 import javax.servlet.DispatcherType
@@ -25,9 +26,7 @@ object JettyLauncher {
     "Authorization",
     "Accept",
     "Content-Type",
-    "X-Workspace-Id",
-    "X-API-Token",
-  )
+  ) ++ Config.HEADERS
 
   def main(args: Array[String]): Unit = {
     val port = sys.env.getOrElse("PORT", "8080").toInt
