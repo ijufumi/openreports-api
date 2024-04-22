@@ -34,7 +34,11 @@ object Config {
   val AUTHORIZATION_HEADER = "Authorization"
   val WORKSPACE_ID_HEADER = "x-workspace-id"
   val API_TOKEN_HEADER = "x-api-token"
-
+  val HEADERS = Seq(
+    API_TOKEN_HEADER,
+    AUTHORIZATION_HEADER,
+    WORKSPACE_ID_HEADER,
+  )
   // for google auth
   val GOOGLE_CLIENT_ID: String = getEnvValue("GOOGLE_CLIENT_ID", "")
   val GOOGLE_CLIENT_SECRET: String = getEnvValue("GOOGLE_CLIENT_SECRET", "")
