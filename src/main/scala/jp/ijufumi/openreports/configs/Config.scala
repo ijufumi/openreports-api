@@ -34,7 +34,7 @@ object Config {
   val AUTHORIZATION_HEADER = "Authorization"
   val WORKSPACE_ID_HEADER = "x-workspace-id"
   val API_TOKEN_HEADER = "x-api-token"
-  val HEADERS = Seq(
+  val HEADERS: Seq[String] = Seq(
     API_TOKEN_HEADER,
     AUTHORIZATION_HEADER,
     WORKSPACE_ID_HEADER,

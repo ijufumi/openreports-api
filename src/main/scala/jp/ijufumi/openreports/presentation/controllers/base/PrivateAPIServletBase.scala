@@ -11,12 +11,14 @@ abstract class PrivateAPIServletBase(loginService: LoginService)
   configureMultipartHandling(MultipartConfig(maxFileSize = Some(Config.UPLOAD_FILE_MAX_SIZE)))
 
   before() {
-    val header = authorizationHeader()
-    if (!loginService.verifyApiToken(header)) {
-      halt(forbidden("API Token is invalid"))
-    } else {
-      val member = loginService.getMemberByToken(header, generateToken = false)
-      request.setAttribute("member", member)
+    if (!skipAuthorization()) {
+      val header = authorizationHeader()
+      if (!loginService.verifyApiToken(header)) {
+        halt(forbidden("API Token is invalid"))
+      } else {
+        val member = loginService.getMemberByToken(header, generateToken = false)
+        request.setAttribute("member", member)
+      }
     }
   }
 
@@ -28,6 +30,8 @@ abstract class PrivateAPIServletBase(loginService: LoginService)
       response.setHeader(Config.API_TOKEN_HEADER, apiToken)
     }
   }
+
+  def skipAuthorization(): Boolean = false
 
   def authorizationHeader(): String = {
     request.getHeader(Config.AUTHORIZATION_HEADER)
