@@ -32,8 +32,8 @@ object Config {
     getEnvIntValue("PRESIGNED_URL_EXPIRATION", 3600)
   // for api
   val AUTHORIZATION_HEADER = "Authorization"
-  val WORKSPACE_ID_HEADER = "x-workspace-id"
-  val API_TOKEN_HEADER = "x-api-token"
+  val WORKSPACE_ID_HEADER = "W-Workspace-Id"
+  val API_TOKEN_HEADER = "X-Api-Token"
   val HEADERS: Seq[String] = Seq(
     API_TOKEN_HEADER,
     AUTHORIZATION_HEADER,

@@ -16,7 +16,7 @@ abstract class BaseModule extends AbstractModule {
   def bindClass[T](
       interfaceClass: java.lang.Class[T],
       implementClass: java.lang.Class[_ <: T],
-      scope: Class[_ <: Annotation] = SingletonScope
+      scope: Class[_ <: Annotation] = SingletonScope,
   ): Unit = {
     bind(interfaceClass)
       .to(implementClass)
@@ -27,12 +27,18 @@ abstract class BaseModule extends AbstractModule {
     bind(interfaceClass).toInstance(instance)
   }
 
-  def bindProvider[T](interfaceClass: java.lang.Class[T], f: CustomProvider[T], scope: Class[_ <: Annotation] = SingletonScope): Unit = {
-    bind(interfaceClass).toProvider(new Provider[T]() {
-      override def get(): T = {
-        f.provide()
-      }
-    }).in(scope)
+  def bindProvider[T](
+      interfaceClass: java.lang.Class[T],
+      f: CustomProvider[T],
+      scope: Class[_ <: Annotation] = SingletonScope,
+  ): Unit = {
+    bind(interfaceClass)
+      .toProvider(new Provider[T]() {
+        override def get(): T = {
+          f.provide()
+        }
+      })
+      .in(scope)
   }
 }
 
