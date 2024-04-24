@@ -1,5 +1,6 @@
 package jp.ijufumi.openreports.presentation.controllers.base
 
+import jp.ijufumi.openreports.configs.Config
 import jp.ijufumi.openreports.domain.models.value.enums.{JdbcDriverClasses, RoleTypes, StorageTypes}
 import jp.ijufumi.openreports.utils.Logging
 import org.json4s.{DefaultFormats, Formats}
@@ -42,8 +43,8 @@ abstract class APIServletBase
     contentType = formats("json")
   }
 
-  options("/*") {
-    Ok(headers = Map("Access-Control-Allow-Origin" -> request.getHeader("Origin")))
+  after() {
+    response.setHeader("Access-Control-Expose-Headers", Config.HEADERS.mkString(","))
   }
 
   def ok(obj: Any): ActionResult = {
