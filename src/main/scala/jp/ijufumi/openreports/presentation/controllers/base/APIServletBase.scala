@@ -47,6 +47,14 @@ abstract class APIServletBase
     response.setHeader("Access-Control-Expose-Headers", Config.HEADERS.mkString(","))
   }
 
+  options("/*") {
+    Ok()
+  }
+
+  def isOptions: Boolean = {
+    request.getMethod.toUpperCase().equals("OPTIONS")
+  }
+
   def ok(obj: Any): ActionResult = {
     hookResult(Ok(obj))
   }
