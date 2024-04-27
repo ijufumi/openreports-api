@@ -17,7 +17,7 @@ abstract class PrivateAPIServletBase(loginService: LoginService)
         halt(forbidden("API Token is invalid"))
       } else {
         val member = loginService.getMemberByToken(header, generateToken = false)
-        request.setAttribute("member", member)
+        setMember(member.get)
       }
     }
   }
@@ -26,7 +26,7 @@ abstract class PrivateAPIServletBase(loginService: LoginService)
     val _member = memberOpt()
     if (_member.isDefined) {
       val apiToken = loginService.generateApiToken(_member.get.id)
-      request.removeAttribute("member")
+      request.removeAttribute(ATTRIBUTE_KEY_MEMBER)
       response.setHeader(Config.API_TOKEN_HEADER, apiToken)
     }
   }
@@ -46,11 +46,11 @@ abstract class PrivateAPIServletBase(loginService: LoginService)
   }
 
   def member(): Member = {
-    request.getAttribute("name").asInstanceOf[Member]
+    request.getAttribute(ATTRIBUTE_KEY_MEMBER).asInstanceOf[Member]
   }
 
   def memberOpt(): Option[Member] = {
-    val _member = request.getAttribute("member")
+    val _member = request.getAttribute(ATTRIBUTE_KEY_MEMBER)
     if (_member != null) {
       return Some(_member.asInstanceOf[Member])
     }

@@ -3,7 +3,7 @@ package jp.ijufumi.openreports.presentation.controllers.public_
 import com.google.inject.Inject
 import jp.ijufumi.openreports.presentation.controllers.base.PrivateAPIServletBase
 import jp.ijufumi.openreports.presentation.models.requests.{GoogleLogin, Login}
-import jp.ijufumi.openreports.presentation.models.responses.{GoogleAuthUrl, Member}
+import jp.ijufumi.openreports.presentation.models.responses.GoogleAuthUrl
 import jp.ijufumi.openreports.services.LoginService
 
 class LoginServlet @Inject() (loginService: LoginService)
@@ -34,9 +34,5 @@ class LoginServlet @Inject() (loginService: LoginService)
       setMember(member.get)
       ok(member.get)
     }
-  }
-
-  private def setMember(member: Member): Unit = {
-    request.setAttribute("member", member)
   }
 }

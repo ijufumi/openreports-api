@@ -2,6 +2,7 @@ package jp.ijufumi.openreports.presentation.controllers.base
 
 import jp.ijufumi.openreports.configs.Config
 import jp.ijufumi.openreports.domain.models.value.enums.{JdbcDriverClasses, RoleTypes, StorageTypes}
+import jp.ijufumi.openreports.presentation.models.responses.Member
 import jp.ijufumi.openreports.utils.Logging
 import org.json4s.{DefaultFormats, Formats}
 import org.json4s.ext.EnumNameSerializer
@@ -27,6 +28,8 @@ abstract class APIServletBase
     with I18nSupport
     with Logging
     with CorsSupport {
+
+  protected val ATTRIBUTE_KEY_MEMBER = "member"
 
   override protected implicit lazy val jsonFormats: Formats = {
     DefaultFormats ++ Seq(
@@ -108,5 +111,9 @@ abstract class APIServletBase
     }
   }
 
-  def extractBody[T: Manifest](): T = parse(request.body).extract[T]
+  protected def extractBody[T: Manifest](): T = parse(request.body).extract[T]
+
+  protected def setMember(member: Member): Unit = {
+    request.setAttribute(ATTRIBUTE_KEY_MEMBER, member)
+  }
 }
