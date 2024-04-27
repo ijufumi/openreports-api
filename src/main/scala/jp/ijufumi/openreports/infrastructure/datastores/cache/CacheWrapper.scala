@@ -12,7 +12,7 @@ class CacheWrapper {
   private val cache: Cache[Any] = CaffeineCache[Any]
 
   def put[T](cacheKey: CacheKey, value: T, args: String*)(implicit ttl: Long = defaultTtl): Unit = {
-    cache.put(cacheKey.key(args: _*))(value, ttl = Option(Duration(ttl, SECONDS)))
+    cache.put(cacheKey.key(args: _*))(value, ttl = Some(Duration(ttl, SECONDS)))
   }
 
   def get[T](cacheKey: CacheKey, args: String*): Option[T] = {
@@ -21,7 +21,7 @@ class CacheWrapper {
       return None
     }
     val original = value.get.get
-    Option(original.asInstanceOf[T])
+    Some(original.asInstanceOf[T])
   }
 
   def remove(cacheKey: CacheKey, args: String*): Unit = {
