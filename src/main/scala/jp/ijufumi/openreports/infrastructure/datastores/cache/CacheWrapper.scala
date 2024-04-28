@@ -24,6 +24,18 @@ class CacheWrapper {
     Some(original.asInstanceOf[T])
   }
 
+  def add[T](cacheKey: CacheKey, value: T, args: String*)(implicit ttl: Long = defaultTtl): Unit = {
+    val v = get[Seq[T]](cacheKey, args: _*)
+    if (v.isDefined) {
+      val vv = v.get
+      vv :+ value
+      put(cacheKey, vv, args: _*)
+    } else {
+      val vv = Seq(value)
+      put(cacheKey, vv, args: _*)
+    }
+  }
+
   def remove(cacheKey: CacheKey, args: String*): Unit = {
     cache.remove(cacheKey.key(args: _*))
   }
