@@ -66,9 +66,9 @@ class LoginServiceImpl @Inject() (
       return false
     }
 
-    val cachedApiToken = cacheWrapper.get[String](CacheKeys.ApiToken, memberId)
+    val cachedApiTokens = cacheWrapper.getAsSeq[String](CacheKeys.ApiToken, memberId)
 
-    if (!cachedApiToken.getOrElse("").equals(apiToken.get)) {
+    if (cachedApiTokens.isEmpty || cachedApiTokens.get.count(s => s == apiToken.get) <= 0) {
       logger.info("tokens didn't match")
       return false
     }

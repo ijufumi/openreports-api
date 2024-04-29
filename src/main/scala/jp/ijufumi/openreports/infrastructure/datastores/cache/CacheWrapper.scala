@@ -24,6 +24,15 @@ class CacheWrapper {
     Some(original.asInstanceOf[T])
   }
 
+  def getAsSeq[T](cacheKey: CacheKey, args: String*): Option[Seq[T]] = {
+    val value = cache.get(cacheKey.key(args: _*))
+    if (value.isFailure || value.get.isEmpty) {
+      return None
+    }
+    val original = value.get.get
+    Some(original.asInstanceOf[Seq[T]])
+  }
+
   def add[T](cacheKey: CacheKey, value: T, args: String*)(implicit ttl: Long = defaultTtl): Unit = {
     val v = get[Seq[T]](cacheKey, args: _*)
     if (v.isDefined) {
