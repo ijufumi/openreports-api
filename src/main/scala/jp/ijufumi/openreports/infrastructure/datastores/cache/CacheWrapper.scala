@@ -33,11 +33,17 @@ class CacheWrapper {
     Some(original.asInstanceOf[Seq[T]])
   }
 
-  def add[T](cacheKey: CacheKey, value: T, args: String*)(implicit ttl: Long = defaultTtl): Unit = {
+  def add[T](cacheKey: CacheKey, value: T, args: String*)(implicit
+      ttl: Long = defaultTtl,
+      limitation: Int = 100,
+  ): Unit = {
     val v = get[Seq[T]](cacheKey, args: _*)
     if (v.isDefined) {
-      val vv = v.get
+      var vv = v.get
       vv :+ value
+      if (vv.length > limitation) {
+        vv = vv.slice(vv.length - limitation, vv.length)
+      }
       put(cacheKey, vv, args: _*)
     } else {
       val vv = Seq(value)
