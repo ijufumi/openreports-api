@@ -55,7 +55,7 @@ class CacheWrapper {
   ): Unit = {
     try {
       lock.writeLock().lock()
-      val v = get[Seq[T]](cacheKey, args: _*)
+      val v = getAsSeq[T](cacheKey, args: _*)
       if (v.isDefined) {
         var vv = v.get
         vv :+ value

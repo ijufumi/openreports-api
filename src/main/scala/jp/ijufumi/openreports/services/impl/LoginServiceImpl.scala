@@ -140,7 +140,7 @@ class LoginServiceImpl @Inject() (
 
   def generateApiToken(memberId: String): String = {
     val apiToken = Hash.generateJWT(memberId, Config.API_TOKEN_EXPIRATION_SEC)
-    cacheWrapper.put(CacheKeys.ApiToken, apiToken, memberId)
+    cacheWrapper.add(CacheKeys.ApiToken, apiToken, memberId)
     apiToken
   }
 
