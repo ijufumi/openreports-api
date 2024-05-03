@@ -58,7 +58,7 @@ class CacheWrapper {
       val v = getAsSeq[T](cacheKey, args: _*)
       if (v.isDefined) {
         var vv = v.get
-        vv :+ value
+        vv = vv :+ value
         if (vv.length > limitation) {
           vv = vv.slice(vv.length - limitation, vv.length)
         }
