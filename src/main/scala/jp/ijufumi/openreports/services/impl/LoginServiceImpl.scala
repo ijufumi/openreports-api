@@ -124,18 +124,14 @@ class LoginServiceImpl @Inject() (
     }
   }
 
-  def getMemberByToken(
+  def authorizeByToken(
       authorizationHeader: String,
-      generateToken: Boolean = true,
   ): Option[Member] = {
     val memberOpt = getMember(authorizationHeader)
     if (memberOpt.isEmpty) {
       return None
     }
-    if (generateToken) {
-      return makeResponse(memberOpt.get)
-    }
-    memberOpt
+    makeResponse(memberOpt.get)
   }
 
   def generateApiToken(memberId: String): String = {
