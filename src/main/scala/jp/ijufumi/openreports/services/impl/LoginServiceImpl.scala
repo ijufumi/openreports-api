@@ -54,25 +54,31 @@ class LoginServiceImpl @Inject() (
     cacheWrapper.remove(CacheKeys.ApiToken, memberOpt.get.id)
   }
 
-  override def verifyApiToken(authorizationHeader: String): Boolean = {
+  override def verifyApiToken(authorizationHeader: String): Option[Member] = {
     val apiToken = getApiToken(authorizationHeader)
     if (apiToken.isEmpty) {
       logger.info("api token is empty")
-      return false
+      return None
     }
     val memberId = Hash.extractIdFromJWT(apiToken.get)
     if (memberId == "") {
       logger.info("didn't extract member id from token")
-      return false
+      return None
     }
 
     val cachedApiTokens = cacheWrapper.getAsSeq[String](CacheKeys.ApiToken, memberId)
 
     if (cachedApiTokens.isEmpty || cachedApiTokens.get.count(s => s == apiToken.get) <= 0) {
       logger.info("tokens didn't match")
-      return false
+      return None
     }
-    true
+
+    val memberOpt = memberRepository.getById(db, memberId)
+    if (memberOpt.isEmpty) {
+      logger.info("member doesn't exist")
+      return None
+    }
+    makeResponse(memberOpt.get)
   }
 
   override def getAuthorizationUrl: String = googleRepository.getAuthorizationUrl()
@@ -122,16 +128,6 @@ class LoginServiceImpl @Inject() (
         SimpleDBIO(_.connection.rollback()).withPinnedSession
         throw e
     }
-  }
-
-  def authorizeByToken(
-      authorizationHeader: String,
-  ): Option[Member] = {
-    val memberOpt = getMember(authorizationHeader)
-    if (memberOpt.isEmpty) {
-      return None
-    }
-    makeResponse(memberOpt.get)
   }
 
   def generateApiToken(memberId: String): String = {

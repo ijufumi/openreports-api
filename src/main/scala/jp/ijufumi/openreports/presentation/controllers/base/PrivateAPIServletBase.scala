@@ -13,15 +13,11 @@ abstract class PrivateAPIServletBase(loginService: LoginService)
   before() {
     if (!isOptions && !skipAuthorization()) {
       val header = authorizationHeader()
-      if (!loginService.verifyApiToken(header)) {
+      val member = loginService.verifyApiToken(header)
+      if (member.isEmpty) {
         halt(forbidden("API Token is invalid"))
       } else {
-        val member = loginService.authorizeByToken(header)
-        if (member.isEmpty) {
-          halt(forbidden("API Token is invalid"))
-        } else {
-          setMember(member.get)
-        }
+        setMember(member.get)
       }
     }
   }
