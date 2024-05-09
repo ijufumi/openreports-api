@@ -28,6 +28,8 @@ class LoginServiceImpl @Inject() (
     workspaceService: WorkspaceService,
 ) extends LoginService
     with Logging {
+  private val regexBearerHeader = java.util.regex.Pattern.compile("^Bearer (.*)$")
+
   override def login(input: Login): Option[Member] = {
     val email = input.email
     val password = input.password
@@ -148,11 +150,11 @@ class LoginServiceImpl @Inject() (
       return None
     }
 
-    val splitHeader = authorizationHeader.split(" ")
-    if (splitHeader.length != 2) {
+    val tokenMatcher = regexBearerHeader.matcher(authorizationHeader)
+    if (!tokenMatcher.matches()) {
       return None
     }
-    Some(splitHeader(1))
+    Some(tokenMatcher.group())
   }
 
   private def getMember(authorizationHeader: String): Option[Member] = {
