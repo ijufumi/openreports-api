@@ -53,7 +53,6 @@ docker compose exec api sbt flywayClean
 
 ![ERD](./docs/db/diagram.svg)
 
-## Developer's memo.
 ### API list
 
 - [x] public
@@ -117,26 +116,6 @@ docker compose exec api sbt flywayClean
     - [ ] Logs
       - [ ] list
       - [ ] delete
-
-### Table Structure
-
-- Users
-  - workspaces
-  - member
-  - group
-  - member/group relation
-  - group/report_group relation
-  - group/function relation
-- Reports
-  - report
-  - scheduled_report
-  - report_group
-  - report/report_group relation
-  - report_param
-  - report_param_config
-  - data_sources
-- Others
-  - functions
 
 ### TODO list
 - [ ] make relation report and params
