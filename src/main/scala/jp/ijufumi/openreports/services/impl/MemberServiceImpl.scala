@@ -8,7 +8,7 @@ import jp.ijufumi.openreports.infrastructure.datastores.database.repositories.{
   WorkspaceMemberRepository,
   WorkspaceRepository,
 }
-import jp.ijufumi.openreports.presentation.models.responses.{Member, Permissions}
+import jp.ijufumi.openreports.presentation.models.responses.{Member, Permission}
 import jp.ijufumi.openreports.services.MemberService
 import jp.ijufumi.openreports.domain.models.entity.Function.conversions._
 import jp.ijufumi.openreports.domain.models.entity.Member.conversions._
@@ -34,7 +34,7 @@ class MemberServiceImpl @Inject() (
     result
   }
 
-  override def permissions(memberId: String, workspaceId: String): Option[Permissions] = {
+  override def permissions(memberId: String, workspaceId: String): Option[Permission] = {
     val workspaces = workspaceRepository.getsByMemberId(db, memberId)
     val workspaceMemberOpt = workspaceMemberRepository.getById(db, workspaceId, memberId)
     if (workspaceMemberOpt.isEmpty) {
@@ -44,6 +44,6 @@ class MemberServiceImpl @Inject() (
     val functionIds =
       roleFunctionRepository.getByRoleId(db, workspaceMember.roleId).map(m => m.functionId)
     val functions = functionRepository.getsByIds(db, functionIds)
-    Some(Permissions(workspaces, functions))
+    Some(Permission(workspaces, functions))
   }
 }
