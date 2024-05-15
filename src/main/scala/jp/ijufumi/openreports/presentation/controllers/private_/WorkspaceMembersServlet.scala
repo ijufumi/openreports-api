@@ -2,7 +2,10 @@ package jp.ijufumi.openreports.presentation.controllers.private_
 
 import com.google.inject.Inject
 import jp.ijufumi.openreports.presentation.controllers.base.PrivateAPIServletBase
-import jp.ijufumi.openreports.presentation.models.requests.{CreateWorkspaceMember, UpdateWorkspaceMember}
+import jp.ijufumi.openreports.presentation.models.requests.{
+  CreateWorkspaceMember,
+  UpdateWorkspaceMember,
+}
 import jp.ijufumi.openreports.services.{LoginService, WorkspaceService}
 
 class WorkspaceMembersServlet @Inject() (
@@ -16,7 +19,14 @@ class WorkspaceMembersServlet @Inject() (
   }
 
   post("/") {
+    val _workspaceId = workspaceId()
     val requestVal = extractBody[CreateWorkspaceMember]()
+    val result = workspaceService.createWorkspaceMember(_workspaceId, requestVal)
+    if (result.isEmpty) {
+      badRequest("something wrong...")
+    } else {
+      ok(result)
+    }
   }
 
   get("/:memberId") {
