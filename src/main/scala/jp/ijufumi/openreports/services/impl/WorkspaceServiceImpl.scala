@@ -125,7 +125,7 @@ class WorkspaceServiceImpl @Inject() (
     val workspaceMember = WorkspaceMemberModel(
       workspaceId,
       input.memberId,
-      input.permissionId,
+      input.roleId,
     )
     workspaceMemberRepository.register(db, workspaceMember)
     this.getWorkspaceMember(workspaceId, input.memberId)
