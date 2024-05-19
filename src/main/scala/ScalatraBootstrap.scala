@@ -11,15 +11,15 @@ class ScalatraBootstrap extends LifeCycle {
     mount(context, classOf[HealthServlet], "/health")
     mount(context, classOf[LoginServlet], "/login")
     mount(context, classOf[RoleServlet], "/roles")
-    mount(context, classOf[DriverTypeServlet], "/driver_types")
+    mount(context, classOf[DriverTypeServlet], "/driver-types")
     // private endpoints
     mount(context, classOf[MemberServlet], "/members")
     mount(context, classOf[ReportServlet], "/reports")
-    mount(context, classOf[ReportGroupServlet], "/report_groups")
+    mount(context, classOf[ReportGroupServlet], "/report-groups")
     mount(context, classOf[TemplateServlet], "/templates")
-    mount(context, classOf[DataSourceServlet], "/data_sources")
+    mount(context, classOf[DataSourceServlet], "/data-sources")
     mount(context, classOf[WorkspaceServlet], "/workspaces")
-    mount(context, classOf[WorkspaceMembersServlet], "/workspace_members")
+    mount(context, classOf[WorkspaceMembersServlet], "/workspace-members")
   }
 
   private def mount(
