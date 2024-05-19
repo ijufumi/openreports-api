@@ -154,7 +154,7 @@ class LoginServiceImpl @Inject() (
     if (!tokenMatcher.matches()) {
       return None
     }
-    Some(tokenMatcher.group())
+    Some(tokenMatcher.group(1))
   }
 
   private def getMember(authorizationHeader: String): Option[Member] = {
