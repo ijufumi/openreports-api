@@ -112,6 +112,14 @@ entity storage_s3s {
   * s3_bucket_name
 }
 
+entity refresh_tokens {
+  * id
+  * member_id
+  * refresh_token
+  * expired_at
+  * is_used
+}
+
 workspaces --r{ workspace_members
 workspace_members }--u members
 workspace_members }--r{ roles
@@ -130,5 +138,6 @@ driver_types --{ data_sources
 data_sources --{ reports
 workspaces --r{ storage_s3s
 storage_s3s --{ report_templates
+members --r{ refresh_tokens
 
 @enduml
