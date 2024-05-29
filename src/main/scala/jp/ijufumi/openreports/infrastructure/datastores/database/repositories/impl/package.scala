@@ -1,22 +1,6 @@
 package jp.ijufumi.openreports.infrastructure.datastores.database.repositories
 
-import jp.ijufumi.openreports.infrastructure.datastores.database.entities.{
-  DataSources,
-  DriverTypes,
-  Functions,
-  Members,
-  ReportGroupReports,
-  ReportGroups,
-  ReportParameters,
-  ReportReportParameters,
-  Reports,
-  RoleFunctions,
-  Roles,
-  StorageS3s,
-  Templates,
-  WorkspaceMembers,
-  Workspaces,
-}
+import jp.ijufumi.openreports.infrastructure.datastores.database.entities.{DataSources, DriverTypes, Functions, Members, RefreshTokens, ReportGroupReports, ReportGroups, ReportParameters, ReportReportParameters, Reports, RoleFunctions, Roles, StorageS3s, Templates, WorkspaceMembers, Workspaces}
 import slick.jdbc.PostgresProfile.api._
 
 import scala.concurrent.duration.Duration
@@ -39,4 +23,5 @@ package object impl {
   val roleQuery = TableQuery[Roles]
   val functionQuery = TableQuery[Functions]
   val roleFunctionQuery = TableQuery[RoleFunctions]
+  val refreshTokenQuery = TableQuery[RefreshTokens]
 }
