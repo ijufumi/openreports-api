@@ -7,6 +7,7 @@ import jp.ijufumi.openreports.utils.{Hash, IDs, Logging, Strings}
 import jp.ijufumi.openreports.infrastructure.datastores.cache.{CacheKeys, CacheWrapper}
 import jp.ijufumi.openreports.infrastructure.datastores.database.repositories.{
   MemberRepository,
+  RefreshTokenRepository,
   WorkspaceRepository,
 }
 import jp.ijufumi.openreports.infrastructure.google.auth.GoogleRepository
@@ -26,6 +27,7 @@ class LoginServiceImpl @Inject() (
     workspaceRepository: WorkspaceRepository,
     googleRepository: GoogleRepository,
     workspaceService: WorkspaceService,
+    refreshTokenRepository: RefreshTokenRepository,
 ) extends LoginService
     with Logging {
   private val regexBearerHeader = java.util.regex.Pattern.compile("^Bearer (.*)$")
