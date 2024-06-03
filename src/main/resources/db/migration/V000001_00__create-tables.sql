@@ -231,5 +231,5 @@ create table member_tokens
   foreign key (member_id) references members (id)
 );
 
-create unique index memer_tokens_UIX1 on member_tokens (refresh_token);
-create unique index memer_tokens_UIX2 on member_tokens (access_token);
+create unique index member_tokens_UIX1 on member_tokens (refresh_token);
+create unique index member_tokens_UIX2 on member_tokens (access_token);
