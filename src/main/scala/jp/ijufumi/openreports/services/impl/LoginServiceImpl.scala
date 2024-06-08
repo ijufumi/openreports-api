@@ -127,8 +127,8 @@ class LoginServiceImpl @Inject() (
     }
   }
 
-  def generateAccessToken(memberId: String, refreshToken: String): Option[String] = {
-    val refreshToken = refreshTokenRepository.getByToken(db, refreshToken)
+  def generateAccessToken(memberId: String, token: String): Option[String] = {
+    val refreshToken = refreshTokenRepository.getByToken(db, token)
     if (refreshToken.isEmpty) {
       return None
     }
