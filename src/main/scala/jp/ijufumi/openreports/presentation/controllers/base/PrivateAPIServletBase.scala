@@ -22,19 +22,14 @@ abstract class PrivateAPIServletBase(loginService: LoginService)
     }
   }
 
-  after() {
-    val _member = memberOpt()
-    if (_member.isDefined) {
-      val apiToken = loginService.generateApiToken(_member.get.id)
-      request.removeAttribute(ATTRIBUTE_KEY_MEMBER)
-      response.setHeader(Config.API_TOKEN_HEADER, apiToken)
-    }
-  }
-
   def skipAuthorization(): Boolean = false
 
   def authorizationHeader(): String = {
     request.getHeader(Config.AUTHORIZATION_HEADER)
+  }
+
+  def refreshTokenHeader(): String = {
+    request.getHeader(Config.REFRESH_TOKEN_HEADER)
   }
 
   def workspaceId(): String = {

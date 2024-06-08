@@ -3,15 +3,16 @@ package jp.ijufumi.openreports.domain.models.entity
 import jp.ijufumi.openreports.infrastructure.datastores.database.entities.{
   RefreshToken => RefreshTokenEntity,
 }
+import jp.ijufumi.openreports.utils.Dates
 
 case class RefreshToken(
     id: String,
     memberId: String,
     refreshToken: String,
     isUsed: Boolean,
-    createdAt: Long,
-    updatedAt: Long,
-    version: Long,
+    createdAt: Long = Dates.currentTimestamp(),
+    updatedAt: Long = Dates.currentTimestamp(),
+    versions: Long = 1,
 ) {
   def toEntity: RefreshTokenEntity = {
     RefreshTokenEntity(
@@ -21,7 +22,7 @@ case class RefreshToken(
       this.isUsed,
       this.createdAt,
       this.updatedAt,
-      this.version,
+      this.versions,
     )
   }
 }

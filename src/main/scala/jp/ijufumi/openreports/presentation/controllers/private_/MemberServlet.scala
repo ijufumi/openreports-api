@@ -27,4 +27,8 @@ class MemberServlet @Inject() (loginService: LoginService, memberService: Member
     val _member = member()
     ok(memberService.update(_member.id, requestParam.name, requestParam.password))
   }
+
+  post("/access-token") {
+
+  }
 }

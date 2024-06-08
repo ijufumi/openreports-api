@@ -14,5 +14,7 @@ trait LoginService {
 
   def loginWithGoogle(input: GoogleLogin): Option[Member]
 
-  def generateApiToken(memberId: String): String
+  def generateAccessToken(memberId: String, refreshToken: String): Option[String]
+
+  def generateRefreshToken(memberId: String): String
 }
