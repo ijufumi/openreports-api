@@ -8,7 +8,9 @@ trait LoginService {
 
   def logout(apiToken: String): Unit
 
-  def verifyApiToken(authorizationHeader: String): Option[Member]
+  def verifyAuthorizationHeader(authorizationHeader: String): Option[Member]
+
+  def verifyApiToken(apiToken: String): Option[Member]
 
   def getAuthorizationUrl: String
 

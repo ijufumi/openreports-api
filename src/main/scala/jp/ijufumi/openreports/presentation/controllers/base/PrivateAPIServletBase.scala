@@ -13,7 +13,7 @@ abstract class PrivateAPIServletBase(loginService: LoginService)
   before() {
     if (!isOptions && !skipAuthorization()) {
       val header = authorizationHeader()
-      val member = loginService.verifyApiToken(header)
+      var member = loginService.verifyAuthorizationHeader(header)
       if (member.isEmpty) {
         val refreshToken = refreshTokenHeader()
         if (refreshToken.isEmpty) {
@@ -24,6 +24,10 @@ abstract class PrivateAPIServletBase(loginService: LoginService)
             halt(forbidden("API Token is invalid"))
           } else {
             response.setHeader(Config.API_TOKEN_HEADER, accessToken.get)
+            member = loginService.verifyApiToken(accessToken.get)
+            setMember(member.get)
+            val refreshToken = loginService.generateRefreshToken(memberId())
+            response.setHeader(Config.REFRESH_TOKEN_HEADER, refreshToken)
           }
         }
       } else {

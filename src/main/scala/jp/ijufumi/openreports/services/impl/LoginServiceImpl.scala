@@ -58,13 +58,17 @@ class LoginServiceImpl @Inject() (
     refreshTokenRepository.deleteByMemberId(db, memberOpt.get.id)
   }
 
-  override def verifyApiToken(authorizationHeader: String): Option[Member] = {
+  override def verifyAuthorizationHeader(authorizationHeader: String): Option[Member] = {
     val apiToken = getApiToken(authorizationHeader)
     if (apiToken.isEmpty) {
       logger.info("api token is empty")
       return None
     }
-    val memberId = Hash.extractIdFromJWT(apiToken.get)
+    verifyApiToken(apiToken.get)
+  }
+
+  override def verifyApiToken(apiToken: String): Option[Member] = {
+    val memberId = Hash.extractIdFromJWT(apiToken)
     if (memberId == "") {
       logger.info("didn't extract member id from token")
       return None
@@ -129,11 +133,13 @@ class LoginServiceImpl @Inject() (
 
   def generateAccessToken(token: String): Option[String] = {
     val refreshToken = refreshTokenRepository.getByToken(db, token)
-    if (refreshToken.isEmpty) {
+    if (refreshToken.isEmpty || refreshToken.get.isUsed) {
       return None
     }
 
     val apiToken = Hash.generateJWT(refreshToken.get.memberId, Config.ACCESS_TOKEN_EXPIRATION_SEC)
+    val newRefreshToken = refreshToken.get.copy(isUsed = true)
+    refreshTokenRepository.update(db, newRefreshToken)
     Some(apiToken)
   }
 
