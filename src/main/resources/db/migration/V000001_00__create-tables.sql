@@ -222,7 +222,7 @@ create table refresh_tokens
   id            varchar(40) primary key,
   member_id     varchar(40) null,
   refresh_token varchar(100) not null,
-  is_used       tinyint      not null default 0,
+  expired_at    bigint       not null default 0,
   created_at    bigint       not null default extract(epoch from current_timestamp at time zone 'UTC'),
   updated_at    bigint       not null default extract(epoch from current_timestamp at time zone 'UTC'),
   versions      bigint       not null default 0,

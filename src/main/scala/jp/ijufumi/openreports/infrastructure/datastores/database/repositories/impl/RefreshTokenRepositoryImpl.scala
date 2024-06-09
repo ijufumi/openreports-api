@@ -3,6 +3,7 @@ package jp.ijufumi.openreports.infrastructure.datastores.database.repositories.i
 import jp.ijufumi.openreports.domain.models.entity.RefreshToken
 import jp.ijufumi.openreports.domain.models.entity.RefreshToken.conversions._
 import jp.ijufumi.openreports.infrastructure.datastores.database.repositories.RefreshTokenRepository
+import slick.jdbc
 import slick.jdbc.JdbcBackend
 import slick.jdbc.PostgresProfile.api._
 
@@ -28,6 +29,19 @@ class RefreshTokenRepositoryImpl extends RefreshTokenRepository {
 
   override def delete(db: JdbcBackend.Database, id: String): Int = {
     val query = refreshTokenQuery.filter(_.id === id)
+    Await.result(db.run(query.delete), queryTimeout)
+  }
+
+  override def deleteByToken(db: jdbc.JdbcBackend.Database, token: String): Int = {
+    val query = refreshTokenQuery.filter(_.refreshToken === token)
+    Await.result(db.run(query.delete), queryTimeout)
+  }
+
+  override def deleteByMemberId(
+      db: _root_.slick.jdbc.JdbcBackend.DatabaseDef,
+      memberId: String,
+  ): Int = {
+    val query = refreshTokenQuery.filter(_.memberId === memberId)
     Await.result(db.run(query.delete), queryTimeout)
   }
 

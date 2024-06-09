@@ -23,8 +23,10 @@ object Config {
   val DB_PORT: String = getEnvValue("DB_PORT", "5432")
   // for hash
   val HASH_KEY: String = getEnvValue("HASH_KEY", "test")
-  val API_TOKEN_EXPIRATION_SEC: Integer =
-    getEnvIntValue("API_TOKEN_EXPIRATION_SEC", 3600)
+  val ACCESS_TOKEN_EXPIRATION_SEC: Integer =
+    getEnvIntValue("ACCESS_TOKEN_EXPIRATION_SEC", 600)
+  val REFRESH_TOKEN_EXPIRATION_SEC: Integer =
+    getEnvIntValue("REFRESH_TOKEN_EXPIRATION_SEC", 3600 * 4)
   // for cache
   val CACHE_TTL_SEC: Long = getEnvIntValue("CACHE_TTL_SEC", 3600)
   // for presigned url
@@ -34,6 +36,7 @@ object Config {
   val AUTHORIZATION_HEADER = "Authorization"
   val WORKSPACE_ID_HEADER = "W-Workspace-Id"
   val API_TOKEN_HEADER = "X-Api-Token"
+  val REFRESH_TOKEN_HEADER = "X-Refresh-Token"
   val HEADERS: Seq[String] = Seq(
     API_TOKEN_HEADER,
     AUTHORIZATION_HEADER,

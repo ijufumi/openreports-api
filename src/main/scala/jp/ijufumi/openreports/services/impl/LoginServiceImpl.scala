@@ -4,15 +4,18 @@ import jp.ijufumi.openreports.services.{LoginService, WorkspaceService}
 import com.google.inject.{Inject, Singleton}
 import jp.ijufumi.openreports.configs.Config
 import jp.ijufumi.openreports.utils.{Hash, IDs, Logging, Strings}
-import jp.ijufumi.openreports.infrastructure.datastores.cache.{CacheKeys, CacheWrapper}
 import jp.ijufumi.openreports.infrastructure.datastores.database.repositories.{
   MemberRepository,
+  RefreshTokenRepository,
   WorkspaceRepository,
 }
 import jp.ijufumi.openreports.infrastructure.google.auth.GoogleRepository
 import jp.ijufumi.openreports.presentation.models.requests.{GoogleLogin, Login}
 import jp.ijufumi.openreports.presentation.models.responses.Member
-import jp.ijufumi.openreports.domain.models.entity.{Member => MemberModel}
+import jp.ijufumi.openreports.domain.models.entity.{
+  Member => MemberModel,
+  RefreshToken => RefreshTokenModel,
+}
 import slick.jdbc.PostgresProfile.api._
 import jp.ijufumi.openreports.domain.models.entity.Member.conversions._
 import jp.ijufumi.openreports.domain.models.entity.Workspace.conversions._
@@ -21,11 +24,11 @@ import slick.jdbc.JdbcBackend.Database
 @Singleton
 class LoginServiceImpl @Inject() (
     db: Database,
-    cacheWrapper: CacheWrapper,
     memberRepository: MemberRepository,
     workspaceRepository: WorkspaceRepository,
     googleRepository: GoogleRepository,
     workspaceService: WorkspaceService,
+    refreshTokenRepository: RefreshTokenRepository,
 ) extends LoginService
     with Logging {
   private val regexBearerHeader = java.util.regex.Pattern.compile("^Bearer (.*)$")
@@ -52,26 +55,22 @@ class LoginServiceImpl @Inject() (
     if (memberOpt.isEmpty) {
       return
     }
-
-    cacheWrapper.remove(CacheKeys.ApiToken, memberOpt.get.id)
+    refreshTokenRepository.deleteByMemberId(db, memberOpt.get.id)
   }
 
-  override def verifyApiToken(authorizationHeader: String): Option[Member] = {
+  override def verifyAuthorizationHeader(authorizationHeader: String): Option[Member] = {
     val apiToken = getApiToken(authorizationHeader)
     if (apiToken.isEmpty) {
       logger.info("api token is empty")
       return None
     }
-    val memberId = Hash.extractIdFromJWT(apiToken.get)
+    verifyApiToken(apiToken.get)
+  }
+
+  override def verifyApiToken(apiToken: String): Option[Member] = {
+    val memberId = Hash.extractIdFromJWT(apiToken)
     if (memberId == "") {
       logger.info("didn't extract member id from token")
-      return None
-    }
-
-    val cachedApiTokens = cacheWrapper.getAsSeq[String](CacheKeys.ApiToken, memberId)
-
-    if (cachedApiTokens.isEmpty || cachedApiTokens.get.count(s => s == apiToken.get) <= 0) {
-      logger.info("tokens didn't match")
       return None
     }
 
@@ -132,10 +131,28 @@ class LoginServiceImpl @Inject() (
     }
   }
 
-  def generateApiToken(memberId: String): String = {
-    val apiToken = Hash.generateJWT(memberId, Config.API_TOKEN_EXPIRATION_SEC)
-    cacheWrapper.add(CacheKeys.ApiToken, apiToken, memberId)
-    apiToken
+  def generateAccessToken(token: String): Option[String] = {
+    val refreshToken = refreshTokenRepository.getByToken(db, token)
+    if (refreshToken.isEmpty || refreshToken.get.isUsed) {
+      return None
+    }
+
+    val apiToken = Hash.generateJWT(refreshToken.get.memberId, Config.ACCESS_TOKEN_EXPIRATION_SEC)
+    val newRefreshToken = refreshToken.get.copy(isUsed = true)
+    refreshTokenRepository.update(db, newRefreshToken)
+    Some(apiToken)
+  }
+
+  override def generateRefreshToken(memberId: String): String = {
+    val token = Hash.generateJWT(memberId, Config.REFRESH_TOKEN_EXPIRATION_SEC)
+    val refreshToken = RefreshTokenModel(
+      IDs.ulid(),
+      memberId,
+      token,
+      isUsed = false,
+    )
+    refreshTokenRepository.create(db, refreshToken)
+    token
   }
 
   private def makeResponse(member: Member): Option[Member] = {

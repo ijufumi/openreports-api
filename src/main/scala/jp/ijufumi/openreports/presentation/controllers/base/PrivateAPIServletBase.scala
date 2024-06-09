@@ -13,21 +13,26 @@ abstract class PrivateAPIServletBase(loginService: LoginService)
   before() {
     if (!isOptions && !skipAuthorization()) {
       val header = authorizationHeader()
-      val member = loginService.verifyApiToken(header)
+      var member = loginService.verifyAuthorizationHeader(header)
       if (member.isEmpty) {
-        halt(forbidden("API Token is invalid"))
+        val refreshToken = refreshTokenHeader()
+        if (refreshToken.isEmpty) {
+          halt(forbidden("API Token is invalid"))
+        } else {
+          val accessToken = loginService.generateAccessToken(refreshToken)
+          if (accessToken.isEmpty) {
+            halt(forbidden("API Token is invalid"))
+          } else {
+            response.setHeader(Config.API_TOKEN_HEADER, accessToken.get)
+            member = loginService.verifyApiToken(accessToken.get)
+            setMember(member.get)
+            val refreshToken = loginService.generateRefreshToken(memberId())
+            response.setHeader(Config.REFRESH_TOKEN_HEADER, refreshToken)
+          }
+        }
       } else {
         setMember(member.get)
       }
-    }
-  }
-
-  after() {
-    val _member = memberOpt()
-    if (_member.isDefined) {
-      val apiToken = loginService.generateApiToken(_member.get.id)
-      request.removeAttribute(ATTRIBUTE_KEY_MEMBER)
-      response.setHeader(Config.API_TOKEN_HEADER, apiToken)
     }
   }
 
@@ -35,6 +40,10 @@ abstract class PrivateAPIServletBase(loginService: LoginService)
 
   def authorizationHeader(): String = {
     request.getHeader(Config.AUTHORIZATION_HEADER)
+  }
+
+  def refreshTokenHeader(): String = {
+    request.getHeader(Config.REFRESH_TOKEN_HEADER)
   }
 
   def workspaceId(): String = {

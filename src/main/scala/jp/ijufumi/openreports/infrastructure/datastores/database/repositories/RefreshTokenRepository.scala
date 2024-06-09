@@ -7,6 +7,8 @@ trait RefreshTokenRepository {
   def create(db: Database, refreshToken: RefreshToken): Option[RefreshToken]
   def update(db: Database, refreshToken: RefreshToken): Option[RefreshToken]
   def delete(db: Database, id: String): Int
+  def deleteByToken(db: Database, token:String): Int
+  def deleteByMemberId(db: Database, memberId:String): Int
   def getById(db: Database, id: String): Option[RefreshToken]
   def getByMemberId(db: Database, memberId: String): Option[RefreshToken]
   def getByToken(db: Database, token: String): Option[RefreshToken]
