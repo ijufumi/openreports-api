@@ -55,7 +55,7 @@ class LoginServiceImpl @Inject() (
     if (memberOpt.isEmpty) {
       return
     }
-
+    refreshTokenRepository.deleteByMemberId(db, memberOpt.get.id)
   }
 
   override def verifyApiToken(authorizationHeader: String): Option[Member] = {
