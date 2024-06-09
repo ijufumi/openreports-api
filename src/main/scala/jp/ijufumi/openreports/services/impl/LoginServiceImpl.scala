@@ -127,13 +127,13 @@ class LoginServiceImpl @Inject() (
     }
   }
 
-  def generateAccessToken(memberId: String, token: String): Option[String] = {
+  def generateAccessToken(token: String): Option[String] = {
     val refreshToken = refreshTokenRepository.getByToken(db, token)
     if (refreshToken.isEmpty) {
       return None
     }
 
-    val apiToken = Hash.generateJWT(memberId, Config.ACCESS_TOKEN_EXPIRATION_SEC)
+    val apiToken = Hash.generateJWT(refreshToken.get.memberId, Config.ACCESS_TOKEN_EXPIRATION_SEC)
     Some(apiToken)
   }
 
