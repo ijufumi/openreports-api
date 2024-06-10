@@ -68,6 +68,7 @@ docker compose exec api sbt flywayClean
     - [x] status (member info only)
     - [x] update (name, password)
     - [x] get permissions (including menus and workspace)
+    - [x] generate access token
   - [x] reports
     - [x] list
     - [x] get
@@ -85,7 +86,7 @@ docker compose exec api sbt flywayClean
     - [x] create
     - [x] update
     - [x] delete
-  - [ ] scheduled_reports
+  - [ ] scheduled reports
     - [ ] list
     - [ ] create
     - [ ] update
@@ -107,7 +108,7 @@ docker compose exec api sbt flywayClean
       - [x] create
       - [x] update
       - [x] delete
-    - [x] data_sources
+    - [x] data sources
       - [x] get
       - [x] list
       - [x] create
