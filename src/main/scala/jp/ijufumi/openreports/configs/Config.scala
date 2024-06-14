@@ -41,6 +41,7 @@ object Config {
     API_TOKEN_HEADER,
     AUTHORIZATION_HEADER,
     WORKSPACE_ID_HEADER,
+    REFRESH_TOKEN_HEADER,
   )
   // for google auth
   val GOOGLE_CLIENT_ID: String = getEnvValue("GOOGLE_CLIENT_ID", "")
