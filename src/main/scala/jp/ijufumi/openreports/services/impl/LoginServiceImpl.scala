@@ -133,13 +133,12 @@ class LoginServiceImpl @Inject() (
 
   def generateAccessToken(token: String): Option[String] = {
     val refreshToken = refreshTokenRepository.getByToken(db, token)
-    if (refreshToken.isEmpty || refreshToken.get.isUsed) {
+    if (refreshToken.isEmpty) {
       return None
     }
 
     val apiToken = Hash.generateJWT(refreshToken.get.memberId, Config.ACCESS_TOKEN_EXPIRATION_SEC)
-    val newRefreshToken = refreshToken.get.copy(isUsed = true)
-    refreshTokenRepository.update(db, newRefreshToken)
+    refreshTokenRepository.delete(db, refreshToken.get.id)
     Some(apiToken)
   }
 
@@ -149,7 +148,6 @@ class LoginServiceImpl @Inject() (
       IDs.ulid(),
       memberId,
       token,
-      isUsed = false,
     )
     refreshTokenRepository.create(db, refreshToken)
     token

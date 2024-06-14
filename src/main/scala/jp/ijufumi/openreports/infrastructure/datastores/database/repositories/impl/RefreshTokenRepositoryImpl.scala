@@ -46,7 +46,7 @@ class RefreshTokenRepositoryImpl extends RefreshTokenRepository {
   }
 
   override def getById(db: JdbcBackend.Database, id: String): Option[RefreshToken] = {
-    val query = refreshTokenQuery.filter(_.id === id).filter(!_.isUsed)
+    val query = refreshTokenQuery.filter(_.id === id)
     val refreshTokens = Await.result(db.run(query.result), queryTimeout)
 
     if (refreshTokens.isEmpty) {
@@ -57,7 +57,7 @@ class RefreshTokenRepositoryImpl extends RefreshTokenRepository {
   }
 
   override def getByMemberId(db: JdbcBackend.Database, memberId: String): Option[RefreshToken] = {
-    val query = refreshTokenQuery.filter(_.memberId === memberId).filter(!_.isUsed)
+    val query = refreshTokenQuery.filter(_.memberId === memberId)
     val refreshTokens = Await.result(db.run(query.result), queryTimeout)
 
     if (refreshTokens.isEmpty) {
@@ -68,7 +68,7 @@ class RefreshTokenRepositoryImpl extends RefreshTokenRepository {
   }
 
   override def getByToken(db: JdbcBackend.Database, token: String): Option[RefreshToken] = {
-    val query = refreshTokenQuery.filter(_.refreshToken === token).filter(!_.isUsed)
+    val query = refreshTokenQuery.filter(_.refreshToken === token)
     val refreshTokens = Await.result(db.run(query.result), queryTimeout)
 
     if (refreshTokens.isEmpty) {
