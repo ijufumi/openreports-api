@@ -1,6 +1,7 @@
 package jp.ijufumi.openreports.presentation.controllers.public_
 
 import com.google.inject.Inject
+import jp.ijufumi.openreports.configs.Config
 import jp.ijufumi.openreports.presentation.controllers.base.PrivateAPIServletBase
 import jp.ijufumi.openreports.presentation.models.requests.{GoogleLogin, Login}
 import jp.ijufumi.openreports.presentation.models.responses.GoogleAuthUrl
@@ -13,12 +14,14 @@ class LoginServlet @Inject() (loginService: LoginService)
 
   post("/password") {
     val loginRequest = extractBody[Login]()
-    val member = loginService.login(loginRequest)
-    if (member.isEmpty) {
+    val memberOpt = loginService.login(loginRequest)
+    if (memberOpt.isEmpty) {
       unauthorized("email or password or both are incorrect")
     } else {
-      setMember(member.get)
-      ok(member.get)
+      val member = memberOpt.get
+      setMember(member)
+      setTokens(member.id)
+      ok(member)
     }
   }
   get("/google/authorization_url") {
@@ -27,12 +30,31 @@ class LoginServlet @Inject() (loginService: LoginService)
 
   post("/google") {
     val loginRequest = extractBody[GoogleLogin]()
-    val member = loginService.loginWithGoogle(loginRequest)
-    if (member.isEmpty) {
+    val memberOpt = loginService.loginWithGoogle(loginRequest)
+    if (memberOpt.isEmpty) {
       unauthorized("state or code or both are invalid")
     } else {
-      setMember(member.get)
-      ok(member.get)
+      val member = memberOpt.get
+      setMember(member)
+      setTokens(member.id)
+      ok(member)
     }
+  }
+
+  def setTokens(memberId: String): Unit = {
+    val refreshToken = generateRefreshToken(memberId)
+    generateAccessToken(refreshToken)
+    generateRefreshToken(memberId)
+  }
+
+  def generateRefreshToken(memberId: String): String = {
+    val refreshToken = loginService.generateRefreshToken(memberId)
+    response.setHeader(Config.REFRESH_TOKEN_HEADER, refreshToken)
+    refreshToken
+  }
+
+  def generateAccessToken(refreshToken: String): Unit = {
+    val accessToken = loginService.generateAccessToken(refreshToken)
+    response.setHeader(Config.API_TOKEN_HEADER, accessToken.get)
   }
 }
