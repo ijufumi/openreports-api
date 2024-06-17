@@ -2,8 +2,8 @@ package jp.ijufumi.openreports.infrastructure.datastores.cache
 
 import jp.ijufumi.openreports.configs.Config
 import scalacache._
-import scalacache.caffeine.CaffeineCache
 import scalacache.modes.try_._
+import scalacache.caffeine.CaffeineCache
 
 import scala.concurrent.duration._
 
