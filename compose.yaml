@@ -44,6 +44,18 @@ services:
         source: db-data
         target: /var/lib/postgresql/data
         volume: {}
+  redis:
+    build:
+      context: ./docker/redis
+      dockerfile: Dockerfile
+    container_name: openreports-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - type: volume
+        source: redis-data
+        target: /data
+        volume: {}
 networks:
   default:
     name: openreports
@@ -56,3 +68,5 @@ volumes:
       type: 'none'
       o: 'bind'
       device: './src/main/resources/db/migration'
+  redis-data:
+    name: openreports-api_redis-data
