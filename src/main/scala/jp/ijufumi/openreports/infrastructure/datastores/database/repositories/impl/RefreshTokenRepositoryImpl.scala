@@ -15,7 +15,8 @@ class RefreshTokenRepositoryImpl extends RefreshTokenRepository {
       db: JdbcBackend.Database,
       refreshToken: RefreshToken,
   ): Option[RefreshToken] = {
-    refreshTokenQuery.insertOrUpdate(refreshToken)
+    val query = refreshTokenQuery.insertOrUpdate(refreshToken)
+    Await.result(db.run(query), queryTimeout)
     getById(db, refreshToken.id)
   }
 
@@ -23,7 +24,8 @@ class RefreshTokenRepositoryImpl extends RefreshTokenRepository {
       db: JdbcBackend.Database,
       refreshToken: RefreshToken,
   ): Option[RefreshToken] = {
-    refreshTokenQuery.insertOrUpdate(refreshToken)
+    val query = refreshTokenQuery.insertOrUpdate(refreshToken)
+    Await.result(db.run(query), queryTimeout)
     getById(db, refreshToken.id)
   }
 
