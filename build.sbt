@@ -5,7 +5,6 @@ val Scala212Version = "2.12.18"
 val ScalatraVersion = "2.8.4"
 val SlickVersion = "3.4.1"
 val ScalaCacheVersion = "0.28.0"
-val CirceVersion = "0.12.0"
 val SttpVersion = "3.8.15"
 val Json4sVersion = "4.0.6"
 val ULIDVersion = "1.0.24"
@@ -58,9 +57,7 @@ lazy val root = (project in file("."))
       "com.typesafe.slick" %% "slick-hikaricp" % SlickVersion,
       "com.typesafe.slick" %% "slick-testkit" % SlickVersion % "test",
       "com.github.cb372" %% "scalacache-core" % ScalaCacheVersion exclude ("org.slf4j", "slf4j-api"),
-      "com.github.cb372" %% "scalacache-circe" % ScalaCacheVersion exclude ("org.slf4j", "slf4j-api"),
       "com.github.cb372" %% "scalacache-redis" % ScalaCacheVersion exclude ("org.slf4j", "slf4j-api"),
-      "io.circe" %% "circe-generic" % CirceVersion,
       "com.softwaremill.sttp.client3" %% "core" % SttpVersion,
       "com.softwaremill.sttp.client3" %% "json4s" % SttpVersion,
       "software.amazon.awssdk" % "s3" % AWSSDKVersion,
