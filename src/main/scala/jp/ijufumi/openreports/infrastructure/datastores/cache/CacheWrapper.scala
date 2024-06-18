@@ -10,7 +10,8 @@ import scala.concurrent.duration._
 
 class CacheWrapper {
   private val defaultTtl = Config.CACHE_TTL_SEC
-  implicit val redisCache: Cache[Any] = RedisCache[Any](Config.REDIS_HOST, Config.REDIS_PORT)
+  private implicit val redisCache: Cache[Any] =
+    RedisCache[Any](Config.REDIS_HOST, Config.REDIS_PORT)
   private val lock = new java.util.concurrent.locks.ReentrantReadWriteLock()
 
   def put[T](cacheKey: CacheKey, value: T, args: String*)(implicit ttl: Long = defaultTtl): Unit = {
@@ -76,7 +77,7 @@ class CacheWrapper {
   def remove(cacheKey: CacheKey, args: String*): Unit = {
     try {
       lock.writeLock().lock()
-      cache.remove(cacheKey.key(args: _*))
+      redisCache.remove(cacheKey.key(args: _*))
     } finally {
       lock.writeLock().unlock()
     }
@@ -85,7 +86,7 @@ class CacheWrapper {
   def removeAll(): Unit = {
     try {
       lock.writeLock().lock()
-      cache.removeAll()
+      redisCache.removeAll()
     } finally {
       lock.writeLock().unlock()
     }
