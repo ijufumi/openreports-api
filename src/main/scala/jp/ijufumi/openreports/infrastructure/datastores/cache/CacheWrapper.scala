@@ -3,13 +3,13 @@ package jp.ijufumi.openreports.infrastructure.datastores.cache
 import jp.ijufumi.openreports.configs.Config
 import scalacache._
 import scalacache.modes.try_._
-import scalacache.caffeine.CaffeineCache
+import scalacache.redis.RedisCache
 
 import scala.concurrent.duration._
 
 class CacheWrapper {
   private val defaultTtl = Config.CACHE_TTL_SEC
-  private val cache: Cache[Any] = CaffeineCache[Any]
+  private val cache: Cache[Any] = RedisCache[Any](Config.REDIS_HOST, Config.REDIS_PORT)
   private val lock = new java.util.concurrent.locks.ReentrantReadWriteLock()
 
   def put[T](cacheKey: CacheKey, value: T, args: String*)(implicit ttl: Long = defaultTtl): Unit = {

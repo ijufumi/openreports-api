@@ -28,6 +28,8 @@ object Config {
   val REFRESH_TOKEN_EXPIRATION_SEC: Integer =
     getEnvIntValue("REFRESH_TOKEN_EXPIRATION_SEC", 3600 * 4)
   // for cache
+  val REDIS_HOST: String = getEnvValue("REDIS_HOST", "localhost")
+  val REDIS_PORT: String = getEnvValue("REDIS_PORT", "6379")
   val CACHE_TTL_SEC: Long = getEnvIntValue("CACHE_TTL_SEC", 3600)
   // for presigned url
   val PRESIGNED_URL_EXPIRATION: Long =
