@@ -4,7 +4,8 @@ import jp.ijufumi.openreports.configs.Config
 import scalacache._
 import scalacache.modes.try_._
 import scalacache.redis._
-import scalacache.serialization.binary._
+import scalacache.serialization.circe._
+import io.circe.generic.auto._
 
 import scala.concurrent.duration._
 

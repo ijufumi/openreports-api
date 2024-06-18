@@ -57,7 +57,7 @@ lazy val root = (project in file("."))
       "com.typesafe.slick" %% "slick-hikaricp" % SlickVersion,
       "com.typesafe.slick" %% "slick-testkit" % SlickVersion % "test",
       "com.github.cb372" %% "scalacache-core" % ScalaCacheVersion exclude ("org.slf4j", "slf4j-api"),
-      "com.github.cb372" %% "scalacache-cats-effect" % ScalaCacheVersion exclude ("org.slf4j", "slf4j-api"),
+      "com.github.cb372" %% "scalacache-circe" % ScalaCacheVersion exclude ("org.slf4j", "slf4j-api"),
       "com.github.cb372" %% "scalacache-redis" % ScalaCacheVersion exclude ("org.slf4j", "slf4j-api"),
       "com.softwaremill.sttp.client3" %% "core" % SttpVersion,
       "com.softwaremill.sttp.client3" %% "json4s" % SttpVersion,
