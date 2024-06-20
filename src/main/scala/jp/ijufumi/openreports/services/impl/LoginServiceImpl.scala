@@ -6,7 +6,6 @@ import jp.ijufumi.openreports.configs.Config
 import jp.ijufumi.openreports.utils.{Hash, IDs, Logging, Strings}
 import jp.ijufumi.openreports.infrastructure.datastores.database.repositories.{
   MemberRepository,
-  RefreshTokenRepository,
   WorkspaceRepository,
 }
 import jp.ijufumi.openreports.infrastructure.google.auth.GoogleRepository
@@ -19,6 +18,7 @@ import jp.ijufumi.openreports.domain.models.entity.{
 import slick.jdbc.PostgresProfile.api._
 import jp.ijufumi.openreports.domain.models.entity.Member.conversions._
 import jp.ijufumi.openreports.domain.models.entity.Workspace.conversions._
+import jp.ijufumi.openreports.infrastructure.datastores.cache.{CacheKeys, CacheWrapper}
 import slick.jdbc.JdbcBackend.Database
 
 @Singleton
@@ -28,7 +28,7 @@ class LoginServiceImpl @Inject() (
     workspaceRepository: WorkspaceRepository,
     googleRepository: GoogleRepository,
     workspaceService: WorkspaceService,
-    refreshTokenRepository: RefreshTokenRepository,
+    cacheWrapper: CacheWrapper,
 ) extends LoginService
     with Logging {
   private val regexBearerHeader = java.util.regex.Pattern.compile("^Bearer (.*)$")
@@ -55,7 +55,7 @@ class LoginServiceImpl @Inject() (
     if (memberOpt.isEmpty) {
       return
     }
-    refreshTokenRepository.deleteByMemberId(db, memberOpt.get.id)
+    cacheWrapper.remove(CacheKeys.ApiToken, memberOpt.get.id)
   }
 
   override def verifyAuthorizationHeader(authorizationHeader: String): Option[Member] = {
@@ -131,14 +131,13 @@ class LoginServiceImpl @Inject() (
     }
   }
 
-  def generateAccessToken(token: String): Option[String] = {
-    val refreshToken = refreshTokenRepository.getByToken(db, token)
-    if (refreshToken.isEmpty) {
+  def generateAccessToken(memberId: String, token: String): Option[String] = {
+    val refreshToken = cacheWrapper.get(CacheKeys.ApiToken, memberId)
+    if (refreshToken.isEmpty || token != refreshToken.get) {
       return None
     }
 
-    val apiToken = Hash.generateJWT(refreshToken.get.memberId, Config.ACCESS_TOKEN_EXPIRATION_SEC)
-    refreshTokenRepository.delete(db, refreshToken.get.id)
+    val apiToken = Hash.generateJWT(memberId, Config.ACCESS_TOKEN_EXPIRATION_SEC)
     Some(apiToken)
   }
 
@@ -149,7 +148,7 @@ class LoginServiceImpl @Inject() (
       memberId,
       token,
     )
-    refreshTokenRepository.create(db, refreshToken)
+    cacheWrapper.put(CacheKeys.ApiToken, token, memberId)
     token
   }
 
