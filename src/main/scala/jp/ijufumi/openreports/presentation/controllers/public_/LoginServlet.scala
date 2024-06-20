@@ -43,7 +43,7 @@ class LoginServlet @Inject() (loginService: LoginService)
 
   def setTokens(memberId: String): Unit = {
     val refreshToken = generateRefreshToken(memberId)
-    generateAccessToken(refreshToken)
+    generateAccessToken(memberId, refreshToken)
     generateRefreshToken(memberId)
   }
 
@@ -53,8 +53,8 @@ class LoginServlet @Inject() (loginService: LoginService)
     refreshToken
   }
 
-  def generateAccessToken(refreshToken: String): Unit = {
-    val accessToken = loginService.generateAccessToken(refreshToken)
+  def generateAccessToken(memberId: String, refreshToken: String): Unit = {
+    val accessToken = loginService.generateAccessToken(memberId, refreshToken)
     response.setHeader(Config.API_TOKEN_HEADER, accessToken.get)
   }
 }
