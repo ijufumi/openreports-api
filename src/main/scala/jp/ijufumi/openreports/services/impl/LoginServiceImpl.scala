@@ -13,7 +13,6 @@ import jp.ijufumi.openreports.presentation.models.requests.{GoogleLogin, Login}
 import jp.ijufumi.openreports.presentation.models.responses.Member
 import jp.ijufumi.openreports.domain.models.entity.{
   Member => MemberModel,
-  RefreshToken => RefreshTokenModel,
 }
 import slick.jdbc.PostgresProfile.api._
 import jp.ijufumi.openreports.domain.models.entity.Member.conversions._
@@ -143,11 +142,6 @@ class LoginServiceImpl @Inject() (
 
   override def generateRefreshToken(memberId: String): String = {
     val token = Hash.generateJWT(memberId, Config.REFRESH_TOKEN_EXPIRATION_SEC)
-    val refreshToken = RefreshTokenModel(
-      IDs.ulid(),
-      memberId,
-      token,
-    )
     cacheWrapper.put(CacheKeys.ApiToken, token, memberId)
     token
   }

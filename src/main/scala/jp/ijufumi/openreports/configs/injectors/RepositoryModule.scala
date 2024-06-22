@@ -5,7 +5,6 @@ import jp.ijufumi.openreports.infrastructure.datastores.database.repositories.{
   DriverTypeRepository,
   FunctionRepository,
   MemberRepository,
-  RefreshTokenRepository,
   ReportGroupReportRepository,
   ReportGroupRepository,
   ReportParameterRepository,
@@ -23,7 +22,6 @@ import jp.ijufumi.openreports.infrastructure.datastores.database.repositories.im
   DriverTypeRepositoryImpl,
   FunctionRepositoryImpl,
   MemberRepositoryImpl,
-  RefreshTokenRepositoryImpl,
   ReportGroupReportRepositoryImpl,
   ReportGroupRepositoryImpl,
   ReportParameterRepositoryImpl,
@@ -65,7 +63,6 @@ class RepositoryModule extends BaseModule {
     bindClass(classOf[FunctionRepository], classOf[FunctionRepositoryImpl])
     bindClass(classOf[RoleFunctionRepository], classOf[RoleFunctionRepositoryImpl])
     bindClass(classOf[DriverTypeRepository], classOf[DriverTypeRepositoryImpl])
-    bindClass(classOf[RefreshTokenRepository], classOf[RefreshTokenRepositoryImpl])
     // auth
     bindClass(classOf[GoogleRepository], classOf[GoogleRepositoryImpl])
     // file store
