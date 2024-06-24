@@ -3,7 +3,7 @@ val Scala212Version = "2.12.18"
 
 // for scala libraries
 val ScalatraVersion = "2.8.4"
-val SlickVersion = "3.4.1"
+val SlickVersion = "3.5.1"
 val ScalaCacheVersion = "0.28.0"
 val SttpVersion = "3.8.15"
 val Json4sVersion = "4.0.6"
