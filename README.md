@@ -9,7 +9,7 @@
 | slf4j        | 2.0.7   | Logging      |
 | logback      | 1.4.7   | Logging      |
 | Flyway       | 9.22.3  | Migration    |
-| Slick        | 3.4.1   | ORM          |
+| Slick        | 3.5.1   | ORM          |
 | PostgresSQL  | 42.6.0  | DB           |
 | Google Guice | 7.0.0   | DI           |
 | Scala Cache  | 0.28.0  | Cache        |
