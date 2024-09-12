@@ -26,10 +26,29 @@
 
 ## How to set up
 
+### Initialization
+
+To run app in local machine, you need to install `Task`.
+
+see below.
+
+[Task](https://taskfile.dev/installation/)
+
+
+```shell
+brew install go-task
+```
+
+### Build image
+
+```shell
+task build
+```
+
 ### Starting up
 
 ```shell
-COMPOSE_DOCKER_CLI_BUILD=1 DOCKER_BUILCDKIT=1 docker compose up --build
+task up
 ```
 
 ### Migration
@@ -38,13 +57,13 @@ Basically, migration will execute automatically when docker-compose starts.
 However, the below command makes you able to execute manually.
 
 ```shell
-docker compose exec api sbt flywayMigrate
+task migrateUp
 ```
 
 ### Drop all tables
 
 ```shell
-docker compose exec api sbt flywayClean
+task migrateClean
 ```
 
 ## Design
