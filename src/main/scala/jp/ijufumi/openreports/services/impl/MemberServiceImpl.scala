@@ -28,11 +28,15 @@ class MemberServiceImpl @Inject() (
     if (memberOpt.isEmpty) {
       return None
     }
-    var newPassword = memberOpt.get.password
+    var newName = name
+    if (newName.isEmpty) {
+      newName = memberOpt.get.name
+    }
+    var newPassword = password
     if (newPassword.isEmpty) {
       newPassword = memberOpt.get.password
     }
-    val newMember = memberOpt.get.copy(name = name, password = newPassword)
+    val newMember = memberOpt.get.copy(name = newName, password = newPassword)
     memberRepository.update(db, newMember)
     val result = memberRepository.getById(db, memberId)
     result
