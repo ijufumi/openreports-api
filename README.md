@@ -28,11 +28,7 @@
 
 ### Initialization
 
-To run app in local machine, you need to install `Task`.
-
-see below.
-
-[Task](https://taskfile.dev/installation/)
+To run app in local machine, you need to install [Task](https://taskfile.dev/installation/).
 
 
 ```shell
