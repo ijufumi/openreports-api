@@ -35,7 +35,7 @@ To run app in local machine, you need to install [Task](https://taskfile.dev/ins
 brew install go-task
 ```
 
-### Build image
+### Building image
 
 ```shell
 task build
@@ -45,6 +45,12 @@ task build
 
 ```shell
 task up
+```
+
+### Stopping down
+
+```shell
+task down
 ```
 
 ### Migration
