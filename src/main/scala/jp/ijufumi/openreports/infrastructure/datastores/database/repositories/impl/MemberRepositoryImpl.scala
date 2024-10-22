@@ -45,6 +45,7 @@ class MemberRepositoryImpl extends MemberRepository {
   }
 
   override def update(db: Database, member: Member): Unit = {
-    memberQuery.insertOrUpdate(member).withPinnedSession
+    val query = memberQuery.insertOrUpdate(member).withPinnedSession
+    Await.result(db.run(query), queryTimeout)
   }
 }
