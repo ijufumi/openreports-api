@@ -1,18 +1,13 @@
 package jp.ijufumi.openreports.services.impl
 
 import com.google.inject.Inject
-import jp.ijufumi.openreports.infrastructure.datastores.database.repositories.{
-  FunctionRepository,
-  MemberRepository,
-  RoleFunctionRepository,
-  WorkspaceMemberRepository,
-  WorkspaceRepository,
-}
+import jp.ijufumi.openreports.infrastructure.datastores.database.repositories.{FunctionRepository, MemberRepository, RoleFunctionRepository, WorkspaceMemberRepository, WorkspaceRepository}
 import jp.ijufumi.openreports.presentation.models.responses.{Member, Permission}
 import jp.ijufumi.openreports.services.MemberService
 import jp.ijufumi.openreports.domain.models.entity.Function.conversions._
 import jp.ijufumi.openreports.domain.models.entity.Member.conversions._
 import jp.ijufumi.openreports.domain.models.entity.Workspace.conversions._
+import jp.ijufumi.openreports.utils.Hash
 import slick.jdbc.JdbcBackend.Database
 
 class MemberServiceImpl @Inject() (
@@ -28,13 +23,13 @@ class MemberServiceImpl @Inject() (
     if (memberOpt.isEmpty) {
       return None
     }
-    var newName = name
-    if (newName.isEmpty) {
-      newName = memberOpt.get.name
+    var newName = memberOpt.get.name
+    if (name.nonEmpty) {
+      newName = name
     }
-    var newPassword = password
-    if (newPassword.isEmpty) {
-      newPassword = memberOpt.get.password
+    var newPassword = memberOpt.get.password
+    if (password.nonEmpty) {
+      newPassword = Hash.hmacSha256(password)
     }
     val newMember = memberOpt.get.copy(name = newName, password = newPassword)
     memberRepository.update(db, newMember)
