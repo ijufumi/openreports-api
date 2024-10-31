@@ -130,19 +130,19 @@ class LoginServiceImpl @Inject() (
     }
   }
 
-  def generateAccessToken(memberId: String, token: String): Option[String] = {
-    val refreshToken = cacheWrapper.get(CacheKeys.ApiToken, memberId)
-    if (refreshToken.isEmpty || token != refreshToken.get) {
+  def generateAccessToken(token: String): Option[String] = {
+    val memberIdOpt = cacheWrapper.get(CacheKeys.ApiToken, token)
+    if (memberIdOpt.isEmpty) {
       return None
     }
 
-    val apiToken = Hash.generateJWT(memberId, Config.ACCESS_TOKEN_EXPIRATION_SEC)
+    val apiToken = Hash.generateJWT(memberIdOpt.get, Config.ACCESS_TOKEN_EXPIRATION_SEC)
     Some(apiToken)
   }
 
   override def generateRefreshToken(memberId: String): String = {
     val token = Hash.generateJWT(memberId, Config.REFRESH_TOKEN_EXPIRATION_SEC)
-    cacheWrapper.put(CacheKeys.ApiToken, token, memberId)
+    cacheWrapper.put(CacheKeys.ApiToken, memberId, memberId)
     token
   }
 
