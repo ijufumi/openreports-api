@@ -19,7 +19,7 @@ abstract class PrivateAPIServletBase(loginService: LoginService)
         if (refreshToken.isEmpty) {
           halt(forbidden("API Token is invalid"))
         } else {
-          val accessToken = loginService.generateAccessToken(member.get.id, refreshToken)
+          val accessToken = loginService.generateAccessToken(refreshToken)
           if (accessToken.isEmpty) {
             halt(forbidden("API Token is invalid"))
           } else {
