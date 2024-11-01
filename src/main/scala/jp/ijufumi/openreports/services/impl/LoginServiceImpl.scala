@@ -142,7 +142,7 @@ class LoginServiceImpl @Inject() (
 
   override def generateRefreshToken(memberId: String): String = {
     val token = Hash.generateJWT(memberId, Config.REFRESH_TOKEN_EXPIRATION_SEC)
-    cacheWrapper.put(CacheKeys.ApiToken, memberId, memberId)
+    cacheWrapper.put(CacheKeys.ApiToken, memberId, token)
     token
   }
 
