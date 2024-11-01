@@ -17,8 +17,8 @@ services:
         protocol: tcp
     volumes:
       - type: volume
-        source: migration-data
-        target: /app/src/main/resources/db/migration
+        source: app-src
+        target: /app/src
     working_dir: /app
   db:
     build:
@@ -62,11 +62,11 @@ networks:
 volumes:
   db-data:
     name: openreports-api_db-data
-  migration-data:
+  app-src:
     driver: local
     driver_opts:
       type: 'none'
       o: 'bind'
-      device: './src/main/resources/db/migration'
+      device: './src'
   redis-data:
     name: openreports-api_redis-data
