@@ -9,4 +9,6 @@ import jp.ijufumi.openreports.utils.Dates
 case class ReportGroup(
     id: String,
     name: String,
+    createdAt: Long,
+    updatedAt: Long,
 )

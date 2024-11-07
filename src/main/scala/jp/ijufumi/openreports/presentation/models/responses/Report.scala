@@ -5,5 +5,7 @@ case class Report(
     name: String,
     templateId: String,
     dataSourceId: Option[String],
+    createdAt: Long,
+    updatedAt: Long,
     reportTemplate: Option[Template] = None,
 )

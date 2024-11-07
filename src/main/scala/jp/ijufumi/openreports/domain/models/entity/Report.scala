@@ -1,6 +1,9 @@
 package jp.ijufumi.openreports.domain.models.entity
 
-import jp.ijufumi.openreports.infrastructure.datastores.database.entities.{Report => ReportEntity, Template => ReportTemplateEntity}
+import jp.ijufumi.openreports.infrastructure.datastores.database.entities.{
+  Report => ReportEntity,
+  Template => ReportTemplateEntity,
+}
 import jp.ijufumi.openreports.presentation.models.responses.{Report => ReportResponse}
 import jp.ijufumi.openreports.presentation.models.requests.UpdateReport
 import jp.ijufumi.openreports.utils.Dates
@@ -34,6 +37,8 @@ case class Report(
       this.name,
       this.templateId,
       this.dataSourceId,
+      this.createdAt,
+      this.updatedAt,
     )
   }
   def copyForUpdate(input: UpdateReport): Report = {
@@ -87,7 +92,9 @@ object Report {
       Report(entity)
     }
 
-    implicit def fromReportEntity4(entity: Option[(ReportEntity, ReportTemplateEntity)]): Option[Report] = {
+    implicit def fromReportEntity4(
+        entity: Option[(ReportEntity, ReportTemplateEntity)],
+    ): Option[Report] = {
       entity.map(e => Report(e))
     }
 
@@ -95,7 +102,9 @@ object Report {
       entity.map(e => Report(e))
     }
 
-    implicit def fromReportEntities2(entity: Seq[(ReportEntity, ReportTemplateEntity)]): Seq[Report] = {
+    implicit def fromReportEntities2(
+        entity: Seq[(ReportEntity, ReportTemplateEntity)],
+    ): Seq[Report] = {
       entity.map(e => Report(e))
     }
 

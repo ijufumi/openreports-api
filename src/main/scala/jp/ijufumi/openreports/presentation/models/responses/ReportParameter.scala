@@ -7,4 +7,6 @@ case class ReportParameter(
     parameterType: ParameterTypes.ParameterType,
     embeddedFunctionType: Option[EmbeddedFunctionTypes.EmbeddedFunctionType],
     value: Option[String],
+    createdAt: Long,
+    updatedAt: Long,
 )

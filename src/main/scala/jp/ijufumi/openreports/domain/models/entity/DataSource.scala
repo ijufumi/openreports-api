@@ -45,6 +45,8 @@ case class DataSource(
       this.password,
       this.driverTypeId,
       this.driverType,
+      this.createdAt,
+      this.updatedAt,
     )
   }
 
