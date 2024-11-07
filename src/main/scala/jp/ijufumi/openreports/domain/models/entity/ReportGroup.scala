@@ -29,6 +29,8 @@ case class ReportGroup(
     ReportGroupResponse(
       this.id,
       this.name,
+      this.createdAt,
+      this.updatedAt,
     )
   }
   def copyForUpdate(input: UpdateReportGroup): ReportGroup = {

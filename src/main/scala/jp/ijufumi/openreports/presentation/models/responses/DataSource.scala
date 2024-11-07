@@ -8,4 +8,6 @@ case class DataSource(
     password: String,
     driverTypeId: String,
     driverType: Option[DriverType] = None,
+    createdAt: Long,
+    updatedAt: Long,
 )

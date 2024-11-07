@@ -39,6 +39,8 @@ case class Template(
       this.filePath,
       this.storageType,
       this.fileSize,
+      this.createdAt,
+      this.updatedAt,
     )
   }
   def copyForUpdate(input: UpdateTemplate): Template = {

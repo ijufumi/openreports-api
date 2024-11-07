@@ -37,6 +37,8 @@ case class ReportParameter(
       this.parameterType,
       this.embeddedFunctionType,
       this.value,
+      this.createdAt,
+      this.updatedAt,
     )
   }
 }

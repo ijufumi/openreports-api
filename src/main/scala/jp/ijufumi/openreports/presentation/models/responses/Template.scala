@@ -8,4 +8,6 @@ case class Template(
     filePath: String,
     storageType: StorageTypes.StorageType,
     fileSize: Long,
+    createdAt: Long,
+    updatedAt: Long,
 )
