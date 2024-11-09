@@ -1,3 +1,4 @@
+### This Dockerfile is for development, not for production
 FROM eclipse-temurin:17-jdk-jammy
 
 RUN apt-get update && apt-get -y install curl gnupg postgresql-client
@@ -12,7 +13,7 @@ WORKDIR $APP_DIR
 
 COPY build.sbt .
 COPY scripts ./scripts
-COPY src ./src
+# COPY src ./src
 COPY project ./project
 COPY reports /reports
 
