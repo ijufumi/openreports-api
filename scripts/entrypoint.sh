@@ -15,5 +15,5 @@ fi
 
 sbt flywayMigrate
 
-sbt run
+sbt ~reStart
 
