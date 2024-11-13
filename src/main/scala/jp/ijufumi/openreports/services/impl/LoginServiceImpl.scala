@@ -11,9 +11,7 @@ import jp.ijufumi.openreports.infrastructure.datastores.database.repositories.{
 import jp.ijufumi.openreports.infrastructure.google.auth.GoogleRepository
 import jp.ijufumi.openreports.presentation.models.requests.{GoogleLogin, Login}
 import jp.ijufumi.openreports.presentation.models.responses.Member
-import jp.ijufumi.openreports.domain.models.entity.{
-  Member => MemberModel,
-}
+import jp.ijufumi.openreports.domain.models.entity.{Member => MemberModel}
 import slick.jdbc.PostgresProfile.api._
 import jp.ijufumi.openreports.domain.models.entity.Member.conversions._
 import jp.ijufumi.openreports.domain.models.entity.Workspace.conversions._
@@ -79,6 +77,10 @@ class LoginServiceImpl @Inject() (
       return None
     }
     makeResponse(memberOpt.get)
+  }
+
+  override def verifyWorkspaceId(memberId: String, workspaceId: String): Boolean = {
+    workspaceService.getWorkspaceMember(workspaceId, memberId).isDefined
   }
 
   override def getAuthorizationUrl: String = googleRepository.getAuthorizationUrl()

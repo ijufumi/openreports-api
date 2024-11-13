@@ -12,6 +12,8 @@ trait LoginService {
 
   def verifyApiToken(apiToken: String): Option[Member]
 
+  def verifyWorkspaceId(memberId: String, workspaceId: String): Boolean
+
   def getAuthorizationUrl: String
 
   def loginWithGoogle(input: GoogleLogin): Option[Member]

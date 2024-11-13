@@ -33,6 +33,11 @@ abstract class PrivateAPIServletBase(loginService: LoginService)
       } else {
         setMember(member.get)
       }
+      if (member.isDefined) {
+        if (loginService.verifyWorkspaceId(workspaceId(), memberId())) {
+          halt(forbidden("Request forbidden"))
+        }
+      }
     }
   }
 
