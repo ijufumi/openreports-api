@@ -6,13 +6,20 @@ import jp.ijufumi.openreports.presentation.models.responses.Member
 import jp.ijufumi.openreports.utils.Logging
 import org.json4s.{DefaultFormats, Formats}
 import org.json4s.ext.EnumNameSerializer
-import org.scalatra.CorsSupport.{CORSConfig, CorsConfigKey}
-import org.scalatra.{ActionResult, BadRequest, CorsSupport, Forbidden, InternalServerError, NotFound, Ok, ScalatraServlet, Unauthorized}
+import org.scalatra.{
+  ActionResult,
+  BadRequest,
+  CorsSupport,
+  Forbidden,
+  InternalServerError,
+  NotFound,
+  Ok,
+  ScalatraServlet,
+  Unauthorized,
+}
 import org.scalatra.json.JacksonJsonSupport
 import org.scalatra.forms._
 import org.scalatra.i18n.I18nSupport
-
-import javax.servlet.http.{HttpServletRequest, HttpServletResponse}
 
 abstract class APIServletBase
     extends ScalatraServlet
@@ -108,25 +115,5 @@ abstract class APIServletBase
 
   protected def setMember(member: Member): Unit = {
     request.setAttribute(ATTRIBUTE_KEY_MEMBER, member)
-  }
-
-  // improvement CORS support
-  def corsConfig: CORSConfig = {
-    servletContext.get(CorsConfigKey).orNull.asInstanceOf[CORSConfig]
-  }
-  override def handle(req: HttpServletRequest, res: HttpServletResponse): Unit = {
-    if (corsConfig.enabled) {
-      withRequest(req) {
-        withResponse(res) {
-          request.requestMethod match {
-            case org.scalatra.Put => {
-              augmentSimpleRequest()
-              super.handle(req, res)
-            }
-            case _ => super.handle(req, res)
-          }
-        }
-      }
-    }
   }
 }
