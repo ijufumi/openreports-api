@@ -11,11 +11,11 @@ RUN echo "deb https://repo.scala-sbt.org/scalasbt/debian all main" | tee /etc/ap
 ENV APP_DIR /app
 WORKDIR $APP_DIR
 
-COPY build.sbt .
-COPY scripts ./scripts
-COPY src ./src
-COPY project ./project
-COPY reports /reports
+COPY ./build.sbt .
+COPY ./scripts ./scripts
+COPY ./project ./project
+COPY ./reports ./reports
+
 
 RUN sbt package
 

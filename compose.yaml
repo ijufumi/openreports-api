@@ -3,7 +3,7 @@ services:
   api:
     build:
       context: ./
-      dockerfile: Dockerfile
+      dockerfile: docker/api/Dockerfile
     container_name: openreports-api
     env_file:
       - .env.compose
