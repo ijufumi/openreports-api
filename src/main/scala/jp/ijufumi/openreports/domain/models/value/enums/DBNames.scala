@@ -8,7 +8,7 @@ object DBNames extends Enumeration {
     driverClass match {
       case JdbcDriverClasses.Postgres => Postgres.toString
       case JdbcDriverClasses.MySQL => MySQL.toString
-      case _ => throw new RuntimeException()("%s was not supported".format(driverClass))
+      case _ => throw new RuntimeException("%s was not supported".format(driverClass))
     }
   }
 }
