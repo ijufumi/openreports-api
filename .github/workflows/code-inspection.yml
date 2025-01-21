@@ -32,5 +32,7 @@ jobs:
           cache-dependency-path: |
             build.sbt
             project/build.properties
+      - name: Setup sbt launcher
+        uses: sbt/setup-sbt@v1
       - name: Build
         run: sbt compile
