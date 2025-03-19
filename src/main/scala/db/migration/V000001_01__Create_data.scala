@@ -1,6 +1,11 @@
 package db.migration
 
-import jp.ijufumi.openreports.domain.models.value.enums.{ActionTypes, DBNames, JdbcDriverClasses, RoleTypes}
+import jp.ijufumi.openreports.domain.models.value.enums.{
+  ActionTypes,
+  DBNames,
+  JdbcDriverClasses,
+  RoleTypes,
+}
 import org.flywaydb.core.api.migration.BaseJavaMigration
 import org.flywaydb.core.api.migration.Context
 import jp.ijufumi.openreports.utils.{Hash, IDs}
@@ -158,7 +163,7 @@ class V000001_01__Create_data extends BaseJavaMigration {
         )
       }
       statement.setString(1, id)
-      statement.setString(2, name)
+      statement.setString(2, name.toString)
       statement.setString(3, driverClass)
       try statement.execute
       finally if (statement != null) statement.close()
