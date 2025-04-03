@@ -1,7 +1,7 @@
 ### This Dockerfile is for development, not for production
 FROM eclipse-temurin:17-jdk-jammy
 
-RUN apt-get update && apt-get -y install curl gnupg postgresql-client
+RUN apt-get update && apt-get -y install curl gnupg postgresql-client libreoffice fonts-ipaexfont
 
 RUN echo "deb https://repo.scala-sbt.org/scalasbt/debian all main" | tee /etc/apt/sources.list.d/sbt.list \
 && echo "deb https://repo.scala-sbt.org/scalasbt/debian /" | tee /etc/apt/sources.list.d/sbt_old.list \
