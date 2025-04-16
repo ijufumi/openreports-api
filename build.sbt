@@ -67,6 +67,7 @@ lazy val root = (project in file("."))
       "org.jxls" % "jxls-poi" % jXlsVersion,
       "ch.qos.logback" % "logback-classic" % LogbackVersion,
       "ch.qos.logback" % "logback-core" % LogbackVersion,
+      "com.lihaoyi" %% "os-lib" % "0.11.4",
     ),
     assembly / assemblyJarName := "open-reports-api.jar",
     assembly / mainClass := Some("JettyLauncher"),

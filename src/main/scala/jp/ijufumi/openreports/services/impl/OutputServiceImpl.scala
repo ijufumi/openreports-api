@@ -25,6 +25,7 @@ class OutputServiceImpl @Inject() (
       filePath: String,
       storageType: StorageTypes.StorageType,
       dataSourceId: Option[String],
+      asPDF: Boolean,
   ): Option[File] = {
     val inputFileName = new File(filePath).getName
     val dotIndex = inputFileName.lastIndexOf('.')
@@ -33,6 +34,10 @@ class OutputServiceImpl @Inject() (
     val outputFile = FileSystems.getDefault.getPath(
       Config.OUTPUT_FILE_PATH,
       s"/tmp/${inputFileName.substring(0, dotIndex)}_$timeStamp$suffix",
+    )
+    val outputPDFFile = FileSystems.getDefault.getPath(
+      Config.OUTPUT_FILE_PATH,
+      s"/tmp/${inputFileName.substring(0, dotIndex)}_$timeStamp.pdf",
     )
 
     val outputDirectory = outputFile.getParent
@@ -55,6 +60,10 @@ class OutputServiceImpl @Inject() (
       )
     }
 
+    if (asPDF) {
+      this.convertToPDF(outputFile, outputPDFFile)
+      return Some(outputPDFFile.toFile)
+    }
     Some(outputFile.toFile)
   }
 
@@ -87,5 +96,10 @@ class OutputServiceImpl @Inject() (
         JxlsHelper.getInstance().processTemplate(inputs, outputs, context)
       }
     }
+  }
+
+  private def convertToPDF(src: Path, dst: Path): Unit = {
+    val res =
+      os.call(cmd = ("soffice", "--headless", "--convert-to", "pdf:" + dst.toString, src.toString))
   }
 }

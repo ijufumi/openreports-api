@@ -76,14 +76,20 @@ class ReportServiceImpl @Inject() (
     templateRepository.getById(db, workspaceId, id)
   }
 
-  override def outputReport(workspaceId: String, id: String): Option[File] = {
+  override def outputReport(workspaceId: String, id: String, asPDF: Boolean): Option[File] = {
     val result = reportRepository.getByIdWithTemplate(db, workspaceId, id)
     if (result.isEmpty) {
       return None
     }
     val report = result.get
     val template = report.reportTemplate.get
-    outputService.output(workspaceId, template.filePath, template.storageType, report.dataSourceId)
+    outputService.output(
+      workspaceId,
+      template.filePath,
+      template.storageType,
+      report.dataSourceId,
+      asPDF,
+    )
   }
 
   override def createReport(workspaceId: String, input: CreateReport): Option[Report] = {
