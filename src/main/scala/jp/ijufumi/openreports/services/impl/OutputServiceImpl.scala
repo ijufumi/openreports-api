@@ -33,11 +33,15 @@ class OutputServiceImpl @Inject() (
     val timeStamp = Dates.format(LocalDateTime.now())
     val outputFile = FileSystems.getDefault.getPath(
       Config.OUTPUT_FILE_PATH,
-      s"/tmp/${inputFileName.substring(0, dotIndex)}_$timeStamp$suffix",
+      workspaceId,
+      timeStamp,
+      s"${inputFileName.substring(0, dotIndex)}_$timeStamp$suffix",
     )
     val outputPDFFile = FileSystems.getDefault.getPath(
       Config.OUTPUT_FILE_PATH,
-      s"/tmp/${inputFileName.substring(0, dotIndex)}_$timeStamp.pdf",
+      workspaceId,
+      timeStamp,
+      s"${inputFileName.substring(0, dotIndex)}_$timeStamp.pdf",
     )
 
     val outputDirectory = outputFile.getParent
