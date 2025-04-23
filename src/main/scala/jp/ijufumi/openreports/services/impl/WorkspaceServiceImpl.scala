@@ -24,7 +24,7 @@ import jp.ijufumi.openreports.domain.models.entity.Workspace.conversions._
 import jp.ijufumi.openreports.domain.models.entity.{
   Report => ReportModel,
   StorageS3 => StorageS3Model,
-  ReportTemplate => TemplateModel,
+  ReportTemplate => ReportTemplateModel,
   Workspace => WorkspaceModel,
   WorkspaceMember => WorkspaceMemberModel,
 }
@@ -64,7 +64,7 @@ class WorkspaceServiceImpl @Inject() (
       storageRepository.register(db, storage)
       val key = this.copySample(workspace.id)
       val reportTemplate =
-        ReportTemplate(IDs.ulid(), "copy of sample", key, workspace.id, StorageTypes.Local, 1)
+        ReportTemplateModel(IDs.ulid(), "copy of sample", key, workspace.id, StorageTypes.Local, 1)
       reportTemplateRepository.register(db, reportTemplate)
       val report = ReportModel(IDs.ulid(), "copy of sample", reportTemplate.id, null, workspace.id)
       reportRepository.register(db, report)
