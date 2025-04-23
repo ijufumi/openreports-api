@@ -13,7 +13,7 @@ import jp.ijufumi.openreports.infrastructure.datastores.database.repositories.{
   RoleFunctionRepository,
   RoleRepository,
   StorageS3Repository,
-  TemplateRepository,
+  ReportTemplateRepository,
   WorkspaceMemberRepository,
   WorkspaceRepository,
 }
@@ -30,7 +30,7 @@ import jp.ijufumi.openreports.infrastructure.datastores.database.repositories.im
   RoleFunctionRepositoryImpl,
   RoleRepositoryImpl,
   StorageS3RepositoryImpl,
-  TemplateRepositoryImpl,
+  ReportTemplateRepositoryImpl,
   WorkspaceMemberRepositoryImpl,
   WorkspaceRepositoryImpl,
 }
@@ -57,7 +57,7 @@ class RepositoryModule extends BaseModule {
       classOf[ReportReportParameterRepository],
       classOf[ReportReportParameterRepositoryImpl],
     )
-    bindClass(classOf[TemplateRepository], classOf[TemplateRepositoryImpl])
+    bindClass(classOf[ReportTemplateRepository], classOf[ReportTemplateRepositoryImpl])
     bindClass(classOf[StorageS3Repository], classOf[StorageS3RepositoryImpl])
     bindClass(classOf[RoleRepository], classOf[RoleRepositoryImpl])
     bindClass(classOf[FunctionRepository], classOf[FunctionRepositoryImpl])

@@ -2,22 +2,22 @@ package jp.ijufumi.openreports.domain.models.entity
 
 import jp.ijufumi.openreports.infrastructure.datastores.database.entities.{
   Report => ReportEntity,
-  Template => ReportTemplateEntity,
+  ReportTemplate => ReportTemplateEntity,
 }
 import jp.ijufumi.openreports.presentation.models.responses.{Report => ReportResponse}
 import jp.ijufumi.openreports.presentation.models.requests.UpdateReport
 import jp.ijufumi.openreports.utils.Dates
 
 case class Report(
-    id: String,
-    name: String,
-    templateId: String,
-    dataSourceId: Option[String],
-    workspaceId: String,
-    createdAt: Long = Dates.currentTimestamp(),
-    updatedAt: Long = Dates.currentTimestamp(),
-    versions: Long = 1,
-    reportTemplate: Option[Template] = None,
+                   id: String,
+                   name: String,
+                   templateId: String,
+                   dataSourceId: Option[String],
+                   workspaceId: String,
+                   createdAt: Long = Dates.currentTimestamp(),
+                   updatedAt: Long = Dates.currentTimestamp(),
+                   versions: Long = 1,
+                   reportTemplate: Option[ReportTemplate] = None,
 ) {
   def toEntity: ReportEntity = {
     ReportEntity(
@@ -51,7 +51,7 @@ object Report {
     Report(
       entity.id,
       entity.name,
-      entity.templateId,
+      entity.reportTemplateId,
       entity.dataSourceId,
       entity.workspaceId,
       entity.createdAt,
@@ -63,13 +63,13 @@ object Report {
     Report(
       entity._1.id,
       entity._1.name,
-      entity._1.templateId,
+      entity._1.reportTemplateId,
       entity._1.dataSourceId,
       entity._1.workspaceId,
       entity._1.createdAt,
       entity._1.updatedAt,
       entity._1.versions,
-      Some(Template(entity._2)),
+      Some(ReportTemplate(entity._2)),
     )
   }
 

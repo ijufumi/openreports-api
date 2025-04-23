@@ -2,7 +2,7 @@ package jp.ijufumi.openreports.presentation.models.responses
 
 import jp.ijufumi.openreports.domain.models.value.enums.StorageTypes
 
-case class Template(
+case class ReportTemplate(
     id: String,
     name: String,
     filePath: String,
