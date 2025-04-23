@@ -28,7 +28,7 @@ import jp.ijufumi.openreports.domain.models.entity.{
   Report => ReportModel,
   ReportGroup => ReportGroupModel,
   ReportGroupReport => ReportGroupReportModel,
-  ReportTemplate => TemplateModel,
+  ReportTemplate => ReportTemplateModel,
 }
 import jp.ijufumi.openreports.domain.models.entity.ReportGroup.conversions._
 import jp.ijufumi.openreports.domain.models.entity.Report.conversions._
@@ -136,7 +136,7 @@ class ReportServiceImpl @Inject() (
       tmpFile.write(fileItem.get())
       storageService.create(workspaceId, key, storageType, tmpFile.path())
     }
-    val template = ReportTemplate(IDs.ulid(), req.name, key, workspaceId, storageType, fileItem.size)
+    val template = ReportTemplateModel(IDs.ulid(), req.name, key, workspaceId, storageType, fileItem.size)
     templateRepository.register(db, template)
     this.getTemplate(workspaceId, template.id)
   }
