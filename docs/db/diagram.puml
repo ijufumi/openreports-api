@@ -75,6 +75,7 @@ entity report_templates {
   * file_path
   * storage_type: [local, s3]
   * file_size
+  * is_seed
 }
 
 entity report_parameters {

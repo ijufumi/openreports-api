@@ -4,20 +4,21 @@ import jp.ijufumi.openreports.domain.models.value.enums.StorageTypes
 import jp.ijufumi.openreports.utils.Dates
 import slick.jdbc.PostgresProfile.api._
 
-case class Template(
+case class ReportTemplate(
     id: String,
     name: String,
     filePath: String,
     workspaceId: String,
     storageType: StorageTypes.StorageType,
     fileSize: Long,
+    isSeed: Boolean = false,
     createdAt: Long = Dates.currentTimestamp(),
     updatedAt: Long = Dates.currentTimestamp(),
     versions: Long = 1,
 )
 
-class Templates(tag: Tag)
-    extends EntityBase[Template](
+class ReportTemplates(tag: Tag)
+    extends EntityBase[ReportTemplate](
       tag,
       "templates",
     ) {
@@ -28,6 +29,7 @@ class Templates(tag: Tag)
   def workspaceId = column[String]("workspace_id")
   def storageType = column[StorageTypes.StorageType]("storage_type")
   def fileSize = column[Long]("file_size")
+  def isSeed = column[Boolean]("is_seed")
 
   override def * =
     (
@@ -37,8 +39,9 @@ class Templates(tag: Tag)
       workspaceId,
       storageType,
       fileSize,
+      isSeed,
       createdAt,
       updatedAt,
       versions,
-    ) <> (Template.tupled, Template.unapply)
+    ) <> (ReportTemplate.tupled, ReportTemplate.unapply)
 }

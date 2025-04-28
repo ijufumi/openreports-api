@@ -207,7 +207,7 @@ class V000001_01__Create_data extends BaseJavaMigration {
     val fileSize = 1
     val statement = {
       context.getConnection.prepareStatement(
-        s"INSERT INTO templates (id, name, file_path, workspace_id, storage_type, file_size) VALUES (?, ?, ?, ?, ?, ?)",
+        s"INSERT INTO templates (id, name, file_path, workspace_id, storage_type, file_size, is_seed) VALUES (?, ?, ?, ?, ?, ?, true)",
       )
     }
     statement.setString(1, id)
