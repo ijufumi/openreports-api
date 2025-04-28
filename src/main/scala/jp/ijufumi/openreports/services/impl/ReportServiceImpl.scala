@@ -162,7 +162,9 @@ class ReportServiceImpl @Inject() (
     }
     val template = templateOpt.get
     templateRepository.delete(db, workspaceId, id)
-    storageService.delete(workspaceId, template.filePath, template.storageType)
+    if (!template.isSeed) {
+      storageService.delete(workspaceId, template.filePath, template.storageType)
+    }
   }
 
   override def getGroups(workspaceId: String, page: Int, limit: Int): Lists[ReportGroup] = {
