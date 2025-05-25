@@ -1,4 +1,4 @@
-FROM postgres:14.3-bullseye
+FROM postgres:14-bullseye
 
 # MAINTAINER postgre
 
