@@ -31,16 +31,17 @@ class OutputServiceImpl @Inject() (
     val dotIndex = inputFileName.lastIndexOf('.')
     val suffix = if (dotIndex != -1) inputFileName.substring(dotIndex) else ""
     val timeStamp = Dates.format(LocalDateTime.now())
-    val outputFile = FileSystems.getDefault.getPath(
+    val outputDir = FileSystems.getDefault.getPath(
       Config.OUTPUT_FILE_PATH,
       workspaceId,
       timeStamp,
+    )
+    val outputFile = FileSystems.getDefault.getPath(
+      outputDir.toString,
       s"${inputFileName.substring(0, dotIndex)}_$timeStamp$suffix",
     )
     val outputPDFFile = FileSystems.getDefault.getPath(
-      Config.OUTPUT_FILE_PATH,
-      workspaceId,
-      timeStamp,
+      outputDir.toString,
       s"${inputFileName.substring(0, dotIndex)}_$timeStamp.pdf",
     )
 
@@ -65,7 +66,7 @@ class OutputServiceImpl @Inject() (
     }
 
     if (asPDF) {
-      this.convertToPDF(outputFile, outputPDFFile)
+      this.convertToPDF(outputFile, outputDir)
       return Some(outputPDFFile.toFile)
     }
     Some(outputFile.toFile)
@@ -114,8 +115,13 @@ class OutputServiceImpl @Inject() (
     }
   }
 
-  private def convertToPDF(src: Path, dst: Path): Unit = {
-    val res =
-      os.call(cmd = ("soffice", "--headless", "--convert-to", "pdf:" + dst.toString, src.toString))
+  private def convertToPDF(src: Path, dstDir: Path): Unit = {
+    val res = {
+      os.call(cmd = ("soffice", "--headless", "--convert-to", "pdf:writer_pdf_Export", "--outdir", dstDir.toString, src.toString))
+    }
+    logger.info(s"soffice command: ${res.command.mkString(" ")}")
+    if (res.exitCode != 0) {
+      logger.error(s"soffice error: ${res.err}")
+    }
   }
 }

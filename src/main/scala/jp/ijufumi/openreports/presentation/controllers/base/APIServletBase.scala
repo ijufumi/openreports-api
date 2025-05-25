@@ -6,20 +6,12 @@ import jp.ijufumi.openreports.presentation.models.responses.Member
 import jp.ijufumi.openreports.utils.Logging
 import org.json4s.{DefaultFormats, Formats}
 import org.json4s.ext.EnumNameSerializer
-import org.scalatra.{
-  ActionResult,
-  BadRequest,
-  CorsSupport,
-  Forbidden,
-  InternalServerError,
-  NotFound,
-  Ok,
-  ScalatraServlet,
-  Unauthorized,
-}
+import org.scalatra.{ActionResult, BadRequest, CorsSupport, Forbidden, InternalServerError, NotFound, Ok, ScalatraServlet, Unauthorized}
 import org.scalatra.json.JacksonJsonSupport
 import org.scalatra.forms._
 import org.scalatra.i18n.I18nSupport
+
+import java.io.File
 
 abstract class APIServletBase
     extends ScalatraServlet
@@ -59,7 +51,13 @@ abstract class APIServletBase
   }
 
   def ok(obj: Any): ActionResult = {
-    hookResult(Ok(obj))
+    var headers = Map.empty[String, String]
+    obj match {
+      case file: File =>
+        headers = headers + ("content-disposition" -> s"attachment; filename=${file.getName}")
+      case _ =>
+    }
+    hookResult(Ok(obj, headers))
   }
 
   // 4xx
