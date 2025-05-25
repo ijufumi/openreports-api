@@ -17,6 +17,7 @@ object ConnectionPool {
       password: String,
       url: String,
       jdbcDriverClass: JdbcDriverClasses.JdbcDriverClass,
+      maxPoolSize: Integer,
   ): Connection = {
     this.synchronized {
       if (has(name)) {
@@ -27,6 +28,7 @@ object ConnectionPool {
       config.setPassword(password)
       config.setJdbcUrl(url)
       config.setAutoCommit(false)
+      config.setMaximumPoolSize(maxPoolSize)
       config.setDriverClassName(jdbcDriverClass.toString)
       pool += (name -> new HikariPool(config))
 

@@ -17,7 +17,12 @@ import jp.ijufumi.openreports.presentation.models.requests.{
   UpdateReportGroup,
   UpdateTemplate,
 }
-import jp.ijufumi.openreports.presentation.models.responses.{Lists, Report, ReportGroup, ReportTemplate}
+import jp.ijufumi.openreports.presentation.models.responses.{
+  Lists,
+  Report,
+  ReportGroup,
+  ReportTemplate,
+}
 import jp.ijufumi.openreports.services.{
   DataSourceService,
   OutputService,
@@ -41,14 +46,14 @@ import java.io.File
 import scala.util.Using
 
 class ReportServiceImpl @Inject() (
-                                    db: Database,
-                                    reportRepository: ReportRepository,
-                                    templateRepository: ReportTemplateRepository,
-                                    reportGroupRepository: ReportGroupRepository,
-                                    reportGroupReportRepository: ReportGroupReportRepository,
-                                    dataSourceService: DataSourceService,
-                                    outputService: OutputService,
-                                    storageService: StorageService,
+    db: Database,
+    reportRepository: ReportRepository,
+    templateRepository: ReportTemplateRepository,
+    reportGroupRepository: ReportGroupRepository,
+    reportGroupReportRepository: ReportGroupReportRepository,
+    dataSourceService: DataSourceService,
+    outputService: OutputService,
+    storageService: StorageService,
 ) extends ReportService {
   def getReports(
       workspaceId: String,
@@ -136,7 +141,8 @@ class ReportServiceImpl @Inject() (
       tmpFile.write(fileItem.get())
       storageService.create(workspaceId, key, storageType, tmpFile.path())
     }
-    val template = ReportTemplateModel(IDs.ulid(), req.name, key, workspaceId, storageType, fileItem.size)
+    val template =
+      ReportTemplateModel(IDs.ulid(), req.name, key, workspaceId, storageType, fileItem.size)
     templateRepository.register(db, template)
     this.getTemplate(workspaceId, template.id)
   }
@@ -162,9 +168,7 @@ class ReportServiceImpl @Inject() (
     }
     val template = templateOpt.get
     templateRepository.delete(db, workspaceId, id)
-    if (!template.isSeed) {
-      storageService.delete(workspaceId, template.filePath, template.storageType)
-    }
+    storageService.delete(workspaceId, template.filePath, template.storageType)
   }
 
   override def getGroups(workspaceId: String, page: Int, limit: Int): Lists[ReportGroup] = {

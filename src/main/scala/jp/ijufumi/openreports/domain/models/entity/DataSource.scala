@@ -16,6 +16,7 @@ case class DataSource(
     username: String,
     password: String,
     driverTypeId: String,
+    maxPoolSize: Integer,
     workspaceId: String,
     createdAt: Long = Dates.currentTimestamp(),
     updatedAt: Long = Dates.currentTimestamp(),
@@ -56,6 +57,9 @@ case class DataSource(
 }
 
 object DataSource {
+  // TODO: need to have value in db
+  val maxPoolSize: Integer = 10
+
   def apply(entity: DataSourceEntity): DataSource = {
     DataSource(
       entity.id,
@@ -64,6 +68,7 @@ object DataSource {
       entity.username,
       entity.password,
       entity.driverTypeId,
+      maxPoolSize,
       entity.workspaceId,
       entity.createdAt,
       entity.updatedAt,
@@ -78,6 +83,7 @@ object DataSource {
       entity._1.username,
       entity._1.password,
       entity._1.driverTypeId,
+      maxPoolSize,
       entity._1.workspaceId,
       entity._1.createdAt,
       entity._1.updatedAt,
