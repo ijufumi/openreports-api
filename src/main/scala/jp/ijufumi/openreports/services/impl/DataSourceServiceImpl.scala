@@ -4,7 +4,7 @@ import com.google.inject.Inject
 import jp.ijufumi.openreports.exceptions.NotFoundException
 import jp.ijufumi.openreports.infrastructure.datastores.database.repositories.DataSourceRepository
 import jp.ijufumi.openreports.services.DataSourceService
-import jp.ijufumi.openreports.utils.IDs
+import jp.ijufumi.openreports.utils.{IDs, Logging}
 import jp.ijufumi.openreports.infrastructure.datastores.database.pool.ConnectionPool
 import jp.ijufumi.openreports.presentation.models.requests.{CreateDataSource, UpdateDataSource}
 import jp.ijufumi.openreports.presentation.models.responses.{DataSource, Lists}
@@ -15,19 +15,22 @@ import slick.jdbc.JdbcBackend.Database
 import java.sql.Connection
 
 class DataSourceServiceImpl @Inject() (db: Database, dataSourceRepository: DataSourceRepository)
-    extends DataSourceService {
+    extends DataSourceService
+    with Logging {
   def connection(workspaceId: String, dataSourceId: String): Connection = {
     val dataSourceOpt = dataSourceRepository.getByIdWithDriverType(db, workspaceId, dataSourceId)
     if (dataSourceOpt.isEmpty) {
       throw new NotFoundException()
     }
     val dataSource = dataSourceOpt.get
+
     ConnectionPool.newConnection(
       dataSource.name,
       dataSource.username,
       dataSource.password,
       dataSource.url,
       dataSource.driverType.get.jdbcDriverClass,
+      dataSource.maxPoolSize,
     )
   }
 
@@ -56,6 +59,7 @@ class DataSourceServiceImpl @Inject() (db: Database, dataSourceRepository: DataS
       requestVal.username,
       requestVal.password,
       requestVal.driverTypeId,
+      DataSourceModel.maxPoolSize,
       workspaceId,
     )
     dataSourceRepository.register(db, dataSource)
