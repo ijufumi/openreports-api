@@ -32,7 +32,7 @@ class OutputServiceImpl @Inject() (
     val timeStamp = Dates.format(LocalDateTime.now())
     val outputFile = FileSystems.getDefault.getPath(
       Config.OUTPUT_FILE_PATH,
-      s"/tmp/${inputFileName.substring(0, dotIndex)}_$timeStamp$suffix",
+      s"/${inputFileName.substring(0, dotIndex)}_$timeStamp$suffix",
     )
 
     val outputDirectory = outputFile.getParent
@@ -66,11 +66,15 @@ class OutputServiceImpl @Inject() (
       outputFile: Path,
       context: Context,
   ): Unit = {
-    Using(dataSourceService.connection(workspaceId, dataSourceId)) { conn =>
+    val result = Using(dataSourceService.connection(workspaceId, dataSourceId)) { conn =>
       val jdbcHelper = new JdbcHelper(conn)
       context.putVar("conn", conn)
       context.putVar("jdbc", jdbcHelper)
       this.output(workspaceId, filePath, storageType, outputFile, context)
+    }
+    if (result.isFailure) {
+      logger.error(s"datasource error", result.failed.get)
+      throw result.failed.get
     }
   }
 
@@ -82,10 +86,18 @@ class OutputServiceImpl @Inject() (
       context: Context,
   ): Unit = {
     val inputFile = storageService.get(workspaceId, filePath, storageType)
-    Using(Files.newInputStream(inputFile)) { inputs =>
-      Using(Files.newOutputStream(outputFile)) { outputs =>
+    val inputResult = Using(Files.newInputStream(inputFile)) { inputs =>
+      val outputResult = Using(Files.newOutputStream(outputFile)) { outputs =>
         JxlsHelper.getInstance().processTemplate(inputs, outputs, context)
       }
+      if (outputResult.isFailure) {
+        logger.error(s"output error", outputResult.failed.get)
+        throw outputResult.failed.get
+      }
+    }
+    if (inputResult.isFailure) {
+      logger.error(s"output error", inputResult.failed.get)
+      throw inputResult.failed.get
     }
   }
 }

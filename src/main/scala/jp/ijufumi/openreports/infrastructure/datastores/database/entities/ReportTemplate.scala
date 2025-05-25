@@ -11,7 +11,6 @@ case class ReportTemplate(
     workspaceId: String,
     storageType: StorageTypes.StorageType,
     fileSize: Long,
-    isSeed: Boolean = false,
     createdAt: Long = Dates.currentTimestamp(),
     updatedAt: Long = Dates.currentTimestamp(),
     versions: Long = 1,
@@ -20,7 +19,7 @@ case class ReportTemplate(
 class ReportTemplates(tag: Tag)
     extends EntityBase[ReportTemplate](
       tag,
-      "templates",
+      "report_templates",
     ) {
 
   def id = column[String]("id", O.PrimaryKey)
@@ -29,7 +28,6 @@ class ReportTemplates(tag: Tag)
   def workspaceId = column[String]("workspace_id")
   def storageType = column[StorageTypes.StorageType]("storage_type")
   def fileSize = column[Long]("file_size")
-  def isSeed = column[Boolean]("is_seed")
 
   override def * =
     (
@@ -39,7 +37,6 @@ class ReportTemplates(tag: Tag)
       workspaceId,
       storageType,
       fileSize,
-      isSeed,
       createdAt,
       updatedAt,
       versions,

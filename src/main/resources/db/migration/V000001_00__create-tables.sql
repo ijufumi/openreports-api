@@ -121,7 +121,6 @@ create table report_templates
   workspace_id varchar(40)  not null,
   storage_type varchar(20)  not null default 'local',
   file_size    bigint       not null default 0,
-  is_seed      tinyint      not null default 0,
   created_at   bigint       not null default extract(epoch from current_timestamp at time zone 'UTC'),
   updated_at   bigint       not null default extract(epoch from current_timestamp at time zone 'UTC'),
   versions     bigint       not null default 0,
@@ -132,14 +131,14 @@ create table report_templates
 -- create reports
 create table reports
 (
-  id             varchar(40) primary key,
-  name           varchar(250) not null,
-  report_template_id    varchar(40)  not null,
-  workspace_id   varchar(40)  not null,
-  data_source_id varchar(40),
-  created_at     bigint       not null default extract(epoch from current_timestamp at time zone 'UTC'),
-  updated_at     bigint       not null default extract(epoch from current_timestamp at time zone 'UTC'),
-  versions       bigint       not null default 0,
+  id                 varchar(40) primary key,
+  name               varchar(250) not null,
+  report_template_id varchar(40)  not null,
+  workspace_id       varchar(40)  not null,
+  data_source_id     varchar(40),
+  created_at         bigint       not null default extract(epoch from current_timestamp at time zone 'UTC'),
+  updated_at         bigint       not null default extract(epoch from current_timestamp at time zone 'UTC'),
+  versions           bigint       not null default 0,
 
   foreign key (report_template_id) references report_templates (id),
   foreign key (data_source_id) references data_sources (id),
