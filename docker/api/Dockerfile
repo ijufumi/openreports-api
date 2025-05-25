@@ -1,5 +1,5 @@
 ### This Dockerfile is for development, not for production
-FROM eclipse-temurin:17-jdk-jammy
+FROM eclipse-temurin:21-jdk-jammy
 
 RUN apt-get update && apt-get -y install curl gnupg postgresql-client libreoffice fonts-ipaexfont
 
@@ -11,10 +11,10 @@ RUN echo "deb https://repo.scala-sbt.org/scalasbt/debian all main" | tee /etc/ap
 ENV APP_DIR /app
 WORKDIR $APP_DIR
 
-COPY ./build.sbt .
-COPY ./scripts ./scripts
-COPY ./project ./project
-COPY ./reports ./reports
+COPY build.sbt .
+COPY scripts ./scripts
+COPY project ./project
+COPY reports ./reports
 
 
 RUN sbt package
