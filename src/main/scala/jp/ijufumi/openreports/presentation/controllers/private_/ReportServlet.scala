@@ -42,7 +42,18 @@ class ReportServlet @Inject() (loginService: LoginService, reportService: Report
   get("/outputs/:id") {
     val _workspaceId = workspaceId()
     val id = params("id")
-    val file = reportService.outputReport(_workspaceId, id)
+    val file = reportService.outputReport(_workspaceId, id, asPDF = false)
+    if (file.isEmpty) {
+      notFound("reports not found")
+    } else {
+      ok(file.get)
+    }
+  }
+
+  get("/outputs/:id/pdf") {
+    val _workspaceId = workspaceId()
+    val id = params("id")
+    val file = reportService.outputReport(_workspaceId, id, asPDF = true)
     if (file.isEmpty) {
       notFound("reports not found")
     } else {
