@@ -1,41 +1,9 @@
 package jp.ijufumi.openreports.configs.injectors
 
-import jp.ijufumi.openreports.infrastructure.datastores.database.repositories.{
-  DataSourceRepository,
-  DriverTypeRepository,
-  FunctionRepository,
-  MemberRepository,
-  ReportGroupReportRepository,
-  ReportGroupRepository,
-  ReportParameterRepository,
-  ReportReportParameterRepository,
-  ReportRepository,
-  RoleFunctionRepository,
-  RoleRepository,
-  StorageS3Repository,
-  TemplateRepository,
-  WorkspaceMemberRepository,
-  WorkspaceRepository,
-}
-import jp.ijufumi.openreports.infrastructure.datastores.database.repositories.impl.{
-  DataSourceRepositoryImpl,
-  DriverTypeRepositoryImpl,
-  FunctionRepositoryImpl,
-  MemberRepositoryImpl,
-  ReportGroupReportRepositoryImpl,
-  ReportGroupRepositoryImpl,
-  ReportParameterRepositoryImpl,
-  ReportReportParameterRepositoryImpl,
-  ReportRepositoryImpl,
-  RoleFunctionRepositoryImpl,
-  RoleRepositoryImpl,
-  StorageS3RepositoryImpl,
-  TemplateRepositoryImpl,
-  WorkspaceMemberRepositoryImpl,
-  WorkspaceRepositoryImpl,
-}
-import jp.ijufumi.openreports.infrastructure.filestores.local.LocalFileRepository
-import jp.ijufumi.openreports.infrastructure.filestores.local.impl.LocalFileRepositoryImpl
+import jp.ijufumi.openreports.infrastructure.datastores.database.repositories.{DataSourceRepository, DriverTypeRepository, FunctionRepository, MemberRepository, ReportGroupReportRepository, ReportGroupRepository, ReportParameterRepository, ReportReportParameterRepository, ReportRepository, ReportTemplateRepository, RoleFunctionRepository, RoleRepository, StorageS3Repository, WorkspaceMemberRepository, WorkspaceRepository}
+import jp.ijufumi.openreports.infrastructure.datastores.database.repositories.impl.{DataSourceRepositoryImpl, DriverTypeRepositoryImpl, FunctionRepositoryImpl, MemberRepositoryImpl, ReportGroupReportRepositoryImpl, ReportGroupRepositoryImpl, ReportParameterRepositoryImpl, ReportReportParameterRepositoryImpl, ReportRepositoryImpl, ReportTemplateRepositoryImpl, RoleFunctionRepositoryImpl, RoleRepositoryImpl, StorageS3RepositoryImpl, WorkspaceMemberRepositoryImpl, WorkspaceRepositoryImpl}
+import jp.ijufumi.openreports.infrastructure.filestores.local.{LocalFileRepository, LocalSeedFileRepository}
+import jp.ijufumi.openreports.infrastructure.filestores.local.impl.{LocalFileRepositoryImpl, LocalSeedFileRepositoryImpl}
 import jp.ijufumi.openreports.infrastructure.filestores.s3.AwsS3Repository
 import jp.ijufumi.openreports.infrastructure.filestores.s3.impl.AwsS3RepositoryImpl
 import jp.ijufumi.openreports.infrastructure.google.auth.GoogleRepository
@@ -57,7 +25,7 @@ class RepositoryModule extends BaseModule {
       classOf[ReportReportParameterRepository],
       classOf[ReportReportParameterRepositoryImpl],
     )
-    bindClass(classOf[TemplateRepository], classOf[TemplateRepositoryImpl])
+    bindClass(classOf[ReportTemplateRepository], classOf[ReportTemplateRepositoryImpl])
     bindClass(classOf[StorageS3Repository], classOf[StorageS3RepositoryImpl])
     bindClass(classOf[RoleRepository], classOf[RoleRepositoryImpl])
     bindClass(classOf[FunctionRepository], classOf[FunctionRepositoryImpl])
@@ -67,6 +35,7 @@ class RepositoryModule extends BaseModule {
     bindClass(classOf[GoogleRepository], classOf[GoogleRepositoryImpl])
     // file store
     bindClass(classOf[LocalFileRepository], classOf[LocalFileRepositoryImpl])
+    bindClass(classOf[LocalSeedFileRepository], classOf[LocalSeedFileRepositoryImpl])
     bindClass(classOf[AwsS3Repository], classOf[AwsS3RepositoryImpl])
   }
 }

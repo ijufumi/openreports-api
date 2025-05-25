@@ -19,6 +19,10 @@ services:
       - type: volume
         source: app-src
         target: /app/src
+      - type: volume
+        source: template-data
+        target: /app/templates
+        volume: {}
     working_dir: /app
   db:
     build:
@@ -62,6 +66,8 @@ networks:
 volumes:
   db-data:
     name: openreports-api_db-data
+  template-data:
+    name: openreports-api-template-data
   app-src:
     driver: local
     driver_opts:

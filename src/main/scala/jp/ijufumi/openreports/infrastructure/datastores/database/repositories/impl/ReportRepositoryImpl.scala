@@ -19,7 +19,7 @@ class ReportRepositoryImpl extends ReportRepository {
   ): (Seq[Report], Int) = {
     var filtered = reportQuery.filter(_.workspaceId === workspaceId).drop(offset)
     if (templateId.nonEmpty) {
-      filtered = filtered.filter(_.templateId === templateId)
+      filtered = filtered.filter(_.reportTemplateId === templateId)
     }
     val count = Await.result(db.run(filtered.length.result), queryTimeout)
     if (limit > 0) {
@@ -39,11 +39,11 @@ class ReportRepositoryImpl extends ReportRepository {
     var getById = reportQuery
       .filter(_.workspaceId === workspaceId)
       .join(templateQuery)
-      .on(_.templateId === _.id)
+      .on(_.reportTemplateId === _.id)
       .sortBy(_._1.id)
 
     if (templateId.nonEmpty) {
-      getById = getById.filter(_._1.templateId === templateId)
+      getById = getById.filter(_._1.reportTemplateId === templateId)
     }
     val count = Await.result(db.run(getById.length.result), queryTimeout)
     if (offset > 0) {
@@ -76,7 +76,7 @@ class ReportRepositoryImpl extends ReportRepository {
     val getById = reportQuery
       .filter(_.id === id)
       .join(templateQuery)
-      .on(_.templateId === _.id)
+      .on(_.reportTemplateId === _.id)
     val models = Await.result(db.run(getById.result), queryTimeout)
     if (models.isEmpty) {
       return None

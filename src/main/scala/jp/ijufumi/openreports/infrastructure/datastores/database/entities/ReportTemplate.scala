@@ -4,7 +4,7 @@ import jp.ijufumi.openreports.domain.models.value.enums.StorageTypes
 import jp.ijufumi.openreports.utils.Dates
 import slick.jdbc.PostgresProfile.api._
 
-case class Template(
+case class ReportTemplate(
     id: String,
     name: String,
     filePath: String,
@@ -16,10 +16,10 @@ case class Template(
     versions: Long = 1,
 )
 
-class Templates(tag: Tag)
-    extends EntityBase[Template](
+class ReportTemplates(tag: Tag)
+    extends EntityBase[ReportTemplate](
       tag,
-      "templates",
+      "report_templates",
     ) {
 
   def id = column[String]("id", O.PrimaryKey)
@@ -40,5 +40,5 @@ class Templates(tag: Tag)
       createdAt,
       updatedAt,
       versions,
-    ) <> (Template.tupled, Template.unapply)
+    ) <> (ReportTemplate.tupled, ReportTemplate.unapply)
 }

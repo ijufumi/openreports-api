@@ -1,5 +1,5 @@
-### This Dockerfile is for development, not for production
-FROM eclipse-temurin:17-jdk-jammy
+### This Dockerfile is for production
+FROM eclipse-temurin:21-jdk-jammy
 
 RUN apt-get update && apt-get -y install curl gnupg postgresql-client
 
@@ -19,4 +19,5 @@ COPY reports ./reports
 
 RUN sbt package
 
+# TODO: need to change for production
 ENTRYPOINT ["bash", "/app/scripts/entrypoint.sh"]

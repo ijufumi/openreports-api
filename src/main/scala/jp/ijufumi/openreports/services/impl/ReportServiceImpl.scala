@@ -7,7 +7,7 @@ import jp.ijufumi.openreports.infrastructure.datastores.database.repositories.{
   ReportGroupReportRepository,
   ReportGroupRepository,
   ReportRepository,
-  TemplateRepository,
+  ReportTemplateRepository,
 }
 import jp.ijufumi.openreports.presentation.models.requests.{
   CreateReport,
@@ -17,7 +17,12 @@ import jp.ijufumi.openreports.presentation.models.requests.{
   UpdateReportGroup,
   UpdateTemplate,
 }
-import jp.ijufumi.openreports.presentation.models.responses.{Lists, Report, ReportGroup, Template}
+import jp.ijufumi.openreports.presentation.models.responses.{
+  Lists,
+  Report,
+  ReportGroup,
+  ReportTemplate,
+}
 import jp.ijufumi.openreports.services.{
   DataSourceService,
   OutputService,
@@ -28,11 +33,11 @@ import jp.ijufumi.openreports.domain.models.entity.{
   Report => ReportModel,
   ReportGroup => ReportGroupModel,
   ReportGroupReport => ReportGroupReportModel,
-  Template => TemplateModel,
+  ReportTemplate => ReportTemplateModel,
 }
 import jp.ijufumi.openreports.domain.models.entity.ReportGroup.conversions._
 import jp.ijufumi.openreports.domain.models.entity.Report.conversions._
-import jp.ijufumi.openreports.domain.models.entity.Template.conversions._
+import jp.ijufumi.openreports.domain.models.entity.ReportTemplate.conversions._
 import jp.ijufumi.openreports.utils.{IDs, Strings, TemporaryFiles}
 import org.scalatra.servlet.FileItem
 import slick.jdbc.JdbcBackend.Database
@@ -43,7 +48,7 @@ import scala.util.Using
 class ReportServiceImpl @Inject() (
     db: Database,
     reportRepository: ReportRepository,
-    templateRepository: TemplateRepository,
+    templateRepository: ReportTemplateRepository,
     reportGroupRepository: ReportGroupRepository,
     reportGroupReportRepository: ReportGroupReportRepository,
     dataSourceService: DataSourceService,
@@ -66,13 +71,13 @@ class ReportServiceImpl @Inject() (
     reportRepository.getByIdWithTemplate(db, workspaceId, id)
   }
 
-  override def getTemplates(workspaceId: String, page: Int, limit: Int): Lists[Template] = {
+  override def getTemplates(workspaceId: String, page: Int, limit: Int): Lists[ReportTemplate] = {
     val offset = List(page * limit, 0).max
     val (results, count) = templateRepository.gets(db, workspaceId, offset, limit)
     Lists(results, offset, limit, count)
   }
 
-  override def getTemplate(workspaceId: String, id: String): Option[Template] = {
+  override def getTemplate(workspaceId: String, id: String): Option[ReportTemplate] = {
     templateRepository.getById(db, workspaceId, id)
   }
 
@@ -134,7 +139,7 @@ class ReportServiceImpl @Inject() (
       workspaceId: String,
       req: CreateTemplate,
       fileItem: FileItem,
-  ): Option[Template] = {
+  ): Option[ReportTemplate] = {
     val key = Strings.generateRandomSting(10)()
     val storageType = StorageTypes.Local
     Using(TemporaryFiles.createDir()) { tmpDir =>
@@ -142,7 +147,8 @@ class ReportServiceImpl @Inject() (
       tmpFile.write(fileItem.get())
       storageService.create(workspaceId, key, storageType, tmpFile.path())
     }
-    val template = TemplateModel(IDs.ulid(), req.name, key, workspaceId, storageType, fileItem.size)
+    val template =
+      ReportTemplateModel(IDs.ulid(), req.name, key, workspaceId, storageType, fileItem.size)
     templateRepository.register(db, template)
     this.getTemplate(workspaceId, template.id)
   }
@@ -151,7 +157,7 @@ class ReportServiceImpl @Inject() (
       workspaceId: String,
       id: String,
       input: UpdateTemplate,
-  ): Option[Template] = {
+  ): Option[ReportTemplate] = {
     val templateOpt = templateRepository.getById(db, workspaceId, id)
     if (templateOpt.isEmpty) {
       return None

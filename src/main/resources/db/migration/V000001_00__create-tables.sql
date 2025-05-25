@@ -112,8 +112,8 @@ create table data_sources
   foreign key (workspace_id) references workspaces (id)
 );
 
--- create templates
-create table templates
+-- create report_templates
+create table report_templates
 (
   id           varchar(40) primary key,
   name         varchar(250) not null,
@@ -131,16 +131,16 @@ create table templates
 -- create reports
 create table reports
 (
-  id             varchar(40) primary key,
-  name           varchar(250) not null,
-  template_id    varchar(40)  not null,
-  workspace_id   varchar(40)  not null,
-  data_source_id varchar(40),
-  created_at     bigint       not null default extract(epoch from current_timestamp at time zone 'UTC'),
-  updated_at     bigint       not null default extract(epoch from current_timestamp at time zone 'UTC'),
-  versions       bigint       not null default 0,
+  id                 varchar(40) primary key,
+  name               varchar(250) not null,
+  report_template_id varchar(40)  not null,
+  workspace_id       varchar(40)  not null,
+  data_source_id     varchar(40),
+  created_at         bigint       not null default extract(epoch from current_timestamp at time zone 'UTC'),
+  updated_at         bigint       not null default extract(epoch from current_timestamp at time zone 'UTC'),
+  versions           bigint       not null default 0,
 
-  foreign key (template_id) references templates (id),
+  foreign key (report_template_id) references report_templates (id),
   foreign key (data_source_id) references data_sources (id),
   foreign key (workspace_id) references workspaces (id)
 );
@@ -158,7 +158,7 @@ create table report_groups
   foreign key (workspace_id) references workspaces (id)
 );
 
--- create report_parameters
+-- create report_group_reports
 create table report_group_reports
 (
   id              varchar(40) primary key,
@@ -172,7 +172,7 @@ create table report_group_reports
   foreign key (report_group_id) references report_groups (id)
 );
 
--- create report_group_reports
+-- create report_parameters
 create table report_parameters
 (
   id             varchar(40) primary key,

@@ -25,9 +25,13 @@ abstract class PrivateAPIServletBase(loginService: LoginService)
           } else {
             response.setHeader(Config.API_TOKEN_HEADER, accessToken.get)
             member = loginService.verifyApiToken(accessToken.get)
-            setMember(member.get)
-            val refreshToken = loginService.generateRefreshToken(memberId())
-            response.setHeader(Config.REFRESH_TOKEN_HEADER, refreshToken)
+            if (member.isEmpty) {
+              halt(forbidden("API Token is invalid"))
+            } else {
+              setMember(member.get)
+              val refreshToken = loginService.generateRefreshToken(memberId())
+              response.setHeader(Config.REFRESH_TOKEN_HEADER, refreshToken)
+            }
           }
         }
       } else {
