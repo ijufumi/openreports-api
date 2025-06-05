@@ -60,4 +60,16 @@ object Config {
 
   // for file upload
   val UPLOAD_FILE_MAX_SIZE: Long = getEnvIntValue("UPLOAD_FILE_MAX_SIZE", 1024 * 1024)
+
+  // for localstack
+  val LOCALSTACK_S3_BUCKET: String = getEnvValue("LOCALSTACK_S3_BUCKET", "openreports-bucket")
+  val LOCALSTACK_S3_ACCESS_KEY: String = getEnvValue("LOCALSTACK_S3_ACCESS_KEY", "test")
+  val LOCALSTACK_S3_SECRET_KEY: String = getEnvValue("LOCALSTACK_S3_SECRET_KEY", "test")
+  val LOCALSTACK_S3_REGION: String = getEnvValue("LOCALSTACK_S3_REGION", "ap-northeast-1")
+
+  private val LOCAL_STORAGE_TYPE: String = getEnvValue("LOCAL_STORAGE_TYPE", "local")
+
+  def useLocalStackAsLocalStorage(): Boolean = {
+    LOCAL_STORAGE_TYPE.toLowerCase == "s3"
+  }
 }

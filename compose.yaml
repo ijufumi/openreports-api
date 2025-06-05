@@ -7,6 +7,8 @@ services:
     container_name: openreports-api
     env_file:
       - .env.compose
+    environment:
+      LOCAL_STORAGE_TYPE: s3
     networks:
       default: null
     platform: linux/arm64
@@ -60,6 +62,24 @@ services:
         source: redis-data
         target: /data
         volume: {}
+  localstack:
+    build:
+      context: ./docker/localstack
+      dockerfile: Dockerfile
+    container_name: openreports-localstack
+    ports:
+      - "127.0.0.1:4566:4566"            # LocalStack Gateway
+      - "127.0.0.1:4510-4559:4510-4559"  # external services port range
+    environment:
+      - DEBUG=${DEBUG:-0}
+    volumes:
+      - type: volume
+        source: localstack-data
+        target: /var/lib/localstack
+        volume: {}
+      - type: volume
+        source: localstack-script
+        target: /etc/localstack/init/ready.d/
 networks:
   default:
     name: openreports
@@ -76,3 +96,11 @@ volumes:
       device: './src'
   redis-data:
     name: openreports-api_redis-data
+  localstack-data:
+    name: openreports-api_localstack-data
+  localstack-script:
+    driver: local
+    driver_opts:
+      type: 'none'
+      o: 'bind'
+      device: './docker/localstack/init'
