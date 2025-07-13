@@ -5,14 +5,14 @@ import jp.ijufumi.openreports.configs.Config
 import jp.ijufumi.openreports.services.{DataSourceService, OutputService, StorageService}
 import jp.ijufumi.openreports.utils.{Dates, Logging}
 import jp.ijufumi.openreports.domain.models.value.enums.StorageTypes
+import org.jxls.builder.JxlsOutputFile
 
 import scala.util.Using
-import org.jxls.common.Context
-import org.jxls.jdbc.JdbcHelper
-import org.jxls.util.JxlsHelper
+import org.jxls.jdbc.DatabaseAccess
+import org.jxls.transform.poi.JxlsPoiTemplateFillerBuilder
 
 import java.io.File
-import java.nio.file.{Files, FileSystems, Path}
+import java.nio.file.{FileSystems, Files, Path}
 import java.time.LocalDateTime
 
 class OutputServiceImpl @Inject() (
@@ -50,10 +50,10 @@ class OutputServiceImpl @Inject() (
       Files.createDirectories(outputDirectory)
     }
 
-    val context: Context = new Context()
-    context.putVar("today", Dates.todayString())
+    val dataMap = new java.util.HashMap[String, Object]();
+    dataMap.put("today", Dates.todayString())
     if (dataSourceId.isEmpty) {
-      this.output(workspaceId, filePath, storageType, outputFile, context)
+      this.output(workspaceId, filePath, storageType, outputFile, dataMap)
     } else {
       this.outputWithDataSource(
         workspaceId,
@@ -61,7 +61,7 @@ class OutputServiceImpl @Inject() (
         storageType,
         dataSourceId.get,
         outputFile,
-        context,
+        dataMap,
       )
     }
 
@@ -78,13 +78,13 @@ class OutputServiceImpl @Inject() (
       storageType: StorageTypes.StorageType,
       dataSourceId: String,
       outputFile: Path,
-      context: Context,
+      dataMap: java.util.HashMap[String, Object],
   ): Unit = {
     val result = Using(dataSourceService.connection(workspaceId, dataSourceId)) { conn =>
-      val jdbcHelper = new JdbcHelper(conn)
-      context.putVar("conn", conn)
-      context.putVar("jdbc", jdbcHelper)
-      this.output(workspaceId, filePath, storageType, outputFile, context)
+      val jdbcHelper = new DatabaseAccess(conn)
+      dataMap.put("conn", conn)
+      dataMap.put("jdbc", jdbcHelper)
+      this.output(workspaceId, filePath, storageType, outputFile, dataMap)
     }
     if (result.isFailure) {
       logger.error(s"datasource error", result.failed.get)
@@ -97,17 +97,11 @@ class OutputServiceImpl @Inject() (
       filePath: String,
       storageType: StorageTypes.StorageType,
       outputFile: Path,
-      context: Context,
+      dataMap: java.util.HashMap[String, Object],
   ): Unit = {
     val inputFile = storageService.get(workspaceId, filePath, storageType)
     val inputResult = Using(Files.newInputStream(inputFile)) { inputs =>
-      val outputResult = Using(Files.newOutputStream(outputFile)) { outputs =>
-        JxlsHelper.getInstance().processTemplate(inputs, outputs, context)
-      }
-      if (outputResult.isFailure) {
-        logger.error(s"output error", outputResult.failed.get)
-        throw outputResult.failed.get
-      }
+      JxlsPoiTemplateFillerBuilder.newInstance().withTemplate(inputs).build().fill(dataMap, new JxlsOutputFile(outputFile.toFile))
     }
     if (inputResult.isFailure) {
       logger.error(s"output error", inputResult.failed.get)

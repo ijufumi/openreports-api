@@ -1,12 +1,12 @@
 import org.eclipse.jetty.server.Server
-import org.eclipse.jetty.servlet.{DefaultServlet, ServletContextHandler}
-import org.eclipse.jetty.webapp.WebAppContext
+import org.eclipse.jetty.ee10.servlet.DefaultServlet
+import org.eclipse.jetty.ee10.webapp.WebAppContext
 import org.scalatra.servlet.ScalatraListener
 import com.google.inject.servlet.GuiceFilter
 import jp.ijufumi.openreports.configs.Config
 
 import java.util
-import javax.servlet.DispatcherType
+import jakarta.servlet.DispatcherType
 
 object JettyLauncher {
   private val CORS_HEADERS = Seq(
@@ -34,7 +34,7 @@ object JettyLauncher {
     val server = new Server(port)
     val context = new WebAppContext()
     context setContextPath "/"
-    context.setResourceBase("src/main/webapp")
+    context.setBaseResourceAsString("src/main/webapp")
     context.setInitParameter(ScalatraListener.LifeCycleKey, "ScalatraBootstrap")
     context.addEventListener(new ScalatraListener)
     context.addServlet(classOf[DefaultServlet], "/")

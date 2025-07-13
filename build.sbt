@@ -2,26 +2,26 @@ val Scala213Version = "2.13.16"
 val Scala212Version = "2.12.20"
 
 // for scala libraries
-val ScalatraVersion = "2.8.4"
-val SlickVersion = "3.5.1"
+val ScalatraVersion = "3.1.2"
+val SlickVersion = "3.6.1"
 val ScalaCacheVersion = "0.28.0"
-val SttpVersion = "3.8.15"
-val Json4sVersion = "4.0.6"
+val SttpVersion = "4.0.9"
+val Json4sVersion = "4.0.7"
 val ULIDVersion = "1.0.24"
 
 // for java libraries
-val SLF4JVersion = "2.0.7"
-val LogbackVersion = "1.4.7"
+val SLF4JVersion = "2.0.17"
+val LogbackVersion = "1.5.18"
 val FlywayVersion = "9.22.3"
-val AWSSDKVersion = "2.20.76"
-val jXlsVersion = "2.12.0"
-val Auth0Version = "2.3.0"
+val AWSSDKVersion = "2.31.78"
+val jXlsVersion = "3.0.0"
+val Auth0Version = "2.22.0"
 val GuiceVersion = "7.0.0"
-val GuiceExtensionVersion = "6.0.0"
-val DotEnvJavaVersion = "3.0.0"
-val JettyVersion = "10.0.18"
-val PostgresVersion = "42.6.0"
-val ServletAPIVersion = "4.0.1"
+val GuiceExtensionVersion = "7.0.0"
+val DotEnvJavaVersion = "3.2.0"
+val JettyVersion = "12.0.23"
+val PostgresVersion = "42.7.7"
+val ServletAPIVersion = "6.1.0"
 
 ThisBuild / scalaVersion := Scala212Version
 ThisBuild / organization := "jp.ijufumi"
@@ -35,16 +35,16 @@ lazy val root = (project in file("."))
     name := "Open Report API",
     version := "0.1.0-SNAPSHOT",
     libraryDependencies ++= Seq(
-      "org.scalatra" %% "scalatra" % ScalatraVersion,
-      "org.scalatra" %% "scalatra-json" % ScalatraVersion,
-      "org.scalatra" %% "scalatra-forms" % ScalatraVersion,
-      "org.scalatra" %% "scalatra-scalatest" % ScalatraVersion % "test",
+      "org.scalatra" %% "scalatra-jakarta" % ScalatraVersion,
+      "org.scalatra" %% "scalatra-json-jakarta" % ScalatraVersion,
+      "org.scalatra" %% "scalatra-forms-jakarta" % ScalatraVersion,
+      "org.scalatra" %% "scalatra-scalatest-jakarta" % ScalatraVersion % "test",
       "org.scalatestplus" %% "mockito-4-6" % "3.2.14.0" % "test",
       "ch.qos.logback" % "logback-classic" % LogbackVersion % "runtime",
       "org.slf4j" % "slf4j-api" % SLF4JVersion,
       "org.slf4j" % "jcl-over-slf4j" % SLF4JVersion,
-      "org.eclipse.jetty" % "jetty-webapp" % JettyVersion % "container;compile",
-      "javax.servlet" % "javax.servlet-api" % ServletAPIVersion % "provided",
+      "org.eclipse.jetty.ee10" % "jetty-ee10-webapp" % JettyVersion % "container;compile",
+      "jakarta.servlet" % "jakarta.servlet-api" % ServletAPIVersion % "provided",
       "org.postgresql" % "postgresql" % PostgresVersion,
       "org.flywaydb" % "flyway-core" % FlywayVersion,
       "com.google.inject" % "guice" % GuiceVersion,
@@ -59,8 +59,8 @@ lazy val root = (project in file("."))
       "com.typesafe.slick" %% "slick-testkit" % SlickVersion % "test",
       "com.github.cb372" %% "scalacache-core" % ScalaCacheVersion exclude ("org.slf4j", "slf4j-api"),
       "com.github.cb372" %% "scalacache-redis" % ScalaCacheVersion exclude ("org.slf4j", "slf4j-api"),
-      "com.softwaremill.sttp.client3" %% "core" % SttpVersion,
-      "com.softwaremill.sttp.client3" %% "json4s" % SttpVersion,
+      "com.softwaremill.sttp.client4" %% "core" % SttpVersion,
+      "com.softwaremill.sttp.client4" %% "json4s" % SttpVersion,
       "software.amazon.awssdk" % "s3" % AWSSDKVersion,
       "io.github.cdimascio" % "dotenv-java" % DotEnvJavaVersion,
       "com.chatwork" %% "scala-ulid" % ULIDVersion,
