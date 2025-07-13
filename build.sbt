@@ -2,7 +2,7 @@ val Scala213Version = "2.13.16"
 val Scala212Version = "2.12.20"
 
 // for scala libraries
-val ScalatraVersion = "3.1.2"
+val ScalatraVersion = "3.1.1"
 val SlickVersion = "3.6.1"
 val ScalaCacheVersion = "0.28.0"
 val SttpVersion = "4.0.9"
@@ -35,7 +35,7 @@ lazy val root = (project in file("."))
     name := "Open Report API",
     version := "0.1.0-SNAPSHOT",
     libraryDependencies ++= Seq(
-      "org.scalatra" %% "scalatra" % ScalatraVersion,
+      "org.scalatra" %% "scalatra-javax" % ScalatraVersion,
       "org.scalatra" %% "scalatra-json-javax" % ScalatraVersion,
       "org.scalatra" %% "scalatra-forms-javax" % ScalatraVersion,
       "org.scalatra" %% "scalatra-scalatest" % ScalatraVersion % "test",
