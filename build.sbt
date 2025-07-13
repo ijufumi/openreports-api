@@ -38,7 +38,7 @@ lazy val root = (project in file("."))
       "org.scalatra" %% "scalatra-javax" % ScalatraVersion,
       "org.scalatra" %% "scalatra-json-javax" % ScalatraVersion,
       "org.scalatra" %% "scalatra-forms-javax" % ScalatraVersion,
-      "org.scalatra" %% "scalatra-scalatest" % ScalatraVersion % "test",
+      "org.scalatra" %% "scalatra-scalatest-javax" % ScalatraVersion % "test",
       "org.scalatestplus" %% "mockito-4-6" % "3.2.14.0" % "test",
       "ch.qos.logback" % "logback-classic" % LogbackVersion % "runtime",
       "org.slf4j" % "slf4j-api" % SLF4JVersion,
