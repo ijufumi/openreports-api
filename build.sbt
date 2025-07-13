@@ -2,7 +2,7 @@ val Scala213Version = "2.13.16"
 val Scala212Version = "2.12.20"
 
 // for scala libraries
-val ScalatraVersion = "3.1.1"
+val ScalatraVersion = "3.1.2"
 val SlickVersion = "3.6.1"
 val ScalaCacheVersion = "0.28.0"
 val SttpVersion = "4.0.9"
@@ -17,11 +17,11 @@ val AWSSDKVersion = "2.31.78"
 val jXlsVersion = "3.0.0"
 val Auth0Version = "2.22.0"
 val GuiceVersion = "7.0.0"
-val GuiceExtensionVersion = "6.0.0"
+val GuiceExtensionVersion = "7.0.0"
 val DotEnvJavaVersion = "3.2.0"
 val JettyVersion = "12.0.23"
 val PostgresVersion = "42.7.7"
-val ServletAPIVersion = "4.0.1"
+val ServletAPIVersion = "6.1.0"
 
 ThisBuild / scalaVersion := Scala212Version
 ThisBuild / organization := "jp.ijufumi"
@@ -35,16 +35,16 @@ lazy val root = (project in file("."))
     name := "Open Report API",
     version := "0.1.0-SNAPSHOT",
     libraryDependencies ++= Seq(
-      "org.scalatra" %% "scalatra-javax" % ScalatraVersion,
-      "org.scalatra" %% "scalatra-json-javax" % ScalatraVersion,
-      "org.scalatra" %% "scalatra-forms-javax" % ScalatraVersion,
-      "org.scalatra" %% "scalatra-scalatest-javax" % ScalatraVersion % "test",
+      "org.scalatra" %% "scalatra-jakarta" % ScalatraVersion,
+      "org.scalatra" %% "scalatra-json-jakarta" % ScalatraVersion,
+      "org.scalatra" %% "scalatra-forms-jakarta" % ScalatraVersion,
+      "org.scalatra" %% "scalatra-scalatest-jakarta" % ScalatraVersion % "test",
       "org.scalatestplus" %% "mockito-4-6" % "3.2.14.0" % "test",
       "ch.qos.logback" % "logback-classic" % LogbackVersion % "runtime",
       "org.slf4j" % "slf4j-api" % SLF4JVersion,
       "org.slf4j" % "jcl-over-slf4j" % SLF4JVersion,
       "org.eclipse.jetty.ee10" % "jetty-ee10-webapp" % JettyVersion % "container;compile",
-      "javax.servlet" % "javax.servlet-api" % ServletAPIVersion % "provided",
+      "jakarta.servlet" % "jakarta.servlet-api" % ServletAPIVersion % "provided",
       "org.postgresql" % "postgresql" % PostgresVersion,
       "org.flywaydb" % "flyway-core" % FlywayVersion,
       "com.google.inject" % "guice" % GuiceVersion,

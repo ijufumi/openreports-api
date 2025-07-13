@@ -3,7 +3,7 @@ import jp.ijufumi.openreports.presentation.controllers.private_.{DataSourceServl
 import jp.ijufumi.openreports.presentation.controllers.public_.{DriverTypeServlet, HealthServlet, LoginServlet, RoleServlet}
 import org.scalatra._
 
-import javax.servlet.ServletContext
+import jakarta.servlet.ServletContext
 
 class ScalatraBootstrap extends LifeCycle {
   override def init(context: ServletContext): Unit = {

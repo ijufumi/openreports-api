@@ -6,9 +6,9 @@ import jp.ijufumi.openreports.infrastructure.google.auth.models.{AccessToken, Us
 import jp.ijufumi.openreports.utils.{Logging, Strings}
 import org.json4s.DefaultFormats
 import org.json4s.native.Serialization
-import sttp.client3._
-import sttp.client3.json4s._
-import sttp.model.Header
+import sttp.client4._
+import sttp.client4.httpclient._
+import sttp.client4.json4s._
 
 import scala.collection.mutable
 
@@ -40,23 +40,17 @@ class GoogleRepositoryImpl extends GoogleRepository with Logging {
       Strings.convertToBase64(s"${Config.GOOGLE_CLIENT_ID}:${Config.GOOGLE_CLIENT_SECRET}")
 
     val backend = HttpClientSyncBackend()
-    val params = mutable.Map[String, Any]()
-    params += ("client_id" -> Config.GOOGLE_CLIENT_ID)
-    params += ("client_secret" -> Config.GOOGLE_CLIENT_SECRET)
-    params += ("grant_type" -> "authorization_code")
-    params += ("code" -> code)
-    params += ("redirect_uri" -> REDIRECT_URL)
-
     val request = basicRequest
-      .body(params)
+      .body("client_id", Config.GOOGLE_CLIENT_ID)
+      .body("client_secret", Config.GOOGLE_CLIENT_ID)
+      .body("grant_type", "authorization_code")
+      .body("code", code)
+      .body("redirect_uri", REDIRECT_URL)
+      .header("Authorization", s"Basic ${basicAuth}")
+      .header("Accept", "application/json")
+      .header("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8")
       .post(uri"${TOKEN_URL}")
       .response(asJson[AccessToken])
-
-    request.headers ++ Seq(
-      Header("Authorization", s"Basic ${basicAuth}"),
-      Header("Accept", "application/json"),
-      Header("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8"),
-    )
 
     val response = request.send(backend)
     if (!response.is200) {
