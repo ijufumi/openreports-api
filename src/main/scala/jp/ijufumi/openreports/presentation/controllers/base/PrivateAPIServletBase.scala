@@ -38,7 +38,7 @@ abstract class PrivateAPIServletBase(loginService: LoginService)
         setMember(member.get)
       }
       if (member.isDefined) {
-        if (loginService.verifyWorkspaceId(workspaceId(), memberId())) {
+        if (!loginService.verifyWorkspaceId(memberId(), workspaceId())) {
           halt(forbidden("Request forbidden"))
         }
       }
