@@ -25,7 +25,7 @@ class MemberServletSpec extends ScalatraFunSuite with MockFactory {
 
   test("GET /permissions should return member permissions") {
     val member = Member("member-id", "test@example.com", "Test User", Seq.empty)
-    val workspace = Workspace("workspace-id", "Test Workspace", "owner-id", "owner-name")
+    val workspace = Workspace("workspace-id", "Test Workspace", "test-workspace")
     val function = Function("function-id", "Test Function")
     val permission = Permission(Seq(workspace), Seq(function))
 
