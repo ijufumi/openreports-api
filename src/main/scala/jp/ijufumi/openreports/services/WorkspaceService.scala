@@ -4,8 +4,6 @@ import jp.ijufumi.openreports.presentation.models.requests.{CreateWorkspace, Cre
 import jp.ijufumi.openreports.presentation.models.responses.{Lists, Workspace, WorkspaceMember}
 
 trait WorkspaceService {
-  def createAndRelevant(input: CreateWorkspace, memberId: String): Option[Workspace]
-
   def createAndRelevant(name: String, memberId: String): Option[Workspace]
 
   def getWorkspace(id: String): Option[Workspace]

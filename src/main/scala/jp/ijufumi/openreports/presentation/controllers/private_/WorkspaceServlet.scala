@@ -28,7 +28,7 @@ class WorkspaceServlet @Inject() (
   post("/") {
     val requestVal = extractBody[CreateWorkspace]()
     val _memberId = memberId()
-    val result = workspaceService.createAndRelevant(requestVal, _memberId)
+    val result = workspaceService.createAndRelevant(requestVal.name, _memberId)
     if (result.isEmpty) {
       badRequest("something wrong...")
     } else {
