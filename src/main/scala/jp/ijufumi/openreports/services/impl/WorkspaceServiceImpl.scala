@@ -43,13 +43,6 @@ class WorkspaceServiceImpl @Inject() (
                                        storageService: StorageService,
                                        repository: RoleRepository,
 ) extends WorkspaceService {
-  override def createAndRelevant(
-      input: CreateWorkspace,
-      memberId: String,
-  ): Option[Workspace] = {
-    createAndRelevant(input.name, memberId)
-  }
-
   override def createAndRelevant(name: String, memberId: String): Option[Workspace] = {
     try {
       val workspace = WorkspaceModel(IDs.ulid(), name, Strings.generateSlug())

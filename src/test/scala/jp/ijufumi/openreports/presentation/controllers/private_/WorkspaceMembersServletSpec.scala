@@ -1,6 +1,6 @@
 package jp.ijufumi.openreports.presentation.controllers.private_
 
-import jp.ijufumi.openreports.presentation.models.responses.{Member, WorkspaceMember}
+import jp.ijufumi.openreports.presentation.models.responses.{Lists, Member, WorkspaceMember}
 import jp.ijufumi.openreports.services.{LoginService, WorkspaceService}
 import org.scalamock.scalatest.MockFactory
 import org.scalatra.test.scalatest._
@@ -12,11 +12,12 @@ class WorkspaceMembersServletSpec extends ScalatraFunSuite with MockFactory {
 
   val member = Member("member-id", "test@example.com", "Test User", Seq.empty)
   val workspaceMember = WorkspaceMember("workspace-id", "member-id", "role-id", None)
+  val workspaceMembers = Lists(Seq(workspaceMember), 0, 0 ,1)
 
   test("GET / should return list of workspace members") {
     (loginService.verifyAuthorizationHeader _).expects("api-token").returns(Some(member))
     (loginService.verifyWorkspaceId _).expects(member.id, "workspace-id").returns(true)
-    (workspaceService.getWorkspaceMembers _).expects("workspace-id").returns(Seq(workspaceMember))
+    (workspaceService.getWorkspaceMembers _).expects("workspace-id").returns(workspaceMembers)
 
     get("/", headers = Map("Authorization" -> "api-token", "X-Workspace-Id" -> "workspace-id")) {
       status should equal(200)
@@ -26,7 +27,7 @@ class WorkspaceMembersServletSpec extends ScalatraFunSuite with MockFactory {
   }
 
   test("POST / should create a new workspace member") {
-    val requestBody = """{"email":"newmember@example.com","roleId":"role-id"}"""
+    val requestBody = """{"memberId":"member-id","roleId":"role-id"}"""
 
     (loginService.verifyAuthorizationHeader _).expects("api-token").returns(Some(member))
     (loginService.verifyWorkspaceId _).expects(member.id, "workspace-id").returns(true)
@@ -45,7 +46,7 @@ class WorkspaceMembersServletSpec extends ScalatraFunSuite with MockFactory {
   }
 
   test("POST / should return bad request when creation fails") {
-    val requestBody = """{"email":"newmember@example.com","roleId":"role-id"}"""
+    val requestBody = """{"memberId":"member-id","roleId":"role-id"}"""
 
     (loginService.verifyAuthorizationHeader _).expects("api-token").returns(Some(member))
     (loginService.verifyWorkspaceId _).expects(member.id, "workspace-id").returns(true)

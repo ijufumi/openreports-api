@@ -1,5 +1,6 @@
 package jp.ijufumi.openreports.presentation.controllers.private_
 
+import jp.ijufumi.openreports.domain.models.value.enums.ActionTypes
 import jp.ijufumi.openreports.presentation.models.responses.{Function, Member, Permission, Workspace}
 import jp.ijufumi.openreports.services.{LoginService, MemberService}
 import org.scalamock.scalatest.MockFactory
@@ -26,8 +27,8 @@ class MemberServletSpec extends ScalatraFunSuite with MockFactory {
   test("GET /permissions should return member permissions") {
     val member = Member("member-id", "test@example.com", "Test User", Seq.empty)
     val workspace = Workspace("workspace-id", "Test Workspace", "test-workspace")
-    val function = Function("function-id", "Test Function")
-    val permission = Permission(Seq(workspace), Seq(function))
+    val function = Function("function-id", ActionTypes.Reference)
+    val permission = Some(Permission(Seq(workspace), Seq(function)))
 
     (loginService.verifyAuthorizationHeader _).expects("api-token").returns(Some(member))
     (loginService.verifyWorkspaceId _).expects(member.id, "workspace-id").returns(true)
@@ -53,7 +54,7 @@ class MemberServletSpec extends ScalatraFunSuite with MockFactory {
 
   test("PUT /update should update member information") {
     val member = Member("member-id", "test@example.com", "Test User", Seq.empty)
-    val updatedMember = Member("member-id", "test@example.com", "Updated Name", Seq.empty)
+    val updatedMember = Some(Member("member-id", "test@example.com", "Updated Name", Seq.empty))
     val requestBody = """{"name":"Updated Name","password":"newpassword"}"""
 
     (loginService.verifyAuthorizationHeader _).expects("api-token").returns(Some(member))

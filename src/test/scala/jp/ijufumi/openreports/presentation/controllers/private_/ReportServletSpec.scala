@@ -29,7 +29,7 @@ class ReportServletSpec extends ScalatraFunSuite with MockFactory {
   }
 
   test("POST / should create a new report") {
-    val requestBody = """{"name":"New Report","reportTemplateId":"template-id","dataSourceId":"datasource-id"}"""
+    val requestBody = """{"name":"New Report","templateId":"template-id","dataSourceId":"datasource-id"}"""
 
     (loginService.verifyAuthorizationHeader _).expects("api-token").returns(Some(member))
     (loginService.verifyWorkspaceId _).expects(member.id, "workspace-id").returns(true)
@@ -48,7 +48,7 @@ class ReportServletSpec extends ScalatraFunSuite with MockFactory {
   }
 
   test("POST / should return bad request when creation fails") {
-    val requestBody = """{"name":"New Report","reportTemplateId":"template-id"}"""
+    val requestBody = """{"name":"New Report","templateId":"template-id"}"""
 
     (loginService.verifyAuthorizationHeader _).expects("api-token").returns(Some(member))
     (loginService.verifyWorkspaceId _).expects(member.id, "workspace-id").returns(true)
@@ -88,7 +88,7 @@ class ReportServletSpec extends ScalatraFunSuite with MockFactory {
   }
 
   test("GET /outputs/:id should output report") {
-    val file = new File("test-output.xlsx")
+    val file = java.nio.file.Path.of(getClass.getClassLoader.getResource("test.xlsx").toURI).toFile
 
     (loginService.verifyAuthorizationHeader _).expects("api-token").returns(Some(member))
     (loginService.verifyWorkspaceId _).expects(member.id, "workspace-id").returns(true)
@@ -100,7 +100,7 @@ class ReportServletSpec extends ScalatraFunSuite with MockFactory {
   }
 
   test("GET /outputs/:id/pdf should output report as PDF") {
-    val file = new File("test-output.pdf")
+    val file = java.nio.file.Path.of(getClass.getClassLoader.getResource("test.pdf").toURI).toFile
 
     (loginService.verifyAuthorizationHeader _).expects("api-token").returns(Some(member))
     (loginService.verifyWorkspaceId _).expects(member.id, "workspace-id").returns(true)
@@ -112,7 +112,7 @@ class ReportServletSpec extends ScalatraFunSuite with MockFactory {
   }
 
   test("PUT /:id should update a report") {
-    val requestBody = """{"name":"Updated Report"}"""
+    val requestBody = """{"name":"Updated Report","templateId":"template-id"}"""
 
     (loginService.verifyAuthorizationHeader _).expects("api-token").returns(Some(member))
     (loginService.verifyWorkspaceId _).expects(member.id, "workspace-id").returns(true)

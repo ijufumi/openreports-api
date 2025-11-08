@@ -34,7 +34,7 @@ class ReportGroupServletSpec extends ScalatraFunSuite with MockFactory {
     (loginService.verifyWorkspaceId _).expects(member.id, "workspace-id").returns(true)
     (reportService.createGroup _).expects(where { (workspaceId: String, createGroup: Any) =>
       workspaceId == "workspace-id"
-    }).returns(reportGroup)
+    }).returns(Some(reportGroup))
 
     post("/", body = requestBody.getBytes, headers = Map(
       "Authorization" -> "api-token",
