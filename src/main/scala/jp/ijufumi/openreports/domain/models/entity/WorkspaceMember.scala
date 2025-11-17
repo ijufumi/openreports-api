@@ -4,7 +4,7 @@ import jp.ijufumi.openreports.infrastructure.persistence.entity.{
   Member => MemberEntity,
   WorkspaceMember => WorkspaceMemberEntity,
 }
-import jp.ijufumi.openreports.presentation.responses.{
+import jp.ijufumi.openreports.presentation.response.{
   WorkspaceMember => WorkspaceMemberResponse,
 }
 import jp.ijufumi.openreports.presentation.request.UpdateWorkspaceMember

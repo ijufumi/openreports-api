@@ -1,6 +1,6 @@
 package jp.ijufumi.openreports.usecase.port.input
 
-import jp.ijufumi.openreports.presentation.responses.{Member, Permission}
+import jp.ijufumi.openreports.presentation.response.{Member, Permission}
 
 trait MemberUseCase {
   def update(memberId: String, name: String, password: String): Option[Member]

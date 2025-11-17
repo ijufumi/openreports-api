@@ -5,7 +5,7 @@ import jp.ijufumi.openreports.infrastructure.persistence.entity.{
 }
 import jp.ijufumi.openreports.presentation.request.UpdateReportGroup
 import jp.ijufumi.openreports.utils.Dates
-import jp.ijufumi.openreports.presentation.responses.{ReportGroup => ReportGroupResponse}
+import jp.ijufumi.openreports.presentation.response.{ReportGroup => ReportGroupResponse}
 
 case class ReportGroup(
     id: String,

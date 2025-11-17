@@ -4,7 +4,7 @@ import jp.ijufumi.openreports.domain.models.value.enums.JdbcDriverClasses
 import jp.ijufumi.openreports.infrastructure.persistence.entity.{
   DriverType => DriverTypeEntity,
 }
-import jp.ijufumi.openreports.presentation.responses.{DriverType => DriverTypeResponse}
+import jp.ijufumi.openreports.presentation.response.{DriverType => DriverTypeResponse}
 
 case class DriverType(
     id: String,

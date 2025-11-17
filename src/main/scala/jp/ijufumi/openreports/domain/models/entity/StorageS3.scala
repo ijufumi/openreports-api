@@ -4,7 +4,7 @@ import jp.ijufumi.openreports.infrastructure.persistence.entity.{
   StorageS3 => StorageS3Entity,
 }
 import jp.ijufumi.openreports.utils.Dates
-import jp.ijufumi.openreports.presentation.responses.{StorageS3 => StorageS3Response}
+import jp.ijufumi.openreports.presentation.response.{StorageS3 => StorageS3Response}
 
 case class StorageS3(
     id: String,

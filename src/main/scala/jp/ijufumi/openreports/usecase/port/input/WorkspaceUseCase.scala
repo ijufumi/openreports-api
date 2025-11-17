@@ -1,7 +1,7 @@
 package jp.ijufumi.openreports.usecase.port.input
 
 import jp.ijufumi.openreports.presentation.request.{CreateWorkspace, CreateWorkspaceMember, UpdateWorkspace, UpdateWorkspaceMember}
-import jp.ijufumi.openreports.presentation.responses.{Lists, Workspace, WorkspaceMember}
+import jp.ijufumi.openreports.presentation.response.{Lists, Workspace, WorkspaceMember}
 
 trait WorkspaceUseCase {
   def createAndRelevant(name: String, memberId: String): Option[Workspace]

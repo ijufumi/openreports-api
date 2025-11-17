@@ -3,12 +3,12 @@ package jp.ijufumi.openreports.services.impl
 
 import jp.ijufumi.openreports.configs.Config
 import jp.ijufumi.openreports.domain.models.entity.Member
-import jp.ijufumi.openreports.infrastructure.datastores.cache.CacheWrapper
+import jp.ijufumi.openreports.infrastructure.cache.CacheWrapper
 import jp.ijufumi.openreports.domain.repository.{
   MemberRepository,
   WorkspaceRepository,
 }
-import jp.ijufumi.openreports.infrastructure.google.auth.GoogleRepository
+import jp.ijufumi.openreports.infrastructure.external.google.GoogleRepository
 import jp.ijufumi.openreports.presentation.request.Login
 import jp.ijufumi.openreports.usecase.port.input.WorkspaceUseCase
 import jp.ijufumi.openreports.utils.Hash

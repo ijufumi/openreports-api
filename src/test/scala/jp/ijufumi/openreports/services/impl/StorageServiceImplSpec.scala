@@ -1,8 +1,8 @@
 package jp.ijufumi.openreports.services.impl
 
 import _root_.jp.ijufumi.openreports.domain.models.value.enums.StorageTypes
-import _root_.jp.ijufumi.openreports.infrastructure.filestores.local.{LocalFileRepository, LocalSeedFileRepository}
-import _root_.jp.ijufumi.openreports.infrastructure.filestores.s3.AwsS3Repository
+import _root_.jp.ijufumi.openreports.infrastructure.storage.local.{LocalFileRepository, LocalSeedFileRepository}
+import _root_.jp.ijufumi.openreports.infrastructure.storage.s3.AwsS3Repository
 import org.mockito.Mockito._
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatestplus.mockito.MockitoSugar

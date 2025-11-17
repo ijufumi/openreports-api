@@ -1,7 +1,7 @@
 package jp.ijufumi.openreports.usecase.port.input
 
 import jp.ijufumi.openreports.presentation.request.{GoogleLogin, Login}
-import jp.ijufumi.openreports.presentation.responses.Member
+import jp.ijufumi.openreports.presentation.response.Member
 
 trait LoginUseCase {
   def login(input: Login): Option[Member]

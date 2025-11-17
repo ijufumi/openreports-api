@@ -10,7 +10,7 @@ import jp.ijufumi.openreports.domain.repository.{
 }
 import jp.ijufumi.openreports.infrastructure.external.google.GoogleRepository
 import jp.ijufumi.openreports.presentation.request.{GoogleLogin, Login}
-import jp.ijufumi.openreports.presentation.responses.Member
+import jp.ijufumi.openreports.presentation.response.Member
 import jp.ijufumi.openreports.domain.models.entity.{Member => MemberModel}
 import slick.jdbc.PostgresProfile.api._
 import jp.ijufumi.openreports.domain.models.entity.Member.conversions._

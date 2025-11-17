@@ -1,7 +1,7 @@
 package jp.ijufumi.openreports.usecase.port.input
 
 import jp.ijufumi.openreports.presentation.request.{CreateReport, CreateReportGroup, CreateTemplate, UpdateReport, UpdateReportGroup, UpdateTemplate}
-import jp.ijufumi.openreports.presentation.responses.{Lists, Report, ReportGroup, ReportTemplate}
+import jp.ijufumi.openreports.presentation.response.{Lists, Report, ReportGroup, ReportTemplate}
 import org.scalatra.servlet.FileItem
 
 import java.io.File

@@ -2,7 +2,7 @@ package jp.ijufumi.openreports.domain.models.entity
 
 import jp.ijufumi.openreports.domain.models.value.enums.RoleTypes
 import jp.ijufumi.openreports.infrastructure.persistence.entity.{Role => RoleEntity}
-import jp.ijufumi.openreports.presentation.responses.{Role => RoleResponse}
+import jp.ijufumi.openreports.presentation.response.{Role => RoleResponse}
 import jp.ijufumi.openreports.utils.Dates
 
 case class Role(

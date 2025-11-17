@@ -18,7 +18,7 @@ import jp.ijufumi.openreports.presentation.request.{
   UpdateWorkspace,
   UpdateWorkspaceMember,
 }
-import jp.ijufumi.openreports.presentation.responses.{Lists, Workspace, WorkspaceMember}
+import jp.ijufumi.openreports.presentation.response.{Lists, Workspace, WorkspaceMember}
 import jp.ijufumi.openreports.domain.models.entity.WorkspaceMember.conversions._
 import jp.ijufumi.openreports.domain.models.entity.Workspace.conversions._
 import jp.ijufumi.openreports.domain.models.entity.{

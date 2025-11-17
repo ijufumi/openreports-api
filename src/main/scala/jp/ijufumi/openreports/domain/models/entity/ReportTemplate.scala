@@ -4,7 +4,7 @@ import jp.ijufumi.openreports.domain.models.value.enums.StorageTypes
 import jp.ijufumi.openreports.infrastructure.persistence.entity.{
   ReportTemplate => ReportTemplateEntity,
 }
-import jp.ijufumi.openreports.presentation.responses.{ReportTemplate => ReportTemplateResponse}
+import jp.ijufumi.openreports.presentation.response.{ReportTemplate => ReportTemplateResponse}
 import jp.ijufumi.openreports.presentation.request.UpdateTemplate
 import jp.ijufumi.openreports.utils.Dates
 

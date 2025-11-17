@@ -7,7 +7,7 @@ import jp.ijufumi.openreports.usecase.port.input.DataSourceUseCase
 import jp.ijufumi.openreports.utils.{IDs, Logging}
 import jp.ijufumi.openreports.infrastructure.persistence.database.pool.ConnectionPool
 import jp.ijufumi.openreports.presentation.request.{CreateDataSource, UpdateDataSource}
-import jp.ijufumi.openreports.presentation.responses.{DataSource, Lists}
+import jp.ijufumi.openreports.presentation.response.{DataSource, Lists}
 import jp.ijufumi.openreports.domain.models.entity.{DataSource => DataSourceModel}
 import jp.ijufumi.openreports.domain.models.entity.DataSource.conversions._
 import slick.jdbc.JdbcBackend.Database

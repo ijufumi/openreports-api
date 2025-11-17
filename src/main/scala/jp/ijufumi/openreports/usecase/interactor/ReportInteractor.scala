@@ -17,7 +17,7 @@ import jp.ijufumi.openreports.presentation.request.{
   UpdateReportGroup,
   UpdateTemplate,
 }
-import jp.ijufumi.openreports.presentation.responses.{
+import jp.ijufumi.openreports.presentation.response.{
   Lists,
   Report,
   ReportGroup,

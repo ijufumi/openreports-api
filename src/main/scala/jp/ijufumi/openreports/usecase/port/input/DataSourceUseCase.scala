@@ -1,7 +1,7 @@
 package jp.ijufumi.openreports.usecase.port.input
 
 import jp.ijufumi.openreports.presentation.request.{CreateDataSource, UpdateDataSource}
-import jp.ijufumi.openreports.presentation.responses.{DataSource, Lists}
+import jp.ijufumi.openreports.presentation.response.{DataSource, Lists}
 
 import java.sql.Connection
 
