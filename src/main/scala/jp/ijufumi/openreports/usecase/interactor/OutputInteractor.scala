@@ -2,7 +2,7 @@ package jp.ijufumi.openreports.usecase.interactor
 
 import com.google.inject.Inject
 import jp.ijufumi.openreports.configs.Config
-import jp.ijufumi.openreports.usecase.port.input.{DataSourceService, OutputUseCase, StorageUseCase}
+import jp.ijufumi.openreports.usecase.port.input.{DataSourceUseCase, OutputUseCase, StorageUseCase}
 import jp.ijufumi.openreports.utils.{Dates, Logging}
 import jp.ijufumi.openreports.domain.models.value.enums.StorageTypes
 import org.jxls.builder.JxlsOutputFile
@@ -16,7 +16,7 @@ import java.nio.file.{FileSystems, Files, Path}
 import java.time.LocalDateTime
 
 class OutputInteractor @Inject() (
-    dataSourceService: DataSourceService,
+    dataSourceService: DataSourceUseCase,
     storageService: StorageUseCase,
 ) extends OutputUseCase
     with Logging {

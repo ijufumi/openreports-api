@@ -24,7 +24,7 @@ import jp.ijufumi.openreports.presentation.response.{
   ReportTemplate,
 }
 import jp.ijufumi.openreports.usecase.port.input.{
-  DataSourceService,
+  DataSourceUseCase,
   OutputUseCase,
   ReportUseCase,
   StorageUseCase,
@@ -51,7 +51,7 @@ class ReportInteractor @Inject() (
     templateRepository: ReportTemplateRepository,
     reportGroupRepository: ReportGroupRepository,
     reportGroupReportRepository: ReportGroupReportRepository,
-    dataSourceService: DataSourceService,
+    dataSourceService: DataSourceUseCase,
     outputService: OutputUseCase,
     storageService: StorageUseCase,
 ) extends ReportUseCase {

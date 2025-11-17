@@ -28,7 +28,7 @@ import jp.ijufumi.openreports.domain.models.entity.{
   Workspace => WorkspaceModel,
   WorkspaceMember => WorkspaceMemberModel,
 }
-import jp.ijufumi.openreports.usecase.port.input.{StorageService, WorkspaceUseCase}
+import jp.ijufumi.openreports.usecase.port.input.{StorageUseCase, WorkspaceUseCase}
 import jp.ijufumi.openreports.utils.{IDs, Strings}
 import slick.jdbc.JdbcBackend.Database
 import slick.jdbc.PostgresProfile.api._
@@ -40,7 +40,7 @@ class WorkspaceInteractor @Inject() (
                                        storageRepository: StorageS3Repository,
                                        reportRepository: ReportRepository,
                                        reportTemplateRepository: ReportTemplateRepository,
-                                       storageService: StorageService,
+                                       storageService: StorageUseCase,
                                        repository: RoleRepository,
 ) extends WorkspaceUseCase {
   override def createAndRelevant(name: String, memberId: String): Option[Workspace] = {
