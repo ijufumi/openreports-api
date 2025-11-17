@@ -1,4 +1,4 @@
-package jp.ijufumi.openreports.presentation.controllers.public_
+package jp.ijufumi.openreports.presentation.controller.public_
 
 import jp.ijufumi.openreports.presentation.request.Login
 import jp.ijufumi.openreports.presentation.response.Member

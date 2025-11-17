@@ -1,4 +1,4 @@
-package jp.ijufumi.openreports.presentation.controllers.public_
+package jp.ijufumi.openreports.presentation.controller.public_
 
 import jp.ijufumi.openreports.usecase.port.input.RoleUseCase
 import org.scalamock.scalatest.MockFactory

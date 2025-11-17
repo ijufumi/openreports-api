@@ -1,4 +1,4 @@
-package jp.ijufumi.openreports.presentation.controllers.public_
+package jp.ijufumi.openreports.presentation.controller.public_
 
 import org.scalatra.test.scalatest._
 

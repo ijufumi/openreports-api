@@ -1,4 +1,4 @@
-package jp.ijufumi.openreports.services.impl
+package jp.ijufumi.openreports.usecase.interactor
 
 import _root_.jp.ijufumi.openreports.domain.models.value.enums.StorageTypes
 import _root_.jp.ijufumi.openreports.infrastructure.storage.local.{LocalFileRepository, LocalSeedFileRepository}

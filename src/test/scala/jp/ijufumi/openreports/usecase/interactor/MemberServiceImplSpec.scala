@@ -1,5 +1,5 @@
 
-package jp.ijufumi.openreports.services.impl
+package jp.ijufumi.openreports.usecase.interactor
 
 import jp.ijufumi.openreports.domain.models.entity.{Function, Member, RoleFunction, Workspace, WorkspaceMember}
 import jp.ijufumi.openreports.domain.repository._

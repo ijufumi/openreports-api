@@ -1,4 +1,4 @@
-package jp.ijufumi.openreports.presentation.controllers.private_
+package jp.ijufumi.openreports.presentation.controller.private_
 
 import jp.ijufumi.openreports.domain.models.value.enums.StorageTypes
 import jp.ijufumi.openreports.presentation.response.{Lists, Member, ReportTemplate}

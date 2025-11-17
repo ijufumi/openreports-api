@@ -1,4 +1,4 @@
-package jp.ijufumi.openreports.presentation.controllers.private_
+package jp.ijufumi.openreports.presentation.controller.private_
 
 import jp.ijufumi.openreports.presentation.response.{DataSource, Lists, Member}
 import jp.ijufumi.openreports.usecase.port.input.{DataSourceUseCase, LoginUseCase}

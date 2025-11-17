@@ -1,5 +1,5 @@
 
-package jp.ijufumi.openreports.services.impl
+package jp.ijufumi.openreports.usecase.interactor
 
 import jp.ijufumi.openreports.configs.Config
 import jp.ijufumi.openreports.domain.models.entity.Member
