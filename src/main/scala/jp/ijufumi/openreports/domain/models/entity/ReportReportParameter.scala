@@ -1,6 +1,6 @@
 package jp.ijufumi.openreports.domain.models.entity
 
-import jp.ijufumi.openreports.infrastructure.datastores.database.entities.{
+import jp.ijufumi.openreports.infrastructure.persistence.entity.{
   ReportReportParameter => ReportReportParameterEntity,
 }
 import jp.ijufumi.openreports.utils.Dates

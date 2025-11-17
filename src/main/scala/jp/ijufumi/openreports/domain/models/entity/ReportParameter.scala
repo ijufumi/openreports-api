@@ -1,10 +1,10 @@
 package jp.ijufumi.openreports.domain.models.entity
 
 import jp.ijufumi.openreports.domain.models.value.enums.{EmbeddedFunctionTypes, ParameterTypes}
-import jp.ijufumi.openreports.infrastructure.datastores.database.entities.{
+import jp.ijufumi.openreports.infrastructure.persistence.entity.{
   ReportParameter => ReportParameterEntity,
 }
-import jp.ijufumi.openreports.presentation.models.responses.{
+import jp.ijufumi.openreports.presentation.response.{
   ReportParameter => ReportParameterResponse,
 }
 import jp.ijufumi.openreports.utils.Dates

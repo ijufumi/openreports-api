@@ -1,0 +1,14 @@
+package jp.ijufumi.openreports.usecase.port.input
+
+import java.nio.file.Path
+import jp.ijufumi.openreports.domain.models.value.enums.StorageTypes
+
+trait StorageUseCase {
+  def url(workspaceId: String, key: String, storageType: StorageTypes.StorageType): String
+
+  def get(workspaceId: String, key: String, storageType: StorageTypes.StorageType): Path
+
+  def create(workspaceId: String, key: String, storageType: StorageTypes.StorageType, file: Path): Unit
+
+  def delete(workspaceId: String, key: String, storageType: StorageTypes.StorageType): Unit
+}

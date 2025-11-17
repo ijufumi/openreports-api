@@ -1,11 +1,11 @@
 package jp.ijufumi.openreports.domain.models.entity
 
 import jp.ijufumi.openreports.domain.models.value.enums.StorageTypes
-import jp.ijufumi.openreports.infrastructure.datastores.database.entities.{
+import jp.ijufumi.openreports.infrastructure.persistence.entity.{
   ReportTemplate => ReportTemplateEntity,
 }
-import jp.ijufumi.openreports.presentation.models.responses.{ReportTemplate => ReportTemplateResponse}
-import jp.ijufumi.openreports.presentation.models.requests.UpdateTemplate
+import jp.ijufumi.openreports.presentation.response.{ReportTemplate => ReportTemplateResponse}
+import jp.ijufumi.openreports.presentation.request.UpdateTemplate
 import jp.ijufumi.openreports.utils.Dates
 
 case class ReportTemplate(

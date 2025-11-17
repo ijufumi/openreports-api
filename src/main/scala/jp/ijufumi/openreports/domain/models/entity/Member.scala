@@ -1,7 +1,7 @@
 package jp.ijufumi.openreports.domain.models.entity
 
-import jp.ijufumi.openreports.infrastructure.datastores.database.entities.{Member => MemberEntity}
-import jp.ijufumi.openreports.presentation.models.responses.{Member => MemberResponse}
+import jp.ijufumi.openreports.infrastructure.persistence.entity.{Member => MemberEntity}
+import jp.ijufumi.openreports.presentation.response.{Member => MemberResponse}
 import jp.ijufumi.openreports.utils.Dates
 
 case class Member(
