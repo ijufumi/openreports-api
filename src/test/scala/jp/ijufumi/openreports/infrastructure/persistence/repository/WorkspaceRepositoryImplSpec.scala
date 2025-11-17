@@ -1,34 +1,49 @@
 package jp.ijufumi.openreports.infrastructure.persistence.repository
 
-import jp.ijufumi.openreports.domain.models.entity.Workspace
+import jp.ijufumi.openreports.domain.models.entity.{Workspace, WorkspaceMember}
+import jp.ijufumi.openreports.infrastructure.persistence.H2DatabaseHelper
+import jp.ijufumi.openreports.utils.IDs
+import org.scalatest.{BeforeAndAfterAll, BeforeAndAfterEach}
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
-import org.scalatestplus.mockito.MockitoSugar
 import slick.jdbc.JdbcBackend.Database
+import slick.jdbc.H2Profile.api._
 
-class WorkspaceRepositoryImplSpec extends AnyFlatSpec with Matchers with MockitoSugar {
+import scala.concurrent.Await
+import scala.concurrent.duration._
+
+class WorkspaceRepositoryImplSpec extends AnyFlatSpec with Matchers with BeforeAndAfterAll with BeforeAndAfterEach {
+
+  var db: Database = _
+  val repository = new WorkspaceRepositoryImpl()
+
+  override def beforeAll(): Unit = {
+    super.beforeAll()
+    db = H2DatabaseHelper.createDatabase("workspace_test")
+    H2DatabaseHelper.createSchema(db, workspaceQuery, workspaceMemberQuery)
+  }
+
+  override def afterAll(): Unit = {
+    super.afterAll()
+    H2DatabaseHelper.closeDatabase(db)
+  }
+
+  override def afterEach(): Unit = {
+    super.afterEach()
+    H2DatabaseHelper.truncateTables(db, workspaceMemberQuery, workspaceQuery)
+  }
 
   "WorkspaceRepositoryImpl" should "be instantiable" in {
     noException should be thrownBy new WorkspaceRepositoryImpl()
   }
 
-  // Note: The following tests require a test database connection
-  // They should be implemented as integration tests with a test database
-  // For proper testing, consider:
-  // 1. Using an in-memory H2 database for testing
-  // 2. Using testcontainers with PostgreSQL
-  // 3. Creating a separate test configuration with test database
-
-  /*
   "getById" should "return workspace when exists" in {
-    val db = mock[Database]
-    val repository = new WorkspaceRepositoryImpl()
-    val workspaceId = "test-workspace-id"
+    val workspaceId = IDs.ulid()
 
     val workspace = Workspace(
       id = workspaceId,
       name = "Test Workspace",
-      path = "test-workspace",
+      slug = "test-workspace",
       createdAt = System.currentTimeMillis(),
       updatedAt = System.currentTimeMillis()
     )
@@ -40,35 +55,32 @@ class WorkspaceRepositoryImplSpec extends AnyFlatSpec with Matchers with Mockito
     result should be(defined)
     result.get.id should equal(workspaceId)
     result.get.name should equal("Test Workspace")
-    result.get.path should equal("test-workspace")
+    result.get.slug should equal("test-workspace")
   }
 
   it should "return None when workspace doesn't exist" in {
-    val db = mock[Database]
-    val repository = new WorkspaceRepositoryImpl()
-
     val result = repository.getById(db, "non-existent-id")
 
     result should be(None)
   }
 
   "getsByMemberId" should "return workspaces for member" in {
-    val db = mock[Database]
-    val repository = new WorkspaceRepositoryImpl()
-    val memberId = "member-id"
+    val memberId = IDs.ulid()
+    val workspace1Id = IDs.ulid()
+    val workspace2Id = IDs.ulid()
 
     val workspace1 = Workspace(
-      id = "workspace-1",
+      id = workspace1Id,
       name = "Workspace 1",
-      path = "workspace-1",
+      slug = "workspace-1",
       createdAt = System.currentTimeMillis(),
       updatedAt = System.currentTimeMillis()
     )
 
     val workspace2 = Workspace(
-      id = "workspace-2",
+      id = workspace2Id,
       name = "Workspace 2",
-      path = "workspace-2",
+      slug = "workspace-2",
       createdAt = System.currentTimeMillis(),
       updatedAt = System.currentTimeMillis()
     )
@@ -76,31 +88,47 @@ class WorkspaceRepositoryImplSpec extends AnyFlatSpec with Matchers with Mockito
     repository.register(db, workspace1)
     repository.register(db, workspace2)
 
-    // Assuming workspace member associations are set up
+    // Create workspace member associations
+    val workspaceMember1 = WorkspaceMember(
+      workspaceId = workspace1Id,
+      memberId = memberId,
+      roleId = "role-id",
+      createdAt = System.currentTimeMillis(),
+      updatedAt = System.currentTimeMillis()
+    )
+
+    val workspaceMember2 = WorkspaceMember(
+      workspaceId = workspace2Id,
+      memberId = memberId,
+      roleId = "role-id",
+      createdAt = System.currentTimeMillis(),
+      updatedAt = System.currentTimeMillis()
+    )
+
+    Await.result(db.run(workspaceMemberQuery += workspaceMember1), 5.seconds)
+    Await.result(db.run(workspaceMemberQuery += workspaceMember2), 5.seconds)
+
     val result = repository.getsByMemberId(db, memberId)
 
     result should not be empty
-    result.exists(_.id == "workspace-1") should be(true)
-    result.exists(_.id == "workspace-2") should be(true)
+    result.length should be(2)
+    result.exists(_.id == workspace1Id) should be(true)
+    result.exists(_.id == workspace2Id) should be(true)
   }
 
   it should "return empty sequence when member has no workspaces" in {
-    val db = mock[Database]
-    val repository = new WorkspaceRepositoryImpl()
-
     val result = repository.getsByMemberId(db, "non-existent-member-id")
 
     result should be(empty)
   }
 
   "register" should "create new workspace and return it" in {
-    val db = mock[Database]
-    val repository = new WorkspaceRepositoryImpl()
+    val workspaceId = IDs.ulid()
 
     val workspace = Workspace(
-      id = "new-workspace-id",
+      id = workspaceId,
       name = "New Workspace",
-      path = "new-workspace",
+      slug = "new-workspace",
       createdAt = System.currentTimeMillis(),
       updatedAt = System.currentTimeMillis()
     )
@@ -113,13 +141,12 @@ class WorkspaceRepositoryImplSpec extends AnyFlatSpec with Matchers with Mockito
   }
 
   "update" should "update existing workspace" in {
-    val db = mock[Database]
-    val repository = new WorkspaceRepositoryImpl()
+    val workspaceId = IDs.ulid()
 
     val workspace = Workspace(
-      id = "update-workspace-id",
+      id = workspaceId,
       name = "Old Name",
-      path = "old-path",
+      slug = "old-slug",
       createdAt = System.currentTimeMillis(),
       updatedAt = System.currentTimeMillis()
     )
@@ -128,7 +155,7 @@ class WorkspaceRepositoryImplSpec extends AnyFlatSpec with Matchers with Mockito
 
     val updatedWorkspace = workspace.copy(
       name = "Updated Name",
-      path = "updated-path",
+      slug = "updated-slug",
       updatedAt = System.currentTimeMillis()
     )
 
@@ -136,7 +163,6 @@ class WorkspaceRepositoryImplSpec extends AnyFlatSpec with Matchers with Mockito
 
     result should be(defined)
     result.get.name should equal("Updated Name")
-    result.get.path should equal("updated-path")
+    result.get.slug should equal("updated-slug")
   }
-  */
 }

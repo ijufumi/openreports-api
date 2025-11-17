@@ -1,30 +1,42 @@
 package jp.ijufumi.openreports.infrastructure.persistence.repository
 
 import jp.ijufumi.openreports.domain.models.entity.StorageS3
+import jp.ijufumi.openreports.infrastructure.persistence.H2DatabaseHelper
+import jp.ijufumi.openreports.utils.IDs
+import org.scalatest.{BeforeAndAfterAll, BeforeAndAfterEach}
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
-import org.scalatestplus.mockito.MockitoSugar
 import slick.jdbc.JdbcBackend.Database
+import slick.jdbc.H2Profile.api._
 
-class StorageS3RepositoryImplSpec extends AnyFlatSpec with Matchers with MockitoSugar {
+class StorageS3RepositoryImplSpec extends AnyFlatSpec with Matchers with BeforeAndAfterAll with BeforeAndAfterEach {
+
+  var db: Database = _
+  val repository = new StorageS3RepositoryImpl()
+
+  override def beforeAll(): Unit = {
+    super.beforeAll()
+    db = H2DatabaseHelper.createDatabase("storage_test")
+    H2DatabaseHelper.createSchema(db, storageQuery)
+  }
+
+  override def afterAll(): Unit = {
+    super.afterAll()
+    H2DatabaseHelper.closeDatabase(db)
+  }
+
+  override def afterEach(): Unit = {
+    super.afterEach()
+    H2DatabaseHelper.truncateTables(db, storageQuery)
+  }
 
   "StorageS3RepositoryImpl" should "be instantiable" in {
     noException should be thrownBy new StorageS3RepositoryImpl()
   }
 
-  // Note: The following tests require a test database connection
-  // They should be implemented as integration tests with a test database
-  // For proper testing, consider:
-  // 1. Using an in-memory H2 database for testing
-  // 2. Using testcontainers with PostgreSQL
-  // 3. Creating a separate test configuration with test database
-
-  /*
   "getById" should "return storage when exists" in {
-    val db = mock[Database]
-    val repository = new StorageS3RepositoryImpl()
-    val workspaceId = "workspace-id"
-    val storageId = "storage-id"
+    val workspaceId = IDs.ulid()
+    val storageId = IDs.ulid()
 
     val storage = StorageS3(
       id = storageId,
@@ -48,21 +60,16 @@ class StorageS3RepositoryImplSpec extends AnyFlatSpec with Matchers with Mockito
   }
 
   it should "return None when storage doesn't exist" in {
-    val db = mock[Database]
-    val repository = new StorageS3RepositoryImpl()
-
     val result = repository.getById(db, "workspace-id", "non-existent-id")
 
     result should be(None)
   }
 
   "gets" should "return all storages for workspace" in {
-    val db = mock[Database]
-    val repository = new StorageS3RepositoryImpl()
-    val workspaceId = "workspace-id"
+    val workspaceId = IDs.ulid()
 
     val storage1 = StorageS3(
-      id = "storage-1",
+      id = IDs.ulid(),
       workspaceId = workspaceId,
       s3BucketName = "bucket-1",
       awsAccessKeyId = "access-key-1",
@@ -73,7 +80,7 @@ class StorageS3RepositoryImplSpec extends AnyFlatSpec with Matchers with Mockito
     )
 
     val storage2 = StorageS3(
-      id = "storage-2",
+      id = IDs.ulid(),
       workspaceId = workspaceId,
       s3BucketName = "bucket-2",
       awsAccessKeyId = "access-key-2",
@@ -89,25 +96,19 @@ class StorageS3RepositoryImplSpec extends AnyFlatSpec with Matchers with Mockito
     val result = repository.gets(db, workspaceId)
 
     result should not be empty
-    result.length should be >= 2
+    result.length should be(2)
   }
 
   it should "return empty sequence when workspace has no storages" in {
-    val db = mock[Database]
-    val repository = new StorageS3RepositoryImpl()
-
     val result = repository.gets(db, "non-existent-workspace-id")
 
     result should be(empty)
   }
 
   "register" should "create new storage and return it" in {
-    val db = mock[Database]
-    val repository = new StorageS3RepositoryImpl()
-
     val storage = StorageS3(
-      id = "new-storage-id",
-      workspaceId = "workspace-id",
+      id = IDs.ulid(),
+      workspaceId = IDs.ulid(),
       s3BucketName = "new-bucket",
       awsAccessKeyId = "new-access-key",
       awsSecretAccessKey = "new-secret-key",
@@ -124,12 +125,9 @@ class StorageS3RepositoryImplSpec extends AnyFlatSpec with Matchers with Mockito
   }
 
   "update" should "update existing storage" in {
-    val db = mock[Database]
-    val repository = new StorageS3RepositoryImpl()
-
     val storage = StorageS3(
-      id = "update-storage-id",
-      workspaceId = "workspace-id",
+      id = IDs.ulid(),
+      workspaceId = IDs.ulid(),
       s3BucketName = "old-bucket",
       awsAccessKeyId = "old-access-key",
       awsSecretAccessKey = "old-secret-key",
@@ -154,32 +152,4 @@ class StorageS3RepositoryImplSpec extends AnyFlatSpec with Matchers with Mockito
     result.get.awsAccessKeyId should equal("updated-access-key")
     result.get.awsRegion should equal("eu-west-1")
   }
-
-  it should "update timestamp when updating storage" in {
-    val db = mock[Database]
-    val repository = new StorageS3RepositoryImpl()
-
-    val storage = StorageS3(
-      id = "timestamp-test-storage",
-      workspaceId = "workspace-id",
-      s3BucketName = "bucket",
-      awsAccessKeyId = "access-key",
-      awsSecretAccessKey = "secret-key",
-      awsRegion = "us-east-1",
-      createdAt = System.currentTimeMillis(),
-      updatedAt = System.currentTimeMillis()
-    )
-
-    repository.register(db, storage)
-
-    val oldTimestamp = storage.updatedAt
-    Thread.sleep(100) // Small delay to ensure timestamp difference
-
-    repository.update(db, storage)
-
-    val result = repository.getById(db, storage.workspaceId, storage.id)
-    result should be(defined)
-    result.get.updatedAt should be > oldTimestamp
-  }
-  */
 }

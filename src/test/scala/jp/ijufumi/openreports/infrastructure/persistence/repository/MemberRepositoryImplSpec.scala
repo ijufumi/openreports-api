@@ -1,29 +1,41 @@
 package jp.ijufumi.openreports.infrastructure.persistence.repository
 
 import jp.ijufumi.openreports.domain.models.entity.Member
+import jp.ijufumi.openreports.infrastructure.persistence.H2DatabaseHelper
+import jp.ijufumi.openreports.utils.IDs
+import org.scalatest.{BeforeAndAfterAll, BeforeAndAfterEach}
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
-import org.scalatestplus.mockito.MockitoSugar
 import slick.jdbc.JdbcBackend.Database
+import slick.jdbc.H2Profile.api._
 
-class MemberRepositoryImplSpec extends AnyFlatSpec with Matchers with MockitoSugar {
+class MemberRepositoryImplSpec extends AnyFlatSpec with Matchers with BeforeAndAfterAll with BeforeAndAfterEach {
+
+  var db: Database = _
+  val repository = new MemberRepositoryImpl()
+
+  override def beforeAll(): Unit = {
+    super.beforeAll()
+    db = H2DatabaseHelper.createDatabase("member_test")
+    H2DatabaseHelper.createSchema(db, memberQuery)
+  }
+
+  override def afterAll(): Unit = {
+    super.afterAll()
+    H2DatabaseHelper.closeDatabase(db)
+  }
+
+  override def afterEach(): Unit = {
+    super.afterEach()
+    H2DatabaseHelper.truncateTables(db, memberQuery)
+  }
 
   "MemberRepositoryImpl" should "be instantiable" in {
     noException should be thrownBy new MemberRepositoryImpl()
   }
 
-  // Note: The following tests require a test database connection
-  // They should be implemented as integration tests with a test database
-  // For proper testing, consider:
-  // 1. Using an in-memory H2 database for testing
-  // 2. Using testcontainers with PostgreSQL
-  // 3. Creating a separate test configuration with test database
-
-  /*
   "getById" should "return member when exists" in {
-    val db = mock[Database]
-    val repository = new MemberRepositoryImpl()
-    val memberId = "test-member-id"
+    val memberId = IDs.ulid()
 
     val member = Member(
       id = memberId,
@@ -35,7 +47,6 @@ class MemberRepositoryImplSpec extends AnyFlatSpec with Matchers with MockitoSug
       updatedAt = System.currentTimeMillis()
     )
 
-    // Setup test data in database
     repository.register(db, member)
 
     val result = repository.getById(db, memberId)
@@ -47,21 +58,17 @@ class MemberRepositoryImplSpec extends AnyFlatSpec with Matchers with MockitoSug
   }
 
   it should "return None when member doesn't exist" in {
-    val db = mock[Database]
-    val repository = new MemberRepositoryImpl()
-
     val result = repository.getById(db, "non-existent-id")
 
     result should be(None)
   }
 
   "getByGoogleId" should "return member when exists" in {
-    val db = mock[Database]
-    val repository = new MemberRepositoryImpl()
     val googleId = "google-123456"
+    val memberId = IDs.ulid()
 
     val member = Member(
-      id = "member-id",
+      id = memberId,
       googleId = Some(googleId),
       email = "test@example.com",
       password = "",
@@ -79,21 +86,17 @@ class MemberRepositoryImplSpec extends AnyFlatSpec with Matchers with MockitoSug
   }
 
   it should "return None when member with google ID doesn't exist" in {
-    val db = mock[Database]
-    val repository = new MemberRepositoryImpl()
-
     val result = repository.getByGoogleId(db, "non-existent-google-id")
 
     result should be(None)
   }
 
   "getMemberByEmail" should "return member when exists" in {
-    val db = mock[Database]
-    val repository = new MemberRepositoryImpl()
     val email = "unique@example.com"
+    val memberId = IDs.ulid()
 
     val member = Member(
-      id = "member-id",
+      id = memberId,
       googleId = None,
       email = email,
       password = "hashed-password",
@@ -111,20 +114,16 @@ class MemberRepositoryImplSpec extends AnyFlatSpec with Matchers with MockitoSug
   }
 
   it should "return None when member with email doesn't exist" in {
-    val db = mock[Database]
-    val repository = new MemberRepositoryImpl()
-
     val result = repository.getMemberByEmail(db, "nonexistent@example.com")
 
     result should be(None)
   }
 
   "register" should "create new member and return it" in {
-    val db = mock[Database]
-    val repository = new MemberRepositoryImpl()
+    val memberId = IDs.ulid()
 
     val member = Member(
-      id = "new-member-id",
+      id = memberId,
       googleId = None,
       email = "new@example.com",
       password = "hashed-password",
@@ -141,11 +140,10 @@ class MemberRepositoryImplSpec extends AnyFlatSpec with Matchers with MockitoSug
   }
 
   "update" should "update existing member" in {
-    val db = mock[Database]
-    val repository = new MemberRepositoryImpl()
+    val memberId = IDs.ulid()
 
     val member = Member(
-      id = "update-member-id",
+      id = memberId,
       googleId = None,
       email = "update@example.com",
       password = "old-password",
@@ -169,5 +167,4 @@ class MemberRepositoryImplSpec extends AnyFlatSpec with Matchers with MockitoSug
     result.get.name should equal("Updated Name")
     result.get.password should equal("new-password")
   }
-  */
 }

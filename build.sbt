@@ -22,6 +22,7 @@ val DotEnvJavaVersion = "3.2.0"
 val JettyVersion = "12.0.23"
 val PostgresVersion = "42.7.7"
 val ServletAPIVersion = "6.1.0"
+val H2Version = "2.3.232"
 
 ThisBuild / scalaVersion := Scala212Version
 ThisBuild / organization := "jp.ijufumi"
@@ -41,6 +42,7 @@ lazy val root = (project in file("."))
       "org.scalatra" %% "scalatra-scalatest-jakarta" % ScalatraVersion % "test",
       "org.scalamock" %% "scalamock" % "6.0.0-M2" % "test",
       "org.scalatestplus" %% "mockito-4-6" % "3.2.14.0" % "test",
+      "com.h2database" % "h2" % H2Version % "test",
       "ch.qos.logback" % "logback-classic" % LogbackVersion % "runtime",
       "org.slf4j" % "slf4j-api" % SLF4JVersion,
       "org.slf4j" % "jcl-over-slf4j" % SLF4JVersion,
