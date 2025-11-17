@@ -1,4 +1,4 @@
-package jp.ijufumi.openreports.infrastructure.persistence.entity
+package jp.ijufumi.openreports.infrastructure.persistence
 
 import jp.ijufumi.openreports.domain.models.value.enums.{
   ActionTypes,
@@ -11,7 +11,7 @@ import jp.ijufumi.openreports.domain.models.value.enums.{
 import slick.jdbc.JdbcType
 import slick.ast.BaseTypedType
 
-package object entities {
+package object entity {
   import slick.jdbc.PostgresProfile.api._
 
   abstract class EntityBase[T](tag: Tag, tableName: String) extends Table[T](tag, tableName) {
