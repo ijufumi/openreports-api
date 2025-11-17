@@ -1,12 +1,12 @@
 package jp.ijufumi.openreports.domain.models.entity
 
-import jp.ijufumi.openreports.infrastructure.datastores.database.entities.{
+import jp.ijufumi.openreports.infrastructure.persistence.entity.{
   DataSource => DataSourceEntity,
   DriverType => DriverTypeEntity,
 }
-import jp.ijufumi.openreports.presentation.models.requests.UpdateDataSource
+import jp.ijufumi.openreports.presentation.request.UpdateDataSource
 import jp.ijufumi.openreports.utils.Dates
-import jp.ijufumi.openreports.presentation.models.responses.{DataSource => DataSourceResponse}
+import jp.ijufumi.openreports.presentation.response.{DataSource => DataSourceResponse}
 import jp.ijufumi.openreports.domain.models.entity.DriverType.conversions._
 
 case class DataSource(

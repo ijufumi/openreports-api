@@ -1,8 +1,8 @@
 package jp.ijufumi.openreports.presentation.controllers.public_
 
-import jp.ijufumi.openreports.presentation.models.requests.Login
-import jp.ijufumi.openreports.presentation.models.responses.Member
-import jp.ijufumi.openreports.services.LoginService
+import jp.ijufumi.openreports.presentation.request.Login
+import jp.ijufumi.openreports.presentation.response.Member
+import jp.ijufumi.openreports.usecase.port.input.LoginUseCase
 import org.scalamock.scalatest.MockFactory
 import org.scalatra.test.scalatest._
 import org.json4s.jackson.Serialization.write
@@ -10,7 +10,7 @@ import org.json4s.DefaultFormats
 
 class LoginServletSpec extends ScalatraFunSuite with MockFactory {
   implicit val formats = DefaultFormats
-  val loginService = mock[LoginService]
+  val loginService = mock[LoginUseCase]
   addServlet(new LoginServlet(loginService), "/*")
 
   test("password login") {

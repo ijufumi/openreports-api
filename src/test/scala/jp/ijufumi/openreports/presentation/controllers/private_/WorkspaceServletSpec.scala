@@ -1,13 +1,13 @@
 package jp.ijufumi.openreports.presentation.controllers.private_
 
-import jp.ijufumi.openreports.presentation.models.responses.{Lists, Member, Workspace}
-import jp.ijufumi.openreports.services.{LoginService, WorkspaceService}
+import jp.ijufumi.openreports.presentation.response.{Lists, Member, Workspace}
+import jp.ijufumi.openreports.usecase.port.input.{LoginUseCase, WorkspaceUseCase}
 import org.scalamock.scalatest.MockFactory
 import org.scalatra.test.scalatest._
 
 class WorkspaceServletSpec extends ScalatraFunSuite with MockFactory {
-  val loginService = mock[LoginService]
-  val workspaceService = mock[WorkspaceService]
+  val loginService = mock[LoginUseCase]
+  val workspaceService = mock[WorkspaceUseCase]
   addServlet(new WorkspaceServlet(loginService, workspaceService), "/*")
 
   val member = Member("member-id", "test@example.com", "Test User", Seq.empty)

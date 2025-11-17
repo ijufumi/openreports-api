@@ -1,11 +1,11 @@
 package jp.ijufumi.openreports.domain.models.entity
 
-import jp.ijufumi.openreports.infrastructure.datastores.database.entities.{
+import jp.ijufumi.openreports.infrastructure.persistence.entity.{
   Workspace => WorkspaceEntity,
   WorkspaceMember => WorkspaceMemberEntity,
 }
-import jp.ijufumi.openreports.presentation.models.responses.{Workspace => WorkspaceResponse}
-import jp.ijufumi.openreports.presentation.models.requests.UpdateWorkspace
+import jp.ijufumi.openreports.presentation.response.{Workspace => WorkspaceResponse}
+import jp.ijufumi.openreports.presentation.request.UpdateWorkspace
 import jp.ijufumi.openreports.utils.Dates
 
 case class Workspace(

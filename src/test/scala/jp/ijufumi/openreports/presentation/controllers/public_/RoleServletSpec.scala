@@ -1,11 +1,11 @@
 package jp.ijufumi.openreports.presentation.controllers.public_
 
-import jp.ijufumi.openreports.services.RoleService
+import jp.ijufumi.openreports.usecase.port.input.RoleUseCase
 import org.scalamock.scalatest.MockFactory
 import org.scalatra.test.scalatest._
 
 class RoleServletSpec extends ScalatraFunSuite with MockFactory {
-  val roleService = mock[RoleService]
+  val roleService = mock[RoleUseCase]
   addServlet(new RoleServlet(roleService), "/*")
 
   test("simple get") {

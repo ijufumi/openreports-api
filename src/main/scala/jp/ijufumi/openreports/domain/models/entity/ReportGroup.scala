@@ -1,11 +1,11 @@
 package jp.ijufumi.openreports.domain.models.entity
 
-import jp.ijufumi.openreports.infrastructure.datastores.database.entities.{
+import jp.ijufumi.openreports.infrastructure.persistence.entity.{
   ReportGroup => ReportGroupEntity,
 }
-import jp.ijufumi.openreports.presentation.models.requests.UpdateReportGroup
+import jp.ijufumi.openreports.presentation.request.UpdateReportGroup
 import jp.ijufumi.openreports.utils.Dates
-import jp.ijufumi.openreports.presentation.models.responses.{ReportGroup => ReportGroupResponse}
+import jp.ijufumi.openreports.presentation.responses.{ReportGroup => ReportGroupResponse}
 
 case class ReportGroup(
     id: String,

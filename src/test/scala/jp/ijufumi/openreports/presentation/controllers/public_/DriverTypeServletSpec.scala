@@ -1,11 +1,11 @@
 package jp.ijufumi.openreports.presentation.controllers.public_
 
-import jp.ijufumi.openreports.services.DriverTypeService
+import jp.ijufumi.openreports.usecase.port.input.DriverTypeUseCase
 import org.scalatra.test.scalatest._
 import org.scalamock.scalatest.MockFactory
 
 class DriverTypeServletSpec extends ScalatraFunSuite with MockFactory {
-  val driverTypeService = mock[DriverTypeService]
+  val driverTypeService = mock[DriverTypeUseCase]
   addServlet(new DriverTypeServlet(driverTypeService), "/*")
 
   test("simple get") {

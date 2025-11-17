@@ -9,7 +9,7 @@ import org.scalatestplus.mockito.MockitoSugar
 
 import java.nio.file.Paths
 
-class StorageServiceImplSpec extends AnyFlatSpec with MockitoSugar {
+class StorageInteractorSpec extends AnyFlatSpec with MockitoSugar {
 
   "get" should "get a file from local" in {
     // mock
@@ -17,7 +17,7 @@ class StorageServiceImplSpec extends AnyFlatSpec with MockitoSugar {
     val localSeedFileRepository = mock[LocalSeedFileRepository]
     val awsS3Repository = mock[AwsS3Repository]
 
-    val storageService = new StorageServiceImpl(localFileRepository, localSeedFileRepository, awsS3Repository)
+    val storageService = new StorageInteractor(localFileRepository, localSeedFileRepository, awsS3Repository)
 
     val workspaceId = "1"
     val key = "test.xlsx"
@@ -39,7 +39,7 @@ class StorageServiceImplSpec extends AnyFlatSpec with MockitoSugar {
     val localSeedFileRepository = mock[LocalSeedFileRepository]
     val awsS3Repository = mock[AwsS3Repository]
 
-    val storageService = new StorageServiceImpl(localFileRepository, localSeedFileRepository, awsS3Repository)
+    val storageService = new StorageInteractor(localFileRepository, localSeedFileRepository, awsS3Repository)
 
     val workspaceId = "1"
     val key = "test.xlsx"

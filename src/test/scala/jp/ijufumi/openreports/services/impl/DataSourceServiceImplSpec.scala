@@ -5,21 +5,21 @@ import _root_.jp.ijufumi.openreports.domain.models.entity.{
   DriverType => DriverTypeModel,
 }
 import _root_.jp.ijufumi.openreports.domain.models.value.enums.JdbcDriverClasses
-import _root_.jp.ijufumi.openreports.infrastructure.datastores.database.repositories.DataSourceRepository
-import _root_.jp.ijufumi.openreports.presentation.models.responses.{DataSource, DriverType, Lists}
+import _root_.jp.ijufumi.openreports.domain.repository.DataSourceRepository
+import _root_.jp.ijufumi.openreports.presentation.response.{DataSource, DriverType, Lists}
 import org.mockito.Mockito._
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatestplus.mockito.MockitoSugar
 import slick.jdbc.JdbcBackend.Database
 
-class DataSourceServiceImplSpec extends AnyFlatSpec with MockitoSugar {
+class DataSourceInteractorSpec extends AnyFlatSpec with MockitoSugar {
 
   "getDataSources" should "return data sources" in {
     // mock
     val db = mock[Database]
     val dataSourceRepository = mock[DataSourceRepository]
 
-    val dataSourceService = new DataSourceServiceImpl(db, dataSourceRepository)
+    val dataSourceService = new DataSourceInteractor(db, dataSourceRepository)
 
     val workspaceId = "1"
     val driverType = DriverTypeModel("1", "test-driver", JdbcDriverClasses.Postgres)
@@ -55,7 +55,7 @@ class DataSourceServiceImplSpec extends AnyFlatSpec with MockitoSugar {
     val db = mock[Database]
     val dataSourceRepository = mock[DataSourceRepository]
 
-    val dataSourceService = new DataSourceServiceImpl(db, dataSourceRepository)
+    val dataSourceService = new DataSourceInteractor(db, dataSourceRepository)
 
     val workspaceId = "1"
     val dataSourceId = "1"

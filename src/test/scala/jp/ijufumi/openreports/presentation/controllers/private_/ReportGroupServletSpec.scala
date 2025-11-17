@@ -1,13 +1,13 @@
 package jp.ijufumi.openreports.presentation.controllers.private_
 
-import jp.ijufumi.openreports.presentation.models.responses.{Lists, Member, ReportGroup}
-import jp.ijufumi.openreports.services.{LoginService, ReportService}
+import jp.ijufumi.openreports.presentation.response.{Lists, Member, ReportGroup}
+import jp.ijufumi.openreports.usecase.port.input.{LoginUseCase, ReportUseCase}
 import org.scalamock.scalatest.MockFactory
 import org.scalatra.test.scalatest._
 
 class ReportGroupServletSpec extends ScalatraFunSuite with MockFactory {
-  val loginService = mock[LoginService]
-  val reportService = mock[ReportService]
+  val loginService = mock[LoginUseCase]
+  val reportService = mock[ReportUseCase]
   addServlet(new ReportGroupServlet(loginService, reportService), "/*")
 
   val member = Member("member-id", "test@example.com", "Test User", Seq.empty)

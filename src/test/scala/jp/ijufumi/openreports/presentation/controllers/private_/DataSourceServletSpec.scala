@@ -1,14 +1,14 @@
 package jp.ijufumi.openreports.presentation.controllers.private_
 
-import jp.ijufumi.openreports.presentation.models.responses.{DataSource, Lists, Member}
-import jp.ijufumi.openreports.services.{DataSourceService, LoginService}
+import jp.ijufumi.openreports.presentation.response.{DataSource, Lists, Member}
+import jp.ijufumi.openreports.usecase.port.input.{DataSourceUseCase, LoginUseCase}
 import org.scalamock.scalatest.MockFactory
 import org.scalatra.test.scalatest._
 import org.scalatra.ActionResult
 
 class DataSourceServletSpec extends ScalatraFunSuite with MockFactory {
-  val loginService = mock[LoginService]
-  val dataSourceService = mock[DataSourceService]
+  val loginService = mock[LoginUseCase]
+  val dataSourceService = mock[DataSourceUseCase]
   addServlet(new DataSourceServlet(loginService, dataSourceService), "/*")
 
   test("simple get") {

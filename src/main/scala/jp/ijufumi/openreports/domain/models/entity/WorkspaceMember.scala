@@ -1,13 +1,13 @@
 package jp.ijufumi.openreports.domain.models.entity
 
-import jp.ijufumi.openreports.infrastructure.datastores.database.entities.{
+import jp.ijufumi.openreports.infrastructure.persistence.entity.{
   Member => MemberEntity,
   WorkspaceMember => WorkspaceMemberEntity,
 }
-import jp.ijufumi.openreports.presentation.models.responses.{
+import jp.ijufumi.openreports.presentation.responses.{
   WorkspaceMember => WorkspaceMemberResponse,
 }
-import jp.ijufumi.openreports.presentation.models.requests.UpdateWorkspaceMember
+import jp.ijufumi.openreports.presentation.request.UpdateWorkspaceMember
 import jp.ijufumi.openreports.utils.Dates
 import jp.ijufumi.openreports.domain.models.entity.Member.conversions._
 

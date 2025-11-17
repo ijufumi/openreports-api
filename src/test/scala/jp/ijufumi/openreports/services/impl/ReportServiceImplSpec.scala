@@ -2,17 +2,17 @@ package jp.ijufumi.openreports.services.impl
 
 import _root_.jp.ijufumi.openreports.domain.models.entity.{Report => ReportModel, ReportTemplate => ReportTemplateModel}
 import _root_.jp.ijufumi.openreports.domain.models.value.enums.StorageTypes
-import _root_.jp.ijufumi.openreports.infrastructure.datastores.database.repositories._
-import _root_.jp.ijufumi.openreports.presentation.models.requests.CreateReport
-import _root_.jp.ijufumi.openreports.presentation.models.responses.{Lists, Report, ReportTemplate}
-import _root_.jp.ijufumi.openreports.services.{DataSourceService, OutputService, StorageService}
+import _root_.jp.ijufumi.openreports.domain.repository._
+import _root_.jp.ijufumi.openreports.presentation.request.CreateReport
+import _root_.jp.ijufumi.openreports.presentation.response.{Lists, Report, ReportTemplate}
+import _root_.jp.ijufumi.openreports.usecase.port.input.{DataSourceUseCase, OutputUseCase, StorageUseCase}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito._
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatestplus.mockito.MockitoSugar
 import slick.jdbc.JdbcBackend.Database
 
-class ReportServiceImplSpec extends AnyFlatSpec with MockitoSugar {
+class ReportInteractorSpec extends AnyFlatSpec with MockitoSugar {
 
   "getReports" should "return reports" in {
     // mock
@@ -21,11 +21,11 @@ class ReportServiceImplSpec extends AnyFlatSpec with MockitoSugar {
     val templateRepository = mock[ReportTemplateRepository]
     val reportGroupRepository = mock[ReportGroupRepository]
     val reportGroupReportRepository = mock[ReportGroupReportRepository]
-    val dataSourceService = mock[DataSourceService]
-    val outputService = mock[OutputService]
-    val storageService = mock[StorageService]
+    val dataSourceService = mock[DataSourceUseCase]
+    val outputService = mock[OutputUseCase]
+    val storageService = mock[StorageUseCase]
 
-    val reportService = new ReportServiceImpl(
+    val reportService = new ReportInteractor(
       db,
       reportRepository,
       templateRepository,
@@ -65,11 +65,11 @@ class ReportServiceImplSpec extends AnyFlatSpec with MockitoSugar {
     val templateRepository = mock[ReportTemplateRepository]
     val reportGroupRepository = mock[ReportGroupRepository]
     val reportGroupReportRepository = mock[ReportGroupReportRepository]
-    val dataSourceService = mock[DataSourceService]
-    val outputService = mock[OutputService]
-    val storageService = mock[StorageService]
+    val dataSourceService = mock[DataSourceUseCase]
+    val outputService = mock[OutputUseCase]
+    val storageService = mock[StorageUseCase]
 
-    val reportService = new ReportServiceImpl(
+    val reportService = new ReportInteractor(
       db,
       reportRepository,
       templateRepository,

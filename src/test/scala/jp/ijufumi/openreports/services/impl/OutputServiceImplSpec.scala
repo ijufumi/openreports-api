@@ -1,21 +1,21 @@
 package jp.ijufumi.openreports.services.impl
 
 import _root_.jp.ijufumi.openreports.domain.models.value.enums.StorageTypes
-import _root_.jp.ijufumi.openreports.services.{DataSourceService, StorageService}
+import _root_.jp.ijufumi.openreports.usecase.port.input.{DataSourceUseCase, StorageUseCase}
 import org.mockito.Mockito._
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatestplus.mockito.MockitoSugar
 
 import java.nio.file.{Files, Paths}
 
-class OutputServiceImplSpec extends AnyFlatSpec with MockitoSugar {
+class OutputInteractorSpec extends AnyFlatSpec with MockitoSugar {
 
   "output" should "output a file" in {
     // mock
-    val dataSourceService = mock[DataSourceService]
-    val storageService = mock[StorageService]
+    val dataSourceService = mock[DataSourceUseCase]
+    val storageService = mock[StorageUseCase]
 
-    val outputService = new OutputServiceImpl(dataSourceService, storageService)
+    val outputService = new OutputInteractor(dataSourceService, storageService)
 
     val workspaceId = "1"
     val filePath = "test.xlsx"

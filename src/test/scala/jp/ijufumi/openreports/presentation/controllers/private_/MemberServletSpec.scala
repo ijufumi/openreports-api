@@ -1,14 +1,14 @@
 package jp.ijufumi.openreports.presentation.controllers.private_
 
 import jp.ijufumi.openreports.domain.models.value.enums.ActionTypes
-import jp.ijufumi.openreports.presentation.models.responses.{Function, Member, Permission, Workspace}
-import jp.ijufumi.openreports.services.{LoginService, MemberService}
+import jp.ijufumi.openreports.presentation.response.{Function, Member, Permission, Workspace}
+import jp.ijufumi.openreports.usecase.port.input.{LoginUseCase, MemberUseCase}
 import org.scalamock.scalatest.MockFactory
 import org.scalatra.test.scalatest._
 
 class MemberServletSpec extends ScalatraFunSuite with MockFactory {
-  val loginService = mock[LoginService]
-  val memberService = mock[MemberService]
+  val loginService = mock[LoginUseCase]
+  val memberService = mock[MemberUseCase]
   addServlet(new MemberServlet(loginService, memberService), "/*")
 
   test("GET /status should return member information") {

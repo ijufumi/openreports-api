@@ -4,20 +4,20 @@ package jp.ijufumi.openreports.services.impl
 import jp.ijufumi.openreports.configs.Config
 import jp.ijufumi.openreports.domain.models.entity.Member
 import jp.ijufumi.openreports.infrastructure.datastores.cache.CacheWrapper
-import jp.ijufumi.openreports.infrastructure.datastores.database.repositories.{
+import jp.ijufumi.openreports.domain.repository.{
   MemberRepository,
   WorkspaceRepository,
 }
 import jp.ijufumi.openreports.infrastructure.google.auth.GoogleRepository
-import jp.ijufumi.openreports.presentation.models.requests.Login
-import jp.ijufumi.openreports.services.WorkspaceService
+import jp.ijufumi.openreports.presentation.request.Login
+import jp.ijufumi.openreports.usecase.port.input.WorkspaceUseCase
 import jp.ijufumi.openreports.utils.Hash
 import org.mockito.Mockito._
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatestplus.mockito.MockitoSugar
 import slick.jdbc.JdbcBackend.Database
 
-class LoginServiceImplSpec extends AnyFlatSpec with MockitoSugar {
+class LoginInteractorSpec extends AnyFlatSpec with MockitoSugar {
 
   "login" should "return Member if email and password are correct" in {
     // mock
@@ -25,11 +25,11 @@ class LoginServiceImplSpec extends AnyFlatSpec with MockitoSugar {
     val memberRepository = mock[MemberRepository]
     val workspaceRepository = mock[WorkspaceRepository]
     val googleRepository = mock[GoogleRepository]
-    val workspaceService = mock[WorkspaceService]
+    val workspaceService = mock[WorkspaceUseCase]
     val cacheWrapper = mock[CacheWrapper]
 
     val loginService =
-      new LoginServiceImpl(db, memberRepository, workspaceRepository, googleRepository, workspaceService, cacheWrapper)
+      new LoginInteractor(db, memberRepository, workspaceRepository, googleRepository, workspaceService, cacheWrapper)
 
     val email = "test@test.com"
     val password = "password"
@@ -61,11 +61,11 @@ class LoginServiceImplSpec extends AnyFlatSpec with MockitoSugar {
     val memberRepository = mock[MemberRepository]
     val workspaceRepository = mock[WorkspaceRepository]
     val googleRepository = mock[GoogleRepository]
-    val workspaceService = mock[WorkspaceService]
+    val workspaceService = mock[WorkspaceUseCase]
     val cacheWrapper = mock[CacheWrapper]
 
     val loginService =
-      new LoginServiceImpl(db, memberRepository, workspaceRepository, googleRepository, workspaceService, cacheWrapper)
+      new LoginInteractor(db, memberRepository, workspaceRepository, googleRepository, workspaceService, cacheWrapper)
 
     val email = "test@test.com"
     val password = "password"
@@ -86,11 +86,11 @@ class LoginServiceImplSpec extends AnyFlatSpec with MockitoSugar {
     val memberRepository = mock[MemberRepository]
     val workspaceRepository = mock[WorkspaceRepository]
     val googleRepository = mock[GoogleRepository]
-    val workspaceService = mock[WorkspaceService]
+    val workspaceService = mock[WorkspaceUseCase]
     val cacheWrapper = mock[CacheWrapper]
 
     val loginService =
-      new LoginServiceImpl(db, memberRepository, workspaceRepository, googleRepository, workspaceService, cacheWrapper)
+      new LoginInteractor(db, memberRepository, workspaceRepository, googleRepository, workspaceService, cacheWrapper)
 
     val email = "test@test.com"
     val password = "password"

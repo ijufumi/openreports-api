@@ -2,8 +2,8 @@
 package jp.ijufumi.openreports.services.impl
 
 import jp.ijufumi.openreports.domain.models.entity.{Function, Member, RoleFunction, Workspace, WorkspaceMember}
-import jp.ijufumi.openreports.infrastructure.datastores.database.repositories._
-import jp.ijufumi.openreports.presentation.models.responses.Permission
+import jp.ijufumi.openreports.domain.repository._
+import jp.ijufumi.openreports.presentation.response.Permission
 import jp.ijufumi.openreports.utils.Hash
 import jp.ijufumi.openreports.utils.IDs
 import org.mockito.Mockito._
@@ -11,7 +11,7 @@ import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatestplus.mockito.MockitoSugar
 import slick.jdbc.JdbcBackend.Database
 
-class MemberServiceImplSpec extends AnyFlatSpec with MockitoSugar {
+class MemberInteractorSpec extends AnyFlatSpec with MockitoSugar {
 
   "update" should "update member" in {
     // mock
@@ -22,7 +22,7 @@ class MemberServiceImplSpec extends AnyFlatSpec with MockitoSugar {
     val functionRepository = mock[FunctionRepository]
     val workspaceRepository = mock[WorkspaceRepository]
 
-    val memberService = new MemberServiceImpl(
+    val memberService = new MemberInteractor(
       db,
       memberRepository,
       workspaceMemberRepository,
@@ -65,7 +65,7 @@ class MemberServiceImplSpec extends AnyFlatSpec with MockitoSugar {
     val functionRepository = mock[FunctionRepository]
     val workspaceRepository = mock[WorkspaceRepository]
 
-    val memberService = new MemberServiceImpl(
+    val memberService = new MemberInteractor(
       db,
       memberRepository,
       workspaceMemberRepository,

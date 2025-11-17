@@ -1,10 +1,10 @@
 package jp.ijufumi.openreports.domain.models.entity
 
 import jp.ijufumi.openreports.domain.models.value.enums.ActionTypes
-import jp.ijufumi.openreports.infrastructure.datastores.database.entities.{
+import jp.ijufumi.openreports.infrastructure.persistence.entity.{
   Function => FunctionEntity,
 }
-import jp.ijufumi.openreports.presentation.models.responses.{Function => FunctionResponse}
+import jp.ijufumi.openreports.presentation.response.{Function => FunctionResponse}
 import jp.ijufumi.openreports.utils.Dates
 
 case class Function(

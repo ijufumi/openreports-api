@@ -1,11 +1,11 @@
 package jp.ijufumi.openreports.domain.models.entity
 
-import jp.ijufumi.openreports.infrastructure.datastores.database.entities.{
+import jp.ijufumi.openreports.infrastructure.persistence.entity.{
   Report => ReportEntity,
   ReportTemplate => ReportTemplateEntity,
 }
-import jp.ijufumi.openreports.presentation.models.responses.{Report => ReportResponse}
-import jp.ijufumi.openreports.presentation.models.requests.UpdateReport
+import jp.ijufumi.openreports.presentation.response.{Report => ReportResponse}
+import jp.ijufumi.openreports.presentation.request.UpdateReport
 import jp.ijufumi.openreports.utils.Dates
 
 case class Report(

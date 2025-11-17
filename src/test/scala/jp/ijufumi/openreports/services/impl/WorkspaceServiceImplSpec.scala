@@ -1,15 +1,15 @@
 package jp.ijufumi.openreports.services.impl
 
 import _root_.jp.ijufumi.openreports.domain.models.entity.{Workspace => WorkspaceModel}
-import _root_.jp.ijufumi.openreports.infrastructure.datastores.database.repositories._
-import _root_.jp.ijufumi.openreports.presentation.models.responses.{Lists, Workspace}
-import _root_.jp.ijufumi.openreports.services.StorageService
+import _root_.jp.ijufumi.openreports.domain.repository._
+import _root_.jp.ijufumi.openreports.presentation.response.{Lists, Workspace}
+import _root_.jp.ijufumi.openreports.usecase.port.input.StorageUseCase
 import org.mockito.Mockito._
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatestplus.mockito.MockitoSugar
 import slick.jdbc.JdbcBackend.Database
 
-class WorkspaceServiceImplSpec extends AnyFlatSpec with MockitoSugar {
+class WorkspaceInteractorSpec extends AnyFlatSpec with MockitoSugar {
 
   "getWorkspace" should "return workspace" in {
     // mock
@@ -19,10 +19,10 @@ class WorkspaceServiceImplSpec extends AnyFlatSpec with MockitoSugar {
     val storageRepository = mock[StorageS3Repository]
     val reportRepository = mock[ReportRepository]
     val reportTemplateRepository = mock[ReportTemplateRepository]
-    val storageService = mock[StorageService]
+    val storageService = mock[StorageUseCase]
     val roleRepository = mock[RoleRepository]
 
-    val workspaceService = new WorkspaceServiceImpl(
+    val workspaceService = new WorkspaceInteractor(
       db,
       workspaceRepository,
       workspaceMemberRepository,
@@ -54,10 +54,10 @@ class WorkspaceServiceImplSpec extends AnyFlatSpec with MockitoSugar {
     val storageRepository = mock[StorageS3Repository]
     val reportRepository = mock[ReportRepository]
     val reportTemplateRepository = mock[ReportTemplateRepository]
-    val storageService = mock[StorageService]
+    val storageService = mock[StorageUseCase]
     val roleRepository = mock[RoleRepository]
 
-    val workspaceService = new WorkspaceServiceImpl(
+    val workspaceService = new WorkspaceInteractor(
       db,
       workspaceRepository,
       workspaceMemberRepository,
