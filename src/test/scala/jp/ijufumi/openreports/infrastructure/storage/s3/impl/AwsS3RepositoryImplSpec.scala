@@ -9,10 +9,12 @@ import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 import org.scalatestplus.mockito.MockitoSugar
 import slick.jdbc.JdbcBackend.Database
+import software.amazon.awssdk.core.ResponseInputStream
 import software.amazon.awssdk.services.s3.S3Client
 import software.amazon.awssdk.services.s3.model._
 import software.amazon.awssdk.services.s3.presigner.S3Presigner
 import software.amazon.awssdk.services.s3.presigner.model._
+
 import java.nio.file.{Files, Path}
 
 class AwsS3RepositoryImplSpec extends AnyFlatSpec with Matchers with MockitoSugar {
@@ -61,9 +63,10 @@ class AwsS3RepositoryImplSpec extends AnyFlatSpec with Matchers with MockitoSuga
     when(s3ClientFactory.createClient(storage)).thenReturn(s3Client)
 
     val testContent = "test content"
+    val response = GetObjectResponse.builder().build()
     val inputStream = new java.io.ByteArrayInputStream(testContent.getBytes)
-    val responseInputStream = software.amazon.awssdk.core.ResponseInputStream.nullInputStream()
-    when(s3Client.getObject(any[GetObjectRequest])).thenReturn(inputStream)
+    val responseInputStream = new ResponseInputStream(response, inputStream)
+    when(s3Client.getObject(any[GetObjectRequest])).thenReturn(responseInputStream)
 
     val repository = new AwsS3RepositoryImpl(db, storageRepository, s3ClientFactory)
 

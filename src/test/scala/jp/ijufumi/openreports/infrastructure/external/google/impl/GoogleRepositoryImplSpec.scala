@@ -51,10 +51,6 @@ class GoogleRepositoryImplSpec extends AnyFlatSpec with Matchers {
   "fetchToken" should "return access token for valid code" in {
     val accessToken = AccessToken(
       access_token = "test-access-token",
-      expires_in = 3600,
-      token_type = "Bearer",
-      scope = "profile email",
-      refresh_token = Some("test-refresh-token")
     )
 
     val responseJson = Serialization.write(accessToken)
@@ -80,9 +76,8 @@ class GoogleRepositoryImplSpec extends AnyFlatSpec with Matchers {
   }
 
   it should "return None when response body is invalid JSON" in {
-    val backendStub = SyncBackendStub
-      .whenRequestMatches(_ => true)
-      .thenRespond("invalid json", StatusCode.Ok)
+    val backendStub = mock[WebSocketSyncBackend]
+    when(backendStub.send(any[Request[String]])).thenReturn(makeResponse("invalid json", StatusCode.Ok))
 
     val repository = new GoogleRepositoryImpl(backendStub)
     val token = repository.fetchToken("valid-code")
@@ -94,11 +89,8 @@ class GoogleRepositoryImplSpec extends AnyFlatSpec with Matchers {
     val userInfo = UserInfo(
       id = "12345",
       email = "test@example.com",
-      verified_email = true,
       name = "Test User",
-      given_name = Some("Test"),
-      family_name = Some("User"),
-      picture = Some("https://example.com/picture.jpg")
+      picture = "https://example.com/picture.jpg"
     )
 
     val responseJson = Serialization.write(userInfo)
