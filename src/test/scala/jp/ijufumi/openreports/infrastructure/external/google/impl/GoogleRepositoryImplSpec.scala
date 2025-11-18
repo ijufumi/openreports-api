@@ -8,9 +8,10 @@ import org.mockito.Mockito.when
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 import org.scalatestplus.mockito.MockitoSugar.mock
+import sttp.client4.ResponseException.UnexpectedStatusCode
 import sttp.client4._
 import sttp.client4.testing.SyncBackendStub
-import sttp.model.{RequestMetadata, StatusCode, Method, Uri}
+import sttp.model.{Method, RequestMetadata, StatusCode, Uri}
 
 class GoogleRepositoryImplSpec extends AnyFlatSpec with Matchers {
   private implicit val formats: DefaultFormats.type = org.json4s.DefaultFormats
@@ -56,7 +57,7 @@ class GoogleRepositoryImplSpec extends AnyFlatSpec with Matchers {
     val responseJson = Serialization.write(accessToken)
 
     val backendStub = mock[WebSocketSyncBackend]
-    when(backendStub.send(any[Request[String]])).thenReturn(makeResponse(responseJson, StatusCode.Ok))
+    when(backendStub.send(any[Request[Either[ResponseException[String], AccessToken]]])).thenReturn(makeResponse("", StatusCode.Ok))
 
     val repository = new GoogleRepositoryImpl(backendStub)
     val token = repository.fetchToken("valid-code")
@@ -67,7 +68,7 @@ class GoogleRepositoryImplSpec extends AnyFlatSpec with Matchers {
 
   it should "return None for invalid code" in {
     val backendStub = mock[WebSocketSyncBackend]
-    when(backendStub.send(any[Request[String]])).thenReturn(makeResponse("", StatusCode.BadRequest))
+    when(backendStub.send(any[Request[Either[ResponseException[String], AccessToken]]])).thenReturn(makeResponse("", StatusCode.BadRequest))
 
     val repository = new GoogleRepositoryImpl(backendStub)
     val token = repository.fetchToken("invalid-code")
@@ -77,7 +78,7 @@ class GoogleRepositoryImplSpec extends AnyFlatSpec with Matchers {
 
   it should "return None when response body is invalid JSON" in {
     val backendStub = mock[WebSocketSyncBackend]
-    when(backendStub.send(any[Request[String]])).thenReturn(makeResponse("invalid json", StatusCode.Ok))
+    when(backendStub.send(any[Request[Either[ResponseException[String], AccessToken]]])).thenReturn(makeResponse("invalid json", StatusCode.Ok))
 
     val repository = new GoogleRepositoryImpl(backendStub)
     val token = repository.fetchToken("valid-code")
@@ -96,7 +97,7 @@ class GoogleRepositoryImplSpec extends AnyFlatSpec with Matchers {
     val responseJson = Serialization.write(userInfo)
 
     val backendStub = mock[WebSocketSyncBackend]
-    when(backendStub.send(any[Request[String]])).thenReturn(makeResponse(responseJson, StatusCode.Ok))
+    when(backendStub.send(any[Request[Either[ResponseException[String], AccessToken]]])).thenReturn(makeResponse(responseJson, StatusCode.Ok))
 
     val repository = new GoogleRepositoryImpl(backendStub)
     val result = repository.getUserInfo("valid-access-token")
@@ -108,7 +109,7 @@ class GoogleRepositoryImplSpec extends AnyFlatSpec with Matchers {
 
   it should "return None for invalid access token" in {
     val backendStub = mock[WebSocketSyncBackend]
-    when(backendStub.send(any[Request[String]])).thenReturn(makeResponse("", StatusCode.Unauthorized))
+    when(backendStub.send(any[Request[Either[ResponseException[String], AccessToken]]])).thenReturn(makeResponse("", StatusCode.Unauthorized))
 
     val repository = new GoogleRepositoryImpl(backendStub)
     val userInfo = repository.getUserInfo("invalid-access-token")
@@ -118,7 +119,7 @@ class GoogleRepositoryImplSpec extends AnyFlatSpec with Matchers {
 
   it should "return None when response body is invalid JSON" in {
     val backendStub = mock[WebSocketSyncBackend]
-    when(backendStub.send(any[Request[String]])).thenReturn(makeResponse("invalid json", StatusCode.Ok))
+    when(backendStub.send(any[Request[Either[ResponseException[String], AccessToken]]])).thenReturn(makeResponse("invalid json", StatusCode.Ok))
 
     val repository = new GoogleRepositoryImpl(backendStub)
     val userInfo = repository.getUserInfo("valid-access-token")
@@ -126,7 +127,14 @@ class GoogleRepositoryImplSpec extends AnyFlatSpec with Matchers {
     userInfo should be(None)
   }
 
-  def makeResponse (body: String, code: StatusCode): Response[String] = {
+  def makeResponse (message: String, code: StatusCode): Response[Either[ResponseException[String], AccessToken]] = {
+    var body: Either[ResponseException[String], AccessToken] = null
+    if (code == StatusCode.Ok) {
+      body = Right(AccessToken(message))
+    } else {
+      body = Left(UnexpectedStatusCode(message, null))
+    }
+
     Response(body, code, RequestMetadata(Method.POST, Uri("http://test.jp"), scala.collection.immutable.Seq.empty))
   }
 }
