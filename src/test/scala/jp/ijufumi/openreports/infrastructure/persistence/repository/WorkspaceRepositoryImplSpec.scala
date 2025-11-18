@@ -1,6 +1,7 @@
 package jp.ijufumi.openreports.infrastructure.persistence.repository
 
-import jp.ijufumi.openreports.infrastructure.persistence.entity.{Workspace, WorkspaceMember}
+import jp.ijufumi.openreports.domain.models.entity.Workspace
+import jp.ijufumi.openreports.infrastructure.persistence.entity.WorkspaceMember
 import jp.ijufumi.openreports.infrastructure.persistence.H2DatabaseHelper
 import jp.ijufumi.openreports.utils.IDs
 import org.scalatest.{BeforeAndAfterAll, BeforeAndAfterEach}

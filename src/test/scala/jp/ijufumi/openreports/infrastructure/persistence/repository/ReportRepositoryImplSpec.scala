@@ -1,6 +1,6 @@
 package jp.ijufumi.openreports.infrastructure.persistence.repository
 
-import jp.ijufumi.openreports.infrastructure.persistence.entity.Report
+import jp.ijufumi.openreports.domain.models.entity.Report
 import jp.ijufumi.openreports.infrastructure.persistence.H2DatabaseHelper
 import jp.ijufumi.openreports.utils.IDs
 import org.scalatest.{BeforeAndAfterAll, BeforeAndAfterEach}
@@ -40,7 +40,7 @@ class ReportRepositoryImplSpec extends AnyFlatSpec with Matchers with BeforeAndA
     val report1 = Report(
       id = IDs.ulid(),
       name = "Report 1",
-      reportTemplateId = "template-1",
+      templateId = "template-1",
       dataSourceId = Some("datasource-1"),
       workspaceId = workspaceId,
       createdAt = System.currentTimeMillis(),
@@ -50,7 +50,7 @@ class ReportRepositoryImplSpec extends AnyFlatSpec with Matchers with BeforeAndA
     val report2 = Report(
       id = IDs.ulid(),
       name = "Report 2",
-      reportTemplateId = "template-1",
+      templateId = "template-1",
       dataSourceId = Some("datasource-1"),
       workspaceId = workspaceId,
       createdAt = System.currentTimeMillis(),
@@ -73,7 +73,7 @@ class ReportRepositoryImplSpec extends AnyFlatSpec with Matchers with BeforeAndA
     val report1 = Report(
       id = IDs.ulid(),
       name = "Report 1",
-      reportTemplateId = templateId,
+      templateId = templateId,
       dataSourceId = Some("datasource-1"),
       workspaceId = workspaceId,
       createdAt = System.currentTimeMillis(),
@@ -83,7 +83,7 @@ class ReportRepositoryImplSpec extends AnyFlatSpec with Matchers with BeforeAndA
     val report2 = Report(
       id = IDs.ulid(),
       name = "Report 2",
-      reportTemplateId = "other-template",
+      templateId = "other-template",
       dataSourceId = Some("datasource-1"),
       workspaceId = workspaceId,
       createdAt = System.currentTimeMillis(),
@@ -97,7 +97,7 @@ class ReportRepositoryImplSpec extends AnyFlatSpec with Matchers with BeforeAndA
 
     reports should not be empty
     reports.length should be(1)
-    reports.forall(_.reportTemplateId == templateId) should be(true)
+    reports.forall(_.templateId == templateId) should be(true)
   }
 
   it should "respect pagination parameters" in {
@@ -108,7 +108,7 @@ class ReportRepositoryImplSpec extends AnyFlatSpec with Matchers with BeforeAndA
       val report = Report(
         id = IDs.ulid(),
         name = s"Report $i",
-        reportTemplateId = "template-1",
+        templateId = "template-1",
         dataSourceId = Some("datasource-1"),
         workspaceId = workspaceId,
         createdAt = System.currentTimeMillis(),
@@ -130,7 +130,7 @@ class ReportRepositoryImplSpec extends AnyFlatSpec with Matchers with BeforeAndA
     val report = Report(
       id = reportId,
       name = "Test Report",
-      reportTemplateId = "template-1",
+      templateId = "template-1",
       dataSourceId = Some("datasource-1"),
       workspaceId = workspaceId,
       createdAt = System.currentTimeMillis(),
@@ -156,7 +156,7 @@ class ReportRepositoryImplSpec extends AnyFlatSpec with Matchers with BeforeAndA
     val report = Report(
       id = IDs.ulid(),
       name = "New Report",
-      reportTemplateId = "template-1",
+      templateId = "template-1",
       dataSourceId = Some("datasource-1"),
       workspaceId = IDs.ulid(),
       createdAt = System.currentTimeMillis(),
@@ -174,7 +174,7 @@ class ReportRepositoryImplSpec extends AnyFlatSpec with Matchers with BeforeAndA
     val report = Report(
       id = IDs.ulid(),
       name = "Old Name",
-      reportTemplateId = "template-1",
+      templateId = "template-1",
       dataSourceId = Some("datasource-1"),
       workspaceId = IDs.ulid(),
       createdAt = System.currentTimeMillis(),
@@ -201,7 +201,7 @@ class ReportRepositoryImplSpec extends AnyFlatSpec with Matchers with BeforeAndA
     val report = Report(
       id = reportId,
       name = "Delete Report",
-      reportTemplateId = "template-1",
+      templateId = "template-1",
       dataSourceId = Some("datasource-1"),
       workspaceId = workspaceId,
       createdAt = System.currentTimeMillis(),
