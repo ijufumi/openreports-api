@@ -3,6 +3,7 @@ package jp.ijufumi.openreports.infrastructure.cache
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 import scalacache._
+import scalacache.logging.Logger
 import scalacache.modes.try_._
 
 import scala.collection.mutable
@@ -11,7 +12,7 @@ import scala.util.{Success, Try}
 
 class CacheWrapperSpec extends AnyFlatSpec with Matchers {
 
-  class MockCache extends Cache[String] {
+  class MockCache extends AbstractCache[String] {
     private val storage = mutable.Map[String, String]()
 
     def get[V](keyParts: Any*)(implicit config: CacheConfig, mode: Mode[Try], flags: Flags): Try[Option[V]] = {
@@ -39,6 +40,20 @@ class CacheWrapperSpec extends AnyFlatSpec with Matchers {
     def close()(implicit mode: Mode[Try]): Try[Unit] = {
       Success(())
     }
+
+    override protected def doGet[F[_]](key: String)(implicit mode: Mode[F]): F[Option[String]] = ???
+
+    override protected def doPut[F[_]](key: String, value: String, ttl: Option[Duration])(implicit mode: Mode[F]): F[Any] = ???
+
+    override protected def doRemove[F[_]](key: String)(implicit mode: Mode[F]): F[Any] = ???
+
+    override protected def doRemoveAll[F[_]]()(implicit mode: Mode[F]): F[Any] = ???
+
+    override def config: CacheConfig = ???
+
+    override def close[F[_]]()(implicit mode: Mode[F]): F[Any] = ???
+
+    override protected def logger: Logger = ???
   }
 
   "CacheWrapper" should "be instantiable" in {
