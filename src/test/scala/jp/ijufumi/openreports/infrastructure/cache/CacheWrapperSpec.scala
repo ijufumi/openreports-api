@@ -15,43 +15,29 @@ class CacheWrapperSpec extends AnyFlatSpec with Matchers {
   class MockCache extends AbstractCache[String] {
     private val storage = mutable.Map[String, String]()
 
-    def get[V](keyParts: Any*)(implicit config: CacheConfig, mode: Mode[Try], flags: Flags): Try[Option[V]] = {
-      val key = keyParts.mkString(":")
-      Success(storage.get(key).asInstanceOf[Option[V]])
+    override protected def doGet[F[_]](key: String)(implicit mode: Mode[F]): F[Option[String]] = mode.M.delay {
+      storage.put(key, value.asInstanceOf[String])
+      Success(Option(key))
     }
 
-    def put[V](keyParts: Any*)(value: V, ttl: Option[Duration])(implicit config: CacheConfig, mode: Mode[Try], flags: Flags): Try[Unit] = {
-      val key = keyParts.mkString(":")
+    override protected def doPut[F[_]](key: String, value: String, ttl: Option[Duration])(implicit mode: Mode[F]): F[Any] = mode.M.delay {
       storage.put(key, value.asInstanceOf[String])
       Success(())
     }
 
-    def remove(keyParts: Any*)(implicit mode: Mode[Try]): Try[Unit] = {
-      val key = keyParts.mkString(":")
+    override protected def doRemove[F[_]](key: String)(implicit mode: Mode[F]): F[Any] = mode.M.delay {
       storage.remove(key)
-      Success(())
     }
 
-    def removeAll()(implicit mode: Mode[Try]): Try[Unit] = {
+    override protected def doRemoveAll[F[_]]()(implicit mode: Mode[F]): F[Any] = mode.M.delay {
       storage.clear()
-      Success(())
     }
-
-    def close()(implicit mode: Mode[Try]): Try[Unit] = {
-      Success(())
-    }
-
-    override protected def doGet[F[_]](key: String)(implicit mode: Mode[F]): F[Option[String]] = ???
-
-    override protected def doPut[F[_]](key: String, value: String, ttl: Option[Duration])(implicit mode: Mode[F]): F[Any] = ???
-
-    override protected def doRemove[F[_]](key: String)(implicit mode: Mode[F]): F[Any] = ???
-
-    override protected def doRemoveAll[F[_]]()(implicit mode: Mode[F]): F[Any] = ???
 
     override def config: CacheConfig = CacheConfig.defaultCacheConfig
 
-    override def close[F[_]]()(implicit mode: Mode[F]): F[Any] = ???
+    override def close[F[_]]()(implicit mode: Mode[F]): F[Any] = mode.M.delay {
+      Success(())
+    }
 
     override protected def logger: Logger = ???
   }
