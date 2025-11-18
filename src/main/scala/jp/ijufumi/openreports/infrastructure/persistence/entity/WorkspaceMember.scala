@@ -26,7 +26,7 @@ class WorkspaceMembers(tag: Tag)
   def memberId = column[String]("member_id")
   def roleId = column[String]("role_id")
 
-  def pk = primaryKey("pk_workspace_members", ("workspace_id", "member_id"))
+  def pk = primaryKey("pk_workspace_members", (workspaceId, memberId))
 
   override def * =
     (
