@@ -2,25 +2,52 @@ package jp.ijufumi.openreports.infrastructure.cache
 
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
+import scalacache._
+import scalacache.modes.try_._
+
+import scala.collection.mutable
+import scala.concurrent.duration._
+import scala.util.{Success, Try}
 
 class CacheWrapperSpec extends AnyFlatSpec with Matchers {
 
+  class MockCache extends Cache[String] {
+    private val storage = mutable.Map[String, String]()
+
+    override def get[V](keyParts: Any*)(implicit config: CacheConfig, mode: Mode[Try], flags: Flags): mode.M[Option[V]] = {
+      val key = keyParts.mkString(":")
+      Success(storage.get(key).asInstanceOf[Option[V]])
+    }
+
+    override def put[V](keyParts: Any*)(value: V, ttl: Option[Duration])(implicit config: CacheConfig, mode: Mode[Try], flags: Flags): mode.M[Unit] = {
+      val key = keyParts.mkString(":")
+      storage.put(key, value.asInstanceOf[String])
+      Success(())
+    }
+
+    override def remove(keyParts: Any*)(implicit mode: Mode[Try]): mode.M[Unit] = {
+      val key = keyParts.mkString(":")
+      storage.remove(key)
+      Success(())
+    }
+
+    override def removeAll()(implicit mode: Mode[Try]): mode.M[Unit] = {
+      storage.clear()
+      Success(())
+    }
+
+    override def close()(implicit mode: Mode[Try]): mode.M[Unit] = {
+      Success(())
+    }
+  }
+
   "CacheWrapper" should "be instantiable" in {
-    // Note: This is a basic test that verifies the CacheWrapper can be instantiated.
-    // Full integration tests require a running Redis instance and are typically
-    // performed in integration test suites.
+    implicit val mockCache: Cache[String] = new MockCache()
     noException should be thrownBy new CacheWrapper()
   }
 
-  // Note: The following tests would require a Redis mock or a running Redis instance.
-  // They are commented out as they depend on external infrastructure.
-  // For proper testing, consider:
-  // 1. Using an embedded Redis for integration tests
-  // 2. Creating a trait for CacheWrapper with injectable Cache[String]
-  // 3. Moving to integration tests that run against a real Redis instance
-
-  /*
   "put" should "store value with default TTL" in {
+    implicit val mockCache: Cache[String] = new MockCache()
     val cache = new CacheWrapper()
     cache.put(CacheKeys.ApiToken, "test-value", "key1")
     val result = cache.get(CacheKeys.ApiToken, "key1")
@@ -28,6 +55,7 @@ class CacheWrapperSpec extends AnyFlatSpec with Matchers {
   }
 
   "put" should "store value with custom TTL" in {
+    implicit val mockCache: Cache[String] = new MockCache()
     val cache = new CacheWrapper()
     implicit val ttl: Long = 60
     cache.put(CacheKeys.ApiToken, "test-value", "key1")
@@ -36,12 +64,14 @@ class CacheWrapperSpec extends AnyFlatSpec with Matchers {
   }
 
   "get" should "return None for non-existent key" in {
+    implicit val mockCache: Cache[String] = new MockCache()
     val cache = new CacheWrapper()
     val result = cache.get(CacheKeys.ApiToken, "non-existent-key")
     result should equal(None)
   }
 
   "remove" should "delete value from cache" in {
+    implicit val mockCache: Cache[String] = new MockCache()
     val cache = new CacheWrapper()
     cache.put(CacheKeys.ApiToken, "test-value", "key1")
     cache.remove(CacheKeys.ApiToken, "key1")
@@ -50,6 +80,7 @@ class CacheWrapperSpec extends AnyFlatSpec with Matchers {
   }
 
   "removeAll" should "clear all cache entries" in {
+    implicit val mockCache: Cache[String] = new MockCache()
     val cache = new CacheWrapper()
     cache.put(CacheKeys.ApiToken, "value1", "key1")
     cache.put(CacheKeys.GoogleAuthState, "value2", "key2")
@@ -57,5 +88,20 @@ class CacheWrapperSpec extends AnyFlatSpec with Matchers {
     cache.get(CacheKeys.ApiToken, "key1") should equal(None)
     cache.get(CacheKeys.GoogleAuthState, "key2") should equal(None)
   }
-  */
+
+  "put" should "handle multiple arguments in cache key" in {
+    implicit val mockCache: Cache[String] = new MockCache()
+    val cache = new CacheWrapper()
+    cache.put(CacheKeys.ApiToken, "test-value", "arg1", "arg2", "arg3")
+    val result = cache.get(CacheKeys.ApiToken, "arg1", "arg2", "arg3")
+    result should equal(Some("test-value"))
+  }
+
+  "get" should "return None for different cache key arguments" in {
+    implicit val mockCache: Cache[String] = new MockCache()
+    val cache = new CacheWrapper()
+    cache.put(CacheKeys.ApiToken, "test-value", "key1")
+    val result = cache.get(CacheKeys.ApiToken, "key2")
+    result should equal(None)
+  }
 }

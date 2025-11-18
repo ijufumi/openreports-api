@@ -12,7 +12,9 @@ import sttp.client4.json4s._
 
 import scala.collection.mutable
 
-class GoogleRepositoryImpl extends GoogleRepository with Logging {
+class GoogleRepositoryImpl(backend: SttpBackend[Identity, Any] = HttpClientSyncBackend())
+    extends GoogleRepository
+    with Logging {
   private implicit val formats: DefaultFormats.type = org.json4s.DefaultFormats
   private implicit val serialization: Serialization.type = org.json4s.native.Serialization
 
@@ -39,7 +41,6 @@ class GoogleRepositoryImpl extends GoogleRepository with Logging {
     val basicAuth =
       Strings.convertToBase64(s"${Config.GOOGLE_CLIENT_ID}:${Config.GOOGLE_CLIENT_SECRET}")
 
-    val backend = HttpClientSyncBackend()
     val request = basicRequest
       .body("client_id", Config.GOOGLE_CLIENT_ID)
       .body("client_secret", Config.GOOGLE_CLIENT_ID)
@@ -69,7 +70,6 @@ class GoogleRepositoryImpl extends GoogleRepository with Logging {
   }
 
   override def getUserInfo(accessToken: String): Option[UserInfo] = {
-    val backend = HttpClientSyncBackend()
     val response =
       basicRequest
         .get(uri"${USER_INFO_URL}?access_token=${accessToken}")

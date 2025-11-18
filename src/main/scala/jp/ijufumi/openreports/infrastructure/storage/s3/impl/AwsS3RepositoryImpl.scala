@@ -18,13 +18,43 @@ import java.nio.file.{Files, Path}
 import java.time.Duration
 import scala.util.Using
 
-class AwsS3RepositoryImpl @Inject() (db: Database, storageRepository: StorageS3Repository)
-    extends AwsS3Repository {
+trait S3ClientFactory {
+  def createClient(storage: StorageS3Model): S3Client
+  def createPresignerClient(storage: StorageS3Model): S3Presigner
+}
+
+class DefaultS3ClientFactory extends S3ClientFactory {
+  override def createClient(storage: StorageS3Model): S3Client = {
+    val credentials = AwsBasicCredentials.create(storage.awsAccessKeyId, storage.awsSecretAccessKey)
+    val region = Region.of(storage.awsRegion)
+    S3Client
+      .builder()
+      .credentialsProvider(StaticCredentialsProvider.create(credentials))
+      .region(region)
+      .build()
+  }
+
+  override def createPresignerClient(storage: StorageS3Model): S3Presigner = {
+    val credentials = AwsBasicCredentials.create(storage.awsAccessKeyId, storage.awsSecretAccessKey)
+    val region = Region.of(storage.awsRegion)
+    S3Presigner
+      .builder()
+      .credentialsProvider(StaticCredentialsProvider.create(credentials))
+      .region(region)
+      .build()
+  }
+}
+
+class AwsS3RepositoryImpl @Inject() (
+    db: Database,
+    storageRepository: StorageS3Repository,
+    s3ClientFactory: S3ClientFactory = new DefaultS3ClientFactory()
+) extends AwsS3Repository {
   override def get(workspaceId: String, key: String): Path = {
     val storage = this.getStorage(workspaceId)
     val request = GetObjectRequest.builder().bucket(storage.s3BucketName).key(key).build()
     val file = Files.createTempFile("/tmp", ".tmp")
-    val response = Using(this.createClient(storage)) { client =>
+    val response = Using(s3ClientFactory.createClient(storage)) { client =>
       client.getObject(request)
     }.get
     Files.copy(response, file)
@@ -34,7 +64,7 @@ class AwsS3RepositoryImpl @Inject() (db: Database, storageRepository: StorageS3R
   override def create(workspaceId: String, key: String, file: Path): Unit = {
     val storage = this.getStorage(workspaceId)
     val request = PutObjectRequest.builder().bucket(storage.s3BucketName).key(key).build()
-    Using(this.createClient(storage)) { client =>
+    Using(s3ClientFactory.createClient(storage)) { client =>
       client.putObject(request, file)
     }
   }
@@ -42,7 +72,7 @@ class AwsS3RepositoryImpl @Inject() (db: Database, storageRepository: StorageS3R
   override def delete(workspaceId: String, key: String): Unit = {
     val storage = this.getStorage(workspaceId)
     val request = DeleteObjectRequest.builder().bucket(storage.s3BucketName).key(key).build()
-    Using(this.createClient(storage)) { client =>
+    Using(s3ClientFactory.createClient(storage)) { client =>
       client.deleteObject(request)
     }
   }
@@ -55,7 +85,7 @@ class AwsS3RepositoryImpl @Inject() (db: Database, storageRepository: StorageS3R
       .getObjectRequest(getObjectRequest)
       .signatureDuration(Duration.ofSeconds(Config.PRESIGNED_URL_EXPIRATION))
       .build()
-    Using(this.createPresignerClient(storage)) { client =>
+    Using(s3ClientFactory.createPresignerClient(storage)) { client =>
       client.presignGetObject(request)
     }.get.url().toString
   }
@@ -66,25 +96,5 @@ class AwsS3RepositoryImpl @Inject() (db: Database, storageRepository: StorageS3R
       throw new NotFoundException(s"storage doesn't exist. workspaceId: $workspaceId")
     }
     storageList.head
-  }
-
-  private def createClient(storage: StorageS3Model): S3Client = {
-    val credentials = AwsBasicCredentials.create(storage.awsAccessKeyId, storage.awsSecretAccessKey)
-    val region = Region.of(storage.awsRegion)
-    S3Client
-      .builder()
-      .credentialsProvider(StaticCredentialsProvider.create(credentials))
-      .region(region)
-      .build()
-  }
-
-  private def createPresignerClient(storage: StorageS3Model): S3Presigner = {
-    val credentials = AwsBasicCredentials.create(storage.awsAccessKeyId, storage.awsSecretAccessKey)
-    val region = Region.of(storage.awsRegion)
-    S3Presigner
-      .builder()
-      .credentialsProvider(StaticCredentialsProvider.create(credentials))
-      .region(region)
-      .build()
   }
 }
