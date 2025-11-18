@@ -16,10 +16,10 @@ class ReportGroupRepositoryImpl extends ReportGroupRepository {
       offset: Int = 0,
       limit: Int = -1,
   ): (Seq[ReportGroup], Int) = {
-    var filtered = reportGroupQuery.filter(_.workspaceId === workspaceId).drop(offset)
+    var filtered = reportGroupQuery.filter(_.workspaceId === workspaceId)
     val count = Await.result(db.run(filtered.length.result), queryTimeout)
     if (limit > 0) {
-      filtered = filtered.take(limit)
+      filtered = filtered.drop(offset).take(limit)
     }
     val result = Await.result(db.run(filtered.result), queryTimeout)
     (result, count)

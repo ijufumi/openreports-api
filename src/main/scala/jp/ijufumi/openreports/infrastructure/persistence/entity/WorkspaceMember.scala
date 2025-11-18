@@ -22,9 +22,11 @@ class WorkspaceMembers(tag: Tag)
       tag,
       "workspace_members",
     ) {
-  def workspaceId = column[String]("workspace_id", O.PrimaryKey)
-  def memberId = column[String]("member_id", O.PrimaryKey)
+  def workspaceId = column[String]("workspace_id")
+  def memberId = column[String]("member_id")
   def roleId = column[String]("role_id")
+
+  def pk = primaryKey("pk_workspace_members", (workspaceId, memberId))
 
   override def * =
     (

@@ -15,10 +15,10 @@ class ReportReportParameterRepositoryImpl extends ReportReportParameterRepositor
       offset: Int = 0,
       limit: Int = -1,
   ): (Seq[ReportReportParameter], Int) = {
-    var filtered = reportReportParameterQuery.drop(offset)
+    var filtered = reportReportParameterQuery.drop(0)
     val count = Await.result(db.run(filtered.length.result), queryTimeout)
     if (limit > 0) {
-      filtered = filtered.take(limit)
+      filtered = filtered.drop(offset).take(limit)
     }
     (Await.result(db.run(filtered.result), queryTimeout).map(r => ReportReportParameter(r)), count)
   }

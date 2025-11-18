@@ -17,13 +17,13 @@ class ReportRepositoryImpl extends ReportRepository {
       limit: Int = -1,
       templateId: String = "",
   ): (Seq[Report], Int) = {
-    var filtered = reportQuery.filter(_.workspaceId === workspaceId).drop(offset)
+    var filtered = reportQuery.filter(_.workspaceId === workspaceId)
     if (templateId.nonEmpty) {
       filtered = filtered.filter(_.reportTemplateId === templateId)
     }
     val count = Await.result(db.run(filtered.length.result), queryTimeout)
     if (limit > 0) {
-      filtered = filtered.take(limit)
+      filtered = filtered.drop(offset).take(limit)
     }
     val result = Await.result(db.run(filtered.result), queryTimeout)
     (result, count)
