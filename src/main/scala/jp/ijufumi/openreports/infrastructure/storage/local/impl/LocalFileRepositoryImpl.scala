@@ -5,13 +5,13 @@ import jp.ijufumi.openreports.infrastructure.storage.local.LocalFileRepository
 
 import java.nio.file.{FileSystems, Files, Path}
 
-class LocalFileRepositoryImpl extends LocalFileRepository {
+class LocalFileRepositoryImpl(implicit templateRootPath: String = Config.TEMPLATE_ROOT_PATH) extends LocalFileRepository {
   override def get(workspaceId: String, key: String): Path = {
-    FileSystems.getDefault.getPath(Config.TEMPLATE_ROOT_PATH, workspaceId, key)
+    FileSystems.getDefault.getPath(templateRootPath, workspaceId, key)
   }
 
   override def create(workspaceId: String, key: String, file: Path): Unit = {
-    val fullPath = FileSystems.getDefault.getPath(Config.TEMPLATE_ROOT_PATH, workspaceId, key)
+    val fullPath = FileSystems.getDefault.getPath(templateRootPath, workspaceId, key)
     Files.createDirectories(fullPath.getParent)
     Files.copy(file, fullPath)
   }

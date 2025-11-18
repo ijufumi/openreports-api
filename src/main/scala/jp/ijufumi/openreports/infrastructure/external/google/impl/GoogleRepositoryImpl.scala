@@ -41,12 +41,16 @@ class GoogleRepositoryImpl(backend: WebSocketSyncBackend = HttpClientSyncBackend
     val basicAuth =
       Strings.convertToBase64(s"${Config.GOOGLE_CLIENT_ID}:${Config.GOOGLE_CLIENT_SECRET}")
 
+    val body: Map[String, String] = Map(
+      "client_id" -> Config.GOOGLE_CLIENT_ID,
+      "client_secret"-> Config.GOOGLE_CLIENT_ID,
+      "grant_type"-> "authorization_code",
+      "code"-> code,
+      "redirect_uri"-> REDIRECT_URL,
+    )
+
     val request = basicRequest
-      .body("client_id", Config.GOOGLE_CLIENT_ID)
-      .body("client_secret", Config.GOOGLE_CLIENT_ID)
-      .body("grant_type", "authorization_code")
-      .body("code", code)
-      .body("redirect_uri", REDIRECT_URL)
+      .body(body, "UTF-8")
       .header("Authorization", s"Basic ${basicAuth}")
       .header("Accept", "application/json")
       .header("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8")

@@ -16,8 +16,7 @@ class CacheWrapperSpec extends AnyFlatSpec with Matchers {
     private val storage = mutable.Map[String, String]()
 
     override protected def doGet[F[_]](key: String)(implicit mode: Mode[F]): F[Option[String]] = mode.M.delay {
-      storage.put(key, value.asInstanceOf[String])
-      Option(key)
+      storage.get(key)
     }
 
     override protected def doPut[F[_]](key: String, value: String, ttl: Option[Duration])(implicit mode: Mode[F]): F[Any] = mode.M.delay {

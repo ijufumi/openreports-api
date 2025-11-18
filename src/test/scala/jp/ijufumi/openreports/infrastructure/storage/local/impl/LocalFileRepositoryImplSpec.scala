@@ -56,10 +56,9 @@ class LocalFileRepositoryImplSpec extends AnyFlatSpec with Matchers with BeforeA
   }
 
   "create" should "create file in correct location" in {
-    // Override Config.TEMPLATE_ROOT_PATH with tempDir for testing
-    System.setProperty("template.root.path", tempDir.toString)
+    val templateRootPath = tempDir.toString
 
-    val repository = new LocalFileRepositoryImpl()
+    val repository = new LocalFileRepositoryImpl()(templateRootPath = templateRootPath)
     val key = "created-file.txt"
     val sourceFile = Files.createTempFile(tempDir, "source", ".txt")
     Files.write(sourceFile, "test content".getBytes)
@@ -76,10 +75,9 @@ class LocalFileRepositoryImplSpec extends AnyFlatSpec with Matchers with BeforeA
   }
 
   it should "create parent directories if they don't exist" in {
-    // Override Config.TEMPLATE_ROOT_PATH with tempDir for testing
-    System.setProperty("template.root.path", tempDir.toString)
+    val templateRootPath = tempDir.toString
 
-    val repository = new LocalFileRepositoryImpl()
+    val repository = new LocalFileRepositoryImpl()(templateRootPath = templateRootPath)
     val key = "deeply/nested/file.txt"
     val sourceFile = Files.createTempFile(tempDir, "source", ".txt")
     Files.write(sourceFile, "nested content".getBytes)
@@ -99,10 +97,9 @@ class LocalFileRepositoryImplSpec extends AnyFlatSpec with Matchers with BeforeA
   }
 
   it should "overwrite existing file" in {
-    // Override Config.TEMPLATE_ROOT_PATH with tempDir for testing
-    System.setProperty("template.root.path", tempDir.toString)
+    val templateRootPath = tempDir.toString
 
-    val repository = new LocalFileRepositoryImpl()
+    val repository = new LocalFileRepositoryImpl()(templateRootPath = templateRootPath)
     val key = "overwrite-file.txt"
 
     // Create first file
