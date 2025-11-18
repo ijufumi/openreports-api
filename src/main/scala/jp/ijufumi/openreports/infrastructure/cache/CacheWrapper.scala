@@ -8,10 +8,8 @@ import scalacache.serialization.binary._
 
 import scala.concurrent.duration._
 
-class CacheWrapper {
+class CacheWrapper(implicit val redisCache: Cache[String] = RedisCache(Config.REDIS_HOST, Config.REDIS_PORT)) {
   private val defaultTtl = Config.CACHE_TTL_SEC
-  implicit val redisCache: Cache[String] =
-    RedisCache(Config.REDIS_HOST, Config.REDIS_PORT)
   private val lock = new java.util.concurrent.locks.ReentrantReadWriteLock()
 
   def put(cacheKey: CacheKey, value: String, args: String*)(implicit
