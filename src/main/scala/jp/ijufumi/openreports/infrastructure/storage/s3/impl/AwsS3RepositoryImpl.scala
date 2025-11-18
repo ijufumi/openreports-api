@@ -53,7 +53,7 @@ class AwsS3RepositoryImpl @Inject() (
   override def get(workspaceId: String, key: String): Path = {
     val storage = this.getStorage(workspaceId)
     val request = GetObjectRequest.builder().bucket(storage.s3BucketName).key(key).build()
-    val file = Files.createTempFile("/tmp", ".tmp")
+    val file = Files.createTempFile("", ".tmp")
     val response = Using(s3ClientFactory.createClient(storage)) { client =>
       client.getObject(request)
     }.get
