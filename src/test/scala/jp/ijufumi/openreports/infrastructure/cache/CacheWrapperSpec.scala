@@ -49,7 +49,7 @@ class CacheWrapperSpec extends AnyFlatSpec with Matchers {
 
     override protected def doRemoveAll[F[_]]()(implicit mode: Mode[F]): F[Any] = ???
 
-    override def config: CacheConfig = ???
+    override def config: CacheConfig = CacheConfig.defaultCacheConfig
 
     override def close[F[_]]()(implicit mode: Mode[F]): F[Any] = ???
 
