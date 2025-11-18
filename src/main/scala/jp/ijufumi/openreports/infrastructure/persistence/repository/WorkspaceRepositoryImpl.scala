@@ -3,6 +3,7 @@ package jp.ijufumi.openreports.infrastructure.persistence.repository
 import jp.ijufumi.openreports.domain.repository.WorkspaceRepository
 import jp.ijufumi.openreports.domain.models.entity.Workspace
 import jp.ijufumi.openreports.domain.models.entity.Workspace.conversions._
+import jp.ijufumi.openreports.utils.Dates
 import slick.jdbc.JdbcBackend.Database
 import slick.jdbc.PostgresProfile.api._
 
@@ -36,7 +37,9 @@ class WorkspaceRepositoryImpl extends WorkspaceRepository {
   }
 
   override def update(db: Database, workspace: Workspace): Option[Workspace] = {
-    workspaceQuery.insertOrUpdate(workspace).withPinnedSession
+    val newModel = workspace.copy(updatedAt = Dates.currentTimestamp())
+    val updateQuery = workspaceQuery.insertOrUpdate(newModel).withPinnedSession
+    Await.result(db.run(updateQuery), queryTimeout)
     getById(db, workspace.id)
   }
 }
