@@ -39,7 +39,7 @@ class MemberRepositoryImplSpec extends AnyFlatSpec with Matchers with BeforeAndA
 
     val member = Member(
       id = memberId,
-      googleId = None,
+      googleId = Some(""),
       email = "test@example.com",
       password = "hashed-password",
       name = "Test User",
@@ -97,7 +97,7 @@ class MemberRepositoryImplSpec extends AnyFlatSpec with Matchers with BeforeAndA
 
     val member = Member(
       id = memberId,
-      googleId = None,
+      googleId = Some(""),
       email = email,
       password = "hashed-password",
       name = "Email User",
@@ -124,7 +124,7 @@ class MemberRepositoryImplSpec extends AnyFlatSpec with Matchers with BeforeAndA
 
     val member = Member(
       id = memberId,
-      googleId = None,
+      googleId = Some(""),
       email = "new@example.com",
       password = "hashed-password",
       name = "New User",
@@ -144,7 +144,7 @@ class MemberRepositoryImplSpec extends AnyFlatSpec with Matchers with BeforeAndA
 
     val member = Member(
       id = memberId,
-      googleId = None,
+      googleId = Some(""),
       email = "update@example.com",
       password = "old-password",
       name = "Old Name",

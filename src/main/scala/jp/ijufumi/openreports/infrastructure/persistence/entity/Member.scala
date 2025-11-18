@@ -3,9 +3,6 @@ package jp.ijufumi.openreports.infrastructure.persistence.entity
 import jp.ijufumi.openreports.utils.Dates
 import slick.jdbc.PostgresProfile.api._
 
-import java.sql.Timestamp
-import java.time.LocalDateTime
-
 case class Member(
     id: String,
     googleId: Option[String] = None,
