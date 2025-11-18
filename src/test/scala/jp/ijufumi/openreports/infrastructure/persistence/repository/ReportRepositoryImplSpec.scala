@@ -1,13 +1,13 @@
 package jp.ijufumi.openreports.infrastructure.persistence.repository
 
-import jp.ijufumi.openreports.domain.models.entity.Report
+import jp.ijufumi.openreports.infrastructure.persistence.entity.Report
 import jp.ijufumi.openreports.infrastructure.persistence.H2DatabaseHelper
 import jp.ijufumi.openreports.utils.IDs
 import org.scalatest.{BeforeAndAfterAll, BeforeAndAfterEach}
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 import slick.jdbc.JdbcBackend.Database
-import slick.jdbc.H2Profile.api._
+import slick.jdbc.PostgresProfile.api._
 
 class ReportRepositoryImplSpec extends AnyFlatSpec with Matchers with BeforeAndAfterAll with BeforeAndAfterEach {
 
@@ -39,20 +39,20 @@ class ReportRepositoryImplSpec extends AnyFlatSpec with Matchers with BeforeAndA
 
     val report1 = Report(
       id = IDs.ulid(),
-      workspaceId = workspaceId,
-      reportTemplateId = "template-1",
       name = "Report 1",
+      reportTemplateId = "template-1",
       dataSourceId = Some("datasource-1"),
+      workspaceId = workspaceId,
       createdAt = System.currentTimeMillis(),
       updatedAt = System.currentTimeMillis()
     )
 
     val report2 = Report(
       id = IDs.ulid(),
-      workspaceId = workspaceId,
-      reportTemplateId = "template-1",
       name = "Report 2",
+      reportTemplateId = "template-1",
       dataSourceId = Some("datasource-1"),
+      workspaceId = workspaceId,
       createdAt = System.currentTimeMillis(),
       updatedAt = System.currentTimeMillis()
     )
@@ -72,20 +72,20 @@ class ReportRepositoryImplSpec extends AnyFlatSpec with Matchers with BeforeAndA
 
     val report1 = Report(
       id = IDs.ulid(),
-      workspaceId = workspaceId,
-      reportTemplateId = templateId,
       name = "Report 1",
+      reportTemplateId = templateId,
       dataSourceId = Some("datasource-1"),
+      workspaceId = workspaceId,
       createdAt = System.currentTimeMillis(),
       updatedAt = System.currentTimeMillis()
     )
 
     val report2 = Report(
       id = IDs.ulid(),
-      workspaceId = workspaceId,
-      reportTemplateId = "other-template",
       name = "Report 2",
+      reportTemplateId = "other-template",
       dataSourceId = Some("datasource-1"),
+      workspaceId = workspaceId,
       createdAt = System.currentTimeMillis(),
       updatedAt = System.currentTimeMillis()
     )
@@ -107,10 +107,10 @@ class ReportRepositoryImplSpec extends AnyFlatSpec with Matchers with BeforeAndA
     (1 to 10).foreach { i =>
       val report = Report(
         id = IDs.ulid(),
-        workspaceId = workspaceId,
-        reportTemplateId = "template-1",
         name = s"Report $i",
+        reportTemplateId = "template-1",
         dataSourceId = Some("datasource-1"),
+        workspaceId = workspaceId,
         createdAt = System.currentTimeMillis(),
         updatedAt = System.currentTimeMillis()
       )
@@ -129,10 +129,10 @@ class ReportRepositoryImplSpec extends AnyFlatSpec with Matchers with BeforeAndA
 
     val report = Report(
       id = reportId,
-      workspaceId = workspaceId,
-      reportTemplateId = "template-1",
       name = "Test Report",
+      reportTemplateId = "template-1",
       dataSourceId = Some("datasource-1"),
+      workspaceId = workspaceId,
       createdAt = System.currentTimeMillis(),
       updatedAt = System.currentTimeMillis()
     )
@@ -155,10 +155,10 @@ class ReportRepositoryImplSpec extends AnyFlatSpec with Matchers with BeforeAndA
   "register" should "create new report and return it" in {
     val report = Report(
       id = IDs.ulid(),
-      workspaceId = IDs.ulid(),
-      reportTemplateId = "template-1",
       name = "New Report",
+      reportTemplateId = "template-1",
       dataSourceId = Some("datasource-1"),
+      workspaceId = IDs.ulid(),
       createdAt = System.currentTimeMillis(),
       updatedAt = System.currentTimeMillis()
     )
@@ -173,10 +173,10 @@ class ReportRepositoryImplSpec extends AnyFlatSpec with Matchers with BeforeAndA
   "update" should "update existing report" in {
     val report = Report(
       id = IDs.ulid(),
-      workspaceId = IDs.ulid(),
-      reportTemplateId = "template-1",
       name = "Old Name",
+      reportTemplateId = "template-1",
       dataSourceId = Some("datasource-1"),
+      workspaceId = IDs.ulid(),
       createdAt = System.currentTimeMillis(),
       updatedAt = System.currentTimeMillis()
     )
@@ -200,10 +200,10 @@ class ReportRepositoryImplSpec extends AnyFlatSpec with Matchers with BeforeAndA
 
     val report = Report(
       id = reportId,
-      workspaceId = workspaceId,
-      reportTemplateId = "template-1",
       name = "Delete Report",
+      reportTemplateId = "template-1",
       dataSourceId = Some("datasource-1"),
+      workspaceId = workspaceId,
       createdAt = System.currentTimeMillis(),
       updatedAt = System.currentTimeMillis()
     )

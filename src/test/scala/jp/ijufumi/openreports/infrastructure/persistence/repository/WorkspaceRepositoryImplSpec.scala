@@ -1,13 +1,13 @@
 package jp.ijufumi.openreports.infrastructure.persistence.repository
 
-import jp.ijufumi.openreports.domain.models.entity.{Workspace, WorkspaceMember}
+import jp.ijufumi.openreports.infrastructure.persistence.entity.{Workspace, WorkspaceMember}
 import jp.ijufumi.openreports.infrastructure.persistence.H2DatabaseHelper
 import jp.ijufumi.openreports.utils.IDs
 import org.scalatest.{BeforeAndAfterAll, BeforeAndAfterEach}
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 import slick.jdbc.JdbcBackend.Database
-import slick.jdbc.H2Profile.api._
+import slick.jdbc.PostgresProfile.api._
 
 import scala.concurrent.Await
 import scala.concurrent.duration._

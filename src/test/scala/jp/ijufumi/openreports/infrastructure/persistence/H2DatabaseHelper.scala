@@ -1,6 +1,6 @@
 package jp.ijufumi.openreports.infrastructure.persistence
 
-import slick.jdbc.H2Profile.api._
+import slick.jdbc.PostgresProfile.api._
 import slick.jdbc.JdbcBackend.Database
 
 import scala.concurrent.Await
@@ -8,6 +8,7 @@ import scala.concurrent.duration._
 
 /**
  * Helper for creating and managing H2 in-memory databases for testing
+ * Uses PostgresProfile for compatibility with main code
  */
 object H2DatabaseHelper {
 
