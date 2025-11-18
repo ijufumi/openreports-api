@@ -9,11 +9,10 @@ import org.json4s.native.Serialization
 import sttp.client4._
 import sttp.client4.httpclient._
 import sttp.client4.json4s._
-import sttp.shared.Identity
 
 import scala.collection.mutable
 
-class GoogleRepositoryImpl(backend: GenericBackend[Identity, Any] = HttpClientSyncBackend())
+class GoogleRepositoryImpl(backend: WebSocketSyncBackend = HttpClientSyncBackend())
     extends GoogleRepository
     with Logging {
   private implicit val formats: DefaultFormats.type = org.json4s.DefaultFormats

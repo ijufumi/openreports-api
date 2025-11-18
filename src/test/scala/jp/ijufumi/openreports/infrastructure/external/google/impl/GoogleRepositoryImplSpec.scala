@@ -3,11 +3,14 @@ package jp.ijufumi.openreports.infrastructure.external.google.impl
 import jp.ijufumi.openreports.infrastructure.external.google.models.{AccessToken, UserInfo}
 import org.json4s.DefaultFormats
 import org.json4s.native.Serialization
+import org.mockito.ArgumentMatchers.any
+import org.mockito.Mockito.when
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
+import org.scalatestplus.mockito.MockitoSugar.mock
 import sttp.client4._
 import sttp.client4.testing.SyncBackendStub
-import sttp.model.StatusCode
+import sttp.model.{RequestMetadata, StatusCode, Method, Uri}
 
 class GoogleRepositoryImplSpec extends AnyFlatSpec with Matchers {
   private implicit val formats: DefaultFormats.type = org.json4s.DefaultFormats
@@ -56,9 +59,8 @@ class GoogleRepositoryImplSpec extends AnyFlatSpec with Matchers {
 
     val responseJson = Serialization.write(accessToken)
 
-    val backendStub = SyncBackendStub
-      .whenRequestMatches(_ => true)
-      .thenRespond(responseJson, StatusCode.Ok)
+    val backendStub = mock[WebSocketSyncBackend]
+    when(backendStub.send(any[Request[String]])).thenReturn(makeResponse(responseJson, StatusCode.Ok))
 
     val repository = new GoogleRepositoryImpl(backendStub)
     val token = repository.fetchToken("valid-code")
@@ -68,9 +70,8 @@ class GoogleRepositoryImplSpec extends AnyFlatSpec with Matchers {
   }
 
   it should "return None for invalid code" in {
-    val backendStub = SyncBackendStub
-      .whenRequestMatches(_ => true)
-      .thenRespond("", StatusCode.BadRequest)
+    val backendStub = mock[WebSocketSyncBackend]
+    when(backendStub.send(any[Request[String]])).thenReturn(makeResponse("", StatusCode.BadRequest))
 
     val repository = new GoogleRepositoryImpl(backendStub)
     val token = repository.fetchToken("invalid-code")
@@ -102,9 +103,8 @@ class GoogleRepositoryImplSpec extends AnyFlatSpec with Matchers {
 
     val responseJson = Serialization.write(userInfo)
 
-    val backendStub = SyncBackendStub
-      .whenRequestMatches(_ => true)
-      .thenRespond(responseJson, StatusCode.Ok)
+    val backendStub = mock[WebSocketSyncBackend]
+    when(backendStub.send(any[Request[String]])).thenReturn(makeResponse(responseJson, StatusCode.Ok))
 
     val repository = new GoogleRepositoryImpl(backendStub)
     val result = repository.getUserInfo("valid-access-token")
@@ -115,9 +115,8 @@ class GoogleRepositoryImplSpec extends AnyFlatSpec with Matchers {
   }
 
   it should "return None for invalid access token" in {
-    val backendStub = SyncBackendStub
-      .whenRequestMatches(_ => true)
-      .thenRespond("", StatusCode.Unauthorized)
+    val backendStub = mock[WebSocketSyncBackend]
+    when(backendStub.send(any[Request[String]])).thenReturn(makeResponse("", StatusCode.Unauthorized))
 
     val repository = new GoogleRepositoryImpl(backendStub)
     val userInfo = repository.getUserInfo("invalid-access-token")
@@ -126,13 +125,16 @@ class GoogleRepositoryImplSpec extends AnyFlatSpec with Matchers {
   }
 
   it should "return None when response body is invalid JSON" in {
-    val backendStub = SyncBackendStub
-      .whenRequestMatches(_ => true)
-      .thenRespond("invalid json", StatusCode.Ok)
+    val backendStub = mock[WebSocketSyncBackend]
+    when(backendStub.send(any[Request[String]])).thenReturn(makeResponse("invalid json", StatusCode.Ok))
 
     val repository = new GoogleRepositoryImpl(backendStub)
     val userInfo = repository.getUserInfo("valid-access-token")
 
     userInfo should be(None)
+  }
+
+  def makeResponse (body: String, code: StatusCode): Response[String] = {
+    Response(body, code, RequestMetadata(Method.POST, Uri("http://test.jp"), scala.collection.immutable.Seq.empty))
   }
 }
