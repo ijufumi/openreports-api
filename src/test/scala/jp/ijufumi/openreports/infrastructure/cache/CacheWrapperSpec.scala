@@ -14,29 +14,29 @@ class CacheWrapperSpec extends AnyFlatSpec with Matchers {
   class MockCache extends Cache[String] {
     private val storage = mutable.Map[String, String]()
 
-    override def get[V](keyParts: Any*)(implicit config: CacheConfig, mode: Mode[Try], flags: Flags): mode.M[Option[V]] = {
+    def get[V](keyParts: Any*)(implicit config: CacheConfig, mode: Mode[Try], flags: Flags): Try[Option[V]] = {
       val key = keyParts.mkString(":")
       Success(storage.get(key).asInstanceOf[Option[V]])
     }
 
-    override def put[V](keyParts: Any*)(value: V, ttl: Option[Duration])(implicit config: CacheConfig, mode: Mode[Try], flags: Flags): mode.M[Unit] = {
+    def put[V](keyParts: Any*)(value: V, ttl: Option[Duration])(implicit config: CacheConfig, mode: Mode[Try], flags: Flags): Try[Unit] = {
       val key = keyParts.mkString(":")
       storage.put(key, value.asInstanceOf[String])
       Success(())
     }
 
-    override def remove(keyParts: Any*)(implicit mode: Mode[Try]): mode.M[Unit] = {
+    def remove(keyParts: Any*)(implicit mode: Mode[Try]): Try[Unit] = {
       val key = keyParts.mkString(":")
       storage.remove(key)
       Success(())
     }
 
-    override def removeAll()(implicit mode: Mode[Try]): mode.M[Unit] = {
+    def removeAll()(implicit mode: Mode[Try]): Try[Unit] = {
       storage.clear()
       Success(())
     }
 
-    override def close()(implicit mode: Mode[Try]): mode.M[Unit] = {
+    def close()(implicit mode: Mode[Try]): Try[Unit] = {
       Success(())
     }
   }
