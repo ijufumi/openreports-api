@@ -89,3 +89,10 @@ flywayPassword := dbPassword
 flywayBaselineOnMigrate := true
 flywayBaselineVersion := "0"
 flywaySchemas += "public"
+
+// Test coverage settings
+coverageEnabled := false // Enable with 'sbt coverage test'
+coverageMinimumStmtTotal := 60
+coverageFailOnMinimum := false // Set to true once we reach target
+coverageHighlighting := true
+coverageExcludedPackages := ".*JettyLauncher.*;.*configs.injectors.*"
