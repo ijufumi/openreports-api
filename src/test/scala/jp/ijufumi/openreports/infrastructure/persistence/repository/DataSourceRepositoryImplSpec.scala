@@ -33,17 +33,16 @@ class DataSourceRepositoryImplSpec extends AnyFlatSpec with Matchers with Before
 
   // Helper method to create a test driver type
   def createTestDriverType(id: String = IDs.ulid(), name: String = "PostgreSQL"): DriverType = {
-    val driverType = DriverType(
-      id = id,
-      name = name,
-      driverClassName = "org.postgresql.Driver",
-      urlFormat = "jdbc:postgresql://{host}:{port}/{database}",
-      defaultPort = 5432,
-      createdAt = System.currentTimeMillis(),
-      updatedAt = System.currentTimeMillis()
-    )
-    driverTypeRepository.register(db, driverType)
-    driverType
+    import jp.ijufumi.openreports.domain.models.value.enums.JdbcDriverClasses
+    import scala.concurrent.Await
+    import scala.concurrent.duration._
+    import slick.jdbc.PostgresProfile.api._
+
+    val jdbcDriverClass = if (name.contains("MySQL")) JdbcDriverClasses.MySQL else JdbcDriverClasses.Postgres
+    val entity = DriverTypeEntity(id, name, jdbcDriverClass)
+    Await.result(db.run(driverTypeQuery += entity), 10.seconds)
+
+    DriverType(id, name, jdbcDriverClass)
   }
 
   // Helper method to create a test data source
