@@ -36,6 +36,7 @@ class WorkspaceMemberRepositoryImplSpec extends AnyFlatSpec with Matchers with B
       id = IDs.ulid(),
       email = email,
       name = "Test User",
+      googleId = Some(IDs.ulid()),
       password = "hashedpassword",
       createdAt = System.currentTimeMillis(),
       updatedAt = System.currentTimeMillis()

@@ -3,7 +3,7 @@ package jp.ijufumi.openreports.infrastructure.persistence.repository
 import jp.ijufumi.openreports.domain.models.entity.ReportGroupReport
 import jp.ijufumi.openreports.infrastructure.persistence.H2DatabaseHelper
 import jp.ijufumi.openreports.infrastructure.persistence.entity.{ReportGroupReport => ReportGroupReportEntity}
-import jp.ijufumi.openreports.utils.IDs
+import jp.ijufumi.openreports.utils.{Dates, IDs}
 import org.scalatest.{BeforeAndAfterAll, BeforeAndAfterEach}
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
@@ -44,8 +44,8 @@ class ReportGroupReportRepositoryImplSpec extends AnyFlatSpec with Matchers with
       id,
       reportId,
       reportGroupId,
-      System.currentTimeMillis(),
-      System.currentTimeMillis(),
+      Dates.currentTimestamp(),
+      Dates.currentTimestamp(),
       1
     )
     Await.result(db.run(reportGroupReportQuery += entity), 10.seconds)
@@ -202,6 +202,8 @@ class ReportGroupReportRepositoryImplSpec extends AnyFlatSpec with Matchers with
     val result = repository.registerInBatch(db, models)
 
     result should have size 5
+    result.sortBy(_.id)
+    models.sortBy(_.id)
     result.map(_.id) should equal(models.map(_.id))
   }
 

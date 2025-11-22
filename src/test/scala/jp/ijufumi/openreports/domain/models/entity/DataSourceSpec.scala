@@ -261,7 +261,7 @@ class DataSourceSpec extends AnyFlatSpec with Matchers {
       updatedAt = 2000L
     )
 
-    val updateRequest = UpdateDataSource(name = "Updated Name")
+    val updateRequest = UpdateDataSource(name = "Updated Name", url = original.url, username = original.username, password = original.password, driverTypeId = original.driverTypeId)
     val updated = original.copyForUpdate(updateRequest)
 
     updated.id should equal(original.id)

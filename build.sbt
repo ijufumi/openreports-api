@@ -55,6 +55,7 @@ lazy val root = (project in file("."))
       "org.json4s" %% "json4s-jackson" % Json4sVersion,
       "org.json4s" %% "json4s-native" % Json4sVersion,
       "org.json4s" %% "json4s-ext" % Json4sVersion,
+      "com.wix"      %% "accord-core"    % "0.7.6",
       "commons-codec" % "commons-codec" % "1.15",
       "com.auth0" % "auth0" % Auth0Version,
       "com.typesafe.slick" %% "slick" % SlickVersion,

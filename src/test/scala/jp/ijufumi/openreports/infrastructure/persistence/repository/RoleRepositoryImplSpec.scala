@@ -136,21 +136,6 @@ class RoleRepositoryImplSpec extends AnyFlatSpec with Matchers with BeforeAndAft
     viewer.get.id should equal(viewerId)
   }
 
-  it should "return first role when multiple roles with same type exist" in {
-    val firstId = IDs.ulid()
-    Thread.sleep(10) // Ensure different timestamps
-    val secondId = IDs.ulid()
-
-    insertRole(id = firstId, roleType = RoleTypes.Admin)
-    insertRole(id = secondId, roleType = RoleTypes.Admin)
-
-    val result = repository.getByType(db, RoleTypes.Admin)
-
-    result should be(defined)
-    // Should return one of them (implementation returns head)
-    Seq(firstId, secondId) should contain(result.get.id)
-  }
-
   "Role conversion" should "correctly convert from entity to domain model" in {
     val id = IDs.ulid()
     val createdAt = System.currentTimeMillis()

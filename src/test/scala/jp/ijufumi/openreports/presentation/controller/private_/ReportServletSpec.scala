@@ -142,6 +142,9 @@ class ReportServletSpec extends ScalatraFunSuite with MockFactory {
 
   // Error handling tests
   test("GET / should return 401 when Authorization header is missing") {
+    (loginService.verifyAuthorizationHeader _).expects(argThat { (s: String) =>
+      s == null
+    }).returns(None)
     get("/?page=0&limit=10", headers = Map("X-Workspace-Id" -> "workspace-id")) {
       status should equal(401)
     }

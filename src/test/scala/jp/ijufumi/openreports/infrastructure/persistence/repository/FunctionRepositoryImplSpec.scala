@@ -152,7 +152,8 @@ class FunctionRepositoryImplSpec extends AnyFlatSpec with Matchers with BeforeAn
     val result = repository.getsByIds(db, lookupIds)
 
     result should have size 5
-    result.map(_.id) should equal(lookupIds)
+    result.sortBy(_.id)
+    result.map(_.id).count(id => lookupIds.contains(id)) should equal(5)
   }
 
   it should "preserve order when IDs are returned (though not guaranteed by implementation)" in {

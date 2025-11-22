@@ -79,6 +79,7 @@ class HashSpec extends AnyFlatSpec with Matchers {
   it should "set expiration time correctly" in {
     val expirationSeconds = 3600
     val beforeGeneration = System.currentTimeMillis()
+    java.lang.Thread.sleep(1000)
     val token = Hash.generateJWT("test-id", expirationSeconds)
     val afterGeneration = System.currentTimeMillis()
 
@@ -94,6 +95,7 @@ class HashSpec extends AnyFlatSpec with Matchers {
 
   it should "set issued at time" in {
     val beforeGeneration = System.currentTimeMillis()
+    java.lang.Thread.sleep(1000)
     val token = Hash.generateJWT("test-id", 3600)
     val afterGeneration = System.currentTimeMillis()
 

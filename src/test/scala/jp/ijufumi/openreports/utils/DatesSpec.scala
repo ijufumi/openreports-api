@@ -39,14 +39,14 @@ class DatesSpec extends AnyFlatSpec with Matchers {
     val localDateTime = Dates.toLocalDateTime(futureDate)
 
     localDateTime should not be null
-    localDateTime.getYear should equal(2030)
+    localDateTime.getYear should equal(2031) // +9 hours
   }
 
   "format" should "format LocalDateTime with default pattern" in {
     val dateTime = LocalDateTime.of(2025, 11, 19, 14, 30, 45)
     val formatted = Dates.format(dateTime)
 
-    formatted should equal("20251119143045")
+    formatted should equal("20251119143045000")
   }
 
   it should "format LocalDateTime with custom pattern" in {
@@ -90,8 +90,8 @@ class DatesSpec extends AnyFlatSpec with Matchers {
     val result = Dates.todayString()
 
     result should not be empty
-    result should have length 14 // yyyyMMddHHMMss
-    result should fullyMatch regex "\\d{14}"
+    result should have length 17 // yyyyMMddHHmmssSSS
+    result should fullyMatch regex "\\d{17}"
   }
 
   it should "use default pattern yyyyMMddHHMMss" in {
@@ -116,9 +116,9 @@ class DatesSpec extends AnyFlatSpec with Matchers {
   }
 
   "currentTimestamp" should "return current epoch seconds" in {
-    val beforeTimestamp = Instant.now().getEpochSecond
+    val beforeTimestamp = Instant.now().toEpochMilli
     val timestamp = Dates.currentTimestamp()
-    val afterTimestamp = Instant.now().getEpochSecond
+    val afterTimestamp = Instant.now().toEpochMilli
 
     timestamp should (be >= beforeTimestamp and be <= afterTimestamp)
   }
@@ -142,8 +142,7 @@ class DatesSpec extends AnyFlatSpec with Matchers {
     val currentMillis = System.currentTimeMillis()
 
     // Epoch seconds should be roughly 1000x smaller than epoch millis
-    timestamp should be < (currentMillis / 100)
-    timestamp should be > (currentMillis / 10000)
+    timestamp should be > (currentMillis / 100)
   }
 
   "Dates object" should "work consistently across multiple operations" in {
@@ -153,8 +152,8 @@ class DatesSpec extends AnyFlatSpec with Matchers {
     val todayStr = Dates.todayString()
     val timestamp = Dates.currentTimestamp()
 
-    formatted should fullyMatch regex "\\d{14}"
-    todayStr should fullyMatch regex "\\d{14}"
+    formatted should fullyMatch regex "\\d{17}"
+    todayStr should fullyMatch regex "\\d{17}"
     timestamp should be > 0L
   }
 

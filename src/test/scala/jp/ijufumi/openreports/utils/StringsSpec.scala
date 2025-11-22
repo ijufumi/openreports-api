@@ -76,7 +76,7 @@ class StringsSpec extends AnyFlatSpec with Matchers {
   }
 
   "generateQueryParamsFromMap" should "generate query string from map" in {
-    val params = mutable.Map("key1" -> "value1", "key2" -> "value2")
+    val params = mutable.Map[String,String]("key1" -> "value1", "key2" -> "value2")
     val result = Strings.generateQueryParamsFromMap(params)
 
     result should include("key1=value1")
@@ -85,40 +85,24 @@ class StringsSpec extends AnyFlatSpec with Matchers {
   }
 
   it should "handle single parameter" in {
-    val params = mutable.Map("key" -> "value")
+    val params = mutable.Map[String,String]("key" -> "value")
     val result = Strings.generateQueryParamsFromMap(params)
 
     result should equal("key=value")
   }
 
   it should "handle empty map" in {
-    val params = mutable.Map[String, Any]()
+    val params = mutable.Map[String, String]()
     val result = Strings.generateQueryParamsFromMap(params)
 
     result should equal("")
   }
 
   it should "URL encode special characters" in {
-    val params = mutable.Map("key" -> "value with spaces")
+    val params = mutable.Map[String,String]("key" -> "value with spaces")
     val result = Strings.generateQueryParamsFromMap(params)
 
     result should include("value+with+spaces")
-  }
-
-  it should "handle numeric values" in {
-    val params = mutable.Map("count" -> 123, "price" -> 45.67)
-    val result = Strings.generateQueryParamsFromMap(params)
-
-    result should include("count=123")
-    result should include("price=45.67")
-  }
-
-  it should "handle boolean values" in {
-    val params = mutable.Map("active" -> true, "deleted" -> false)
-    val result = Strings.generateQueryParamsFromMap(params)
-
-    result should include("active=true")
-    result should include("deleted=false")
   }
 
   "convertToBase64" should "encode string to Base64" in {

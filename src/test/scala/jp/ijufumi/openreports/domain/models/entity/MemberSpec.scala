@@ -87,6 +87,7 @@ class MemberSpec extends AnyFlatSpec with Matchers {
     val workspace = Workspace(
       id = IDs.ulid(),
       name = "Test Workspace",
+      slug = "slug",
       createdAt = System.currentTimeMillis(),
       updatedAt = System.currentTimeMillis()
     )
@@ -110,12 +111,14 @@ class MemberSpec extends AnyFlatSpec with Matchers {
     val workspace1 = Workspace(
       id = IDs.ulid(),
       name = "Workspace 1",
+      slug = "slug",
       createdAt = System.currentTimeMillis(),
       updatedAt = System.currentTimeMillis()
     )
     val workspace2 = Workspace(
       id = IDs.ulid(),
       name = "Workspace 2",
+      slug = "slug",
       createdAt = System.currentTimeMillis(),
       updatedAt = System.currentTimeMillis()
     )

@@ -71,7 +71,8 @@ class WorkspaceMemberRepositoryImpl extends WorkspaceMemberRepository {
   }
 
   override def update(db: Database, workspaceMember: WorkspaceMember): Unit = {
-    workspaceMemberQuery.insertOrUpdate(workspaceMember).withPinnedSession
+    val updateQuery = workspaceMemberQuery.insertOrUpdate(workspaceMember).withPinnedSession
+    Await.result(db.run(updateQuery), queryTimeout)
   }
 
   override def delete(db: Database, workspaceId: String, memberId: String): Unit = {

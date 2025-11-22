@@ -2,7 +2,7 @@ package jp.ijufumi.openreports.infrastructure.persistence.repository
 
 import jp.ijufumi.openreports.domain.models.entity.ReportGroup
 import jp.ijufumi.openreports.infrastructure.persistence.H2DatabaseHelper
-import jp.ijufumi.openreports.utils.IDs
+import jp.ijufumi.openreports.utils.{Dates, IDs}
 import org.scalatest.{BeforeAndAfterAll, BeforeAndAfterEach}
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
@@ -38,8 +38,8 @@ class ReportGroupRepositoryImplSpec extends AnyFlatSpec with Matchers with Befor
       id = IDs.ulid(),
       name = name,
       workspaceId = workspaceId,
-      createdAt = System.currentTimeMillis(),
-      updatedAt = System.currentTimeMillis()
+      createdAt = Dates.currentTimestamp(),
+      updatedAt = Dates.currentTimestamp()
     )
   }
 
@@ -211,7 +211,7 @@ class ReportGroupRepositoryImplSpec extends AnyFlatSpec with Matchers with Befor
     val group = createTestReportGroup(workspaceId, "Original Name")
     repository.register(db, group)
 
-    Thread.sleep(10) // Ensure timestamp difference
+    Thread.sleep(1000) // Ensure timestamp difference
     val updatedGroup = group.copy(name = "Updated Name")
     repository.update(db, updatedGroup)
 

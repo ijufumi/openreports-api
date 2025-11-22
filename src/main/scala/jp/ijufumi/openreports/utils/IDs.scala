@@ -4,6 +4,6 @@ import com.chatwork.scala.ulid.ULID
 
 object IDs {
   def ulid(): String = {
-    ULID.generate().asString
+    ULID.generate(timestampGenerator = Dates.currentTimestampNano).asString
   }
 }

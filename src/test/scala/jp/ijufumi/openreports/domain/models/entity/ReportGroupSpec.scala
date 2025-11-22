@@ -121,7 +121,7 @@ class ReportGroupSpec extends AnyFlatSpec with Matchers {
       updatedAt = 2000L
     )
 
-    val updateRequest = UpdateReportGroup(name = "Updated Name")
+    val updateRequest = UpdateReportGroup(name = "Updated Name", reportIds = Seq.empty)
     val updated = original.copyForUpdate(updateRequest)
 
     updated.id should equal(original.id)

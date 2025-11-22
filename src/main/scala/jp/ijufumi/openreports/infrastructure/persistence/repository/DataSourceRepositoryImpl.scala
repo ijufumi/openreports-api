@@ -58,7 +58,8 @@ class DataSourceRepositoryImpl extends DataSourceRepository {
   }
 
   override def update(db: Database, dataSource: DataSource): Unit = {
-    dataSourceQuery.insertOrUpdate(dataSource).withPinnedSession
+    val updateQuery = dataSourceQuery.insertOrUpdate(dataSource).withPinnedSession
+    Await.result(db.run(updateQuery), queryTimeout)
   }
 
   override def delete(db: Database, workspaceId: String, id: String): Unit = {
