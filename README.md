@@ -68,6 +68,12 @@ task migrateUp
 task migrateClean
 ```
 
+### Tests
+
+```shell
+task test
+```
+
 ## Design
 
 ### ER diagram

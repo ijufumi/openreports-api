@@ -24,5 +24,10 @@ tasks:
     deps: [up-d]
     cmds:
       - docker compose exec api sbt flywayClean
-
+  compile:
+    cmds:
+      - sbt compile
+  test:
+    cmds:
+      - sbt test -v
 
