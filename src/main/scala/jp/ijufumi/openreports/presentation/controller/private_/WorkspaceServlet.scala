@@ -26,24 +26,26 @@ class WorkspaceServlet @Inject() (
   }
 
   post("/") {
-    val requestVal = extractBody[CreateWorkspace]()
-    val _memberId = memberId()
-    val result = workspaceService.createAndRelevant(requestVal.name, _memberId)
-    if (result.isEmpty) {
-      badRequest("something wrong...")
-    } else {
-      ok(result.get)
+    validateBody[CreateWorkspace] { requestVal =>
+      val _memberId = memberId()
+      val result = workspaceService.createAndRelevant(requestVal.name, _memberId)
+      if (result.isEmpty) {
+        badRequest("something wrong...")
+      } else {
+        ok(result.get)
+      }
     }
   }
 
   put("/:id") {
-    val _workspaceId = params("id")
-    val requestVal = extractBody[UpdateWorkspace]()
-    val result = workspaceService.updateWorkspace(_workspaceId, requestVal)
-    if (result.isEmpty) {
-      badRequest("something wrong...")
-    } else {
-      ok(result.get)
+    validateBody[UpdateWorkspace] { requestVal =>
+      val _workspaceId = params("id")
+      val result = workspaceService.updateWorkspace(_workspaceId, requestVal)
+      if (result.isEmpty) {
+        badRequest("something wrong...")
+      } else {
+        ok(result.get)
+      }
     }
   }
 }

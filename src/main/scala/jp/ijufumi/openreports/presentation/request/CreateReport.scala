@@ -11,7 +11,7 @@ case class CreateReport(
 )
 
 object CreateReport {
-  implicit val userValidator: Validator[CreateReport] = validator[CreateReport] { param =>
+  implicit val validate: Validator[CreateReport] = validator[CreateReport] { param =>
     param.name is notEmpty
     param.name.length is between(1, 20)
 

@@ -32,55 +32,61 @@ class ReportServlet @Inject() (loginService: LoginUseCase, reportService: Report
   }
 
   get("/:id") {
-    val _workspaceId = workspaceId()
-    val id = params("id")
-    val report = reportService.getReport(_workspaceId, id)
-    if (report.isEmpty) {
-      notFound("reports not found")
-    } else {
-      ok(report.get)
+    withWorkspace { _workspaceId =>
+      val id = params("id")
+      val report = reportService.getReport(_workspaceId, id)
+      if (report.isEmpty) {
+        notFound("reports not found")
+      } else {
+        ok(report.get)
+      }
     }
   }
 
   get("/outputs/:id") {
-    val _workspaceId = workspaceId()
-    val id = params("id")
-    val file = reportService.outputReport(_workspaceId, id, asPDF = false)
-    if (file.isEmpty) {
-      notFound("reports not found")
-    } else {
-      ok(file.get)
+    withWorkspace { _workspaceId =>
+      val id = params("id")
+      val file = reportService.outputReport(_workspaceId, id, asPDF = false)
+      if (file.isEmpty) {
+        notFound("reports not found")
+      } else {
+        ok(file.get)
+      }
     }
   }
 
   get("/outputs/:id/pdf") {
-    val _workspaceId = workspaceId()
-    val id = params("id")
-    val file = reportService.outputReport(_workspaceId, id, asPDF = true)
-    if (file.isEmpty) {
-      notFound("reports not found")
-    } else {
-      ok(file.get)
+    withWorkspace { _workspaceId =>
+      val id = params("id")
+      val file = reportService.outputReport(_workspaceId, id, asPDF = true)
+      if (file.isEmpty) {
+        notFound("reports not found")
+      } else {
+        ok(file.get)
+      }
     }
   }
 
   put("/:id") {
-    val id = params("id")
-    val _workspaceId = workspaceId()
-    val requestParam = extractBody[UpdateReport]()
-    val report =
-      reportService.updateReport(_workspaceId, id, requestParam)
-    if (report.isEmpty) {
-      notFound("something wrong...")
-    } else {
-      ok(report.get)
+    withWorkspace { _workspaceId =>
+      validateBody[UpdateReport] { requestParam =>
+        val id = params("id")
+        val report =
+          reportService.updateReport(_workspaceId, id, requestParam)
+        if (report.isEmpty) {
+          notFound("something wrong...")
+        } else {
+          ok(report.get)
+        }
+      }
     }
   }
 
   delete("/:id") {
-    val id = params("id")
-    val _workspaceId = workspaceId()
-    reportService.deleteReport(_workspaceId, id)
-    ok()
+    withWorkspace { _workspaceId =>
+      val id = params("id")
+      reportService.deleteReport(_workspaceId, id)
+      ok()
+    }
   }
 }

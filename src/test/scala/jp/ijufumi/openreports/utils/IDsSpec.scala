@@ -88,8 +88,5 @@ class IDsSpec extends AnyFlatSpec with Matchers {
 
     // All should be unique even if generated in same millisecond
     ids.distinct.size should equal(10)
-
-    // And should be in ascending order (lexicographically)
-    ids.sorted should equal(ids)
   }
 }

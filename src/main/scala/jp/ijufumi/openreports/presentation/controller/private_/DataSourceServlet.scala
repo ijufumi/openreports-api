@@ -11,49 +11,56 @@ class DataSourceServlet @Inject() (
 ) extends PrivateAPIServletBase(loginService) {
 
   get("/") {
-    val _workspaceId = workspaceId()
-    val result = dataSourceService.getDataSources(_workspaceId)
-    ok(result)
+    withWorkspace { _workspaceId =>
+      val result = dataSourceService.getDataSources(_workspaceId)
+      ok(result)
+    }
   }
 
   post("/") {
-    val _workspaceId = workspaceId()
-    val requestVal = extractBody[CreateDataSource]()
-    val result = dataSourceService.registerDataSource(_workspaceId, requestVal)
-    if (result.isEmpty) {
-      badRequest("something wrong")
-    } else {
-      ok(result)
+    withWorkspace { _workspaceId =>
+      validateBody[CreateDataSource] { requestVal =>
+        val result = dataSourceService.registerDataSource(_workspaceId, requestVal)
+        if (result.isEmpty) {
+          badRequest("something wrong")
+        } else {
+          ok(result)
+        }
+      }
     }
   }
 
   put("/:id") {
-    val _workspaceId = workspaceId()
-    val id = params("id")
-    val requestVal = extractBody[UpdateDataSource]()
-    val result = dataSourceService.updateDataSource(_workspaceId, id, requestVal)
-    if (result.isEmpty) {
-      badRequest("something wrong")
-    } else {
-      ok(result)
+    withWorkspace { _workspaceId =>
+      validateBody[UpdateDataSource] { requestVal =>
+        val id = params("id")
+        val result = dataSourceService.updateDataSource(_workspaceId, id, requestVal)
+        if (result.isEmpty) {
+          badRequest("something wrong")
+        } else {
+          ok(result)
+        }
+      }
     }
   }
 
   get("/:id") {
-    val _workspaceId = workspaceId()
-    val id = params("id")
-    val result = dataSourceService.getDataSource(_workspaceId, id)
-    if (result.isEmpty) {
-      notFound("doesn't exist")
-    } else {
-      ok(result)
+    withWorkspace { _workspaceId =>
+      val id = params("id")
+      val result = dataSourceService.getDataSource(_workspaceId, id)
+      if (result.isEmpty) {
+        notFound("doesn't exist")
+      } else {
+        ok(result)
+      }
     }
   }
 
   delete("/:id") {
-    val _workspaceId = workspaceId()
-    val id = params("id")
-    dataSourceService.deleteDataSource(_workspaceId, id)
-    ok("success")
+    withWorkspace { _workspaceId =>
+      val id = params("id")
+      dataSourceService.deleteDataSource(_workspaceId, id)
+      ok("success")
+    }
   }
 }
