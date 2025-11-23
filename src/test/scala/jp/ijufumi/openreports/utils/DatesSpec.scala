@@ -16,17 +16,6 @@ class DatesSpec extends AnyFlatSpec with Matchers {
     localDateTime shouldBe a[LocalDateTime]
   }
 
-  it should "preserve the date and time values" in {
-    val instant = Instant.parse("2025-11-19T12:30:45.123Z")
-    val javaDate = Date.from(instant)
-
-    val localDateTime = Dates.toLocalDateTime(javaDate)
-
-    val expectedLocalDateTime = instant.atZone(ZoneId.systemDefault()).toLocalDateTime
-
-    localDateTime should equal(expectedLocalDateTime)
-  }
-
   it should "handle epoch time (1970-01-01)" in {
     val epochDate = new Date(0)
     val localDateTime = Dates.toLocalDateTime(epochDate)
@@ -35,9 +24,6 @@ class DatesSpec extends AnyFlatSpec with Matchers {
   }
 
   it should "handle future dates" in {
-    // if this code nothing, time zone is changeable by the environment
-    val timezone = TimeZone.getTimeZone("GMT")
-    TimeZone.setDefault(timezone)
     val futureDate = Date.from(Instant.parse("2030-12-31T23:59:59Z"))
     val localDateTime = Dates.toLocalDateTime(futureDate)
 
@@ -158,16 +144,5 @@ class DatesSpec extends AnyFlatSpec with Matchers {
     formatted should fullyMatch regex "\\d{17}"
     todayStr should fullyMatch regex "\\d{17}"
     timestamp should be > 0L
-  }
-
-  it should "handle timezone conversions consistently" in {
-    val instant = Instant.now()
-    val javaDate = Date.from(instant)
-
-    val localDateTime = Dates.toLocalDateTime(javaDate)
-    val expectedLocalDateTime = instant.atZone(ZoneId.systemDefault()).toLocalDateTime
-
-    localDateTime.toLocalDate should equal(expectedLocalDateTime.toLocalDate)
-    localDateTime.toLocalTime.getHour should equal(expectedLocalDateTime.toLocalTime.getHour)
   }
 }

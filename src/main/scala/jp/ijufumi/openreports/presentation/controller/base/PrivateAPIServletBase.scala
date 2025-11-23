@@ -42,7 +42,7 @@ abstract class PrivateAPIServletBase(loginService: LoginUseCase)
       if (member.isDefined) {
         val _workspaceId = workspaceId()
         if (StringUtils.isEmpty(_workspaceId)) {
-          badRequest()
+          halt(badRequest("X-Workspace-Id is missing"))
         } else if (!loginService.verifyWorkspaceId(memberId(), _workspaceId)) {
           halt(forbidden("Request forbidden"))
         }

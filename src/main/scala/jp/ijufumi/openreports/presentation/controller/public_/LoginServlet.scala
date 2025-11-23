@@ -13,32 +13,34 @@ class LoginServlet @Inject() (loginService: LoginUseCase)
   override def skipAuthorization(): Boolean = true
 
   post("/password") {
-    val loginRequest = extractBody[Login]()
-    val memberOpt = loginService.login(loginRequest)
-    if (memberOpt.isEmpty) {
-      unauthorized("email or password or both are incorrect")
-    } else {
-      val member = memberOpt.get
-      setMember(member)
-      setTokens(member.id)
-      ok(member)
-    }
+    validateBody[Login]{validatedRequest => {
+      val memberOpt = loginService.login(validatedRequest)
+      if (memberOpt.isEmpty) {
+        unauthorized("email or password or both are incorrect")
+      } else {
+        val member = memberOpt.get
+        setMember(member)
+        setTokens(member.id)
+        ok(member)
+      }
+    }}
   }
   get("/google/authorization_url") {
     ok(GoogleAuthUrl(loginService.getAuthorizationUrl))
   }
 
   post("/google") {
-    val loginRequest = extractBody[GoogleLogin]()
-    val memberOpt = loginService.loginWithGoogle(loginRequest)
-    if (memberOpt.isEmpty) {
-      unauthorized("state or code or both are invalid")
-    } else {
-      val member = memberOpt.get
-      setMember(member)
-      setTokens(member.id)
-      ok(member)
-    }
+    validateBody[GoogleLogin]{validatedRequest => {
+      val memberOpt = loginService.loginWithGoogle(validatedRequest)
+      if (memberOpt.isEmpty) {
+        unauthorized("state or code or both are invalid")
+      } else {
+        val member = memberOpt.get
+        setMember(member)
+        setTokens(member.id)
+        ok(member)
+      }
+    }}
   }
 
   def setTokens(memberId: String): Unit = {

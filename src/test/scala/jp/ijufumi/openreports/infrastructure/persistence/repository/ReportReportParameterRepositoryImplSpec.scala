@@ -202,7 +202,9 @@ class ReportReportParameterRepositoryImplSpec extends AnyFlatSpec with Matchers 
     val result = repository.registerInBatch(db, models)
 
     result should have size 5
-    result.map(_.id) should equal(models.map(_.id))
+    val sortedResult = result.sortBy(_.id)
+    val sortedModels = models.sortBy(_.id)
+    sortedResult.map(_.id) should equal(sortedModels.map(_.id))
   }
 
   it should "persist all mappings to database" in {

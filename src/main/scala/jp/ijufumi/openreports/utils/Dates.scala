@@ -2,10 +2,12 @@ package jp.ijufumi.openreports.utils
 
 import java.time.format.DateTimeFormatter
 import java.time.{Instant, LocalDateTime, ZoneId}
+import java.util.TimeZone
 
 object Dates {
   def toLocalDateTime(date: java.util.Date): LocalDateTime = {
-    date.toInstant.atZone(ZoneId.systemDefault()).toLocalDateTime
+    val timezone = TimeZone.getTimeZone("GMT")
+    date.toInstant.atZone(timezone.toZoneId).toLocalDateTime
   }
 
   def format(dateTime: LocalDateTime, pattern: String = "yyyyMMddHHmmssSSS"): String = {

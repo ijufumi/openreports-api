@@ -70,4 +70,45 @@ class MemberServletSpec extends ScalatraFunSuite with MockFactory {
       body should include("Updated Name")
     }
   }
+
+  test("GET /status missing workspace id header") {
+    val member = Member("member-id", "test@example.com", "Test User", Seq.empty)
+    (loginService.verifyAuthorizationHeader _).expects("api-token").returns(Some(member))
+
+    get("/status", headers = Map("Authorization" -> "api-token")) {
+      status should equal(400)
+    }
+  }
+
+  test("GET /permissions missing workspace id header") {
+    val member = Member("member-id", "test@example.com", "Test User", Seq.empty)
+    (loginService.verifyAuthorizationHeader _).expects("api-token").returns(Some(member))
+
+    get("/permissions", headers = Map("Authorization" -> "api-token")) {
+      status should equal(400)
+    }
+  }
+
+  test("GET /logout missing workspace id header") {
+    val member = Member("member-id", "test@example.com", "Test User", Seq.empty)
+    (loginService.verifyAuthorizationHeader _).expects("api-token").returns(Some(member))
+
+    get("/logout", headers = Map("Authorization" -> "api-token")) {
+      status should equal(400)
+    }
+  }
+
+  test("PUT /update missing workspace id header") {
+    val member = Member("member-id", "test@example.com", "Test User", Seq.empty)
+    val requestBody = """{"name":"Updated Name","password":"newpassword"}"""
+
+    (loginService.verifyAuthorizationHeader _).expects("api-token").returns(Some(member))
+
+    put("/update", body = requestBody.getBytes, headers = Map(
+      "Authorization" -> "api-token",
+      "Content-Type" -> "application/json"
+    )) {
+      status should equal(400)
+    }
+  }
 }

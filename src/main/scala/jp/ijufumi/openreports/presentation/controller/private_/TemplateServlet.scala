@@ -9,50 +9,55 @@ import jp.ijufumi.openreports.usecase.port.input.{LoginUseCase, ReportUseCase}
 class TemplateServlet @Inject()(loginService: LoginUseCase, reportService: ReportUseCase)
     extends PrivateAPIServletBase(loginService) {
   get("/") {
-    val _workspaceId = workspaceId()
-    val page = params("page").toInt
-    val limit = params("limit").toInt
-    ok(reportService.getTemplates(_workspaceId, page, limit))
+    withWorkspace { _workspaceId =>
+      val page = params("page").toInt
+      val limit = params("limit").toInt
+      ok(reportService.getTemplates(_workspaceId, page, limit))
+    }
   }
 
   post("/") {
-    val postForm = mapping(
-      "name" -> text(),
-    )(CreateTemplate.apply)
+    withWorkspace { _workspaceId =>
+      val postForm = mapping(
+        "name" -> text(),
+      )(CreateTemplate.apply)
 
-    validate(postForm)(
-      (errors) => {
-        badRequest(errors)
-      },
-      (form: CreateTemplate) => {
-        val _workspaceId = workspaceId()
-        val file = fileParams("file")
-        val res = reportService.createTemplate(_workspaceId, form, file)
+      validate(postForm)(
+        (errors) => {
+          badRequest(errors)
+        },
+        (form: CreateTemplate) => {
+          val file = fileParams("file")
+          val res = reportService.createTemplate(_workspaceId, form, file)
+          if (res.isEmpty) {
+            badRequest("something wrong...")
+          } else {
+            ok(res.get)
+          }
+        },
+      )
+    }
+  }
+
+  put("/:id") {
+    withWorkspace { _workspaceId =>
+      validateBody[UpdateTemplate] { requestParam =>
+        val id = params("id")
+        val res = reportService.updateTemplate(_workspaceId, id, requestParam)
         if (res.isEmpty) {
           badRequest("something wrong...")
         } else {
           ok(res.get)
         }
-      },
-    )
-  }
-
-  put("/:id") {
-    val id = params("id")
-    val requestParam = extractBody[UpdateTemplate]()
-    val _workspaceId = workspaceId()
-    val res = reportService.updateTemplate(_workspaceId, id, requestParam)
-    if (res.isEmpty) {
-      badRequest("something wrong...")
-    } else {
-      ok(res.get)
+      }
     }
   }
 
   delete("/:id") {
-    val id = params("id")
-    val _workspaceId = workspaceId()
-    reportService.deleteTemplate(_workspaceId, id)
-    ok()
+    withWorkspace { _workspaceId =>
+      val id = params("id")
+      reportService.deleteTemplate(_workspaceId, id)
+      ok()
+    }
   }
 }

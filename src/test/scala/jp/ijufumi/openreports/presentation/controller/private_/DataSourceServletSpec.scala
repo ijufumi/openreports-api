@@ -16,9 +16,19 @@ class DataSourceServletSpec extends ScalatraFunSuite with MockFactory {
     (loginService.verifyAuthorizationHeader _).expects("api-token").returns(Some(member))
     (loginService.verifyWorkspaceId _).expects(member.id, "workspace-id").returns(true)
     (dataSourceService.getDataSources _).expects("workspace-id").returns(Lists(Seq.empty[DataSource], 0, 0, 0))
+
     get("/", headers = Map("Authorization" -> "api-token", "X-Workspace-Id" -> "workspace-id")) {
       status should equal(200)
       body should equal("{\"items\":[],\"offset\":0,\"limit\":0,\"count\":0}")
+    }
+  }
+
+  test("missing workspace id header") {
+    val member = Member("id", "name", "email", Seq.empty)
+    (loginService.verifyAuthorizationHeader _).expects("api-token").returns(Some(member))
+
+    get("/", headers = Map("Authorization" -> "api-token")) {
+      status should equal(400)
     }
   }
 }
