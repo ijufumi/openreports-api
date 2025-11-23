@@ -34,7 +34,9 @@ jobs:
             project/build.properties
       - name: Setup sbt launcher
         uses: sbt/setup-sbt@v1
+      - name: Install Task
+        uses: go-task/setup-task@v1
       - name: Build
-        run: sbt compile
+        run: task compile
       - name: Test
-        run: sbt test -v
+        run: task test
