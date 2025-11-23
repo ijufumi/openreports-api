@@ -4,7 +4,7 @@ import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 
 import java.time.{Instant, LocalDateTime, ZoneId}
-import java.util.Date
+import java.util.{Date, TimeZone}
 
 class DatesSpec extends AnyFlatSpec with Matchers {
 
@@ -35,11 +35,14 @@ class DatesSpec extends AnyFlatSpec with Matchers {
   }
 
   it should "handle future dates" in {
+    // if this code nothing, time zone is changeable by the environment
+    val timezone = TimeZone.getTimeZone("GMT")
+    TimeZone.setDefault(timezone)
     val futureDate = Date.from(Instant.parse("2030-12-31T23:59:59Z"))
     val localDateTime = Dates.toLocalDateTime(futureDate)
 
     localDateTime should not be null
-    localDateTime.getYear should equal(2031) // +9 hours
+    localDateTime.getYear should equal(2030)
   }
 
   "format" should "format LocalDateTime with default pattern" in {
