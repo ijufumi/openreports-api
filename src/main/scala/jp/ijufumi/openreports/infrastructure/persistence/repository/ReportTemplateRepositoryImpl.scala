@@ -43,7 +43,8 @@ class ReportTemplateRepositoryImpl extends ReportTemplateRepository {
   }
 
   override def update(db: Database, model: ReportTemplate): Unit = {
-    templateQuery.insertOrUpdate(model).withPinnedSession
+    val updateQuery = templateQuery.insertOrUpdate(model).withPinnedSession
+    Await.result(db.run(updateQuery), queryTimeout)
   }
 
   override def delete(db: Database, workspaceId: String, id: String): Unit = {

@@ -19,7 +19,8 @@ abstract class APIServletBase
     with FormSupport
     with I18nSupport
     with Logging
-    with CorsSupport {
+    with CorsSupport
+    with ValidationSupport {
 
   protected val ATTRIBUTE_KEY_MEMBER = "member"
 

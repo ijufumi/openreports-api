@@ -1,9 +1,11 @@
 package jp.ijufumi.openreports.presentation.controller.base
 
+import com.wix.accord.Validator
 import org.scalatra.servlet.{FileUploadSupport, MultipartConfig}
 import jp.ijufumi.openreports.configs.Config
 import jp.ijufumi.openreports.presentation.response.Member
 import jp.ijufumi.openreports.usecase.port.input.LoginUseCase
+import org.apache.commons.lang3.StringUtils
 
 abstract class PrivateAPIServletBase(loginService: LoginUseCase)
     extends APIServletBase
@@ -16,17 +18,17 @@ abstract class PrivateAPIServletBase(loginService: LoginUseCase)
       var member = loginService.verifyAuthorizationHeader(header)
       if (member.isEmpty) {
         val refreshToken = refreshTokenHeader()
-        if (refreshToken.isEmpty) {
-          halt(forbidden("API Token is invalid"))
+        if (refreshToken == null || refreshToken.isEmpty) {
+          halt(unauthorized("API Token is invalid"))
         } else {
           val accessToken = loginService.generateAccessToken(refreshToken)
           if (accessToken.isEmpty) {
-            halt(forbidden("API Token is invalid"))
+            halt(unauthorized("API Token is invalid"))
           } else {
             response.setHeader(Config.API_TOKEN_HEADER, accessToken.get)
             member = loginService.verifyApiToken(accessToken.get)
             if (member.isEmpty) {
-              halt(forbidden("API Token is invalid"))
+              halt(unauthorized("API Token is invalid"))
             } else {
               setMember(member.get)
               val refreshToken = loginService.generateRefreshToken(memberId())
@@ -38,7 +40,10 @@ abstract class PrivateAPIServletBase(loginService: LoginUseCase)
         setMember(member.get)
       }
       if (member.isDefined) {
-        if (!loginService.verifyWorkspaceId(memberId(), workspaceId())) {
+        val _workspaceId = workspaceId()
+        if (StringUtils.isEmpty(_workspaceId)) {
+          badRequest()
+        } else if (!loginService.verifyWorkspaceId(memberId(), _workspaceId)) {
           halt(forbidden("Request forbidden"))
         }
       }
@@ -73,5 +78,14 @@ abstract class PrivateAPIServletBase(loginService: LoginUseCase)
       return Some(_member.asInstanceOf[Member])
     }
     None
+  }
+
+  def withWorkspace(block: java.lang.String => Any): Any = {
+    val _workspaceId = workspaceId()
+    if (StringUtils.isEmpty(_workspaceId)) {
+      badRequest()
+    } else {
+      block(_workspaceId)
+    }
   }
 }

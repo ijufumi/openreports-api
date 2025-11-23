@@ -9,23 +9,26 @@ class ReportServlet @Inject() (loginService: LoginUseCase, reportService: Report
     extends PrivateAPIServletBase(loginService) {
 
   get("/") {
-    val _workspaceId = workspaceId()
-    val page = params("page", "0").toInt
-    val limit = params("limit", "10").toInt
-    val templateId = params("templateId", "")
-    ok(reportService.getReports(_workspaceId, page, limit, templateId))
+    withWorkspace{_workspaceId => {
+      val page = params("page", "0").toInt
+      val limit = params("limit", "10").toInt
+      val templateId = params("templateId", "")
+      ok(reportService.getReports(_workspaceId, page, limit, templateId))
+    }}
   }
 
   post("/") {
-    val _workspaceId = workspaceId()
-    val requestParam = extractBody[CreateReport]()
-    val report =
-      reportService.createReport(_workspaceId, requestParam)
-    if (report.isEmpty) {
-      badRequest("something wrong...")
-    } else {
-      ok(report.get)
-    }
+    withWorkspace{_workspaceId => {
+      validateBody[CreateReport]{ validatedRequest =>
+        val report =
+          reportService.createReport(_workspaceId, validatedRequest)
+        if (report.isEmpty) {
+          badRequest("something wrong...")
+        } else {
+          ok(report.get)
+        }
+      }
+    }}
   }
 
   get("/:id") {
@@ -68,7 +71,7 @@ class ReportServlet @Inject() (loginService: LoginUseCase, reportService: Report
     val report =
       reportService.updateReport(_workspaceId, id, requestParam)
     if (report.isEmpty) {
-      badRequest("something wrong...")
+      notFound("something wrong...")
     } else {
       ok(report.get)
     }

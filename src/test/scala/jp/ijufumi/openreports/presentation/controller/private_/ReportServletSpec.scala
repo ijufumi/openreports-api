@@ -139,4 +139,104 @@ class ReportServletSpec extends ScalatraFunSuite with MockFactory {
       status should equal(200)
     }
   }
+
+  // Error handling tests
+  test("GET / should return 401 when Authorization header is missing") {
+    (loginService.verifyAuthorizationHeader _).expects(argThat { (s: String) =>
+      s == null
+    }).returns(None)
+    get("/?page=0&limit=10", headers = Map("X-Workspace-Id" -> "workspace-id")) {
+      status should equal(401)
+    }
+  }
+
+  test("GET / should return 401 when authorization token is invalid") {
+    (loginService.verifyAuthorizationHeader _).expects("invalid-token").returns(None)
+
+    get("/?page=0&limit=10", headers = Map("Authorization" -> "invalid-token", "X-Workspace-Id" -> "workspace-id")) {
+      status should equal(401)
+    }
+  }
+
+  test("GET / should return 400 when X-Workspace-Id header is missing") {
+    (loginService.verifyAuthorizationHeader _).expects("api-token").returns(Some(member))
+
+    get("/?page=0&limit=10", headers = Map("Authorization" -> "api-token")) {
+      status should equal(400)
+    }
+  }
+
+  test("GET / should return 403 when user doesn't have access to workspace") {
+    (loginService.verifyAuthorizationHeader _).expects("api-token").returns(Some(member))
+    (loginService.verifyWorkspaceId _).expects(member.id, "unauthorized-workspace").returns(false)
+
+    get("/?page=0&limit=10", headers = Map("Authorization" -> "api-token", "X-Workspace-Id" -> "unauthorized-workspace")) {
+      status should equal(403)
+    }
+  }
+
+  test("POST / should return 400 when request body is malformed JSON") {
+    val malformedJson = """{"name":"New Report","templateId":"""
+
+    (loginService.verifyAuthorizationHeader _).expects("api-token").returns(Some(member))
+    (loginService.verifyWorkspaceId _).expects(member.id, "workspace-id").returns(true)
+
+    post("/", body = malformedJson.getBytes, headers = Map(
+      "Authorization" -> "api-token",
+      "X-Workspace-Id" -> "workspace-id",
+      "Content-Type" -> "application/json"
+    )) {
+      status should equal(400)
+    }
+  }
+
+  test("POST / should return 400 when required field 'name' is missing") {
+    val requestWithoutName = """{"templateId":"template-id"}"""
+
+    (loginService.verifyAuthorizationHeader _).expects("api-token").returns(Some(member))
+    (loginService.verifyWorkspaceId _).expects(member.id, "workspace-id").returns(true)
+
+    post("/", body = requestWithoutName.getBytes, headers = Map(
+      "Authorization" -> "api-token",
+      "X-Workspace-Id" -> "workspace-id",
+      "Content-Type" -> "application/json"
+    )) {
+      status should equal(400)
+    }
+  }
+
+  test("PUT /:id should return 404 when updating non-existent report") {
+    val requestBody = """{"name":"Updated Report","templateId":"template-id"}"""
+
+    (loginService.verifyAuthorizationHeader _).expects("api-token").returns(Some(member))
+    (loginService.verifyWorkspaceId _).expects(member.id, "workspace-id").returns(true)
+    (reportService.updateReport _).expects(*, *, *).returns(None)
+
+    put("/nonexistent-id", body = requestBody.getBytes, headers = Map(
+      "Authorization" -> "api-token",
+      "X-Workspace-Id" -> "workspace-id",
+      "Content-Type" -> "application/json"
+    )) {
+      status should equal(404)
+    }
+  }
+
+  test("GET /outputs/:id should return 404 when report output fails") {
+    (loginService.verifyAuthorizationHeader _).expects("api-token").returns(Some(member))
+    (loginService.verifyWorkspaceId _).expects(member.id, "workspace-id").returns(true)
+    (reportService.outputReport _).expects("workspace-id", "nonexistent-id", false).returns(None)
+
+    get("/outputs/nonexistent-id", headers = Map("Authorization" -> "api-token", "X-Workspace-Id" -> "workspace-id")) {
+      status should equal(404)
+    }
+  }
+
+  test("DELETE /:id should handle deletion with authorization checks") {
+    (loginService.verifyAuthorizationHeader _).expects("api-token").returns(Some(member))
+    (loginService.verifyWorkspaceId _).expects(member.id, "workspace-id").returns(false)
+
+    delete("/report-id", headers = Map("Authorization" -> "api-token", "X-Workspace-Id" -> "workspace-id")) {
+      status should equal(403)
+    }
+  }
 }

@@ -45,7 +45,7 @@ object Strings {
     builder.mkString
   }
 
-  def generateQueryParamsFromMap(values: mutable.Map[String, Any]): String = {
+  def generateQueryParamsFromMap(values: mutable.Map[String, String]): String = {
     val builder = new mutable.StringBuilder
     var index = 0
     values.keys.foreach(k => {
@@ -63,7 +63,7 @@ object Strings {
   }
 
   def convertFromBase64(value: String): String = {
-    Base64.decodeBase64(value).mkString
+    new String(Base64.decodeBase64(value.getBytes()))
   }
 
   def generateSlug(): String = {

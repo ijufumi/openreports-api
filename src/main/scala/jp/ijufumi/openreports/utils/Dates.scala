@@ -8,15 +8,20 @@ object Dates {
     date.toInstant.atZone(ZoneId.systemDefault()).toLocalDateTime
   }
 
-  def format(dateTime: LocalDateTime, pattern: String = "yyyyMMddHHMMss"): String = {
+  def format(dateTime: LocalDateTime, pattern: String = "yyyyMMddHHmmssSSS"): String = {
     DateTimeFormatter.ofPattern(pattern).format(dateTime)
   }
 
-  def todayString(pattern: String = "yyyyMMddHHMMss"): String = {
-    this.format(LocalDateTime.now())
+  def todayString(pattern: String = "yyyyMMddHHmmssSSS"): String = {
+    this.format(LocalDateTime.now(), pattern)
   }
 
   def currentTimestamp(): Long = {
-    Instant.now().getEpochSecond
+    Instant.now().toEpochMilli
   }
+
+  def currentTimestampNano(): Long = {
+    System.nanoTime()
+  }
+
 }
