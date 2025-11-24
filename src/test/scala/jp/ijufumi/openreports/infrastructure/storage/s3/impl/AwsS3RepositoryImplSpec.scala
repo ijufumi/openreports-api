@@ -29,7 +29,7 @@ class AwsS3RepositoryImplSpec extends AnyFlatSpec with Matchers with MockitoSuga
   "getStorage" should "throw NotFoundException when storage doesn't exist" in {
     val db = mock[Database]
     val storageRepository = mock[StorageS3Repository]
-    val repository = new AwsS3RepositoryImpl(db, storageRepository)
+    val repository = new AwsS3RepositoryImpl(db, storageRepository, new DefaultS3ClientFactory())
     val workspaceId = "workspace-id"
 
     when(storageRepository.gets(db, workspaceId)).thenReturn(Seq.empty)

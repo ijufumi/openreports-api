@@ -13,7 +13,7 @@ import sttp.client4.json4s._
 
 import scala.collection.mutable
 
-class GoogleRepositoryImpl @Inject() (implicit backend: WebSocketSyncBackend = HttpClientSyncBackend())
+class GoogleRepositoryImpl @Inject() (backend: WebSocketSyncBackend = HttpClientSyncBackend())
     extends GoogleRepository
     with Logging {
   private implicit val formats: DefaultFormats.type = org.json4s.DefaultFormats

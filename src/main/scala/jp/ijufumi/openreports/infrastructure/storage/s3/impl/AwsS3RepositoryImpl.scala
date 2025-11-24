@@ -48,7 +48,7 @@ class DefaultS3ClientFactory extends S3ClientFactory {
 class AwsS3RepositoryImpl @Inject() (
     db: Database,
     storageRepository: StorageS3Repository,
-    s3ClientFactory: S3ClientFactory,
+    s3ClientFactory: S3ClientFactory = new DefaultS3ClientFactory(),
 ) extends AwsS3Repository {
   override def get(workspaceId: String, key: String): Path = {
     val storage = this.getStorage(workspaceId)
