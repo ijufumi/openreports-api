@@ -1,7 +1,6 @@
 package jp.ijufumi.openreports.infrastructure.external.google.impl
 
 import com.google.inject.Inject
-import com.google.inject.assistedinject.Assisted
 import jp.ijufumi.openreports.configs.Config
 import jp.ijufumi.openreports.infrastructure.external.google.GoogleRepository
 import jp.ijufumi.openreports.infrastructure.external.google.models.{AccessToken, UserInfo}
