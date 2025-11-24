@@ -1,5 +1,7 @@
 package jp.ijufumi.openreports.infrastructure.external.google.impl
 
+import com.google.inject.Inject
+import com.google.inject.assistedinject.Assisted
 import jp.ijufumi.openreports.configs.Config
 import jp.ijufumi.openreports.infrastructure.external.google.GoogleRepository
 import jp.ijufumi.openreports.infrastructure.external.google.models.{AccessToken, UserInfo}
@@ -12,7 +14,7 @@ import sttp.client4.json4s._
 
 import scala.collection.mutable
 
-class GoogleRepositoryImpl(backend: WebSocketSyncBackend = HttpClientSyncBackend())
+class GoogleRepositoryImpl @Inject() (implicit backend: WebSocketSyncBackend = HttpClientSyncBackend())
     extends GoogleRepository
     with Logging {
   private implicit val formats: DefaultFormats.type = org.json4s.DefaultFormats

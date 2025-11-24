@@ -2,17 +2,10 @@ package jp.ijufumi.openreports.configs.injectors
 
 import jp.ijufumi.openreports.domain.repository.{DataSourceRepository, DriverTypeRepository, FunctionRepository, MemberRepository, ReportGroupReportRepository, ReportGroupRepository, ReportParameterRepository, ReportReportParameterRepository, ReportRepository, ReportTemplateRepository, RoleFunctionRepository, RoleRepository, StorageS3Repository, WorkspaceMemberRepository, WorkspaceRepository}
 import jp.ijufumi.openreports.infrastructure.persistence.repository.{DataSourceRepositoryImpl, DriverTypeRepositoryImpl, FunctionRepositoryImpl, MemberRepositoryImpl, ReportGroupReportRepositoryImpl, ReportGroupRepositoryImpl, ReportParameterRepositoryImpl, ReportReportParameterRepositoryImpl, ReportRepositoryImpl, ReportTemplateRepositoryImpl, RoleFunctionRepositoryImpl, RoleRepositoryImpl, StorageS3RepositoryImpl, WorkspaceMemberRepositoryImpl, WorkspaceRepositoryImpl}
-import jp.ijufumi.openreports.infrastructure.storage.local.{LocalFileRepository, LocalSeedFileRepository}
-import jp.ijufumi.openreports.infrastructure.storage.local.impl.{LocalFileRepositoryImpl, LocalSeedFileRepositoryImpl}
-import jp.ijufumi.openreports.infrastructure.storage.s3.AwsS3Repository
-import jp.ijufumi.openreports.infrastructure.storage.s3.impl.AwsS3RepositoryImpl
-import jp.ijufumi.openreports.infrastructure.external.google.GoogleRepository
-import jp.ijufumi.openreports.infrastructure.external.google.impl.GoogleRepositoryImpl
 
 class RepositoryModule extends BaseModule {
   override def configure(): Unit = {
     super.configure()
-    // db
     bindClass(classOf[MemberRepository], classOf[MemberRepositoryImpl])
     bindClass(classOf[WorkspaceRepository], classOf[WorkspaceRepositoryImpl])
     bindClass(classOf[WorkspaceMemberRepository], classOf[WorkspaceMemberRepositoryImpl])
@@ -31,11 +24,5 @@ class RepositoryModule extends BaseModule {
     bindClass(classOf[FunctionRepository], classOf[FunctionRepositoryImpl])
     bindClass(classOf[RoleFunctionRepository], classOf[RoleFunctionRepositoryImpl])
     bindClass(classOf[DriverTypeRepository], classOf[DriverTypeRepositoryImpl])
-    // auth
-    bindClass(classOf[GoogleRepository], classOf[GoogleRepositoryImpl])
-    // file store
-    bindClass(classOf[LocalFileRepository], classOf[LocalFileRepositoryImpl])
-    bindClass(classOf[LocalSeedFileRepository], classOf[LocalSeedFileRepositoryImpl])
-    bindClass(classOf[AwsS3Repository], classOf[AwsS3RepositoryImpl])
   }
 }
