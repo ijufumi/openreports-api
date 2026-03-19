@@ -1,6 +1,5 @@
 package jp.ijufumi.openreports.infrastructure.persistence.entity
 
-import jp.ijufumi.openreports.presentation.request.UpdateWorkspaceMember
 import jp.ijufumi.openreports.utils.Dates
 import slick.jdbc.PostgresProfile.api._
 
@@ -11,11 +10,7 @@ case class WorkspaceMember(
     createdAt: Long = Dates.currentTimestamp(),
     updatedAt: Long = Dates.currentTimestamp(),
     versions: Long = 1,
-) {
-  def copyForUpdate(input: UpdateWorkspaceMember): WorkspaceMember = {
-    this.copy(roleId = input.roleId)
-  }
-}
+)
 
 class WorkspaceMembers(tag: Tag)
     extends EntityBase[WorkspaceMember](

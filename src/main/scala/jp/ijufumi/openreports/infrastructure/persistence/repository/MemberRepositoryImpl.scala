@@ -5,7 +5,7 @@ import jp.ijufumi.openreports.domain.repository.MemberRepository
 import jp.ijufumi.openreports.domain.models.entity.Member
 import slick.jdbc.JdbcBackend.Database
 import slick.jdbc.PostgresProfile.api._
-import jp.ijufumi.openreports.domain.models.entity.Member.conversions._
+import jp.ijufumi.openreports.infrastructure.persistence.converter.MemberConverter.conversions._
 
 class MemberRepositoryImpl extends MemberRepository {
   override def getById(db: Database, id: String): Option[Member] = {

@@ -1,7 +1,7 @@
 package jp.ijufumi.openreports.usecase.interactor
 
 import com.google.inject.Inject
-import jp.ijufumi.openreports.configs.Config
+import jp.ijufumi.openreports.domain.port.AppConfigPort
 import jp.ijufumi.openreports.domain.models.value.enums.{RoleTypes, StorageTypes}
 import jp.ijufumi.openreports.exceptions.NotFoundException
 import jp.ijufumi.openreports.domain.repository.{
@@ -12,16 +12,13 @@ import jp.ijufumi.openreports.domain.repository.{
   WorkspaceMemberRepository,
   WorkspaceRepository,
 }
-import jp.ijufumi.openreports.presentation.request.{
-  CreateWorkspace,
-  CreateWorkspaceMember,
-  UpdateWorkspace,
-  UpdateWorkspaceMember,
+import jp.ijufumi.openreports.usecase.port.input.param.{
+  CreateWorkspaceMemberInput,
+  UpdateWorkspaceInput,
+  UpdateWorkspaceMemberInput,
 }
-import jp.ijufumi.openreports.presentation.response.{Lists, Workspace, WorkspaceMember}
-import jp.ijufumi.openreports.domain.models.entity.WorkspaceMember.conversions._
-import jp.ijufumi.openreports.domain.models.entity.Workspace.conversions._
 import jp.ijufumi.openreports.domain.models.entity.{
+  Lists,
   Report => ReportModel,
   StorageS3 => StorageS3Model,
   ReportTemplate => ReportTemplateModel,
@@ -34,16 +31,17 @@ import slick.jdbc.JdbcBackend.Database
 import slick.jdbc.PostgresProfile.api._
 
 class WorkspaceInteractor @Inject() (
-                                       db: Database,
-                                       workspaceRepository: WorkspaceRepository,
-                                       workspaceMemberRepository: WorkspaceMemberRepository,
-                                       storageRepository: StorageS3Repository,
-                                       reportRepository: ReportRepository,
-                                       reportTemplateRepository: ReportTemplateRepository,
-                                       storageService: StorageUseCase,
-                                       repository: RoleRepository,
+    db: Database,
+    workspaceRepository: WorkspaceRepository,
+    workspaceMemberRepository: WorkspaceMemberRepository,
+    storageRepository: StorageS3Repository,
+    reportRepository: ReportRepository,
+    reportTemplateRepository: ReportTemplateRepository,
+    storageService: StorageUseCase,
+    repository: RoleRepository,
+    appConfig: AppConfigPort,
 ) extends WorkspaceUseCase {
-  override def createAndRelevant(name: String, memberId: String): Option[Workspace] = {
+  override def createAndRelevant(name: String, memberId: String): Option[WorkspaceModel] = {
     try {
       val workspace = WorkspaceModel(IDs.ulid(), name, Strings.generateSlug())
       workspaceRepository.register(db, workspace)
@@ -70,11 +68,11 @@ class WorkspaceInteractor @Inject() (
     }
   }
 
-  override def getWorkspace(id: String): Option[Workspace] = {
+  override def getWorkspace(id: String): Option[WorkspaceModel] = {
     workspaceRepository.getById(db, id)
   }
 
-  override def getWorkspacesByMemberId(memberId: String): Lists[Workspace] = {
+  override def getWorkspacesByMemberId(memberId: String): Lists[WorkspaceModel] = {
     val workspaces = workspaceRepository.getsByMemberId(db, memberId)
     Lists(
       workspaces,
@@ -84,17 +82,17 @@ class WorkspaceInteractor @Inject() (
     )
   }
 
-  override def updateWorkspace(id: String, input: UpdateWorkspace): Option[Workspace] = {
+  override def updateWorkspace(id: String, input: UpdateWorkspaceInput): Option[WorkspaceModel] = {
     val workspaceOpt = workspaceRepository.getById(db, id)
     if (workspaceOpt.isEmpty) {
       return None
     }
-    val newWorkspace = workspaceOpt.get.mergeForUpdate(input)
+    val newWorkspace = workspaceOpt.get.copy(name = input.name)
     workspaceRepository.update(db, newWorkspace)
     this.getWorkspace(id)
   }
 
-  override def getWorkspaceMembers(id: String): Lists[WorkspaceMember] = {
+  override def getWorkspaceMembers(id: String): Lists[WorkspaceMemberModel] = {
     val results = workspaceMemberRepository.getsWithMember(db, id)
     Lists(
       results,
@@ -107,14 +105,14 @@ class WorkspaceInteractor @Inject() (
   override def getWorkspaceMember(
       workspaceId: String,
       memberId: String,
-  ): Option[WorkspaceMember] = {
+  ): Option[WorkspaceMemberModel] = {
     workspaceMemberRepository.getByIdWithMember(db, workspaceId, memberId)
   }
 
   override def createWorkspaceMember(
       workspaceId: String,
-      input: CreateWorkspaceMember,
-  ): Option[WorkspaceMember] = {
+      input: CreateWorkspaceMemberInput,
+  ): Option[WorkspaceMemberModel] = {
     val workspaceMember = WorkspaceMemberModel(
       workspaceId,
       input.memberId,
@@ -127,13 +125,13 @@ class WorkspaceInteractor @Inject() (
   override def updateWorkspaceMember(
       workspaceId: String,
       memberId: String,
-      input: UpdateWorkspaceMember,
-  ): Option[WorkspaceMember] = {
+      input: UpdateWorkspaceMemberInput,
+  ): Option[WorkspaceMemberModel] = {
     val workspaceMemberOpt = workspaceMemberRepository.getById(db, workspaceId, memberId)
     if (workspaceMemberOpt.isEmpty) {
       return None
     }
-    val newWorkspaceMember = workspaceMemberOpt.get.copyForUpdate(input)
+    val newWorkspaceMember = workspaceMemberOpt.get.copy(roleId = input.roleId)
     workspaceMemberRepository.update(db, newWorkspaceMember)
     this.getWorkspaceMember(workspaceId, memberId)
   }
@@ -143,7 +141,7 @@ class WorkspaceInteractor @Inject() (
   }
 
   private def copySample(workspaceId: String): String = {
-    val source = storageService.get("", Config.SAMPLE_REPORT_PATH, StorageTypes.Local)
+    val source = storageService.get("", appConfig.sampleReportPath, StorageTypes.Local)
     val key = Strings.generateRandomSting(10)() + Strings.extension(source.getFileName.toString)
     storageService.create(workspaceId, key, StorageTypes.Local, source)
     key

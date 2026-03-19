@@ -1,7 +1,11 @@
 package jp.ijufumi.openreports.usecase.port.input
 
-import jp.ijufumi.openreports.presentation.request.{CreateWorkspace, CreateWorkspaceMember, UpdateWorkspace, UpdateWorkspaceMember}
-import jp.ijufumi.openreports.presentation.response.{Lists, Workspace, WorkspaceMember}
+import jp.ijufumi.openreports.usecase.port.input.param.{
+  UpdateWorkspaceInput,
+  CreateWorkspaceMemberInput,
+  UpdateWorkspaceMemberInput,
+}
+import jp.ijufumi.openreports.domain.models.entity.{Lists, Workspace, WorkspaceMember}
 
 trait WorkspaceUseCase {
   def createAndRelevant(name: String, memberId: String): Option[Workspace]
@@ -10,15 +14,15 @@ trait WorkspaceUseCase {
 
   def getWorkspacesByMemberId(memberId: String): Lists[Workspace]
 
-  def updateWorkspace(id: String, input: UpdateWorkspace): Option[Workspace]
+  def updateWorkspace(id: String, input: UpdateWorkspaceInput): Option[Workspace]
 
   def getWorkspaceMembers(id: String): Lists[WorkspaceMember]
 
   def getWorkspaceMember(workspaceId: String, memberId: String): Option[WorkspaceMember]
 
-  def createWorkspaceMember(workspaceId: String, input: CreateWorkspaceMember): Option[WorkspaceMember]
+  def createWorkspaceMember(workspaceId: String, input: CreateWorkspaceMemberInput): Option[WorkspaceMember]
 
-  def updateWorkspaceMember(workspaceId: String, memberId: String, input: UpdateWorkspaceMember): Option[WorkspaceMember]
+  def updateWorkspaceMember(workspaceId: String, memberId: String, input: UpdateWorkspaceMemberInput): Option[WorkspaceMember]
 
   def deleteWorkspaceMember(workspaceId: String, memberId: String): Unit
 }

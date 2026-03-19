@@ -2,7 +2,7 @@ package jp.ijufumi.openreports.presentation.controller.base
 
 import jp.ijufumi.openreports.configs.Config
 import jp.ijufumi.openreports.domain.models.value.enums.{JdbcDriverClasses, RoleTypes, StorageTypes}
-import jp.ijufumi.openreports.presentation.response.Member
+import jp.ijufumi.openreports.domain.models.entity.{Member => MemberModel}
 import jp.ijufumi.openreports.utils.Logging
 import org.json4s.{DefaultFormats, Formats}
 import org.json4s.ext.EnumNameSerializer
@@ -112,7 +112,7 @@ abstract class APIServletBase
 
   protected def extractBody[T: Manifest](): T = parse(request.body).extract[T]
 
-  protected def setMember(member: Member): Unit = {
+  protected def setMember(member: MemberModel): Unit = {
     request.setAttribute(ATTRIBUTE_KEY_MEMBER, member)
   }
 }

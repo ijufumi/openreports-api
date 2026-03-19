@@ -2,20 +2,15 @@ package jp.ijufumi.openreports.usecase.interactor
 
 import jp.ijufumi.openreports.usecase.port.input.{LoginUseCase, WorkspaceUseCase}
 import com.google.inject.{Inject, Singleton}
-import jp.ijufumi.openreports.configs.Config
+import jp.ijufumi.openreports.domain.port.{AppConfigPort, CacheKeys, CachePort, GoogleAuthPort}
 import jp.ijufumi.openreports.utils.{Hash, IDs, Logging, Strings}
 import jp.ijufumi.openreports.domain.repository.{
   MemberRepository,
   WorkspaceRepository,
 }
-import jp.ijufumi.openreports.infrastructure.external.google.GoogleRepository
-import jp.ijufumi.openreports.presentation.request.{GoogleLogin, Login}
-import jp.ijufumi.openreports.presentation.response.Member
+import jp.ijufumi.openreports.usecase.port.input.param.{GoogleLoginInput, LoginInput}
 import jp.ijufumi.openreports.domain.models.entity.{Member => MemberModel}
 import slick.jdbc.PostgresProfile.api._
-import jp.ijufumi.openreports.domain.models.entity.Member.conversions._
-import jp.ijufumi.openreports.domain.models.entity.Workspace.conversions._
-import jp.ijufumi.openreports.infrastructure.cache.{CacheKeys, CacheWrapper}
 import slick.jdbc.JdbcBackend.Database
 
 @Singleton
@@ -23,14 +18,15 @@ class LoginInteractor @Inject() (
     db: Database,
     memberRepository: MemberRepository,
     workspaceRepository: WorkspaceRepository,
-    googleRepository: GoogleRepository,
+    googleAuthPort: GoogleAuthPort,
     workspaceService: WorkspaceUseCase,
-    cacheWrapper: CacheWrapper,
+    cachePort: CachePort,
+    appConfig: AppConfigPort,
 ) extends LoginUseCase
     with Logging {
   private val regexBearerHeader = java.util.regex.Pattern.compile("^Bearer (.*)$")
 
-  override def login(input: Login): Option[Member] = {
+  override def login(input: LoginInput): Option[MemberModel] = {
     val email = input.email
     val password = input.password
     val memberOpt = memberRepository.getMemberByEmail(db, email)
@@ -52,10 +48,10 @@ class LoginInteractor @Inject() (
     if (memberOpt.isEmpty) {
       return
     }
-    cacheWrapper.remove(CacheKeys.ApiToken, memberOpt.get.id)
+    cachePort.remove(CacheKeys.ApiToken, memberOpt.get.id)
   }
 
-  override def verifyAuthorizationHeader(authorizationHeader: String): Option[Member] = {
+  override def verifyAuthorizationHeader(authorizationHeader: String): Option[MemberModel] = {
     val apiToken = getApiToken(authorizationHeader)
     if (apiToken.isEmpty) {
       logger.info("api token is empty")
@@ -64,7 +60,7 @@ class LoginInteractor @Inject() (
     verifyApiToken(apiToken.get)
   }
 
-  override def verifyApiToken(apiToken: String): Option[Member] = {
+  override def verifyApiToken(apiToken: String): Option[MemberModel] = {
     val memberId = Hash.extractIdFromJWT(apiToken)
     if (memberId == "") {
       logger.info("didn't extract member id from token")
@@ -83,15 +79,15 @@ class LoginInteractor @Inject() (
     workspaceService.getWorkspaceMember(workspaceId, memberId).isDefined
   }
 
-  override def getAuthorizationUrl: String = googleRepository.getAuthorizationUrl()
+  override def getAuthorizationUrl: String = googleAuthPort.getAuthorizationUrl()
 
-  override def loginWithGoogle(input: GoogleLogin): Option[Member] = {
-    val tokenOpt = googleRepository.fetchToken(input.code)
+  override def loginWithGoogle(input: GoogleLoginInput): Option[MemberModel] = {
+    val tokenOpt = googleAuthPort.fetchToken(input.code)
     if (tokenOpt.isEmpty) {
       logger.info("Missing token")
       return None
     }
-    val userInfoOpt = googleRepository.getUserInfo(tokenOpt.get)
+    val userInfoOpt = googleAuthPort.getUserInfo(tokenOpt.get)
     if (userInfoOpt.isEmpty) {
       logger.info("Missing userInfo")
       return None
@@ -133,25 +129,25 @@ class LoginInteractor @Inject() (
   }
 
   def generateAccessToken(token: String): Option[String] = {
-    val memberIdOpt = cacheWrapper.get(CacheKeys.ApiToken, token)
+    val memberIdOpt = cachePort.get(CacheKeys.ApiToken, token)
     if (memberIdOpt.isEmpty) {
       return None
     }
 
-    val apiToken = Hash.generateJWT(memberIdOpt.get, Config.ACCESS_TOKEN_EXPIRATION_SEC)
+    val apiToken = Hash.generateJWT(memberIdOpt.get, appConfig.accessTokenExpirationSec)
     Some(apiToken)
   }
 
   override def generateRefreshToken(memberId: String): String = {
-    val token = Hash.generateJWT(memberId, Config.REFRESH_TOKEN_EXPIRATION_SEC)
-    cacheWrapper.put(CacheKeys.ApiToken, memberId, token)
+    val token = Hash.generateJWT(memberId, appConfig.refreshTokenExpirationSec)
+    cachePort.put(CacheKeys.ApiToken, memberId, token)(appConfig.refreshTokenExpirationSec.toLong)
     token
   }
 
-  private def makeResponse(member: Member): Option[Member] = {
+  private def makeResponse(member: MemberModel): Option[MemberModel] = {
     val workspaces = workspaceRepository.getsByMemberId(db, member.id)
     Some(
-      member.withWorkspace(workspaces),
+      member.copy(workspaces = workspaces),
     )
   }
 
@@ -167,7 +163,7 @@ class LoginInteractor @Inject() (
     Some(tokenMatcher.group(1))
   }
 
-  private def getMember(authorizationHeader: String): Option[Member] = {
+  private def getMember(authorizationHeader: String): Option[MemberModel] = {
     val apiToken = getApiToken(authorizationHeader)
     if (apiToken.isEmpty) {
       return None

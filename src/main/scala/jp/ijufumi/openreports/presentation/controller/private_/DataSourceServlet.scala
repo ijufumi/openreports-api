@@ -3,6 +3,8 @@ package jp.ijufumi.openreports.presentation.controller.private_
 import com.google.inject.Inject
 import jp.ijufumi.openreports.presentation.controller.base.PrivateAPIServletBase
 import jp.ijufumi.openreports.presentation.request.{CreateDataSource, UpdateDataSource}
+import jp.ijufumi.openreports.presentation.converter.DataSourceConverter.conversions._
+import jp.ijufumi.openreports.presentation.converter.{DataSourceConverter => DSC}
 import jp.ijufumi.openreports.usecase.port.input.{DataSourceUseCase, LoginUseCase}
 
 class DataSourceServlet @Inject() (
@@ -20,7 +22,7 @@ class DataSourceServlet @Inject() (
   post("/") {
     withWorkspace { _workspaceId =>
       validateBody[CreateDataSource] { requestVal =>
-        val result = dataSourceService.registerDataSource(_workspaceId, requestVal)
+        val result = dataSourceService.registerDataSource(_workspaceId, DSC.toCreateInput(requestVal))
         if (result.isEmpty) {
           badRequest("something wrong")
         } else {
@@ -34,7 +36,7 @@ class DataSourceServlet @Inject() (
     withWorkspace { _workspaceId =>
       validateBody[UpdateDataSource] { requestVal =>
         val id = params("id")
-        val result = dataSourceService.updateDataSource(_workspaceId, id, requestVal)
+        val result = dataSourceService.updateDataSource(_workspaceId, id, DSC.toUpdateInput(requestVal))
         if (result.isEmpty) {
           badRequest("something wrong")
         } else {

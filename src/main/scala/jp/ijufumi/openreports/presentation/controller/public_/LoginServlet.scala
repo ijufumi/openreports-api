@@ -5,6 +5,8 @@ import jp.ijufumi.openreports.configs.Config
 import jp.ijufumi.openreports.presentation.controller.base.PrivateAPIServletBase
 import jp.ijufumi.openreports.presentation.request.{GoogleLogin, Login}
 import jp.ijufumi.openreports.presentation.response.GoogleAuthUrl
+import jp.ijufumi.openreports.presentation.converter.MemberConverter.conversions._
+import jp.ijufumi.openreports.presentation.converter.LoginConverter
 import jp.ijufumi.openreports.usecase.port.input.LoginUseCase
 
 class LoginServlet @Inject() (loginService: LoginUseCase)
@@ -14,7 +16,7 @@ class LoginServlet @Inject() (loginService: LoginUseCase)
 
   post("/password") {
     validateBody[Login]{validatedRequest => {
-      val memberOpt = loginService.login(validatedRequest)
+      val memberOpt = loginService.login(LoginConverter.toLoginInput(validatedRequest))
       if (memberOpt.isEmpty) {
         unauthorized("email or password or both are incorrect")
       } else {
@@ -31,7 +33,7 @@ class LoginServlet @Inject() (loginService: LoginUseCase)
 
   post("/google") {
     validateBody[GoogleLogin]{validatedRequest => {
-      val memberOpt = loginService.loginWithGoogle(validatedRequest)
+      val memberOpt = loginService.loginWithGoogle(LoginConverter.toGoogleLoginInput(validatedRequest))
       if (memberOpt.isEmpty) {
         unauthorized("state or code or both are invalid")
       } else {

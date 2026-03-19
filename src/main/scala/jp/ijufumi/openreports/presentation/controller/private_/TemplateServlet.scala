@@ -3,6 +3,8 @@ package jp.ijufumi.openreports.presentation.controller.private_
 import com.google.inject.Inject
 import jp.ijufumi.openreports.presentation.controller.base.PrivateAPIServletBase
 import jp.ijufumi.openreports.presentation.request.{CreateTemplate, UpdateReport, UpdateTemplate}
+import jp.ijufumi.openreports.presentation.converter.ReportConverter.conversions._
+import jp.ijufumi.openreports.presentation.converter.{ReportConverter => RC}
 import org.scalatra.forms._
 import jp.ijufumi.openreports.usecase.port.input.{LoginUseCase, ReportUseCase}
 
@@ -28,7 +30,7 @@ class TemplateServlet @Inject()(loginService: LoginUseCase, reportService: Repor
         },
         (form: CreateTemplate) => {
           val file = fileParams("file")
-          val res = reportService.createTemplate(_workspaceId, form, file)
+          val res = reportService.createTemplate(_workspaceId, RC.toCreateTemplateInput(form), file)
           if (res.isEmpty) {
             badRequest("something wrong...")
           } else {
@@ -43,7 +45,7 @@ class TemplateServlet @Inject()(loginService: LoginUseCase, reportService: Repor
     withWorkspace { _workspaceId =>
       validateBody[UpdateTemplate] { requestParam =>
         val id = params("id")
-        val res = reportService.updateTemplate(_workspaceId, id, requestParam)
+        val res = reportService.updateTemplate(_workspaceId, id, RC.toUpdateTemplateInput(requestParam))
         if (res.isEmpty) {
           badRequest("something wrong...")
         } else {

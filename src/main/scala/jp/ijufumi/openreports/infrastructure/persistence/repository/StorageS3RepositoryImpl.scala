@@ -3,7 +3,7 @@ package jp.ijufumi.openreports.infrastructure.persistence.repository
 import slick.jdbc.PostgresProfile.api._
 import jp.ijufumi.openreports.domain.repository.StorageS3Repository
 import jp.ijufumi.openreports.domain.models.entity.StorageS3
-import jp.ijufumi.openreports.domain.models.entity.StorageS3.conversions._
+import jp.ijufumi.openreports.infrastructure.persistence.converter.StorageS3Converter.conversions._
 import jp.ijufumi.openreports.utils.Dates
 import slick.jdbc.JdbcBackend.Database
 

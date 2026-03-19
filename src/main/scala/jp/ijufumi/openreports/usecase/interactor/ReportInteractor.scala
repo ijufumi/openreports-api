@@ -9,19 +9,20 @@ import jp.ijufumi.openreports.domain.repository.{
   ReportRepository,
   ReportTemplateRepository,
 }
-import jp.ijufumi.openreports.presentation.request.{
-  CreateReport,
-  CreateReportGroup,
-  CreateTemplate,
-  UpdateReport,
-  UpdateReportGroup,
-  UpdateTemplate,
+import jp.ijufumi.openreports.usecase.port.input.param.{
+  CreateReportInput,
+  CreateReportGroupInput,
+  CreateTemplateInput,
+  UpdateReportInput,
+  UpdateReportGroupInput,
+  UpdateTemplateInput,
 }
-import jp.ijufumi.openreports.presentation.response.{
+import jp.ijufumi.openreports.domain.models.entity.{
   Lists,
-  Report,
-  ReportGroup,
-  ReportTemplate,
+  Report => ReportModel,
+  ReportGroup => ReportGroupModel,
+  ReportGroupReport => ReportGroupReportModel,
+  ReportTemplate => ReportTemplateModel,
 }
 import jp.ijufumi.openreports.usecase.port.input.{
   DataSourceUseCase,
@@ -29,15 +30,6 @@ import jp.ijufumi.openreports.usecase.port.input.{
   ReportUseCase,
   StorageUseCase,
 }
-import jp.ijufumi.openreports.domain.models.entity.{
-  Report => ReportModel,
-  ReportGroup => ReportGroupModel,
-  ReportGroupReport => ReportGroupReportModel,
-  ReportTemplate => ReportTemplateModel,
-}
-import jp.ijufumi.openreports.domain.models.entity.ReportGroup.conversions._
-import jp.ijufumi.openreports.domain.models.entity.Report.conversions._
-import jp.ijufumi.openreports.domain.models.entity.ReportTemplate.conversions._
 import jp.ijufumi.openreports.utils.{IDs, Strings, TemporaryFiles}
 import org.scalatra.servlet.FileItem
 import slick.jdbc.JdbcBackend.Database
@@ -60,24 +52,24 @@ class ReportInteractor @Inject() (
       page: Int,
       limit: Int,
       templateId: String = "",
-  ): Lists[Report] = {
+  ): Lists[ReportModel] = {
     val offset = List(page * limit, 0).max
     val (results, count) =
       reportRepository.getsWithTemplate(db, workspaceId, offset, limit, templateId)
     Lists(results, offset, limit, count)
   }
 
-  override def getReport(workspaceId: String, id: String): Option[Report] = {
+  override def getReport(workspaceId: String, id: String): Option[ReportModel] = {
     reportRepository.getByIdWithTemplate(db, workspaceId, id)
   }
 
-  override def getTemplates(workspaceId: String, page: Int, limit: Int): Lists[ReportTemplate] = {
+  override def getTemplates(workspaceId: String, page: Int, limit: Int): Lists[ReportTemplateModel] = {
     val offset = List(page * limit, 0).max
     val (results, count) = templateRepository.gets(db, workspaceId, offset, limit)
     Lists(results, offset, limit, count)
   }
 
-  override def getTemplate(workspaceId: String, id: String): Option[ReportTemplate] = {
+  override def getTemplate(workspaceId: String, id: String): Option[ReportTemplateModel] = {
     templateRepository.getById(db, workspaceId, id)
   }
 
@@ -97,7 +89,7 @@ class ReportInteractor @Inject() (
     )
   }
 
-  override def createReport(workspaceId: String, input: CreateReport): Option[Report] = {
+  override def createReport(workspaceId: String, input: CreateReportInput): Option[ReportModel] = {
     if (input.dataSourceId.isDefined) {
       val dataSourceOpt = dataSourceService.getDataSource(workspaceId, input.dataSourceId.get)
       if (dataSourceOpt.isEmpty) {
@@ -113,8 +105,8 @@ class ReportInteractor @Inject() (
   override def updateReport(
       workspaceId: String,
       id: String,
-      input: UpdateReport,
-  ): Option[Report] = {
+      input: UpdateReportInput,
+  ): Option[ReportModel] = {
     val reportOpt = reportRepository.getById(db, workspaceId, id)
     if (reportOpt.isEmpty) {
       return None
@@ -126,7 +118,7 @@ class ReportInteractor @Inject() (
       }
     }
     val report = reportOpt.get
-    val newReport = report.copyForUpdate(input)
+    val newReport = report.copy(name = input.name, templateId = input.templateId, dataSourceId = input.dataSourceId)
     reportRepository.update(db, newReport)
     this.getReport(workspaceId, id)
   }
@@ -137,9 +129,9 @@ class ReportInteractor @Inject() (
 
   override def createTemplate(
       workspaceId: String,
-      req: CreateTemplate,
+      req: CreateTemplateInput,
       fileItem: FileItem,
-  ): Option[ReportTemplate] = {
+  ): Option[ReportTemplateModel] = {
     val key = Strings.generateRandomSting(10)()
     val storageType = StorageTypes.Local
     Using(TemporaryFiles.createDir()) { tmpDir =>
@@ -156,13 +148,13 @@ class ReportInteractor @Inject() (
   override def updateTemplate(
       workspaceId: String,
       id: String,
-      input: UpdateTemplate,
-  ): Option[ReportTemplate] = {
+      input: UpdateTemplateInput,
+  ): Option[ReportTemplateModel] = {
     val templateOpt = templateRepository.getById(db, workspaceId, id)
     if (templateOpt.isEmpty) {
       return None
     }
-    val template = templateOpt.get.copyForUpdate(input)
+    val template = templateOpt.get.copy(name = input.name)
     templateRepository.update(db, template)
     this.getTemplate(workspaceId, id)
   }
@@ -177,20 +169,20 @@ class ReportInteractor @Inject() (
     storageService.delete(workspaceId, template.filePath, template.storageType)
   }
 
-  override def getGroups(workspaceId: String, page: Int, limit: Int): Lists[ReportGroup] = {
+  override def getGroups(workspaceId: String, page: Int, limit: Int): Lists[ReportGroupModel] = {
     val offset = List(page * limit, 0).max
     val (results, count) = reportGroupRepository.gets(db, workspaceId, offset, limit)
     Lists(results, offset, limit, count)
   }
 
-  override def getGroup(workspaceId: String, id: String): Option[ReportGroup] = {
+  override def getGroup(workspaceId: String, id: String): Option[ReportGroupModel] = {
     reportGroupRepository.getById(db, workspaceId, id)
   }
 
   override def createGroup(
       workspaceId: String,
-      input: CreateReportGroup,
-  ): Option[ReportGroup] = {
+      input: CreateReportGroupInput,
+  ): Option[ReportGroupModel] = {
     val reportGroup = ReportGroupModel(IDs.ulid(), input.name, workspaceId)
     reportGroupRepository.register(db, reportGroup)
     for (reportId <- input.reportIds) {
@@ -209,13 +201,13 @@ class ReportInteractor @Inject() (
   override def updateGroup(
       workspaceId: String,
       id: String,
-      input: UpdateReportGroup,
-  ): Option[ReportGroup] = {
+      input: UpdateReportGroupInput,
+  ): Option[ReportGroupModel] = {
     val reportGroupOpt = reportGroupRepository.getById(db, workspaceId, id)
     if (reportGroupOpt.isEmpty) {
       return None
     }
-    val newReportGroup = reportGroupOpt.get.copyForUpdate(input)
+    val newReportGroup = reportGroupOpt.get.copy(name = input.name)
     reportGroupRepository.update(db, newReportGroup)
     reportGroupReportRepository.deleteByReportGroupId(db, id)
     for (reportId <- input.reportIds) {
