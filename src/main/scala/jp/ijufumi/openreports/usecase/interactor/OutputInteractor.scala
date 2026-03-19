@@ -1,7 +1,7 @@
 package jp.ijufumi.openreports.usecase.interactor
 
 import com.google.inject.Inject
-import jp.ijufumi.openreports.configs.Config
+import jp.ijufumi.openreports.domain.port.AppConfigPort
 import jp.ijufumi.openreports.usecase.port.input.{DataSourceUseCase, OutputUseCase, StorageUseCase}
 import jp.ijufumi.openreports.utils.{Dates, Logging}
 import jp.ijufumi.openreports.domain.models.value.enums.StorageTypes
@@ -18,6 +18,7 @@ import java.time.LocalDateTime
 class OutputInteractor @Inject() (
     dataSourceService: DataSourceUseCase,
     storageService: StorageUseCase,
+    appConfig: AppConfigPort,
 ) extends OutputUseCase
     with Logging {
   override def output(
@@ -32,7 +33,7 @@ class OutputInteractor @Inject() (
     val suffix = if (dotIndex != -1) inputFileName.substring(dotIndex) else ""
     val timeStamp = Dates.format(LocalDateTime.now())
     val outputDir = FileSystems.getDefault.getPath(
-      Config.OUTPUT_FILE_PATH,
+      appConfig.outputFilePath,
       workspaceId,
       timeStamp,
     )

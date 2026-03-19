@@ -1,6 +1,5 @@
 package jp.ijufumi.openreports.domain.models.entity
 
-import jp.ijufumi.openreports.presentation.request.UpdateReportGroup
 import jp.ijufumi.openreports.utils.IDs
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
@@ -110,38 +109,6 @@ class ReportGroupSpec extends AnyFlatSpec with Matchers {
     modified.name should equal("Modified Name")
     modified.updatedAt should equal(2000L)
     modified.createdAt should equal(original.createdAt)
-  }
-
-  "ReportGroup copyForUpdate" should "update name field" in {
-    val original = ReportGroup(
-      id = "group-id",
-      name = "Original Name",
-      workspaceId = "workspace-id",
-      createdAt = 1000L,
-      updatedAt = 2000L
-    )
-
-    val updateRequest = UpdateReportGroup(name = "Updated Name", reportIds = Seq.empty)
-    val updated = original.copyForUpdate(updateRequest)
-
-    updated.id should equal(original.id)
-    updated.name should equal("Updated Name")
-    updated.workspaceId should equal(original.workspaceId)
-  }
-
-  "ReportGroup toResponse" should "include all relevant fields" in {
-    val group = ReportGroup(
-      id = "group-id",
-      name = "Test Group",
-      workspaceId = "workspace-id",
-      createdAt = 1000L,
-      updatedAt = 2000L
-    )
-
-    val response = group.toResponse
-
-    response.id should equal("group-id")
-    response.name should equal("Test Group")
   }
 
   "ReportGroup equality" should "compare by value" in {

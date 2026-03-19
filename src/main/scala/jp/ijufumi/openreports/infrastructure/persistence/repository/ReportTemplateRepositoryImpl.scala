@@ -2,7 +2,7 @@ package jp.ijufumi.openreports.infrastructure.persistence.repository
 
 import jp.ijufumi.openreports.domain.repository.ReportTemplateRepository
 import jp.ijufumi.openreports.domain.models.entity.ReportTemplate
-import jp.ijufumi.openreports.domain.models.entity.ReportTemplate.conversions._
+import jp.ijufumi.openreports.infrastructure.persistence.converter.ReportTemplateConverter.conversions._
 import slick.jdbc.JdbcBackend.Database
 import slick.jdbc.PostgresProfile.api._
 

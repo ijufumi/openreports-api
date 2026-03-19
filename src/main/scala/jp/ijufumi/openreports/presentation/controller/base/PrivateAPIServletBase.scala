@@ -3,7 +3,7 @@ package jp.ijufumi.openreports.presentation.controller.base
 import com.wix.accord.Validator
 import org.scalatra.servlet.{FileUploadSupport, MultipartConfig}
 import jp.ijufumi.openreports.configs.Config
-import jp.ijufumi.openreports.presentation.response.Member
+import jp.ijufumi.openreports.domain.models.entity.{Member => MemberModel}
 import jp.ijufumi.openreports.usecase.port.input.LoginUseCase
 import org.apache.commons.lang3.StringUtils
 
@@ -68,14 +68,14 @@ abstract class PrivateAPIServletBase(loginService: LoginUseCase)
     member().id
   }
 
-  def member(): Member = {
-    request.getAttribute(ATTRIBUTE_KEY_MEMBER).asInstanceOf[Member]
+  def member(): MemberModel = {
+    request.getAttribute(ATTRIBUTE_KEY_MEMBER).asInstanceOf[MemberModel]
   }
 
-  def memberOpt(): Option[Member] = {
+  def memberOpt(): Option[MemberModel] = {
     val _member = request.getAttribute(ATTRIBUTE_KEY_MEMBER)
     if (_member != null) {
-      return Some(_member.asInstanceOf[Member])
+      return Some(_member.asInstanceOf[MemberModel])
     }
     None
   }

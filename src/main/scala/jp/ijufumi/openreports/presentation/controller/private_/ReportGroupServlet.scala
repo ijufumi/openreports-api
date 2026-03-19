@@ -3,6 +3,8 @@ package jp.ijufumi.openreports.presentation.controller.private_
 import com.google.inject.Inject
 import jp.ijufumi.openreports.presentation.controller.base.PrivateAPIServletBase
 import jp.ijufumi.openreports.presentation.request.{CreateReportGroup, CreateTemplate, UpdateReport, UpdateReportGroup, UpdateTemplate}
+import jp.ijufumi.openreports.presentation.converter.ReportConverter.conversions._
+import jp.ijufumi.openreports.presentation.converter.{ReportConverter => RC}
 import jp.ijufumi.openreports.usecase.port.input.{LoginUseCase, ReportUseCase}
 import org.scalatra.forms._
 
@@ -19,7 +21,7 @@ class ReportGroupServlet @Inject() (loginService: LoginUseCase, reportService: R
   post("/") {
     withWorkspace { _workspaceId =>
       validateBody[CreateReportGroup] { requestParam =>
-        ok(reportService.createGroup(_workspaceId, requestParam))
+        ok(reportService.createGroup(_workspaceId, RC.toCreateGroupInput(requestParam)))
       }
     }
   }
@@ -29,7 +31,7 @@ class ReportGroupServlet @Inject() (loginService: LoginUseCase, reportService: R
       validateBody[UpdateReportGroup] { requestParam =>
         val id = params("id")
         val report =
-          reportService.updateGroup(_workspaceId, id, requestParam)
+          reportService.updateGroup(_workspaceId, id, RC.toUpdateGroupInput(requestParam))
         if (report.isEmpty) {
           badRequest("something wrong...")
         } else {

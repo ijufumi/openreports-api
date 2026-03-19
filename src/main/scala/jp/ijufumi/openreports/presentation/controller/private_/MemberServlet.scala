@@ -3,6 +3,7 @@ package jp.ijufumi.openreports.presentation.controller.private_
 import com.google.inject.Inject
 import jp.ijufumi.openreports.presentation.controller.base.PrivateAPIServletBase
 import jp.ijufumi.openreports.presentation.request.{UpdateMember, UpdateReport}
+import jp.ijufumi.openreports.presentation.converter.MemberConverter.conversions._
 import jp.ijufumi.openreports.usecase.port.input.{LoginUseCase, MemberUseCase}
 
 class MemberServlet @Inject() (loginService: LoginUseCase, memberService: MemberUseCase)

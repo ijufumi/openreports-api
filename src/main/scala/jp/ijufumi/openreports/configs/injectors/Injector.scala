@@ -13,6 +13,7 @@ object Injector {
       new CacheModule(),
       new StorageModule(),
       new SttpModule(),
+      new PortModule(),
     )
 
   def createAndInject[T](clazz: Class[_ <: T]): T = {

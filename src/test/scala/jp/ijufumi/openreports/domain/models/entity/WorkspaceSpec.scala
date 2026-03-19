@@ -1,6 +1,5 @@
 package jp.ijufumi.openreports.domain.models.entity
 
-import jp.ijufumi.openreports.presentation.request.UpdateWorkspace
 import jp.ijufumi.openreports.utils.IDs
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
@@ -160,58 +159,6 @@ class WorkspaceSpec extends AnyFlatSpec with Matchers {
     )
 
     workspace.versions should equal(5)
-  }
-
-  "Workspace mergeForUpdate" should "update only name field" in {
-    val original = Workspace(
-      id = "workspace-id",
-      name = "Original Name",
-      slug = "original-slug",
-      createdAt = 1000L,
-      updatedAt = 2000L,
-      versions = 3
-    )
-
-    val updateRequest = UpdateWorkspace(name = "Updated Name")
-    val merged = original.mergeForUpdate(updateRequest)
-
-    merged.id should equal(original.id)
-    merged.name should equal("Updated Name")
-    merged.slug should equal(original.slug) // slug should not change
-    merged.createdAt should equal(original.createdAt)
-    merged.updatedAt should equal(original.updatedAt)
-    merged.versions should equal(original.versions)
-  }
-
-  it should "preserve slug when merging" in {
-    val original = Workspace(
-      id = "workspace-id",
-      name = "Original",
-      slug = "immutable-slug",
-      createdAt = 1000L,
-      updatedAt = 1000L
-    )
-
-    val updateRequest = UpdateWorkspace(name = "New Name")
-    val merged = original.mergeForUpdate(updateRequest)
-
-    merged.slug should equal("immutable-slug")
-  }
-
-  "Workspace toResponse" should "include all public fields" in {
-    val workspace = Workspace(
-      id = "workspace-id",
-      name = "Test Workspace",
-      slug = "test-workspace",
-      createdAt = System.currentTimeMillis(),
-      updatedAt = System.currentTimeMillis()
-    )
-
-    val response = workspace.toResponse
-
-    response.id should equal("workspace-id")
-    response.name should equal("Test Workspace")
-    response.slug should equal("test-workspace")
   }
 
   "Workspace equality" should "compare by value" in {

@@ -1,7 +1,14 @@
 package jp.ijufumi.openreports.usecase.port.input
 
-import jp.ijufumi.openreports.presentation.request.{CreateReport, CreateReportGroup, CreateTemplate, UpdateReport, UpdateReportGroup, UpdateTemplate}
-import jp.ijufumi.openreports.presentation.response.{Lists, Report, ReportGroup, ReportTemplate}
+import jp.ijufumi.openreports.usecase.port.input.param.{
+  CreateReportInput,
+  CreateTemplateInput,
+  CreateReportGroupInput,
+  UpdateReportInput,
+  UpdateTemplateInput,
+  UpdateReportGroupInput,
+}
+import jp.ijufumi.openreports.domain.models.entity.{Lists, Report, ReportGroup, ReportTemplate}
 import org.scalatra.servlet.FileItem
 
 import java.io.File
@@ -17,15 +24,15 @@ trait ReportUseCase {
 
   def outputReport(workspaceId: String, id: String, asPDF: Boolean): Option[File]
 
-  def createReport(workspaceId: String, input: CreateReport): Option[Report]
+  def createReport(workspaceId: String, input: CreateReportInput): Option[Report]
 
-  def updateReport(workspaceId: String, id: String, input: UpdateReport): Option[Report]
+  def updateReport(workspaceId: String, id: String, input: UpdateReportInput): Option[Report]
 
   def deleteReport(workspaceId: String, id: String): Unit
 
-  def createTemplate(workspaceId: String, req: CreateTemplate, fileItem: FileItem): Option[ReportTemplate]
+  def createTemplate(workspaceId: String, req: CreateTemplateInput, fileItem: FileItem): Option[ReportTemplate]
 
-  def updateTemplate(workspaceId: String, id: String, input: UpdateTemplate): Option[ReportTemplate]
+  def updateTemplate(workspaceId: String, id: String, input: UpdateTemplateInput): Option[ReportTemplate]
 
   def deleteTemplate(workspaceId: String, id: String): Unit
 
@@ -33,9 +40,9 @@ trait ReportUseCase {
 
   def getGroup(workspaceId: String, id: String): Option[ReportGroup]
 
-  def createGroup(workspaceId: String, input: CreateReportGroup): Option[ReportGroup]
+  def createGroup(workspaceId: String, input: CreateReportGroupInput): Option[ReportGroup]
 
-  def updateGroup(workspaceId: String, id: String, input: UpdateReportGroup): Option[ReportGroup]
+  def updateGroup(workspaceId: String, id: String, input: UpdateReportGroupInput): Option[ReportGroup]
 
   def deleteGroup(workspaceId: String, id: String): Unit
 }

@@ -2,11 +2,8 @@ package jp.ijufumi.openreports.usecase.interactor
 
 import com.google.inject.Inject
 import jp.ijufumi.openreports.domain.repository.{FunctionRepository, MemberRepository, RoleFunctionRepository, WorkspaceMemberRepository, WorkspaceRepository}
-import jp.ijufumi.openreports.presentation.response.{Member, Permission}
+import jp.ijufumi.openreports.domain.models.entity.{Member => MemberModel, Permission}
 import jp.ijufumi.openreports.usecase.port.input.MemberUseCase
-import jp.ijufumi.openreports.domain.models.entity.Function.conversions._
-import jp.ijufumi.openreports.domain.models.entity.Member.conversions._
-import jp.ijufumi.openreports.domain.models.entity.Workspace.conversions._
 import jp.ijufumi.openreports.utils.Hash
 import slick.jdbc.JdbcBackend.Database
 
@@ -18,7 +15,7 @@ class MemberInteractor @Inject() (
     functionRepository: FunctionRepository,
     workspaceRepository: WorkspaceRepository,
 ) extends MemberUseCase {
-  override def update(memberId: String, name: String, password: String): Option[Member] = {
+  override def update(memberId: String, name: String, password: String): Option[MemberModel] = {
     val memberOpt = memberRepository.getById(db, memberId)
     if (memberOpt.isEmpty) {
       return None

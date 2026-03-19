@@ -294,25 +294,6 @@ class MemberSpec extends AnyFlatSpec with Matchers {
     member.versions should equal(5)
   }
 
-  "Member toResponse" should "not include password" in {
-    val member = Member(
-      id = "member-id",
-      googleId = Some("google-id"),
-      email = "test@example.com",
-      password = "secret-password",
-      name = "Test User",
-      createdAt = System.currentTimeMillis(),
-      updatedAt = System.currentTimeMillis()
-    )
-
-    val response = member.toResponse
-
-    response.id should equal("member-id")
-    response.email should equal("test@example.com")
-    response.name should equal("Test User")
-    // Response should not contain password or googleId for security
-  }
-
   "Member equality" should "compare by value" in {
     val member1 = Member(
       id = "same-id",

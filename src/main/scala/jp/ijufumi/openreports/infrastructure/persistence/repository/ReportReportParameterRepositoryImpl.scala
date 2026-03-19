@@ -2,7 +2,8 @@ package jp.ijufumi.openreports.infrastructure.persistence.repository
 
 import jp.ijufumi.openreports.domain.repository.ReportReportParameterRepository
 import jp.ijufumi.openreports.domain.models.entity.ReportReportParameter
-import jp.ijufumi.openreports.domain.models.entity.ReportReportParameter.conversions._
+import jp.ijufumi.openreports.infrastructure.persistence.converter.ReportReportParameterConverter
+import jp.ijufumi.openreports.infrastructure.persistence.converter.ReportReportParameterConverter.conversions._
 import jp.ijufumi.openreports.utils.Dates
 import slick.jdbc.JdbcBackend.Database
 import slick.jdbc.PostgresProfile.api._
@@ -20,7 +21,7 @@ class ReportReportParameterRepositoryImpl extends ReportReportParameterRepositor
     if (limit > 0) {
       filtered = filtered.drop(offset).take(limit)
     }
-    (Await.result(db.run(filtered.result), queryTimeout).map(r => ReportReportParameter(r)), count)
+    (Await.result(db.run(filtered.result), queryTimeout).map(r => ReportReportParameterConverter.toDomain(r)), count)
   }
 
   override def getById(db: Database, id: String): Option[ReportReportParameter] = {
@@ -30,20 +31,21 @@ class ReportReportParameterRepositoryImpl extends ReportReportParameterRepositor
     if (models.isEmpty) {
       return None
     }
-    Some(models.head).map(r => ReportReportParameter(r))
+    Some(ReportReportParameterConverter.toDomain(models.head))
   }
 
   override def getByIds(db: Database, ids: Seq[String]): Seq[ReportReportParameter] = {
     val getById = reportReportParameterQuery
       .filter(_.id.inSet(ids))
-    Await.result(db.run(getById.result), queryTimeout).map(r => ReportReportParameter(r))
+    Await.result(db.run(getById.result), queryTimeout).map(r => ReportReportParameterConverter.toDomain(r))
   }
 
   override def register(
       db: Database,
       model: ReportReportParameter,
   ): Option[ReportReportParameter] = {
-    val register = (reportReportParameterQuery += model).withPinnedSession
+    val entity: jp.ijufumi.openreports.infrastructure.persistence.entity.ReportReportParameter = model
+    val register = (reportReportParameterQuery += entity).withPinnedSession
     Await.result(db.run(register), queryTimeout)
     getById(db, model.id)
   }
@@ -52,7 +54,8 @@ class ReportReportParameterRepositoryImpl extends ReportReportParameterRepositor
       db: Database,
       model: Seq[ReportReportParameter],
   ): Seq[ReportReportParameter] = {
-    val register = (reportReportParameterQuery ++= model).withPinnedSession
+    val entities: Seq[jp.ijufumi.openreports.infrastructure.persistence.entity.ReportReportParameter] = model
+    val register = (reportReportParameterQuery ++= entities).withPinnedSession
     Await.result(db.run(register), queryTimeout)
     val ids = model.map(m => m.id)
     getByIds(db, ids)
@@ -60,7 +63,8 @@ class ReportReportParameterRepositoryImpl extends ReportReportParameterRepositor
 
   override def update(db: Database, model: ReportReportParameter): Unit = {
     val newModel = model.copy(updatedAt = Dates.currentTimestamp())
-    val updateQuery = reportReportParameterQuery.insertOrUpdate(newModel).withPinnedSession
+    val entity: jp.ijufumi.openreports.infrastructure.persistence.entity.ReportReportParameter = newModel
+    val updateQuery = reportReportParameterQuery.insertOrUpdate(entity).withPinnedSession
     Await.result(db.run(updateQuery), queryTimeout)
   }
 

@@ -4,18 +4,19 @@ import com.google.inject.Inject
 import jp.ijufumi.openreports.exceptions.NotFoundException
 import jp.ijufumi.openreports.domain.repository.DataSourceRepository
 import jp.ijufumi.openreports.usecase.port.input.DataSourceUseCase
+import jp.ijufumi.openreports.usecase.port.input.param.{CreateDataSourceInput, UpdateDataSourceInput}
 import jp.ijufumi.openreports.utils.{IDs, Logging}
-import jp.ijufumi.openreports.infrastructure.persistence.database.pool.ConnectionPool
-import jp.ijufumi.openreports.presentation.request.{CreateDataSource, UpdateDataSource}
-import jp.ijufumi.openreports.presentation.response.{DataSource, Lists}
-import jp.ijufumi.openreports.domain.models.entity.{DataSource => DataSourceModel}
-import jp.ijufumi.openreports.domain.models.entity.DataSource.conversions._
+import jp.ijufumi.openreports.domain.port.ConnectionPoolPort
+import jp.ijufumi.openreports.domain.models.entity.{DataSource => DataSourceModel, Lists}
 import slick.jdbc.JdbcBackend.Database
 
 import java.sql.Connection
 
-class DataSourceInteractor @Inject() (db: Database, dataSourceRepository: DataSourceRepository)
-    extends DataSourceUseCase
+class DataSourceInteractor @Inject() (
+    db: Database,
+    dataSourceRepository: DataSourceRepository,
+    connectionPoolPort: ConnectionPoolPort,
+) extends DataSourceUseCase
     with Logging {
   def connection(workspaceId: String, dataSourceId: String): Connection = {
     val dataSourceOpt = dataSourceRepository.getByIdWithDriverType(db, workspaceId, dataSourceId)
@@ -24,7 +25,7 @@ class DataSourceInteractor @Inject() (db: Database, dataSourceRepository: DataSo
     }
     val dataSource = dataSourceOpt.get
 
-    ConnectionPool.newConnection(
+    connectionPoolPort.newConnection(
       dataSource.name,
       dataSource.username,
       dataSource.password,
@@ -34,7 +35,7 @@ class DataSourceInteractor @Inject() (db: Database, dataSourceRepository: DataSo
     )
   }
 
-  override def getDataSources(workspaceId: String): Lists[DataSource] = {
+  override def getDataSources(workspaceId: String): Lists[DataSourceModel] = {
     val dataSources = dataSourceRepository.getAllWithDriverType(db, workspaceId)
     Lists(
       dataSources,
@@ -44,14 +45,14 @@ class DataSourceInteractor @Inject() (db: Database, dataSourceRepository: DataSo
     )
   }
 
-  override def getDataSource(workspaceId: String, id: String): Option[DataSource] = {
+  override def getDataSource(workspaceId: String, id: String): Option[DataSourceModel] = {
     dataSourceRepository.getByIdWithDriverType(db, workspaceId, id)
   }
 
   override def registerDataSource(
       workspaceId: String,
-      requestVal: CreateDataSource,
-  ): Option[DataSource] = {
+      requestVal: CreateDataSourceInput,
+  ): Option[DataSourceModel] = {
     val dataSource = DataSourceModel(
       IDs.ulid(),
       requestVal.name,
@@ -69,13 +70,13 @@ class DataSourceInteractor @Inject() (db: Database, dataSourceRepository: DataSo
   override def updateDataSource(
       workspaceId: String,
       id: String,
-      requestVal: UpdateDataSource,
-  ): Option[DataSource] = {
+      requestVal: UpdateDataSourceInput,
+  ): Option[DataSourceModel] = {
     val dataSource = dataSourceRepository.getById(db, workspaceId, id)
     if (dataSource.isEmpty) {
       return None
     }
-    val newDataSource = dataSource.get.copyForUpdate(requestVal)
+    val newDataSource = dataSource.get.copy(name = requestVal.name)
     dataSourceRepository.update(db, newDataSource)
     getDataSource(workspaceId, newDataSource.id)
   }

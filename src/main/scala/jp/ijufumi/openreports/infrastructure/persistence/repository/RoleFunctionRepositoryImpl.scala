@@ -2,7 +2,7 @@ package jp.ijufumi.openreports.infrastructure.persistence.repository
 
 import jp.ijufumi.openreports.domain.repository.RoleFunctionRepository
 import jp.ijufumi.openreports.domain.models.entity.RoleFunction
-import jp.ijufumi.openreports.domain.models.entity.RoleFunction.conversions._
+import jp.ijufumi.openreports.infrastructure.persistence.converter.RoleFunctionConverter.conversions._
 import slick.jdbc.JdbcBackend.Database
 import slick.jdbc.PostgresProfile.api._
 

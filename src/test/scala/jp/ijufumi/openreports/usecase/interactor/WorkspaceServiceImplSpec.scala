@@ -1,8 +1,8 @@
 package jp.ijufumi.openreports.usecase.interactor
 
-import _root_.jp.ijufumi.openreports.domain.models.entity.{Workspace => WorkspaceModel}
+import _root_.jp.ijufumi.openreports.domain.models.entity.{Lists, Workspace => WorkspaceModel}
+import _root_.jp.ijufumi.openreports.domain.port.AppConfigPort
 import _root_.jp.ijufumi.openreports.domain.repository._
-import _root_.jp.ijufumi.openreports.presentation.response.{Lists, Workspace}
 import _root_.jp.ijufumi.openreports.usecase.port.input.StorageUseCase
 import org.mockito.Mockito._
 import org.scalatest.flatspec.AnyFlatSpec
@@ -21,6 +21,7 @@ class WorkspaceInteractorSpec extends AnyFlatSpec with MockitoSugar {
     val reportTemplateRepository = mock[ReportTemplateRepository]
     val storageService = mock[StorageUseCase]
     val roleRepository = mock[RoleRepository]
+    val appConfig = mock[AppConfigPort]
 
     val workspaceService = new WorkspaceInteractor(
       db,
@@ -31,6 +32,7 @@ class WorkspaceInteractorSpec extends AnyFlatSpec with MockitoSugar {
       reportTemplateRepository,
       storageService,
       roleRepository,
+      appConfig,
     )
 
     val workspaceId = "1"
@@ -56,6 +58,7 @@ class WorkspaceInteractorSpec extends AnyFlatSpec with MockitoSugar {
     val reportTemplateRepository = mock[ReportTemplateRepository]
     val storageService = mock[StorageUseCase]
     val roleRepository = mock[RoleRepository]
+    val appConfig = mock[AppConfigPort]
 
     val workspaceService = new WorkspaceInteractor(
       db,
@@ -66,6 +69,7 @@ class WorkspaceInteractorSpec extends AnyFlatSpec with MockitoSugar {
       reportTemplateRepository,
       storageService,
       roleRepository,
+      appConfig,
     )
 
     val memberId = "1"
@@ -77,7 +81,7 @@ class WorkspaceInteractorSpec extends AnyFlatSpec with MockitoSugar {
     val actual = workspaceService.getWorkspacesByMemberId(memberId)
 
     // then
-    assert(actual.isInstanceOf[Lists[Workspace]])
+    assert(actual.isInstanceOf[Lists[WorkspaceModel]])
     assert(actual.items.length == 1)
     assert(actual.count == 1)
     assert(actual.items.head.name == "test")

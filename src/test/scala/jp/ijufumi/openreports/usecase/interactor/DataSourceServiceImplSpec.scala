@@ -3,10 +3,11 @@ package jp.ijufumi.openreports.usecase.interactor
 import _root_.jp.ijufumi.openreports.domain.models.entity.{
   DataSource => DataSourceModel,
   DriverType => DriverTypeModel,
+  Lists,
 }
 import _root_.jp.ijufumi.openreports.domain.models.value.enums.JdbcDriverClasses
+import _root_.jp.ijufumi.openreports.domain.port.ConnectionPoolPort
 import _root_.jp.ijufumi.openreports.domain.repository.DataSourceRepository
-import _root_.jp.ijufumi.openreports.presentation.response.{DataSource, DriverType, Lists}
 import org.mockito.Mockito._
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatestplus.mockito.MockitoSugar
@@ -19,7 +20,8 @@ class DataSourceInteractorSpec extends AnyFlatSpec with MockitoSugar {
     val db = mock[Database]
     val dataSourceRepository = mock[DataSourceRepository]
 
-    val dataSourceService = new DataSourceInteractor(db, dataSourceRepository)
+    val connectionPoolPort = mock[ConnectionPoolPort]
+    val dataSourceService = new DataSourceInteractor(db, dataSourceRepository, connectionPoolPort)
 
     val workspaceId = "1"
     val driverType = DriverTypeModel("1", "test-driver", JdbcDriverClasses.Postgres)
@@ -44,7 +46,7 @@ class DataSourceInteractorSpec extends AnyFlatSpec with MockitoSugar {
     val actual = dataSourceService.getDataSources(workspaceId)
 
     // then
-    assert(actual.isInstanceOf[Lists[DataSource]])
+    assert(actual.isInstanceOf[Lists[DataSourceModel]])
     assert(actual.items.length == 1)
     assert(actual.count == 1)
     assert(actual.items.head.name == "test")
@@ -55,7 +57,8 @@ class DataSourceInteractorSpec extends AnyFlatSpec with MockitoSugar {
     val db = mock[Database]
     val dataSourceRepository = mock[DataSourceRepository]
 
-    val dataSourceService = new DataSourceInteractor(db, dataSourceRepository)
+    val connectionPoolPort = mock[ConnectionPoolPort]
+    val dataSourceService = new DataSourceInteractor(db, dataSourceRepository, connectionPoolPort)
 
     val workspaceId = "1"
     val dataSourceId = "1"

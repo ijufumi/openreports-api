@@ -1,7 +1,7 @@
 package jp.ijufumi.openreports.infrastructure.persistence.repository
 
 import jp.ijufumi.openreports.domain.models.entity.Role
-import jp.ijufumi.openreports.domain.models.entity.Role.conversions._
+import jp.ijufumi.openreports.infrastructure.persistence.converter.RoleConverter.conversions._
 import jp.ijufumi.openreports.domain.repository.RoleRepository
 import jp.ijufumi.openreports.domain.models.value.enums.RoleTypes
 import jp.ijufumi.openreports.infrastructure.persistence.entity.roleTypeMapper

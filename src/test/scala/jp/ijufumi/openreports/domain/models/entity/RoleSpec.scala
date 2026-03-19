@@ -114,20 +114,6 @@ class RoleSpec extends AnyFlatSpec with Matchers {
     role.versions should equal(5)
   }
 
-  "Role toResponse" should "include role type" in {
-    val role = Role(
-      id = "role-id",
-      roleType = RoleTypes.Developer,
-      createdAt = 1000L,
-      updatedAt = 2000L
-    )
-
-    val response = role.toResponse
-
-    response.id should equal("role-id")
-    response.roleType should equal(RoleTypes.Developer)
-  }
-
   "Role equality" should "compare by value" in {
     val role1 = Role(
       id = "same-id",

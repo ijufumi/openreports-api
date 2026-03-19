@@ -1,7 +1,7 @@
 package jp.ijufumi.openreports.presentation.controller.private_
 
 import jp.ijufumi.openreports.domain.models.value.enums.StorageTypes
-import jp.ijufumi.openreports.presentation.response.{Lists, Member, ReportTemplate}
+import jp.ijufumi.openreports.domain.models.entity.{Lists, Member => MemberModel, ReportTemplate => ReportTemplateModel}
 import jp.ijufumi.openreports.usecase.port.input.{LoginUseCase, ReportUseCase}
 import org.scalamock.scalatest.MockFactory
 import org.scalatra.test.scalatest._
@@ -11,8 +11,8 @@ class TemplateServletSpec extends ScalatraFunSuite with MockFactory {
   val reportService = mock[ReportUseCase]
   addServlet(new TemplateServlet(loginService, reportService), "/*")
 
-  val member = Member("member-id", "test@example.com", "Test User", Seq.empty)
-  val template = ReportTemplate("template-id", "Test Template", "/path/to/file", StorageTypes.Local, 1024L, 1000L, 2000L)
+  val member = MemberModel("member-id", None, "test@example.com", "", "Test User", 0, 0)
+  val template = ReportTemplateModel("template-id", "Test Template", "/path/to/file", "workspace-id", StorageTypes.Local, 1024L, 1000L, 2000L)
 
   test("GET / should return list of templates") {
     val templates = Lists(Seq(template), 0, 10, 1)

@@ -5,7 +5,7 @@ import jp.ijufumi.openreports.domain.models.entity.ReportGroupReport
 import jp.ijufumi.openreports.utils.Dates
 import slick.jdbc.JdbcBackend.Database
 import slick.jdbc.PostgresProfile.api._
-import jp.ijufumi.openreports.domain.models.entity.ReportGroupReport.conversions._
+import jp.ijufumi.openreports.infrastructure.persistence.converter.ReportGroupReportConverter.conversions._
 
 import scala.concurrent.Await
 
@@ -37,11 +37,12 @@ class ReportGroupReportRepositoryImpl extends ReportGroupReportRepository {
   override def getByIds(db: Database, ids: Seq[String]): Seq[ReportGroupReport] = {
     val getById = reportGroupReportQuery
       .filter(_.id.inSet(ids))
-    Await.result(db.run(getById.result), queryTimeout).map(r => ReportGroupReport(r))
+    Await.result(db.run(getById.result), queryTimeout).map(r => jp.ijufumi.openreports.infrastructure.persistence.converter.ReportGroupReportConverter.toDomain(r))
   }
 
   override def register(db: Database, model: ReportGroupReport): Option[ReportGroupReport] = {
-    val register = (reportGroupReportQuery += model.toEntity).withPinnedSession
+    val entity: jp.ijufumi.openreports.infrastructure.persistence.entity.ReportGroupReport = model
+    val register = (reportGroupReportQuery += entity).withPinnedSession
     Await.result(db.run(register), queryTimeout)
     getById(db, model.id)
   }
@@ -50,7 +51,8 @@ class ReportGroupReportRepositoryImpl extends ReportGroupReportRepository {
       db: Database,
       model: Seq[ReportGroupReport],
   ): Seq[ReportGroupReport] = {
-    val register = (reportGroupReportQuery ++= model).withPinnedSession
+    val entities: Seq[jp.ijufumi.openreports.infrastructure.persistence.entity.ReportGroupReport] = model
+    val register = (reportGroupReportQuery ++= entities).withPinnedSession
     Await.result(db.run(register), queryTimeout)
     val ids = model.map(m => m.id)
     getByIds(db, ids)
@@ -58,7 +60,8 @@ class ReportGroupReportRepositoryImpl extends ReportGroupReportRepository {
 
   override def update(db: Database, model: ReportGroupReport): Unit = {
     val newModel = model.copy(updatedAt = Dates.currentTimestamp())
-    val updateQuery = reportGroupReportQuery.insertOrUpdate(newModel).withPinnedSession
+    val entity: jp.ijufumi.openreports.infrastructure.persistence.entity.ReportGroupReport = newModel
+    val updateQuery = reportGroupReportQuery.insertOrUpdate(entity).withPinnedSession
     Await.result(db.run(updateQuery), queryTimeout)
   }
 

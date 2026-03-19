@@ -3,7 +3,6 @@ package jp.ijufumi.openreports.usecase.interactor
 import _root_.jp.ijufumi.openreports.domain.models.entity.{Role => RoleModel}
 import _root_.jp.ijufumi.openreports.domain.models.value.enums.RoleTypes
 import _root_.jp.ijufumi.openreports.domain.repository.RoleRepository
-import _root_.jp.ijufumi.openreports.presentation.response.Role
 import org.mockito.Mockito._
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatestplus.mockito.MockitoSugar
@@ -26,7 +25,7 @@ class RoleInteractorSpec extends AnyFlatSpec with MockitoSugar {
     val actual = roleService.getRoles
 
     // then
-    assert(actual.isInstanceOf[Seq[Role]])
+    assert(actual.isInstanceOf[Seq[RoleModel]])
     assert(actual.length == 1)
     assert(actual.head.id == "1")
   }

@@ -1,6 +1,6 @@
 package jp.ijufumi.openreports.presentation.controller.private_
 
-import jp.ijufumi.openreports.presentation.response.{Lists, Member, Workspace}
+import jp.ijufumi.openreports.domain.models.entity.{Lists, Member => MemberModel, Workspace => WorkspaceModel}
 import jp.ijufumi.openreports.usecase.port.input.{LoginUseCase, WorkspaceUseCase}
 import org.scalamock.scalatest.MockFactory
 import org.scalatra.test.scalatest._
@@ -10,8 +10,8 @@ class WorkspaceServletSpec extends ScalatraFunSuite with MockFactory {
   val workspaceService = mock[WorkspaceUseCase]
   addServlet(new WorkspaceServlet(loginService, workspaceService), "/*")
 
-  val member = Member("member-id", "test@example.com", "Test User", Seq.empty)
-  val workspace = Workspace("workspace-id", "Test Workspace", "test-workspace")
+  val member = MemberModel("member-id", None, "test@example.com", "", "Test User", 0, 0)
+  val workspace = WorkspaceModel("workspace-id", "Test Workspace", "test-workspace", 0, 0)
   val workspaces = Lists(Seq(workspace), 0, 0, 1)
 
   test("GET / should return list of workspaces by member ID") {
