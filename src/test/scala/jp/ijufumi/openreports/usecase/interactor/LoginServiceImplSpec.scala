@@ -1,16 +1,14 @@
 
 package jp.ijufumi.openreports.usecase.interactor
 
-import jp.ijufumi.openreports.configs.Config
 import jp.ijufumi.openreports.domain.models.entity.Member
-import jp.ijufumi.openreports.infrastructure.cache.CacheWrapper
+import jp.ijufumi.openreports.domain.port.{AppConfigPort, CachePort, GoogleAuthPort}
 import jp.ijufumi.openreports.domain.repository.{
   MemberRepository,
   WorkspaceRepository,
 }
-import jp.ijufumi.openreports.infrastructure.external.google.GoogleRepository
-import jp.ijufumi.openreports.presentation.request.Login
 import jp.ijufumi.openreports.usecase.port.input.WorkspaceUseCase
+import jp.ijufumi.openreports.usecase.port.input.param.LoginInput
 import jp.ijufumi.openreports.utils.Hash
 import org.mockito.Mockito._
 import org.scalatest.flatspec.AnyFlatSpec
@@ -24,16 +22,17 @@ class LoginInteractorSpec extends AnyFlatSpec with MockitoSugar {
     val db = mock[Database]
     val memberRepository = mock[MemberRepository]
     val workspaceRepository = mock[WorkspaceRepository]
-    val googleRepository = mock[GoogleRepository]
+    val googleAuthPort = mock[GoogleAuthPort]
     val workspaceService = mock[WorkspaceUseCase]
-    val cacheWrapper = mock[CacheWrapper]
+    val cachePort = mock[CachePort]
+    val appConfig = mock[AppConfigPort]
 
     val loginService =
-      new LoginInteractor(db, memberRepository, workspaceRepository, googleRepository, workspaceService, cacheWrapper)
+      new LoginInteractor(db, memberRepository, workspaceRepository, googleAuthPort, workspaceService, cachePort, appConfig)
 
     val email = "test@test.com"
     val password = "password"
-    val input = Login(email, password)
+    val input = LoginInput(email, password)
     val member = Member(
       id = "1",
       googleId = None,
@@ -60,16 +59,17 @@ class LoginInteractorSpec extends AnyFlatSpec with MockitoSugar {
     val db = mock[Database]
     val memberRepository = mock[MemberRepository]
     val workspaceRepository = mock[WorkspaceRepository]
-    val googleRepository = mock[GoogleRepository]
+    val googleAuthPort = mock[GoogleAuthPort]
     val workspaceService = mock[WorkspaceUseCase]
-    val cacheWrapper = mock[CacheWrapper]
+    val cachePort = mock[CachePort]
+    val appConfig = mock[AppConfigPort]
 
     val loginService =
-      new LoginInteractor(db, memberRepository, workspaceRepository, googleRepository, workspaceService, cacheWrapper)
+      new LoginInteractor(db, memberRepository, workspaceRepository, googleAuthPort, workspaceService, cachePort, appConfig)
 
     val email = "test@test.com"
     val password = "password"
-    val input = Login(email, password)
+    val input = LoginInput(email, password)
 
     when(memberRepository.getMemberByEmail(db, email)).thenReturn(None)
 
@@ -85,17 +85,18 @@ class LoginInteractorSpec extends AnyFlatSpec with MockitoSugar {
     val db = mock[Database]
     val memberRepository = mock[MemberRepository]
     val workspaceRepository = mock[WorkspaceRepository]
-    val googleRepository = mock[GoogleRepository]
+    val googleAuthPort = mock[GoogleAuthPort]
     val workspaceService = mock[WorkspaceUseCase]
-    val cacheWrapper = mock[CacheWrapper]
+    val cachePort = mock[CachePort]
+    val appConfig = mock[AppConfigPort]
 
     val loginService =
-      new LoginInteractor(db, memberRepository, workspaceRepository, googleRepository, workspaceService, cacheWrapper)
+      new LoginInteractor(db, memberRepository, workspaceRepository, googleAuthPort, workspaceService, cachePort, appConfig)
 
     val email = "test@test.com"
     val password = "password"
     val wrongPassword = "wrong_password"
-    val input = Login(email, wrongPassword)
+    val input = LoginInput(email, wrongPassword)
     val member = Member(
       id = "1",
       googleId = None,

@@ -1,9 +1,8 @@
 
 package jp.ijufumi.openreports.usecase.interactor
 
-import jp.ijufumi.openreports.domain.models.entity.{Function, Member, RoleFunction, Workspace, WorkspaceMember}
+import jp.ijufumi.openreports.domain.models.entity.{Function, Member, Permission, RoleFunction, Workspace, WorkspaceMember}
 import jp.ijufumi.openreports.domain.repository._
-import jp.ijufumi.openreports.presentation.response.Permission
 import jp.ijufumi.openreports.utils.Hash
 import jp.ijufumi.openreports.utils.IDs
 import org.mockito.Mockito._

@@ -1,6 +1,7 @@
 package jp.ijufumi.openreports.usecase.interactor
 
 import _root_.jp.ijufumi.openreports.domain.models.value.enums.StorageTypes
+import _root_.jp.ijufumi.openreports.domain.port.AppConfigPort
 import _root_.jp.ijufumi.openreports.usecase.port.input.{DataSourceUseCase, StorageUseCase}
 import org.mockito.Mockito._
 import org.scalatest.flatspec.AnyFlatSpec
@@ -14,8 +15,10 @@ class OutputInteractorSpec extends AnyFlatSpec with MockitoSugar {
     // mock
     val dataSourceService = mock[DataSourceUseCase]
     val storageService = mock[StorageUseCase]
+    val appConfig = mock[AppConfigPort]
+    when(appConfig.outputFilePath).thenReturn("/tmp/openreports/output")
 
-    val outputService = new OutputInteractor(dataSourceService, storageService)
+    val outputService = new OutputInteractor(dataSourceService, storageService, appConfig)
 
     val workspaceId = "1"
     val filePath = "test.xlsx"

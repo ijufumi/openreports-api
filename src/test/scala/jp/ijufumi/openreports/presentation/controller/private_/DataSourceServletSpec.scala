@@ -1,10 +1,9 @@
 package jp.ijufumi.openreports.presentation.controller.private_
 
-import jp.ijufumi.openreports.presentation.response.{DataSource, Lists, Member}
+import jp.ijufumi.openreports.domain.models.entity.{DataSource => DataSourceModel, Lists, Member => MemberModel}
 import jp.ijufumi.openreports.usecase.port.input.{DataSourceUseCase, LoginUseCase}
 import org.scalamock.scalatest.MockFactory
 import org.scalatra.test.scalatest._
-import org.scalatra.ActionResult
 
 class DataSourceServletSpec extends ScalatraFunSuite with MockFactory {
   val loginService = mock[LoginUseCase]
@@ -12,10 +11,10 @@ class DataSourceServletSpec extends ScalatraFunSuite with MockFactory {
   addServlet(new DataSourceServlet(loginService, dataSourceService), "/*")
 
   test("simple get") {
-    val member = Member("id", "name", "email", Seq.empty)
+    val member = MemberModel("id", None, "email", "", "name", 0, 0)
     (loginService.verifyAuthorizationHeader _).expects("api-token").returns(Some(member))
     (loginService.verifyWorkspaceId _).expects(member.id, "workspace-id").returns(true)
-    (dataSourceService.getDataSources _).expects("workspace-id").returns(Lists(Seq.empty[DataSource], 0, 0, 0))
+    (dataSourceService.getDataSources _).expects("workspace-id").returns(Lists(Seq.empty[DataSourceModel], 0, 0, 0))
 
     get("/", headers = Map("Authorization" -> "api-token", "X-Workspace-Id" -> "workspace-id")) {
       status should equal(200)
@@ -24,7 +23,7 @@ class DataSourceServletSpec extends ScalatraFunSuite with MockFactory {
   }
 
   test("missing workspace id header") {
-    val member = Member("id", "name", "email", Seq.empty)
+    val member = MemberModel("id", None, "email", "", "name", 0, 0)
     (loginService.verifyAuthorizationHeader _).expects("api-token").returns(Some(member))
 
     get("/", headers = Map("Authorization" -> "api-token")) {
@@ -32,4 +31,3 @@ class DataSourceServletSpec extends ScalatraFunSuite with MockFactory {
     }
   }
 }
-

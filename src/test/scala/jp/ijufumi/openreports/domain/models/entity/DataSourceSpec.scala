@@ -1,7 +1,6 @@
 package jp.ijufumi.openreports.domain.models.entity
 
 import jp.ijufumi.openreports.domain.models.value.enums.JdbcDriverClasses
-import jp.ijufumi.openreports.presentation.request.UpdateDataSource
 import jp.ijufumi.openreports.utils.IDs
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
@@ -245,58 +244,6 @@ class DataSourceSpec extends AnyFlatSpec with Matchers {
     modified.password should equal("pass2")
     modified.updatedAt should equal(2000L)
     modified.createdAt should equal(original.createdAt)
-  }
-
-  "DataSource copyForUpdate" should "update only name field" in {
-    val original = DataSource(
-      id = "ds-id",
-      name = "Original Name",
-      url = "jdbc:postgresql://localhost:5432/db",
-      username = "user",
-      password = "pass",
-      driverTypeId = "driver-id",
-      maxPoolSize = 10,
-      workspaceId = "workspace-id",
-      createdAt = 1000L,
-      updatedAt = 2000L
-    )
-
-    val updateRequest = UpdateDataSource(name = "Updated Name", url = original.url, username = original.username, password = original.password, driverTypeId = original.driverTypeId)
-    val updated = original.copyForUpdate(updateRequest)
-
-    updated.id should equal(original.id)
-    updated.name should equal("Updated Name")
-    updated.url should equal(original.url)
-    updated.username should equal(original.username)
-    updated.password should equal(original.password)
-  }
-
-  "DataSource toResponse" should "include driver type when present" in {
-    val driverType = DriverType(
-      id = "driver-id",
-      name = "PostgreSQL",
-      jdbcDriverClass = JdbcDriverClasses.Postgres
-    )
-
-    val ds = DataSource(
-      id = "ds-id",
-      name = "Test DB",
-      url = "jdbc:postgresql://localhost:5432/db",
-      username = "user",
-      password = "secret",
-      driverTypeId = "driver-id",
-      maxPoolSize = 10,
-      workspaceId = "workspace-id",
-      createdAt = System.currentTimeMillis(),
-      updatedAt = System.currentTimeMillis(),
-      driverType = Some(driverType)
-    )
-
-    val response = ds.toResponse
-
-    response.id should equal("ds-id")
-    response.name should equal("Test DB")
-    response.driverType should be(defined)
   }
 
   "DataSource equality" should "compare by value" in {

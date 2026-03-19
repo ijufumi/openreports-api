@@ -1,7 +1,6 @@
 package jp.ijufumi.openreports.domain.models.entity
 
 import jp.ijufumi.openreports.domain.models.value.enums.StorageTypes
-import jp.ijufumi.openreports.presentation.request.UpdateTemplate
 import jp.ijufumi.openreports.utils.IDs
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
@@ -203,49 +202,6 @@ class ReportTemplateSpec extends AnyFlatSpec with Matchers {
     modified.fileSize should equal(2048L)
     modified.updatedAt should equal(2000L)
     modified.createdAt should equal(original.createdAt)
-  }
-
-  "ReportTemplate copyForUpdate" should "update only name field" in {
-    val original = ReportTemplate(
-      id = "template-id",
-      name = "Original Name",
-      filePath = "/path/to/file.xlsx",
-      workspaceId = "workspace-id",
-      storageType = StorageTypes.Local,
-      fileSize = 1024L,
-      createdAt = 1000L,
-      updatedAt = 2000L
-    )
-
-    val updateRequest = UpdateTemplate(name = "Updated Name")
-    val updated = original.copyForUpdate(updateRequest)
-
-    updated.id should equal(original.id)
-    updated.name should equal("Updated Name")
-    updated.filePath should equal(original.filePath)
-    updated.storageType should equal(original.storageType)
-    updated.fileSize should equal(original.fileSize)
-  }
-
-  "ReportTemplate toResponse" should "include all relevant fields" in {
-    val template = ReportTemplate(
-      id = "template-id",
-      name = "Test Template",
-      filePath = "/path/to/template.xlsx",
-      workspaceId = "workspace-id",
-      storageType = StorageTypes.S3,
-      fileSize = 2048L,
-      createdAt = 1000L,
-      updatedAt = 2000L
-    )
-
-    val response = template.toResponse
-
-    response.id should equal("template-id")
-    response.name should equal("Test Template")
-    response.filePath should equal("/path/to/template.xlsx")
-    response.storageType should equal(StorageTypes.S3)
-    response.fileSize should equal(2048L)
   }
 
   "ReportTemplate equality" should "compare by value" in {

@@ -1,7 +1,12 @@
 package jp.ijufumi.openreports.presentation.controller.private_
 
 import jp.ijufumi.openreports.domain.models.value.enums.ActionTypes
-import jp.ijufumi.openreports.presentation.response.{Function, Member, Permission, Workspace}
+import jp.ijufumi.openreports.domain.models.entity.{
+  Function => FunctionModel,
+  Member => MemberModel,
+  Permission => PermissionModel,
+  Workspace => WorkspaceModel,
+}
 import jp.ijufumi.openreports.usecase.port.input.{LoginUseCase, MemberUseCase}
 import org.scalamock.scalatest.MockFactory
 import org.scalatra.test.scalatest._
@@ -12,7 +17,7 @@ class MemberServletSpec extends ScalatraFunSuite with MockFactory {
   addServlet(new MemberServlet(loginService, memberService), "/*")
 
   test("GET /status should return member information") {
-    val member = Member("member-id", "test@example.com", "Test User", Seq.empty)
+    val member = MemberModel("member-id", None, "test@example.com", "", "Test User", 0, 0)
     (loginService.verifyAuthorizationHeader _).expects("api-token").returns(Some(member))
     (loginService.verifyWorkspaceId _).expects(member.id, "workspace-id").returns(true)
 
@@ -25,10 +30,10 @@ class MemberServletSpec extends ScalatraFunSuite with MockFactory {
   }
 
   test("GET /permissions should return member permissions") {
-    val member = Member("member-id", "test@example.com", "Test User", Seq.empty)
-    val workspace = Workspace("workspace-id", "Test Workspace", "test-workspace")
-    val function = Function("function-id", ActionTypes.Reference)
-    val permission = Some(Permission(Seq(workspace), Seq(function)))
+    val member = MemberModel("member-id", None, "test@example.com", "", "Test User", 0, 0)
+    val workspace = WorkspaceModel("workspace-id", "Test Workspace", "test-workspace", 0, 0)
+    val function = FunctionModel("function-id", "test", ActionTypes.Reference, 0, 0)
+    val permission = Some(PermissionModel(Seq(workspace), Seq(function)))
 
     (loginService.verifyAuthorizationHeader _).expects("api-token").returns(Some(member))
     (loginService.verifyWorkspaceId _).expects(member.id, "workspace-id").returns(true)
@@ -42,7 +47,7 @@ class MemberServletSpec extends ScalatraFunSuite with MockFactory {
   }
 
   test("GET /logout should call logout service") {
-    val member = Member("member-id", "test@example.com", "Test User", Seq.empty)
+    val member = MemberModel("member-id", None, "test@example.com", "", "Test User", 0, 0)
     (loginService.verifyAuthorizationHeader _).expects("api-token").returns(Some(member))
     (loginService.verifyWorkspaceId _).expects(member.id, "workspace-id").returns(true)
     (loginService.logout _).expects("api-token").returns(())
@@ -53,8 +58,8 @@ class MemberServletSpec extends ScalatraFunSuite with MockFactory {
   }
 
   test("PUT /update should update member information") {
-    val member = Member("member-id", "test@example.com", "Test User", Seq.empty)
-    val updatedMember = Some(Member("member-id", "test@example.com", "Updated Name", Seq.empty))
+    val member = MemberModel("member-id", None, "test@example.com", "", "Test User", 0, 0)
+    val updatedMember = Some(MemberModel("member-id", None, "test@example.com", "", "Updated Name", 0, 0))
     val requestBody = """{"name":"Updated Name","password":"newpassword"}"""
 
     (loginService.verifyAuthorizationHeader _).expects("api-token").returns(Some(member))
@@ -72,7 +77,7 @@ class MemberServletSpec extends ScalatraFunSuite with MockFactory {
   }
 
   test("GET /status missing workspace id header") {
-    val member = Member("member-id", "test@example.com", "Test User", Seq.empty)
+    val member = MemberModel("member-id", None, "test@example.com", "", "Test User", 0, 0)
     (loginService.verifyAuthorizationHeader _).expects("api-token").returns(Some(member))
 
     get("/status", headers = Map("Authorization" -> "api-token")) {
@@ -81,7 +86,7 @@ class MemberServletSpec extends ScalatraFunSuite with MockFactory {
   }
 
   test("GET /permissions missing workspace id header") {
-    val member = Member("member-id", "test@example.com", "Test User", Seq.empty)
+    val member = MemberModel("member-id", None, "test@example.com", "", "Test User", 0, 0)
     (loginService.verifyAuthorizationHeader _).expects("api-token").returns(Some(member))
 
     get("/permissions", headers = Map("Authorization" -> "api-token")) {
@@ -90,7 +95,7 @@ class MemberServletSpec extends ScalatraFunSuite with MockFactory {
   }
 
   test("GET /logout missing workspace id header") {
-    val member = Member("member-id", "test@example.com", "Test User", Seq.empty)
+    val member = MemberModel("member-id", None, "test@example.com", "", "Test User", 0, 0)
     (loginService.verifyAuthorizationHeader _).expects("api-token").returns(Some(member))
 
     get("/logout", headers = Map("Authorization" -> "api-token")) {
@@ -99,7 +104,7 @@ class MemberServletSpec extends ScalatraFunSuite with MockFactory {
   }
 
   test("PUT /update missing workspace id header") {
-    val member = Member("member-id", "test@example.com", "Test User", Seq.empty)
+    val member = MemberModel("member-id", None, "test@example.com", "", "Test User", 0, 0)
     val requestBody = """{"name":"Updated Name","password":"newpassword"}"""
 
     (loginService.verifyAuthorizationHeader _).expects("api-token").returns(Some(member))
