@@ -1,5 +1,8 @@
 name: Claude Code Review
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 on:
   pull_request:
     types: [opened, synchronize, reopened]
@@ -208,6 +211,9 @@ jobs:
 
           # スティッキーコメント: 同一PRで再実行時に前回のサマリを更新
           use_sticky_comment: true
+
+          # 出力が切り詰められないようにフル出力を有効化
+          show_full_output: true
 
       # ---------------------------------------------------------------
       # レビュー完了: 「レビュー中」コメント・ラベルを削除
