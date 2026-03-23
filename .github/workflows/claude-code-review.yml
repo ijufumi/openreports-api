@@ -1,0 +1,131 @@
+name: Claude Code Review
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+permissions:
+  contents: read
+  pull-requests: write
+  issues: write
+  id-token: write
+
+jobs:
+  claude-review:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      # ---------------------------------------------------------------
+      # リポジトリ共通レビュー観点を読み込み、環境変数に格納
+      # ---------------------------------------------------------------
+      - name: Load review guidelines
+        id: guidelines
+        run: |
+          if [ -f "docs/REVIEW.md" ]; then
+            echo "found=true" >> "$GITHUB_OUTPUT"
+            # 環境変数に格納（複数行対応）
+            {
+              echo "REVIEW_GUIDELINES<<GUIDELINES_EOF"
+              cat docs/REVIEW.md
+              echo "GUIDELINES_EOF"
+            } >> "$GITHUB_ENV"
+          else
+            echo "found=false" >> "$GITHUB_OUTPUT"
+            echo "REVIEW_GUIDELINES=" >> "$GITHUB_ENV"
+          fi
+
+      # ---------------------------------------------------------------
+      # PR description から PR固有レビュー観点を抽出
+      # ---------------------------------------------------------------
+      - name: Extract PR review focus
+        id: pr_focus
+        env:
+          PR_BODY: ${{ github.event.pull_request.body }}
+        run: |
+          # <!-- REVIEW_FOCUS --> ... <!-- /REVIEW_FOCUS --> の間を抽出
+          FOCUS=$(echo "$PR_BODY" | sed -n '/<!-- REVIEW_FOCUS -->/,/<!-- \/REVIEW_FOCUS -->/{ /<!-- REVIEW_FOCUS -->/d; /<!-- \/REVIEW_FOCUS -->/d; p; }' | sed '/^$/d')
+          if [ -n "$FOCUS" ]; then
+            echo "found=true" >> "$GITHUB_OUTPUT"
+            {
+              echo "PR_REVIEW_FOCUS<<FOCUS_EOF"
+              echo "$FOCUS"
+              echo "FOCUS_EOF"
+            } >> "$GITHUB_ENV"
+          else
+            echo "found=false" >> "$GITHUB_OUTPUT"
+            echo "PR_REVIEW_FOCUS=" >> "$GITHUB_ENV"
+          fi
+
+      # ---------------------------------------------------------------
+      # Claude Code Action でレビュー実行
+      # ---------------------------------------------------------------
+      - name: Run Claude Code Review
+        uses: anthropics/claude-code-action@v1
+        with:
+          # =============================================
+          # 認証: 以下のどちらか一方を使用
+          # =============================================
+          # 方法1: API キー（従量課金）
+          # anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          #
+          # 方法2: OAuth トークン（Pro/Max サブスク）
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+
+          # レビュー用プロンプト
+          prompt: |
+            このPRのコード差分を詳細にレビューしてください。
+
+            ## 指摘の分類ルール
+            すべての指摘を以下の3段階で分類し、コメントの先頭に必ずタグを付けてください：
+
+            - 🔴 **[MUST]** — 修正必須。バグ、セキュリティ脆弱性、データ損失リスク、重大なロジックエラー、本番障害につながる可能性がある問題。
+            - 🟡 **[SHOULD]** — 修正推奨。可読性・保守性の低下、パフォーマンス改善の余地、エラーハンドリング不足、テスト不足など。
+            - 🟢 **[NICE TO HAVE]** — 検討推奨。コードスタイルの軽微な改善、命名の微調整、コメント追加の提案、リファクタリングのアイデアなど。
+
+            ## リポジトリ共通レビュー観点
+            ${{ env.REVIEW_GUIDELINES != '' && format('以下のレビュー観点にも照らし合わせてください。違反がある場合は該当する観点を明示してください。\n\n{0}', env.REVIEW_GUIDELINES) || '（docs/REVIEW.md が見つかりませんでした。スキップします）' }}
+
+            ## PR固有レビュー観点
+            ${{ env.PR_REVIEW_FOCUS != '' && format('このPRでは以下の観点を特に重点的にチェックしてください。該当する指摘にはPR固有観点である旨を明示してください。\n\n{0}', env.PR_REVIEW_FOCUS) || '（PR固有のレビュー観点は指定されていません）' }}
+
+            ## レビュー後のサマリ
+            インラインコメントの投稿後、以下の形式でサマリコメントも投稿してください：
+
+            ---
+            ## 🤖 Claude コードレビュー サマリ
+
+            ### 📊 概要
+            | 分類 | 件数 |
+            |------|------|
+            | 🔴 MUST（修正必須） | X |
+            | 🟡 SHOULD（修正推奨） | X |
+            | 🟢 NICE TO HAVE（検討推奨） | X |
+            | **合計** | **X** |
+
+            ### 💬 総評
+            （PR全体に対する総評を2〜3文で記載）
+
+            ### 🔴 MUST（修正必須）
+            （該当する指摘の一覧。なければ「指摘なし ✅」）
+
+            ### 🟡 SHOULD（修正推奨）
+            （該当する指摘の一覧。なければ「指摘なし ✅」）
+
+            ### 🟢 NICE TO HAVE（検討推奨）
+            （該当する指摘の一覧。なければ「指摘なし ✅」）
+            ---
+
+            ## 注意事項
+            - 些細すぎる指摘は控え、本当に価値のあるフィードバックに絞ってください。
+            - セキュリティに関わる問題は必ず MUST にしてください。
+            - 改善案がある場合は GitHub の suggestion ブロックで提案してください。
+
+          claude_args: |
+            --max-turns 10
+
+          # スティッキーコメント: 同一PRで再実行時に前回のサマリを更新
+          use_sticky_comment: true
