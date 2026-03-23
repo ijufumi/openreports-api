@@ -132,7 +132,7 @@ class ReportInteractor @Inject() (
       req: CreateTemplateInput,
       fileItem: FileItem,
   ): Option[ReportTemplateModel] = {
-    val key = Strings.generateRandomSting(10)()
+    val key = Strings.generateRandomString(10)()
     val storageType = StorageTypes.Local
     Using(TemporaryFiles.createDir()) { tmpDir =>
       val tmpFile = TemporaryFiles.createFile(tmpDir.path())

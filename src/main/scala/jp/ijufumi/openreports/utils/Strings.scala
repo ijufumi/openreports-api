@@ -2,7 +2,6 @@ package jp.ijufumi.openreports.utils
 
 import scala.collection.mutable
 import scala.util.Random
-import scala.collection.mutable.ArrayBuffer
 import org.apache.commons.codec.binary.Base64
 import org.apache.commons.codec.net.URLCodec
 
@@ -15,7 +14,7 @@ object Strings {
 
   private val emailMatcher = """([^@]*)@.*""".r
 
-  def generateRandomSting(
+  def generateRandomString(
       count: Int,
       useLower: Boolean = true,
       useUpper: Boolean = true,
@@ -46,16 +45,9 @@ object Strings {
   }
 
   def generateQueryParamsFromMap(values: mutable.Map[String, String]): String = {
-    val builder = new mutable.StringBuilder
-    var index = 0
-    values.keys.foreach(k => {
-      builder ++= s"${k}=${urlCodec.encode(values.getOrElse(k, ""))}"
-      if (index != values.size - 1) {
-        builder ++= "&"
-      }
-      index += 1
-    })
-    builder.mkString
+    values
+      .map { case (k, v) => s"${k}=${urlCodec.encode(v)}" }
+      .mkString("&")
   }
 
   def convertToBase64(value: String): String = {
@@ -67,7 +59,7 @@ object Strings {
   }
 
   def generateSlug(): String = {
-    generateRandomSting(10, useUpper = false)()
+    generateRandomString(10, useUpper = false)()
   }
 
   def nameFromEmail(email: String): String = {

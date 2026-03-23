@@ -13,7 +13,7 @@ object TemporaryFiles {
 }
 
 class TemporaryDir extends AutoCloseable {
-  private val dir = Files.createDirectories(Path.of("/tmp", Strings.generateRandomSting(10)()))
+  private val dir = Files.createDirectories(Path.of("/tmp", Strings.generateRandomString(10)()))
 
   def path(): Path = {
     dir.getFileName
@@ -27,7 +27,7 @@ class TemporaryDir extends AutoCloseable {
 class TemporaryFile(dir: Path, deleteOnClose: Boolean = false, suffix: String = "")
     extends AutoCloseable {
   private val file =
-    Files.createFile(Path.of(dir.toString, s"${Strings.generateRandomSting(10)()}${suffix}"))
+    Files.createFile(Path.of(dir.toString, s"${Strings.generateRandomString(10)()}${suffix}"))
 
   def write(bytes: Array[Byte], append: Boolean = false): Unit = {
     val option = if (append) StandardOpenOption.APPEND else StandardOpenOption.TRUNCATE_EXISTING
