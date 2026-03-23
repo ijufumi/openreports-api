@@ -33,4 +33,4 @@ jobs:
           REPO_NAME: ${{ github.repository }}
           # レビューに使用するモデル（必要に応じて変更）
           CLAUDE_MODEL: "claude-sonnet-4-20250514"
-        run: python .github/scripts/claude-review.py
+        run: python .github/scripts/claude-code-review.py
