@@ -8,69 +8,69 @@ import scala.collection.mutable
 class StringsSpec extends AnyFlatSpec with Matchers {
 
   "generateRandomString" should "generate string with correct length" in {
-    val result = Strings.generateRandomSting(10)()
+    val result = Strings.generateRandomString(10)()
 
     result should have length 10
   }
 
   it should "generate different strings on each call" in {
-    val str1 = Strings.generateRandomSting(20)()
-    val str2 = Strings.generateRandomSting(20)()
+    val str1 = Strings.generateRandomString(20)()
+    val str2 = Strings.generateRandomString(20)()
 
     str1 should not equal str2
   }
 
   it should "contain only lowercase when only useLower=true" in {
-    val result = Strings.generateRandomSting(100, useLower = true, useUpper = false, useNumeric = false)()
+    val result = Strings.generateRandomString(100, useLower = true, useUpper = false, useNumeric = false)()
 
     result should fullyMatch regex "[a-z]+"
   }
 
   it should "contain only uppercase when only useUpper=true" in {
-    val result = Strings.generateRandomSting(100, useLower = false, useUpper = true, useNumeric = false)()
+    val result = Strings.generateRandomString(100, useLower = false, useUpper = true, useNumeric = false)()
 
     result should fullyMatch regex "[A-Z]+"
   }
 
   it should "contain only numbers when only useNumeric=true" in {
-    val result = Strings.generateRandomSting(100, useLower = false, useUpper = false, useNumeric = true)()
+    val result = Strings.generateRandomString(100, useLower = false, useUpper = false, useNumeric = true)()
 
     result should fullyMatch regex "[0-9]+"
   }
 
   it should "contain mixed characters with all flags true" in {
-    val result = Strings.generateRandomSting(100, useLower = true, useUpper = true, useNumeric = true)()
+    val result = Strings.generateRandomString(100, useLower = true, useUpper = true, useNumeric = true)()
 
     result should fullyMatch regex "[a-zA-Z0-9]+"
   }
 
   it should "include extra characters when provided" in {
-    val result = Strings.generateRandomSting(50, useLower = false, useUpper = false, useNumeric = false)("@#$")
+    val result = Strings.generateRandomString(50, useLower = false, useUpper = false, useNumeric = false)("@#$")
 
     result should fullyMatch regex "[@#$]+"
   }
 
   it should "combine base characters and extra characters" in {
-    val result = Strings.generateRandomSting(100, useLower = true, useUpper = false, useNumeric = false)("-_")
+    val result = Strings.generateRandomString(100, useLower = true, useUpper = false, useNumeric = false)("-_")
 
     result should fullyMatch regex "[a-z_-]+"
   }
 
   it should "handle count of 0" in {
-    val result = Strings.generateRandomSting(0)()
+    val result = Strings.generateRandomString(0)()
 
     result should have length 0
     result should equal("")
   }
 
   it should "handle count of 1" in {
-    val result = Strings.generateRandomSting(1)()
+    val result = Strings.generateRandomString(1)()
 
     result should have length 1
   }
 
   it should "generate very long strings" in {
-    val result = Strings.generateRandomSting(1000)()
+    val result = Strings.generateRandomString(1000)()
 
     result should have length 1000
   }

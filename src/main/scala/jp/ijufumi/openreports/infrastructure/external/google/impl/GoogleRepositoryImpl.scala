@@ -26,7 +26,7 @@ class GoogleRepositoryImpl @Inject() (backend: WebSocketSyncBackend = HttpClient
   private val SCOPES = Array("profile", "email")
 
   override def getAuthorizationUrl(): String = {
-    val state = Strings.generateRandomSting(10)()
+    val state = Strings.generateRandomString(10)()
 
     val params = mutable.Map[String, String]()
     params += ("client_id" -> Config.GOOGLE_CLIENT_ID)

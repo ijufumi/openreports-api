@@ -142,7 +142,7 @@ class WorkspaceInteractor @Inject() (
 
   private def copySample(workspaceId: String): String = {
     val source = storageService.get("", appConfig.sampleReportPath, StorageTypes.Local)
-    val key = Strings.generateRandomSting(10)() + Strings.extension(source.getFileName.toString)
+    val key = Strings.generateRandomString(10)() + Strings.extension(source.getFileName.toString)
     storageService.create(workspaceId, key, StorageTypes.Local, source)
     key
   }
