@@ -2,10 +2,11 @@ name: Claude Code Review
 
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+  CLAUDE_MODEL: opus
 
 on:
-  pull_request:
-    types: [opened, synchronize, reopened]
+  issue_comment:
+    types: [created, edited]
 
 permissions:
   contents: read
@@ -15,6 +16,9 @@ permissions:
 
 jobs:
   claude-review:
+    if: >-
+      github.event.issue.pull_request &&
+      contains(github.event.comment.body, '@claude')
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -28,7 +32,7 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          PR_NUMBER=${{ github.event.pull_request.number }}
+          PR_NUMBER=${{ github.event.issue.number }}
           REPO=${{ github.repository }}
 
           # PRに👀リアクションを追加
@@ -81,7 +85,7 @@ jobs:
       - name: Extract PR review focus
         id: pr_focus
         env:
-          PR_BODY: ${{ github.event.pull_request.body }}
+          PR_BODY: ${{ github.event.issue.body }}
         run: |
           # <!-- REVIEW_FOCUS --> ... <!-- /REVIEW_FOCUS --> の間を抽出
           FOCUS=$(echo "$PR_BODY" | sed -n '/<!-- REVIEW_FOCUS -->/,/<!-- \/REVIEW_FOCUS -->/{ /<!-- REVIEW_FOCUS -->/d; /<!-- \/REVIEW_FOCUS -->/d; p; }' | sed '/^$/d')
@@ -206,6 +210,8 @@ jobs:
             - MUST もしくは SHOULD の指摘がある場合は、サマリ投稿時の EVENT に REQUEST_CHANGES を指定してください。
             - 改善案がある場合は GitHub の suggestion ブロックで提案してください。
 
+          model: ${{ env.CLAUDE_MODEL }}
+
           claude_args: |
             --max-turns 30 --allowedTools mcp:github Read Grep Glob Bash
 
@@ -223,7 +229,7 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          PR_NUMBER=${{ github.event.pull_request.number }}
+          PR_NUMBER=${{ github.event.issue.number }}
           REPO=${{ github.repository }}
 
           # 「レビュー中」コメントを削除
