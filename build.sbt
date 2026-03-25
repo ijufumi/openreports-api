@@ -12,7 +12,7 @@ val ULIDVersion = "1.0.24"
 // for java libraries
 val SLF4JVersion = "2.0.17"
 val LogbackVersion = "1.5.18"
-val FlywayVersion = "9.22.3"
+val FlywayVersion = "11.11.0"
 val AWSSDKVersion = "2.31.78"
 val jXlsVersion = "3.0.0"
 val Auth0Version = "2.22.0"
@@ -50,6 +50,7 @@ lazy val root = (project in file("."))
       "jakarta.servlet" % "jakarta.servlet-api" % ServletAPIVersion % "provided",
       "org.postgresql" % "postgresql" % PostgresVersion,
       "org.flywaydb" % "flyway-core" % FlywayVersion,
+      "org.flywaydb" % "flyway-database-postgresql" % FlywayVersion,
       "com.google.inject" % "guice" % GuiceVersion,
       "com.google.inject.extensions" % "guice-servlet" % GuiceExtensionVersion,
       "org.json4s" %% "json4s-jackson" % Json4sVersion,
