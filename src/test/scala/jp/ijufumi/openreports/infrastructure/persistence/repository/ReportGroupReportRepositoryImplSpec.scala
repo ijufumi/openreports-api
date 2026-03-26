@@ -2,7 +2,9 @@ package jp.ijufumi.openreports.infrastructure.persistence.repository
 
 import jp.ijufumi.openreports.domain.models.entity.ReportGroupReport
 import jp.ijufumi.openreports.infrastructure.persistence.H2DatabaseHelper
-import jp.ijufumi.openreports.infrastructure.persistence.entity.{ReportGroupReport => ReportGroupReportEntity}
+import jp.ijufumi.openreports.infrastructure.persistence.entity.{
+  ReportGroupReport => ReportGroupReportEntity,
+}
 import jp.ijufumi.openreports.utils.{Dates, IDs}
 import org.scalatest.{BeforeAndAfterAll, BeforeAndAfterEach}
 import org.scalatest.flatspec.AnyFlatSpec
@@ -13,7 +15,11 @@ import slick.jdbc.PostgresProfile.api._
 import scala.concurrent.Await
 import scala.concurrent.duration._
 
-class ReportGroupReportRepositoryImplSpec extends AnyFlatSpec with Matchers with BeforeAndAfterAll with BeforeAndAfterEach {
+class ReportGroupReportRepositoryImplSpec
+    extends AnyFlatSpec
+    with Matchers
+    with BeforeAndAfterAll
+    with BeforeAndAfterEach {
 
   var db: Database = _
   val repository = new ReportGroupReportRepositoryImpl()
@@ -38,7 +44,7 @@ class ReportGroupReportRepositoryImplSpec extends AnyFlatSpec with Matchers with
   def insertReportGroupReport(
       id: String = IDs.ulid(),
       reportId: String = IDs.ulid(),
-      reportGroupId: String = IDs.ulid()
+      reportGroupId: String = IDs.ulid(),
   ): ReportGroupReportEntity = {
     val entity = ReportGroupReportEntity(
       id,
@@ -46,7 +52,7 @@ class ReportGroupReportRepositoryImplSpec extends AnyFlatSpec with Matchers with
       reportGroupId,
       Dates.currentTimestamp(),
       Dates.currentTimestamp(),
-      1
+      1,
     )
     Await.result(db.run(reportGroupReportQuery += entity), 10.seconds)
     entity
@@ -165,7 +171,7 @@ class ReportGroupReportRepositoryImplSpec extends AnyFlatSpec with Matchers with
     val model = ReportGroupReport(
       id = id,
       reportId = reportId,
-      reportGroupId = reportGroupId
+      reportGroupId = reportGroupId,
     )
 
     val result = repository.register(db, model)
@@ -181,7 +187,7 @@ class ReportGroupReportRepositoryImplSpec extends AnyFlatSpec with Matchers with
     val model = ReportGroupReport(
       id = id,
       reportId = IDs.ulid(),
-      reportGroupId = IDs.ulid()
+      reportGroupId = IDs.ulid(),
     )
 
     repository.register(db, model)
@@ -195,7 +201,7 @@ class ReportGroupReportRepositoryImplSpec extends AnyFlatSpec with Matchers with
       ReportGroupReport(
         id = IDs.ulid(),
         reportId = IDs.ulid(),
-        reportGroupId = IDs.ulid()
+        reportGroupId = IDs.ulid(),
       )
     }
 
@@ -212,7 +218,7 @@ class ReportGroupReportRepositoryImplSpec extends AnyFlatSpec with Matchers with
       ReportGroupReport(
         id = IDs.ulid(),
         reportId = IDs.ulid(),
-        reportGroupId = IDs.ulid()
+        reportGroupId = IDs.ulid(),
       )
     }
 
@@ -234,7 +240,7 @@ class ReportGroupReportRepositoryImplSpec extends AnyFlatSpec with Matchers with
     val updated = ReportGroupReport(
       id = id,
       reportId = newReportId,
-      reportGroupId = originalGroupId
+      reportGroupId = originalGroupId,
     )
 
     repository.update(db, updated)
@@ -257,7 +263,7 @@ class ReportGroupReportRepositoryImplSpec extends AnyFlatSpec with Matchers with
       reportId = IDs.ulid(),
       reportGroupId = IDs.ulid(),
       createdAt = originalTimestamp,
-      updatedAt = originalTimestamp
+      updatedAt = originalTimestamp,
     )
 
     repository.update(db, updated)

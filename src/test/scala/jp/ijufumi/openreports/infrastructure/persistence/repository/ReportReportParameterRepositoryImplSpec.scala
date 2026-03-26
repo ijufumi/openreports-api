@@ -2,7 +2,9 @@ package jp.ijufumi.openreports.infrastructure.persistence.repository
 
 import jp.ijufumi.openreports.domain.models.entity.ReportReportParameter
 import jp.ijufumi.openreports.infrastructure.persistence.H2DatabaseHelper
-import jp.ijufumi.openreports.infrastructure.persistence.entity.{ReportReportParameter => ReportReportParameterEntity}
+import jp.ijufumi.openreports.infrastructure.persistence.entity.{
+  ReportReportParameter => ReportReportParameterEntity,
+}
 import jp.ijufumi.openreports.utils.IDs
 import org.scalatest.{BeforeAndAfterAll, BeforeAndAfterEach}
 import org.scalatest.flatspec.AnyFlatSpec
@@ -13,7 +15,11 @@ import slick.jdbc.PostgresProfile.api._
 import scala.concurrent.Await
 import scala.concurrent.duration._
 
-class ReportReportParameterRepositoryImplSpec extends AnyFlatSpec with Matchers with BeforeAndAfterAll with BeforeAndAfterEach {
+class ReportReportParameterRepositoryImplSpec
+    extends AnyFlatSpec
+    with Matchers
+    with BeforeAndAfterAll
+    with BeforeAndAfterEach {
 
   var db: Database = _
   val repository = new ReportReportParameterRepositoryImpl()
@@ -38,7 +44,7 @@ class ReportReportParameterRepositoryImplSpec extends AnyFlatSpec with Matchers 
   def insertReportReportParameter(
       id: String = IDs.ulid(),
       reportId: String = IDs.ulid(),
-      reportParameterId: String = IDs.ulid()
+      reportParameterId: String = IDs.ulid(),
   ): ReportReportParameterEntity = {
     val entity = ReportReportParameterEntity(
       id,
@@ -46,7 +52,7 @@ class ReportReportParameterRepositoryImplSpec extends AnyFlatSpec with Matchers 
       reportParameterId,
       System.currentTimeMillis(),
       System.currentTimeMillis(),
-      1
+      1,
     )
     Await.result(db.run(reportReportParameterQuery += entity), 10.seconds)
     entity
@@ -165,7 +171,7 @@ class ReportReportParameterRepositoryImplSpec extends AnyFlatSpec with Matchers 
     val model = ReportReportParameter(
       id = id,
       reportId = reportId,
-      reportParameterId = parameterId
+      reportParameterId = parameterId,
     )
 
     val result = repository.register(db, model)
@@ -181,7 +187,7 @@ class ReportReportParameterRepositoryImplSpec extends AnyFlatSpec with Matchers 
     val model = ReportReportParameter(
       id = id,
       reportId = IDs.ulid(),
-      reportParameterId = IDs.ulid()
+      reportParameterId = IDs.ulid(),
     )
 
     repository.register(db, model)
@@ -195,7 +201,7 @@ class ReportReportParameterRepositoryImplSpec extends AnyFlatSpec with Matchers 
       ReportReportParameter(
         id = IDs.ulid(),
         reportId = IDs.ulid(),
-        reportParameterId = IDs.ulid()
+        reportParameterId = IDs.ulid(),
       )
     }
 
@@ -212,7 +218,7 @@ class ReportReportParameterRepositoryImplSpec extends AnyFlatSpec with Matchers 
       ReportReportParameter(
         id = IDs.ulid(),
         reportId = IDs.ulid(),
-        reportParameterId = IDs.ulid()
+        reportParameterId = IDs.ulid(),
       )
     }
 
@@ -229,12 +235,16 @@ class ReportReportParameterRepositoryImplSpec extends AnyFlatSpec with Matchers 
     val originalParameterId = IDs.ulid()
     val newParameterId = IDs.ulid()
 
-    insertReportReportParameter(id = id, reportId = originalReportId, reportParameterId = originalParameterId)
+    insertReportReportParameter(
+      id = id,
+      reportId = originalReportId,
+      reportParameterId = originalParameterId,
+    )
 
     val updated = ReportReportParameter(
       id = id,
       reportId = originalReportId,
-      reportParameterId = newParameterId
+      reportParameterId = newParameterId,
     )
 
     repository.update(db, updated)
@@ -257,7 +267,7 @@ class ReportReportParameterRepositoryImplSpec extends AnyFlatSpec with Matchers 
       reportId = IDs.ulid(),
       reportParameterId = IDs.ulid(),
       createdAt = originalTimestamp,
-      updatedAt = originalTimestamp
+      updatedAt = originalTimestamp,
     )
 
     repository.update(db, updated)
@@ -324,7 +334,10 @@ class ReportReportParameterRepositoryImplSpec extends AnyFlatSpec with Matchers 
   it should "not fail when parameter has no reports" in {
     insertReportReportParameter()
 
-    noException should be thrownBy repository.deleteByReportParameterId(db, "non-existent-parameter-id")
+    noException should be thrownBy repository.deleteByReportParameterId(
+      db,
+      "non-existent-parameter-id",
+    )
   }
 
   "ReportReportParameter conversion" should "correctly convert from entity to domain model" in {

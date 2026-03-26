@@ -19,7 +19,9 @@ object FunctionConverter {
     import scala.language.implicitConversions
 
     implicit def fromFunctionEntity(entity: FunctionEntity): FunctionModel = toDomain(entity)
-    implicit def fromFunctionEntity2(entity: Option[FunctionEntity]): Option[FunctionModel] = entity.map(toDomain)
-    implicit def fromFunctionEntities(entity: Seq[FunctionEntity]): Seq[FunctionModel] = entity.map(toDomain)
+    implicit def fromFunctionEntity2(entity: Option[FunctionEntity]): Option[FunctionModel] =
+      entity.map(toDomain)
+    implicit def fromFunctionEntities(entity: Seq[FunctionEntity]): Seq[FunctionModel] =
+      entity.map(toDomain)
   }
 }

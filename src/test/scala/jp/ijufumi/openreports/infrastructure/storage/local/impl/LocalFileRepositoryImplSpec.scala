@@ -3,12 +3,16 @@ package jp.ijufumi.openreports.infrastructure.storage.local.impl
 import jp.ijufumi.openreports.configs.Config
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
-import org.scalatest.{BeforeAndAfterEach, BeforeAndAfterAll}
+import org.scalatest.{BeforeAndAfterAll, BeforeAndAfterEach}
 
 import java.nio.file.{Files, Path, Paths}
 import scala.util.Try
 
-class LocalFileRepositoryImplSpec extends AnyFlatSpec with Matchers with BeforeAndAfterEach with BeforeAndAfterAll {
+class LocalFileRepositoryImplSpec
+    extends AnyFlatSpec
+    with Matchers
+    with BeforeAndAfterEach
+    with BeforeAndAfterAll {
 
   var tempDir: Path = _
   var testWorkspaceId: String = _
@@ -24,7 +28,8 @@ class LocalFileRepositoryImplSpec extends AnyFlatSpec with Matchers with BeforeA
     super.afterAll()
     // Clean up temporary directory
     Try {
-      Files.walk(tempDir)
+      Files
+        .walk(tempDir)
         .sorted(java.util.Comparator.reverseOrder())
         .forEach(Files.delete(_))
     }
@@ -90,7 +95,8 @@ class LocalFileRepositoryImplSpec extends AnyFlatSpec with Matchers with BeforeA
     Files.exists(expectedPath.getParent.getParent) should be(true)
 
     // Cleanup
-    Files.walk(Paths.get(tempDir.toString, testWorkspaceId))
+    Files
+      .walk(Paths.get(tempDir.toString, testWorkspaceId))
       .sorted(java.util.Comparator.reverseOrder())
       .forEach(Files.delete(_))
     Files.deleteIfExists(sourceFile)
@@ -124,7 +130,8 @@ class LocalFileRepositoryImplSpec extends AnyFlatSpec with Matchers with BeforeA
     Files.deleteIfExists(expectedPath)
     Files.deleteIfExists(sourceFile1)
     Files.deleteIfExists(sourceFile2)
-    Files.walk(Paths.get(tempDir.toString, testWorkspaceId))
+    Files
+      .walk(Paths.get(tempDir.toString, testWorkspaceId))
       .sorted(java.util.Comparator.reverseOrder())
       .forEach(Files.delete(_))
   }

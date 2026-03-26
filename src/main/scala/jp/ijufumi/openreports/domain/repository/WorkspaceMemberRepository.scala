@@ -10,7 +10,11 @@ trait WorkspaceMemberRepository {
 
   def getsByMemberId(db: Database, memberId: String): Seq[WorkspaceMember]
 
-  def getByIdWithMember(db: Database, workspaceId: String, memberId: String): Option[WorkspaceMember]
+  def getByIdWithMember(
+      db: Database,
+      workspaceId: String,
+      memberId: String,
+  ): Option[WorkspaceMember]
 
   def getsWithMember(db: Database, workspaceId: String): Seq[WorkspaceMember]
 

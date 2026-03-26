@@ -31,7 +31,5 @@ class MemberServlet @Inject() (loginService: LoginUseCase, memberService: Member
     }
   }
 
-  post("/access-token") {
-
-  }
+  post("/access-token") {}
 }

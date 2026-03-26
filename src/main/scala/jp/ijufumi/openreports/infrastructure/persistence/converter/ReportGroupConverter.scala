@@ -30,9 +30,15 @@ object ReportGroupConverter {
     import scala.language.implicitConversions
 
     implicit def toReportGroupEntity(model: ReportGroupModel): ReportGroupEntity = toEntity(model)
-    implicit def toReportGroupEntities(model: Seq[ReportGroupModel]): Seq[ReportGroupEntity] = model.map(toEntity)
-    implicit def fromReportGroupEntity(entity: ReportGroupEntity): ReportGroupModel = toDomain(entity)
-    implicit def fromReportGroupEntity2(entity: Option[ReportGroupEntity]): Option[ReportGroupModel] = entity.map(toDomain)
-    implicit def fromReportGroupEntities(entity: Seq[ReportGroupEntity]): Seq[ReportGroupModel] = entity.map(toDomain)
+    implicit def toReportGroupEntities(model: Seq[ReportGroupModel]): Seq[ReportGroupEntity] =
+      model.map(toEntity)
+    implicit def fromReportGroupEntity(entity: ReportGroupEntity): ReportGroupModel = toDomain(
+      entity,
+    )
+    implicit def fromReportGroupEntity2(
+        entity: Option[ReportGroupEntity],
+    ): Option[ReportGroupModel] = entity.map(toDomain)
+    implicit def fromReportGroupEntities(entity: Seq[ReportGroupEntity]): Seq[ReportGroupModel] =
+      entity.map(toDomain)
   }
 }

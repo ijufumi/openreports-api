@@ -40,5 +40,5 @@ class ReportTemplates(tag: Tag)
       createdAt,
       updatedAt,
       versions,
-    ) <> (ReportTemplate.tupled, ReportTemplate.unapply)
+    ).mapTo[ReportTemplate]
 }

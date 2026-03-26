@@ -18,7 +18,7 @@ class DataSourceSpec extends AnyFlatSpec with Matchers {
       maxPoolSize = 10,
       workspaceId = "workspace-id",
       createdAt = System.currentTimeMillis(),
-      updatedAt = System.currentTimeMillis()
+      updatedAt = System.currentTimeMillis(),
     )
 
     dataSource should not be null
@@ -37,7 +37,7 @@ class DataSourceSpec extends AnyFlatSpec with Matchers {
       maxPoolSize = 10,
       workspaceId = "workspace-id",
       createdAt = 1000L,
-      updatedAt = 1000L
+      updatedAt = 1000L,
     )
 
     val ds2 = ds1.copy(name = "Updated Name")
@@ -53,7 +53,7 @@ class DataSourceSpec extends AnyFlatSpec with Matchers {
       "jdbc:mysql://127.0.0.1:3306/testdb",
       "jdbc:postgresql://db.example.com:5432/production",
       "jdbc:h2:mem:testdb",
-      "jdbc:oracle:thin:@localhost:1521:orcl"
+      "jdbc:oracle:thin:@localhost:1521:orcl",
     )
 
     urls.foreach { url =>
@@ -67,7 +67,7 @@ class DataSourceSpec extends AnyFlatSpec with Matchers {
         maxPoolSize = 10,
         workspaceId = "workspace-id",
         createdAt = System.currentTimeMillis(),
-        updatedAt = System.currentTimeMillis()
+        updatedAt = System.currentTimeMillis(),
       )
 
       ds.url should equal(url)
@@ -86,7 +86,7 @@ class DataSourceSpec extends AnyFlatSpec with Matchers {
       maxPoolSize = 10,
       workspaceId = "workspace-id",
       createdAt = System.currentTimeMillis(),
-      updatedAt = System.currentTimeMillis()
+      updatedAt = System.currentTimeMillis(),
     )
 
     ds.password should equal(specialPassword)
@@ -104,7 +104,7 @@ class DataSourceSpec extends AnyFlatSpec with Matchers {
       maxPoolSize = 10,
       workspaceId = "workspace-id",
       createdAt = System.currentTimeMillis(),
-      updatedAt = System.currentTimeMillis()
+      updatedAt = System.currentTimeMillis(),
     )
 
     ds.username should equal(specialUsername)
@@ -121,7 +121,7 @@ class DataSourceSpec extends AnyFlatSpec with Matchers {
       maxPoolSize = 10,
       workspaceId = "workspace-id",
       createdAt = System.currentTimeMillis(),
-      updatedAt = System.currentTimeMillis()
+      updatedAt = System.currentTimeMillis(),
     )
 
     ds.username should equal("")
@@ -142,7 +142,7 @@ class DataSourceSpec extends AnyFlatSpec with Matchers {
         maxPoolSize = size,
         workspaceId = "workspace-id",
         createdAt = System.currentTimeMillis(),
-        updatedAt = System.currentTimeMillis()
+        updatedAt = System.currentTimeMillis(),
       )
 
       ds.maxPoolSize should equal(size)
@@ -153,7 +153,7 @@ class DataSourceSpec extends AnyFlatSpec with Matchers {
     val driverType = DriverType(
       id = "driver-id",
       name = "PostgreSQL",
-      jdbcDriverClass = JdbcDriverClasses.Postgres
+      jdbcDriverClass = JdbcDriverClasses.Postgres,
     )
 
     val ds = DataSource(
@@ -167,7 +167,7 @@ class DataSourceSpec extends AnyFlatSpec with Matchers {
       workspaceId = "workspace-id",
       createdAt = System.currentTimeMillis(),
       updatedAt = System.currentTimeMillis(),
-      driverType = Some(driverType)
+      driverType = Some(driverType),
     )
 
     ds.driverType should be(defined)
@@ -187,7 +187,7 @@ class DataSourceSpec extends AnyFlatSpec with Matchers {
       workspaceId = "workspace-id",
       createdAt = System.currentTimeMillis(),
       updatedAt = System.currentTimeMillis(),
-      driverType = None
+      driverType = None,
     )
 
     ds.driverType should be(None)
@@ -207,7 +207,7 @@ class DataSourceSpec extends AnyFlatSpec with Matchers {
       maxPoolSize = 10,
       workspaceId = "workspace-id",
       createdAt = createdAt,
-      updatedAt = updatedAt
+      updatedAt = updatedAt,
     )
 
     ds.createdAt should equal(createdAt)
@@ -226,7 +226,7 @@ class DataSourceSpec extends AnyFlatSpec with Matchers {
       maxPoolSize = 10,
       workspaceId = "workspace-id",
       createdAt = 1000L,
-      updatedAt = 1000L
+      updatedAt = 1000L,
     )
 
     val modified = original.copy(
@@ -234,7 +234,7 @@ class DataSourceSpec extends AnyFlatSpec with Matchers {
       url = "jdbc:postgresql://localhost:5432/db2",
       username = "user2",
       password = "pass2",
-      updatedAt = 2000L
+      updatedAt = 2000L,
     )
 
     modified.id should equal(original.id)
@@ -257,7 +257,7 @@ class DataSourceSpec extends AnyFlatSpec with Matchers {
       maxPoolSize = 10,
       workspaceId = "workspace-id",
       createdAt = 1000L,
-      updatedAt = 1000L
+      updatedAt = 1000L,
     )
 
     val ds2 = DataSource(
@@ -270,7 +270,7 @@ class DataSourceSpec extends AnyFlatSpec with Matchers {
       maxPoolSize = 10,
       workspaceId = "workspace-id",
       createdAt = 1000L,
-      updatedAt = 1000L
+      updatedAt = 1000L,
     )
 
     ds1 should equal(ds2)
@@ -287,7 +287,7 @@ class DataSourceSpec extends AnyFlatSpec with Matchers {
       maxPoolSize = 10,
       workspaceId = "workspace-id",
       createdAt = 1000L,
-      updatedAt = 1000L
+      updatedAt = 1000L,
     )
 
     val ds2 = DataSource(
@@ -300,7 +300,7 @@ class DataSourceSpec extends AnyFlatSpec with Matchers {
       maxPoolSize = 10,
       workspaceId = "workspace-id",
       createdAt = 1000L,
-      updatedAt = 1000L
+      updatedAt = 1000L,
     )
 
     ds1 should not equal ds2
@@ -318,7 +318,7 @@ class DataSourceSpec extends AnyFlatSpec with Matchers {
       maxPoolSize = 10,
       workspaceId = "workspace-id",
       createdAt = System.currentTimeMillis(),
-      updatedAt = System.currentTimeMillis()
+      updatedAt = System.currentTimeMillis(),
     )
 
     // Password is stored as-is in the entity

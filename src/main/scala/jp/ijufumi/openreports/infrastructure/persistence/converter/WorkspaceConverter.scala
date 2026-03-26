@@ -38,10 +38,18 @@ object WorkspaceConverter {
 
     implicit def toWorkspaceEntity(model: WorkspaceModel): WorkspaceEntity = toEntity(model)
     implicit def fromWorkspaceEntity(entity: WorkspaceEntity): WorkspaceModel = toDomain(entity)
-    implicit def fromWorkspaceEntity2(entity: Option[WorkspaceEntity]): Option[WorkspaceModel] = entity.map(toDomain)
-    implicit def fromWorkspaceEntity3(entity: (WorkspaceEntity, WorkspaceMemberEntity)): WorkspaceModel = toDomain(entity)
-    implicit def fromWorkspaceEntity4(entity: Option[(WorkspaceEntity, WorkspaceMemberEntity)]): Option[WorkspaceModel] = entity.map(toDomain)
-    implicit def fromWorkspaceEntities(entity: Seq[WorkspaceEntity]): Seq[WorkspaceModel] = entity.map(toDomain)
-    implicit def fromWorkspaceEntities2(entity: Seq[(WorkspaceEntity, WorkspaceMemberEntity)]): Seq[WorkspaceModel] = entity.map(toDomain)
+    implicit def fromWorkspaceEntity2(entity: Option[WorkspaceEntity]): Option[WorkspaceModel] =
+      entity.map(toDomain)
+    implicit def fromWorkspaceEntity3(
+        entity: (WorkspaceEntity, WorkspaceMemberEntity),
+    ): WorkspaceModel = toDomain(entity)
+    implicit def fromWorkspaceEntity4(
+        entity: Option[(WorkspaceEntity, WorkspaceMemberEntity)],
+    ): Option[WorkspaceModel] = entity.map(toDomain)
+    implicit def fromWorkspaceEntities(entity: Seq[WorkspaceEntity]): Seq[WorkspaceModel] =
+      entity.map(toDomain)
+    implicit def fromWorkspaceEntities2(
+        entity: Seq[(WorkspaceEntity, WorkspaceMemberEntity)],
+    ): Seq[WorkspaceModel] = entity.map(toDomain)
   }
 }

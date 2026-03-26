@@ -1,7 +1,39 @@
 package jp.ijufumi.openreports.configs.injectors
 
-import jp.ijufumi.openreports.domain.repository.{DataSourceRepository, DriverTypeRepository, FunctionRepository, MemberRepository, ReportGroupReportRepository, ReportGroupRepository, ReportParameterRepository, ReportReportParameterRepository, ReportRepository, ReportTemplateRepository, RoleFunctionRepository, RoleRepository, StorageS3Repository, WorkspaceMemberRepository, WorkspaceRepository}
-import jp.ijufumi.openreports.infrastructure.persistence.repository.{DataSourceRepositoryImpl, DriverTypeRepositoryImpl, FunctionRepositoryImpl, MemberRepositoryImpl, ReportGroupReportRepositoryImpl, ReportGroupRepositoryImpl, ReportParameterRepositoryImpl, ReportReportParameterRepositoryImpl, ReportRepositoryImpl, ReportTemplateRepositoryImpl, RoleFunctionRepositoryImpl, RoleRepositoryImpl, StorageS3RepositoryImpl, WorkspaceMemberRepositoryImpl, WorkspaceRepositoryImpl}
+import jp.ijufumi.openreports.domain.repository.{
+  DataSourceRepository,
+  DriverTypeRepository,
+  FunctionRepository,
+  MemberRepository,
+  ReportGroupReportRepository,
+  ReportGroupRepository,
+  ReportParameterRepository,
+  ReportReportParameterRepository,
+  ReportRepository,
+  ReportTemplateRepository,
+  RoleFunctionRepository,
+  RoleRepository,
+  StorageS3Repository,
+  WorkspaceMemberRepository,
+  WorkspaceRepository,
+}
+import jp.ijufumi.openreports.infrastructure.persistence.repository.{
+  DataSourceRepositoryImpl,
+  DriverTypeRepositoryImpl,
+  FunctionRepositoryImpl,
+  MemberRepositoryImpl,
+  ReportGroupReportRepositoryImpl,
+  ReportGroupRepositoryImpl,
+  ReportParameterRepositoryImpl,
+  ReportReportParameterRepositoryImpl,
+  ReportRepositoryImpl,
+  ReportTemplateRepositoryImpl,
+  RoleFunctionRepositoryImpl,
+  RoleRepositoryImpl,
+  StorageS3RepositoryImpl,
+  WorkspaceMemberRepositoryImpl,
+  WorkspaceRepositoryImpl,
+}
 
 class RepositoryModule extends BaseModule {
   override def configure(): Unit = {

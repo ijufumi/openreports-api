@@ -21,37 +21,45 @@ class StringsSpec extends AnyFlatSpec with Matchers {
   }
 
   it should "contain only lowercase when only useLower=true" in {
-    val result = Strings.generateRandomString(100, useLower = true, useUpper = false, useNumeric = false)()
+    val result =
+      Strings.generateRandomString(100, useLower = true, useUpper = false, useNumeric = false)()
 
     result should fullyMatch regex "[a-z]+"
   }
 
   it should "contain only uppercase when only useUpper=true" in {
-    val result = Strings.generateRandomString(100, useLower = false, useUpper = true, useNumeric = false)()
+    val result =
+      Strings.generateRandomString(100, useLower = false, useUpper = true, useNumeric = false)()
 
     result should fullyMatch regex "[A-Z]+"
   }
 
   it should "contain only numbers when only useNumeric=true" in {
-    val result = Strings.generateRandomString(100, useLower = false, useUpper = false, useNumeric = true)()
+    val result =
+      Strings.generateRandomString(100, useLower = false, useUpper = false, useNumeric = true)()
 
     result should fullyMatch regex "[0-9]+"
   }
 
   it should "contain mixed characters with all flags true" in {
-    val result = Strings.generateRandomString(100, useLower = true, useUpper = true, useNumeric = true)()
+    val result =
+      Strings.generateRandomString(100, useLower = true, useUpper = true, useNumeric = true)()
 
     result should fullyMatch regex "[a-zA-Z0-9]+"
   }
 
   it should "include extra characters when provided" in {
-    val result = Strings.generateRandomString(50, useLower = false, useUpper = false, useNumeric = false)("@#$")
+    val result =
+      Strings.generateRandomString(50, useLower = false, useUpper = false, useNumeric = false)(
+        "@#$",
+      )
 
     result should fullyMatch regex "[@#$]+"
   }
 
   it should "combine base characters and extra characters" in {
-    val result = Strings.generateRandomString(100, useLower = true, useUpper = false, useNumeric = false)("-_")
+    val result =
+      Strings.generateRandomString(100, useLower = true, useUpper = false, useNumeric = false)("-_")
 
     result should fullyMatch regex "[a-z_-]+"
   }
@@ -76,7 +84,7 @@ class StringsSpec extends AnyFlatSpec with Matchers {
   }
 
   "generateQueryParamsFromMap" should "generate query string from map" in {
-    val params = mutable.Map[String,String]("key1" -> "value1", "key2" -> "value2")
+    val params = mutable.Map[String, String]("key1" -> "value1", "key2" -> "value2")
     val result = Strings.generateQueryParamsFromMap(params)
 
     result should include("key1=value1")
@@ -85,7 +93,7 @@ class StringsSpec extends AnyFlatSpec with Matchers {
   }
 
   it should "handle single parameter" in {
-    val params = mutable.Map[String,String]("key" -> "value")
+    val params = mutable.Map[String, String]("key" -> "value")
     val result = Strings.generateQueryParamsFromMap(params)
 
     result should equal("key=value")
@@ -99,7 +107,7 @@ class StringsSpec extends AnyFlatSpec with Matchers {
   }
 
   it should "URL encode special characters" in {
-    val params = mutable.Map[String,String]("key" -> "value with spaces")
+    val params = mutable.Map[String, String]("key" -> "value with spaces")
     val result = Strings.generateQueryParamsFromMap(params)
 
     result should include("value+with+spaces")

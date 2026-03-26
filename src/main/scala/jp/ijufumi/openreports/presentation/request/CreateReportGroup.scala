@@ -1,13 +1,14 @@
 package jp.ijufumi.openreports.presentation.request
 
-import com.wix.accord.Validator
-import com.wix.accord.dsl._
+import jp.ijufumi.openreports.presentation.validation.Validator
 
 case class CreateReportGroup(name: String, reportIds: Seq[String])
 
 object CreateReportGroup {
-  implicit val validate: Validator[CreateReportGroup] = validator[CreateReportGroup] { param =>
-    param.name is notEmpty
-    param.name.length is between(1, 255)
+  implicit val validate: Validator[CreateReportGroup] = new Validator[CreateReportGroup] {
+    def validate(param: CreateReportGroup) = collectViolations(
+      notEmpty("name", param.name),
+      between("name", param.name.length, 1, 255),
+    )
   }
 }

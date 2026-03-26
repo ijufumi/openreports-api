@@ -1,6 +1,19 @@
 import jp.ijufumi.openreports.configs.injectors.Injector
-import jp.ijufumi.openreports.presentation.controller.private_.{DataSourceServlet, MemberServlet, ReportGroupServlet, ReportServlet, TemplateServlet, WorkspaceMembersServlet, WorkspaceServlet}
-import jp.ijufumi.openreports.presentation.controller.public_.{DriverTypeServlet, HealthServlet, LoginServlet, RoleServlet}
+import jp.ijufumi.openreports.presentation.controller.private_.{
+  DataSourceServlet,
+  MemberServlet,
+  ReportGroupServlet,
+  ReportServlet,
+  TemplateServlet,
+  WorkspaceMembersServlet,
+  WorkspaceServlet,
+}
+import jp.ijufumi.openreports.presentation.controller.public_.{
+  DriverTypeServlet,
+  HealthServlet,
+  LoginServlet,
+  RoleServlet,
+}
 import org.scalatra._
 
 import jakarta.servlet.ServletContext

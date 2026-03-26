@@ -44,12 +44,24 @@ object WorkspaceMemberConverter {
   object conversions {
     import scala.language.implicitConversions
 
-    implicit def toWorkspaceMemberEntity(model: WorkspaceMemberModel): WorkspaceMemberEntity = toEntity(model)
-    implicit def fromWorkspaceMemberEntity(entity: WorkspaceMemberEntity): WorkspaceMemberModel = toDomain(entity)
-    implicit def fromWorkspaceMemberEntity2(entity: Option[WorkspaceMemberEntity]): Option[WorkspaceMemberModel] = entity.map(toDomain)
-    implicit def fromWorkspaceMemberEntity3(entity: (WorkspaceMemberEntity, MemberEntity)): WorkspaceMemberModel = toDomain(entity)
-    implicit def fromWorkspaceMemberEntity4(entity: Option[(WorkspaceMemberEntity, MemberEntity)]): Option[WorkspaceMemberModel] = entity.map(toDomain)
-    implicit def fromWorkspaceMemberEntities(entity: Seq[WorkspaceMemberEntity]): Seq[WorkspaceMemberModel] = entity.map(toDomain)
-    implicit def fromWorkspaceMemberEntities2(entity: Seq[(WorkspaceMemberEntity, MemberEntity)]): Seq[WorkspaceMemberModel] = entity.map(toDomain)
+    implicit def toWorkspaceMemberEntity(model: WorkspaceMemberModel): WorkspaceMemberEntity =
+      toEntity(model)
+    implicit def fromWorkspaceMemberEntity(entity: WorkspaceMemberEntity): WorkspaceMemberModel =
+      toDomain(entity)
+    implicit def fromWorkspaceMemberEntity2(
+        entity: Option[WorkspaceMemberEntity],
+    ): Option[WorkspaceMemberModel] = entity.map(toDomain)
+    implicit def fromWorkspaceMemberEntity3(
+        entity: (WorkspaceMemberEntity, MemberEntity),
+    ): WorkspaceMemberModel = toDomain(entity)
+    implicit def fromWorkspaceMemberEntity4(
+        entity: Option[(WorkspaceMemberEntity, MemberEntity)],
+    ): Option[WorkspaceMemberModel] = entity.map(toDomain)
+    implicit def fromWorkspaceMemberEntities(
+        entity: Seq[WorkspaceMemberEntity],
+    ): Seq[WorkspaceMemberModel] = entity.map(toDomain)
+    implicit def fromWorkspaceMemberEntities2(
+        entity: Seq[(WorkspaceMemberEntity, MemberEntity)],
+    ): Seq[WorkspaceMemberModel] = entity.map(toDomain)
   }
 }

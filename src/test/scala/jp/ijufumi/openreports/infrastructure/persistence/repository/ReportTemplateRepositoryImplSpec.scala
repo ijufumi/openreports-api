@@ -9,7 +9,11 @@ import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 import slick.jdbc.JdbcBackend.Database
 
-class ReportTemplateRepositoryImplSpec extends AnyFlatSpec with Matchers with BeforeAndAfterAll with BeforeAndAfterEach {
+class ReportTemplateRepositoryImplSpec
+    extends AnyFlatSpec
+    with Matchers
+    with BeforeAndAfterAll
+    with BeforeAndAfterEach {
 
   var db: Database = _
   val repository = new ReportTemplateRepositoryImpl()
@@ -34,7 +38,7 @@ class ReportTemplateRepositoryImplSpec extends AnyFlatSpec with Matchers with Be
   def createTestTemplate(
       workspaceId: String,
       name: String = "Test Template",
-      storageType: StorageTypes.StorageType = StorageTypes.Local
+      storageType: StorageTypes.StorageType = StorageTypes.Local,
   ): ReportTemplate = {
     ReportTemplate(
       id = IDs.ulid(),
@@ -44,7 +48,7 @@ class ReportTemplateRepositoryImplSpec extends AnyFlatSpec with Matchers with Be
       storageType = storageType,
       fileSize = 1024L,
       createdAt = System.currentTimeMillis(),
-      updatedAt = System.currentTimeMillis()
+      updatedAt = System.currentTimeMillis(),
     )
   }
 
@@ -202,7 +206,7 @@ class ReportTemplateRepositoryImplSpec extends AnyFlatSpec with Matchers with Be
     val updatedTemplate = template.copy(
       name = "Updated Template Name",
       filePath = "/new/path/template.xlsx",
-      fileSize = 2048L
+      fileSize = 2048L,
     )
 
     repository.update(db, updatedTemplate)
@@ -264,7 +268,7 @@ class ReportTemplateRepositoryImplSpec extends AnyFlatSpec with Matchers with Be
     val workspaceId = IDs.ulid()
     val template = createTestTemplate(workspaceId).copy(
       name = "Template's \"Special\" Name!",
-      filePath = "/path/to/file with spaces & special.xlsx"
+      filePath = "/path/to/file with spaces & special.xlsx",
     )
 
     val result = repository.register(db, template)
@@ -298,9 +302,12 @@ class ReportTemplateRepositoryImplSpec extends AnyFlatSpec with Matchers with Be
   it should "handle various file extensions" in {
     val workspaceId = IDs.ulid()
 
-    val xlsTemplate = createTestTemplate(workspaceId, "XLS Template").copy(filePath = "/path/template.xls")
-    val xlsxTemplate = createTestTemplate(workspaceId, "XLSX Template").copy(filePath = "/path/template.xlsx")
-    val pdfTemplate = createTestTemplate(workspaceId, "PDF Template").copy(filePath = "/path/template.pdf")
+    val xlsTemplate =
+      createTestTemplate(workspaceId, "XLS Template").copy(filePath = "/path/template.xls")
+    val xlsxTemplate =
+      createTestTemplate(workspaceId, "XLSX Template").copy(filePath = "/path/template.xlsx")
+    val pdfTemplate =
+      createTestTemplate(workspaceId, "PDF Template").copy(filePath = "/path/template.pdf")
 
     repository.register(db, xlsTemplate)
     repository.register(db, xlsxTemplate)

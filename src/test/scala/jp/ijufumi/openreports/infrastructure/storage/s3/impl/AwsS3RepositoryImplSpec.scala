@@ -56,7 +56,7 @@ class AwsS3RepositoryImplSpec extends AnyFlatSpec with Matchers with MockitoSuga
       awsSecretAccessKey = "test-secret-key",
       awsRegion = "us-east-1",
       createdAt = 0,
-      updatedAt = 0
+      updatedAt = 0,
     )
 
     when(storageRepository.gets(db, workspaceId)).thenReturn(Seq(storage))
@@ -100,7 +100,7 @@ class AwsS3RepositoryImplSpec extends AnyFlatSpec with Matchers with MockitoSuga
       awsSecretAccessKey = "test-secret-key",
       awsRegion = "us-east-1",
       createdAt = 0,
-      updatedAt = 0
+      updatedAt = 0,
     )
 
     when(storageRepository.gets(db, workspaceId)).thenReturn(Seq(storage))
@@ -134,7 +134,7 @@ class AwsS3RepositoryImplSpec extends AnyFlatSpec with Matchers with MockitoSuga
       awsSecretAccessKey = "test-secret-key",
       awsRegion = "us-east-1",
       createdAt = 0,
-      updatedAt = 0
+      updatedAt = 0,
     )
 
     when(storageRepository.gets(db, workspaceId)).thenReturn(Seq(storage))
@@ -166,16 +166,18 @@ class AwsS3RepositoryImplSpec extends AnyFlatSpec with Matchers with MockitoSuga
       awsSecretAccessKey = "test-secret-key",
       awsRegion = "us-east-1",
       createdAt = 0,
-      updatedAt = 0
+      updatedAt = 0,
     )
 
-    val presignedUrl = new java.net.URL("https://test-bucket.s3.amazonaws.com/presigned-file.txt?signature=xxx")
+    val presignedUrl =
+      new java.net.URL("https://test-bucket.s3.amazonaws.com/presigned-file.txt?signature=xxx")
     val presignedGetObjectRequest = mock[PresignedGetObjectRequest]
 
     when(storageRepository.gets(db, workspaceId)).thenReturn(Seq(storage))
     when(s3ClientFactory.createPresignerClient(storage)).thenReturn(s3Presigner)
     when(presignedGetObjectRequest.url()).thenReturn(presignedUrl)
-    when(s3Presigner.presignGetObject(any[GetObjectPresignRequest])).thenReturn(presignedGetObjectRequest)
+    when(s3Presigner.presignGetObject(any[GetObjectPresignRequest]))
+      .thenReturn(presignedGetObjectRequest)
 
     val repository = new AwsS3RepositoryImpl(db, storageRepository, s3ClientFactory)
 

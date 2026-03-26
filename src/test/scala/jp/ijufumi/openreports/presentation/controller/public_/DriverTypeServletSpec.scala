@@ -9,7 +9,7 @@ class DriverTypeServletSpec extends ScalatraFunSuite with MockFactory {
   addServlet(new DriverTypeServlet(driverTypeService), "/*")
 
   test("simple get") {
-    (driverTypeService.getAll _).expects().returns(Seq.empty)
+    (() => driverTypeService.getAll).expects().returns(Seq.empty)
     get("/") {
       status should equal(200)
       body should equal("[]")

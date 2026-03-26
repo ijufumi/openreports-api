@@ -2,7 +2,13 @@ package jp.ijufumi.openreports.presentation.controller.private_
 
 import com.google.inject.Inject
 import jp.ijufumi.openreports.presentation.controller.base.PrivateAPIServletBase
-import jp.ijufumi.openreports.presentation.request.{CreateReportGroup, CreateTemplate, UpdateReport, UpdateReportGroup, UpdateTemplate}
+import jp.ijufumi.openreports.presentation.request.{
+  CreateReportGroup,
+  CreateTemplate,
+  UpdateReport,
+  UpdateReportGroup,
+  UpdateTemplate,
+}
 import jp.ijufumi.openreports.presentation.converter.ReportConverter.conversions._
 import jp.ijufumi.openreports.presentation.converter.{ReportConverter => RC}
 import jp.ijufumi.openreports.usecase.port.input.{LoginUseCase, ReportUseCase}

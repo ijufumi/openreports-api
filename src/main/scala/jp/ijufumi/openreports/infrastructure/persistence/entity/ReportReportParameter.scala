@@ -29,5 +29,5 @@ class ReportReportParameters(tag: Tag)
       createdAt,
       updatedAt,
       versions,
-    ) <> (ReportReportParameter.tupled, ReportReportParameter.unapply)
+    ).mapTo[ReportReportParameter]
 }

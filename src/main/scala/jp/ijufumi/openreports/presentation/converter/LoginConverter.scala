@@ -1,7 +1,7 @@
 package jp.ijufumi.openreports.presentation.converter
 
-import jp.ijufumi.openreports.presentation.request.{Login, GoogleLogin}
-import jp.ijufumi.openreports.usecase.port.input.param.{LoginInput, GoogleLoginInput}
+import jp.ijufumi.openreports.presentation.request.{GoogleLogin, Login}
+import jp.ijufumi.openreports.usecase.port.input.param.{GoogleLoginInput, LoginInput}
 
 object LoginConverter {
   def toLoginInput(request: Login): LoginInput = {

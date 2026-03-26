@@ -11,26 +11,30 @@ class ReportServlet @Inject() (loginService: LoginUseCase, reportService: Report
     extends PrivateAPIServletBase(loginService) {
 
   get("/") {
-    withWorkspace{_workspaceId => {
-      val page = params("page", "0").toInt
-      val limit = params("limit", "10").toInt
-      val templateId = params("templateId", "")
-      ok(reportService.getReports(_workspaceId, page, limit, templateId))
-    }}
+    withWorkspace { _workspaceId =>
+      {
+        val page = params("page", "0").toInt
+        val limit = params("limit", "10").toInt
+        val templateId = params("templateId", "")
+        ok(reportService.getReports(_workspaceId, page, limit, templateId))
+      }
+    }
   }
 
   post("/") {
-    withWorkspace{_workspaceId => {
-      validateBody[CreateReport]{ validatedRequest =>
-        val report =
-          reportService.createReport(_workspaceId, RC.toCreateReportInput(validatedRequest))
-        if (report.isEmpty) {
-          badRequest("something wrong...")
-        } else {
-          ok(report.get)
+    withWorkspace { _workspaceId =>
+      {
+        validateBody[CreateReport] { validatedRequest =>
+          val report =
+            reportService.createReport(_workspaceId, RC.toCreateReportInput(validatedRequest))
+          if (report.isEmpty) {
+            badRequest("something wrong...")
+          } else {
+            ok(report.get)
+          }
         }
       }
-    }}
+    }
   }
 
   get("/:id") {
@@ -88,7 +92,7 @@ class ReportServlet @Inject() (loginService: LoginUseCase, reportService: Report
     withWorkspace { _workspaceId =>
       val id = params("id")
       reportService.deleteReport(_workspaceId, id)
-      ok()
+      ok("")
     }
   }
 }

@@ -1,6 +1,10 @@
 package jp.ijufumi.openreports.presentation.controller.private_
 
-import jp.ijufumi.openreports.domain.models.entity.{Lists, Member => MemberModel, ReportGroup => ReportGroupModel}
+import jp.ijufumi.openreports.domain.models.entity.{
+  Lists,
+  Member => MemberModel,
+  ReportGroup => ReportGroupModel,
+}
 import jp.ijufumi.openreports.usecase.port.input.{LoginUseCase, ReportUseCase}
 import org.scalamock.scalatest.MockFactory
 import org.scalatra.test.scalatest._
@@ -20,7 +24,10 @@ class ReportGroupServletSpec extends ScalatraFunSuite with MockFactory {
     (loginService.verifyWorkspaceId _).expects(member.id, "workspace-id").returns(true)
     (reportService.getGroups _).expects("workspace-id", 0, 10).returns(groups)
 
-    get("/?page=0&limit=10", headers = Map("Authorization" -> "api-token", "X-Workspace-Id" -> "workspace-id")) {
+    get(
+      "/?page=0&limit=10",
+      headers = Map("Authorization" -> "api-token", "X-Workspace-Id" -> "workspace-id"),
+    ) {
       status should equal(200)
       body should include("group-id")
       body should include("Test Group")
@@ -32,15 +39,21 @@ class ReportGroupServletSpec extends ScalatraFunSuite with MockFactory {
 
     (loginService.verifyAuthorizationHeader _).expects("api-token").returns(Some(member))
     (loginService.verifyWorkspaceId _).expects(member.id, "workspace-id").returns(true)
-    (reportService.createGroup _).expects(where { (workspaceId: String, createGroup: Any) =>
-      workspaceId == "workspace-id"
-    }).returns(Some(reportGroup))
+    (reportService.createGroup _)
+      .expects(where { (workspaceId: String, createGroup: Any) =>
+        workspaceId == "workspace-id"
+      })
+      .returns(Some(reportGroup))
 
-    post("/", body = requestBody.getBytes, headers = Map(
-      "Authorization" -> "api-token",
-      "X-Workspace-Id" -> "workspace-id",
-      "Content-Type" -> "application/json"
-    )) {
+    post(
+      "/",
+      body = requestBody.getBytes,
+      headers = Map(
+        "Authorization" -> "api-token",
+        "X-Workspace-Id" -> "workspace-id",
+        "Content-Type" -> "application/json",
+      ),
+    ) {
       status should equal(200)
       body should include("group-id")
     }
@@ -51,15 +64,21 @@ class ReportGroupServletSpec extends ScalatraFunSuite with MockFactory {
 
     (loginService.verifyAuthorizationHeader _).expects("api-token").returns(Some(member))
     (loginService.verifyWorkspaceId _).expects(member.id, "workspace-id").returns(true)
-    (reportService.updateGroup _).expects(where { (workspaceId: String, id: String, updateGroup: Any) =>
-      workspaceId == "workspace-id" && id == "group-id"
-    }).returns(Some(reportGroup))
+    (reportService.updateGroup _)
+      .expects(where { (workspaceId: String, id: String, updateGroup: Any) =>
+        workspaceId == "workspace-id" && id == "group-id"
+      })
+      .returns(Some(reportGroup))
 
-    put("/group-id", body = requestBody.getBytes, headers = Map(
-      "Authorization" -> "api-token",
-      "X-Workspace-Id" -> "workspace-id",
-      "Content-Type" -> "application/json"
-    )) {
+    put(
+      "/group-id",
+      body = requestBody.getBytes,
+      headers = Map(
+        "Authorization" -> "api-token",
+        "X-Workspace-Id" -> "workspace-id",
+        "Content-Type" -> "application/json",
+      ),
+    ) {
       status should equal(200)
       body should include("group-id")
     }
@@ -72,11 +91,15 @@ class ReportGroupServletSpec extends ScalatraFunSuite with MockFactory {
     (loginService.verifyWorkspaceId _).expects(member.id, "workspace-id").returns(true)
     (reportService.updateGroup _).expects(*, *, *).returns(None)
 
-    put("/group-id", body = requestBody.getBytes, headers = Map(
-      "Authorization" -> "api-token",
-      "X-Workspace-Id" -> "workspace-id",
-      "Content-Type" -> "application/json"
-    )) {
+    put(
+      "/group-id",
+      body = requestBody.getBytes,
+      headers = Map(
+        "Authorization" -> "api-token",
+        "X-Workspace-Id" -> "workspace-id",
+        "Content-Type" -> "application/json",
+      ),
+    ) {
       status should equal(400)
       body should include("something wrong")
     }
@@ -87,7 +110,10 @@ class ReportGroupServletSpec extends ScalatraFunSuite with MockFactory {
     (loginService.verifyWorkspaceId _).expects(member.id, "workspace-id").returns(true)
     (reportService.deleteGroup _).expects("workspace-id", "group-id").returns(())
 
-    delete("/group-id", headers = Map("Authorization" -> "api-token", "X-Workspace-Id" -> "workspace-id")) {
+    delete(
+      "/group-id",
+      headers = Map("Authorization" -> "api-token", "X-Workspace-Id" -> "workspace-id"),
+    ) {
       status should equal(200)
     }
   }

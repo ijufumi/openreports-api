@@ -8,7 +8,11 @@ import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 import slick.jdbc.JdbcBackend.Database
 
-class WorkspaceMemberRepositoryImplSpec extends AnyFlatSpec with Matchers with BeforeAndAfterAll with BeforeAndAfterEach {
+class WorkspaceMemberRepositoryImplSpec
+    extends AnyFlatSpec
+    with Matchers
+    with BeforeAndAfterAll
+    with BeforeAndAfterEach {
 
   var db: Database = _
   val repository = new WorkspaceMemberRepositoryImpl()
@@ -39,7 +43,7 @@ class WorkspaceMemberRepositoryImplSpec extends AnyFlatSpec with Matchers with B
       googleId = Some(IDs.ulid()),
       password = "hashedpassword",
       createdAt = System.currentTimeMillis(),
-      updatedAt = System.currentTimeMillis()
+      updatedAt = System.currentTimeMillis(),
     )
     memberRepository.register(db, member)
     member
@@ -49,14 +53,14 @@ class WorkspaceMemberRepositoryImplSpec extends AnyFlatSpec with Matchers with B
   def createTestWorkspaceMember(
       workspaceId: String,
       memberId: String,
-      roleId: String = "role-id"
+      roleId: String = "role-id",
   ): WorkspaceMember = {
     WorkspaceMember(
       workspaceId = workspaceId,
       memberId = memberId,
       roleId = roleId,
       createdAt = System.currentTimeMillis(),
-      updatedAt = System.currentTimeMillis()
+      updatedAt = System.currentTimeMillis(),
     )
   }
 

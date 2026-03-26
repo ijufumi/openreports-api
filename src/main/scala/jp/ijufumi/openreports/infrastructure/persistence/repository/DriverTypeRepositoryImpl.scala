@@ -10,6 +10,8 @@ import scala.concurrent.Await
 
 class DriverTypeRepositoryImpl extends DriverTypeRepository {
   override def getAll(db: Database): Seq[DriverType] = {
-    Await.result(db.run(driverTypeQuery.result), queryTimeout).map(v => DriverTypeConverter.toDomain(v))
+    Await
+      .result(db.run(driverTypeQuery.result), queryTimeout)
+      .map(v => DriverTypeConverter.toDomain(v))
   }
 }

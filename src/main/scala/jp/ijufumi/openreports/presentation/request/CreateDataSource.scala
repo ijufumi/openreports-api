@@ -1,7 +1,6 @@
 package jp.ijufumi.openreports.presentation.request
 
-import com.wix.accord.Validator
-import com.wix.accord.dsl._
+import jp.ijufumi.openreports.presentation.validation.Validator
 
 case class CreateDataSource(
     name: String,
@@ -12,12 +11,14 @@ case class CreateDataSource(
 )
 
 object CreateDataSource {
-  implicit val validate: Validator[CreateDataSource] = validator[CreateDataSource] { param =>
-    param.name is notEmpty
-    param.name.length is between(1, 255)
-    param.url is notEmpty
-    param.username is notEmpty
-    param.password is notEmpty
-    param.driverTypeId is notEmpty
+  implicit val validate: Validator[CreateDataSource] = new Validator[CreateDataSource] {
+    def validate(param: CreateDataSource) = collectViolations(
+      notEmpty("name", param.name),
+      between("name", param.name.length, 1, 255),
+      notEmpty("url", param.url),
+      notEmpty("username", param.username),
+      notEmpty("password", param.password),
+      notEmpty("driverTypeId", param.driverTypeId),
+    )
   }
 }

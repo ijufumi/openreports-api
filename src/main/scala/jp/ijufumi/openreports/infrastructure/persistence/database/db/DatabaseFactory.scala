@@ -6,26 +6,22 @@ import slick.basic.DatabaseConfig
 import slick.jdbc.JdbcBackend.Database
 import slick.jdbc.JdbcProfile
 
-import scala.jdk.CollectionConverters.mapAsJavaMap
+import scala.jdk.CollectionConverters._
 
 object DatabaseFactory {
   private val config = ConfigFactory.parseMap(
-    mapAsJavaMap(
-      Map(
-        "postgres" -> mapAsJavaMap(
-          Map(
-            "url" -> f"jdbc:postgresql://$DB_HOST%s:$DB_PORT%s/$DB_NAME%s",
-            "driver" -> "org.postgresql.Driver",
-            "username" -> DB_USER,
-            "password" -> DB_PASSWORD,
-            "connectionPool" -> "HikariCP",
-            "numThreads" -> 5,
-            "poolSize" -> 20,
-            "keepAliveConnection" -> true,
-          ),
-        ),
-      ),
-    ),
+    Map(
+      "postgres" -> Map(
+        "url" -> f"jdbc:postgresql://$DB_HOST%s:$DB_PORT%s/$DB_NAME%s",
+        "driver" -> "org.postgresql.Driver",
+        "username" -> DB_USER,
+        "password" -> DB_PASSWORD,
+        "connectionPool" -> "HikariCP",
+        "numThreads" -> 5,
+        "poolSize" -> 20,
+        "keepAliveConnection" -> true,
+      ).asJava,
+    ).asJava,
   )
 
   def createDatabase(name: String = "postgres"): Database = {

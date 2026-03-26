@@ -20,5 +20,5 @@ class Functions(tag: Tag) extends EntityBase[Function](tag, "functions") {
   def action = column[ActionTypes.ActionType]("action")
 
   override def * : ProvenShape[Function] =
-    (id, resource, action, createdAt, updatedAt, versions) <> (Function.tupled, Function.unapply)
+    (id, resource, action, createdAt, updatedAt, versions).mapTo[Function]
 }

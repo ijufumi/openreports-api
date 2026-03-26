@@ -29,9 +29,16 @@ object RoleFunctionConverter {
   object conversions {
     import scala.language.implicitConversions
 
-    implicit def toRoleFunctionEntity(model: RoleFunctionModel): RoleFunctionEntity = toEntity(model)
-    implicit def fromRoleFunctionEntity(entity: RoleFunctionEntity): RoleFunctionModel = toDomain(entity)
-    implicit def fromRoleFunctionEntity2(entity: Option[RoleFunctionEntity]): Option[RoleFunctionModel] = entity.map(toDomain)
-    implicit def fromRoleFunctionEntities(entity: Seq[RoleFunctionEntity]): Seq[RoleFunctionModel] = entity.map(toDomain)
+    implicit def toRoleFunctionEntity(model: RoleFunctionModel): RoleFunctionEntity = toEntity(
+      model,
+    )
+    implicit def fromRoleFunctionEntity(entity: RoleFunctionEntity): RoleFunctionModel = toDomain(
+      entity,
+    )
+    implicit def fromRoleFunctionEntity2(
+        entity: Option[RoleFunctionEntity],
+    ): Option[RoleFunctionModel] = entity.map(toDomain)
+    implicit def fromRoleFunctionEntities(entity: Seq[RoleFunctionEntity]): Seq[RoleFunctionModel] =
+      entity.map(toDomain)
   }
 }

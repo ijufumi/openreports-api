@@ -1,16 +1,16 @@
 package jp.ijufumi.openreports.presentation.converter
 
 import jp.ijufumi.openreports.domain.models.entity.{
-  Member => MemberModel,
-  Workspace => WorkspaceModel,
   Function => FunctionModel,
+  Member => MemberModel,
   Permission => PermissionModel,
+  Workspace => WorkspaceModel,
 }
 import jp.ijufumi.openreports.presentation.response.{
-  Member => MemberResponse,
-  Workspace => WorkspaceResponse,
   Function => FunctionResponse,
+  Member => MemberResponse,
   Permission => PermissionResponse,
+  Workspace => WorkspaceResponse,
 }
 
 object MemberConverter {
@@ -34,7 +34,9 @@ object MemberConverter {
     import scala.language.implicitConversions
 
     implicit def toMemberResponse(model: MemberModel): MemberResponse = toResponse(model)
-    implicit def toMemberResponse2(model: Option[MemberModel]): Option[MemberResponse] = model.map(toResponse)
-    implicit def toMemberResponses(model: Seq[MemberModel]): Seq[MemberResponse] = model.map(toResponse)
+    implicit def toMemberResponse2(model: Option[MemberModel]): Option[MemberResponse] =
+      model.map(toResponse)
+    implicit def toMemberResponses(model: Seq[MemberModel]): Seq[MemberResponse] =
+      model.map(toResponse)
   }
 }

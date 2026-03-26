@@ -4,10 +4,7 @@ import jp.ijufumi.openreports.usecase.port.input.{LoginUseCase, WorkspaceUseCase
 import com.google.inject.{Inject, Singleton}
 import jp.ijufumi.openreports.domain.port.{AppConfigPort, CacheKeys, CachePort, GoogleAuthPort}
 import jp.ijufumi.openreports.utils.{Hash, IDs, Logging, Strings}
-import jp.ijufumi.openreports.domain.repository.{
-  MemberRepository,
-  WorkspaceRepository,
-}
+import jp.ijufumi.openreports.domain.repository.{MemberRepository, WorkspaceRepository}
 import jp.ijufumi.openreports.usecase.port.input.param.{GoogleLoginInput, LoginInput}
 import jp.ijufumi.openreports.domain.models.entity.{Member => MemberModel}
 import slick.jdbc.PostgresProfile.api._

@@ -1,6 +1,6 @@
 package jp.ijufumi.openreports.usecase.port.input
 
-import jp.ijufumi.openreports.usecase.port.input.param.{LoginInput, GoogleLoginInput}
+import jp.ijufumi.openreports.usecase.port.input.param.{GoogleLoginInput, LoginInput}
 import jp.ijufumi.openreports.domain.models.entity.{Member => MemberModel}
 
 trait LoginUseCase {

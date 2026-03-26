@@ -12,6 +12,7 @@ object FunctionConverter {
     import scala.language.implicitConversions
 
     implicit def toFunctionResponse(model: FunctionModel): FunctionResponse = toResponse(model)
-    implicit def toFunctionResponses(model: Seq[FunctionModel]): Seq[FunctionResponse] = model.map(toResponse)
+    implicit def toFunctionResponses(model: Seq[FunctionModel]): Seq[FunctionResponse] =
+      model.map(toResponse)
   }
 }

@@ -27,5 +27,5 @@ class Roles(tag: Tag)
       createdAt,
       updatedAt,
       versions,
-    ) <> (Role.tupled, Role.unapply)
+    ).mapTo[Role]
 }

@@ -21,7 +21,10 @@ class MemberServletSpec extends ScalatraFunSuite with MockFactory {
     (loginService.verifyAuthorizationHeader _).expects("api-token").returns(Some(member))
     (loginService.verifyWorkspaceId _).expects(member.id, "workspace-id").returns(true)
 
-    get("/status", headers = Map("Authorization" -> "api-token", "X-Workspace-Id" -> "workspace-id")) {
+    get(
+      "/status",
+      headers = Map("Authorization" -> "api-token", "X-Workspace-Id" -> "workspace-id"),
+    ) {
       status should equal(200)
       body should include("member-id")
       body should include("test@example.com")
@@ -39,7 +42,10 @@ class MemberServletSpec extends ScalatraFunSuite with MockFactory {
     (loginService.verifyWorkspaceId _).expects(member.id, "workspace-id").returns(true)
     (memberService.permissions _).expects(member.id, "workspace-id").returns(permission)
 
-    get("/permissions", headers = Map("Authorization" -> "api-token", "X-Workspace-Id" -> "workspace-id")) {
+    get(
+      "/permissions",
+      headers = Map("Authorization" -> "api-token", "X-Workspace-Id" -> "workspace-id"),
+    ) {
       status should equal(200)
       body should include("workspace-id")
       body should include("function-id")
@@ -52,25 +58,35 @@ class MemberServletSpec extends ScalatraFunSuite with MockFactory {
     (loginService.verifyWorkspaceId _).expects(member.id, "workspace-id").returns(true)
     (loginService.logout _).expects("api-token").returns(())
 
-    get("/logout", headers = Map("Authorization" -> "api-token", "X-Workspace-Id" -> "workspace-id")) {
+    get(
+      "/logout",
+      headers = Map("Authorization" -> "api-token", "X-Workspace-Id" -> "workspace-id"),
+    ) {
       status should equal(200)
     }
   }
 
   test("PUT /update should update member information") {
     val member = MemberModel("member-id", None, "test@example.com", "", "Test User", 0, 0)
-    val updatedMember = Some(MemberModel("member-id", None, "test@example.com", "", "Updated Name", 0, 0))
+    val updatedMember =
+      Some(MemberModel("member-id", None, "test@example.com", "", "Updated Name", 0, 0))
     val requestBody = """{"name":"Updated Name","password":"newpassword"}"""
 
     (loginService.verifyAuthorizationHeader _).expects("api-token").returns(Some(member))
     (loginService.verifyWorkspaceId _).expects(member.id, "workspace-id").returns(true)
-    (memberService.update _).expects(member.id, "Updated Name", "newpassword").returns(updatedMember)
+    (memberService.update _)
+      .expects(member.id, "Updated Name", "newpassword")
+      .returns(updatedMember)
 
-    put("/update", body = requestBody.getBytes, headers = Map(
-      "Authorization" -> "api-token",
-      "X-Workspace-Id" -> "workspace-id",
-      "Content-Type" -> "application/json"
-    )) {
+    put(
+      "/update",
+      body = requestBody.getBytes,
+      headers = Map(
+        "Authorization" -> "api-token",
+        "X-Workspace-Id" -> "workspace-id",
+        "Content-Type" -> "application/json",
+      ),
+    ) {
       status should equal(200)
       body should include("Updated Name")
     }
@@ -109,10 +125,14 @@ class MemberServletSpec extends ScalatraFunSuite with MockFactory {
 
     (loginService.verifyAuthorizationHeader _).expects("api-token").returns(Some(member))
 
-    put("/update", body = requestBody.getBytes, headers = Map(
-      "Authorization" -> "api-token",
-      "Content-Type" -> "application/json"
-    )) {
+    put(
+      "/update",
+      body = requestBody.getBytes,
+      headers = Map(
+        "Authorization" -> "api-token",
+        "Content-Type" -> "application/json",
+      ),
+    ) {
       status should equal(400)
     }
   }

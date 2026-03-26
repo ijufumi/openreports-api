@@ -15,7 +15,7 @@ class ReportSpec extends AnyFlatSpec with Matchers {
       dataSourceId = Some("datasource-id"),
       workspaceId = "workspace-id",
       createdAt = System.currentTimeMillis(),
-      updatedAt = System.currentTimeMillis()
+      updatedAt = System.currentTimeMillis(),
     )
 
     report should not be null
@@ -30,7 +30,7 @@ class ReportSpec extends AnyFlatSpec with Matchers {
       dataSourceId = None,
       workspaceId = "workspace-id",
       createdAt = 1000L,
-      updatedAt = 1000L
+      updatedAt = 1000L,
     )
 
     val report2 = report1.copy(name = "Updated Name")
@@ -48,7 +48,7 @@ class ReportSpec extends AnyFlatSpec with Matchers {
       dataSourceId = None,
       workspaceId = "workspace-id",
       createdAt = System.currentTimeMillis(),
-      updatedAt = System.currentTimeMillis()
+      updatedAt = System.currentTimeMillis(),
     )
 
     report.dataSourceId should be(None)
@@ -62,7 +62,7 @@ class ReportSpec extends AnyFlatSpec with Matchers {
       dataSourceId = Some("datasource-id"),
       workspaceId = "workspace-id",
       createdAt = System.currentTimeMillis(),
-      updatedAt = System.currentTimeMillis()
+      updatedAt = System.currentTimeMillis(),
     )
 
     report.dataSourceId should be(defined)
@@ -78,7 +78,7 @@ class ReportSpec extends AnyFlatSpec with Matchers {
       storageType = StorageTypes.Local,
       fileSize = 1024L,
       createdAt = System.currentTimeMillis(),
-      updatedAt = System.currentTimeMillis()
+      updatedAt = System.currentTimeMillis(),
     )
 
     val report = Report(
@@ -89,7 +89,7 @@ class ReportSpec extends AnyFlatSpec with Matchers {
       workspaceId = "workspace-id",
       createdAt = System.currentTimeMillis(),
       updatedAt = System.currentTimeMillis(),
-      reportTemplate = Some(template)
+      reportTemplate = Some(template),
     )
 
     report.reportTemplate should be(defined)
@@ -105,7 +105,7 @@ class ReportSpec extends AnyFlatSpec with Matchers {
       dataSourceId = None,
       workspaceId = "workspace-id",
       createdAt = System.currentTimeMillis(),
-      updatedAt = System.currentTimeMillis()
+      updatedAt = System.currentTimeMillis(),
     )
 
     report.name should equal(specialName)
@@ -120,7 +120,7 @@ class ReportSpec extends AnyFlatSpec with Matchers {
       dataSourceId = None,
       workspaceId = "workspace-id",
       createdAt = System.currentTimeMillis(),
-      updatedAt = System.currentTimeMillis()
+      updatedAt = System.currentTimeMillis(),
     )
 
     report.name should equal(unicodeName)
@@ -134,7 +134,7 @@ class ReportSpec extends AnyFlatSpec with Matchers {
       dataSourceId = None,
       workspaceId = "workspace-id",
       createdAt = System.currentTimeMillis(),
-      updatedAt = System.currentTimeMillis()
+      updatedAt = System.currentTimeMillis(),
     )
 
     report.name should equal("")
@@ -149,7 +149,7 @@ class ReportSpec extends AnyFlatSpec with Matchers {
       dataSourceId = None,
       workspaceId = "workspace-id",
       createdAt = System.currentTimeMillis(),
-      updatedAt = System.currentTimeMillis()
+      updatedAt = System.currentTimeMillis(),
     )
 
     report.name should have length 500
@@ -166,7 +166,7 @@ class ReportSpec extends AnyFlatSpec with Matchers {
       dataSourceId = None,
       workspaceId = "workspace-id",
       createdAt = createdAt,
-      updatedAt = updatedAt
+      updatedAt = updatedAt,
     )
 
     report.createdAt should equal(createdAt)
@@ -182,14 +182,14 @@ class ReportSpec extends AnyFlatSpec with Matchers {
       dataSourceId = Some("datasource-1"),
       workspaceId = "workspace-id",
       createdAt = 1000L,
-      updatedAt = 1000L
+      updatedAt = 1000L,
     )
 
     val modified = original.copy(
       name = "Modified Name",
       templateId = "template-id-2",
       dataSourceId = Some("datasource-2"),
-      updatedAt = 2000L
+      updatedAt = 2000L,
     )
 
     modified.id should equal(original.id)
@@ -208,7 +208,7 @@ class ReportSpec extends AnyFlatSpec with Matchers {
       dataSourceId = None,
       workspaceId = "workspace",
       createdAt = 1000L,
-      updatedAt = 1000L
+      updatedAt = 1000L,
     )
 
     val report2 = Report(
@@ -218,7 +218,7 @@ class ReportSpec extends AnyFlatSpec with Matchers {
       dataSourceId = None,
       workspaceId = "workspace",
       createdAt = 1000L,
-      updatedAt = 1000L
+      updatedAt = 1000L,
     )
 
     report1 should equal(report2)
@@ -232,7 +232,7 @@ class ReportSpec extends AnyFlatSpec with Matchers {
       dataSourceId = None,
       workspaceId = "workspace",
       createdAt = 1000L,
-      updatedAt = 1000L
+      updatedAt = 1000L,
     )
 
     val report2 = Report(
@@ -242,7 +242,7 @@ class ReportSpec extends AnyFlatSpec with Matchers {
       dataSourceId = None,
       workspaceId = "workspace",
       createdAt = 1000L,
-      updatedAt = 1000L
+      updatedAt = 1000L,
     )
 
     report1 should not equal report2

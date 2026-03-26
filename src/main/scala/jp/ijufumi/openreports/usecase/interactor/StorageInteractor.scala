@@ -29,10 +29,10 @@ class StorageInteractor @Inject() (
       storageType: StorageTypes.StorageType,
   ): Path = {
     storageType match {
-      case StorageTypes.Local => localFileRepository.get(workspaceId, key)
+      case StorageTypes.Local     => localFileRepository.get(workspaceId, key)
       case StorageTypes.LocalSeed => localSeedFileRepository.get(workspaceId, key)
-      case StorageTypes.S3    => awsS3Repository.get(workspaceId, key)
-      case _                  => null
+      case StorageTypes.S3        => awsS3Repository.get(workspaceId, key)
+      case _                      => null
     }
   }
 
@@ -43,9 +43,9 @@ class StorageInteractor @Inject() (
       file: Path,
   ): Unit = {
     storageType match {
-      case StorageTypes.Local => localFileRepository.create(workspaceId, key, file)
+      case StorageTypes.Local     => localFileRepository.create(workspaceId, key, file)
       case StorageTypes.LocalSeed => localSeedFileRepository.create(workspaceId, key, file)
-      case StorageTypes.S3    => awsS3Repository.create(workspaceId, key, file)
+      case StorageTypes.S3        => awsS3Repository.create(workspaceId, key, file)
     }
   }
 

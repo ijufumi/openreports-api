@@ -9,7 +9,11 @@ import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 import slick.jdbc.JdbcBackend.Database
 
-class DataSourceRepositoryImplSpec extends AnyFlatSpec with Matchers with BeforeAndAfterAll with BeforeAndAfterEach {
+class DataSourceRepositoryImplSpec
+    extends AnyFlatSpec
+    with Matchers
+    with BeforeAndAfterAll
+    with BeforeAndAfterEach {
 
   var db: Database = _
   val repository = new DataSourceRepositoryImpl()
@@ -38,7 +42,8 @@ class DataSourceRepositoryImplSpec extends AnyFlatSpec with Matchers with Before
     import scala.concurrent.duration._
     import slick.jdbc.PostgresProfile.api._
 
-    val jdbcDriverClass = if (name.contains("MySQL")) JdbcDriverClasses.MySQL else JdbcDriverClasses.Postgres
+    val jdbcDriverClass =
+      if (name.contains("MySQL")) JdbcDriverClasses.MySQL else JdbcDriverClasses.Postgres
     val entity = DriverTypeEntity(id, name, jdbcDriverClass)
     Await.result(db.run(driverTypeQuery += entity), 10.seconds)
 
@@ -49,7 +54,7 @@ class DataSourceRepositoryImplSpec extends AnyFlatSpec with Matchers with Before
   def createTestDataSource(
       workspaceId: String,
       driverTypeId: String,
-      name: String = "Test DataSource"
+      name: String = "Test DataSource",
   ): DataSource = {
     DataSource(
       id = IDs.ulid(),
@@ -61,7 +66,7 @@ class DataSourceRepositoryImplSpec extends AnyFlatSpec with Matchers with Before
       maxPoolSize = 10,
       workspaceId = workspaceId,
       createdAt = System.currentTimeMillis(),
-      updatedAt = System.currentTimeMillis()
+      updatedAt = System.currentTimeMillis(),
     )
   }
 
@@ -223,7 +228,7 @@ class DataSourceRepositoryImplSpec extends AnyFlatSpec with Matchers with Before
 
     val updatedDataSource = dataSource.copy(
       name = "Updated Name",
-      url = "jdbc:postgresql://newhost:5432/newdb"
+      url = "jdbc:postgresql://newhost:5432/newdb",
     )
 
     repository.update(db, updatedDataSource)
@@ -273,7 +278,7 @@ class DataSourceRepositoryImplSpec extends AnyFlatSpec with Matchers with Before
     val dataSource = createTestDataSource(workspaceId, driverType.id).copy(
       name = "Test's \"DataSource\" with special chars!",
       username = "user@domain.com",
-      password = "p@$$w0rd!#$%"
+      password = "p@$$w0rd!#$%",
     )
 
     val result = repository.register(db, dataSource)
@@ -301,7 +306,7 @@ class DataSourceRepositoryImplSpec extends AnyFlatSpec with Matchers with Before
     val driverType = createTestDriverType()
     val dataSource = createTestDataSource(workspaceId, driverType.id).copy(
       username = "",
-      password = ""
+      password = "",
     )
 
     val result = repository.register(db, dataSource)

@@ -1,14 +1,11 @@
 package jp.ijufumi.openreports.infrastructure.cache
 
 import jp.ijufumi.openreports.configs.Config
-import scalacache._
-import scalacache.modes.try_._
-import scalacache.redis._
-import scalacache.serialization.binary._
+import redis.clients.jedis.{JedisPool, JedisPoolConfig}
 
-import scala.concurrent.duration._
-
-class CacheWrapper(implicit val redisCache: Cache[String] = RedisCache(Config.REDIS_HOST, Config.REDIS_PORT)) {
+class CacheWrapper(
+    pool: JedisPool = new JedisPool(new JedisPoolConfig(), Config.REDIS_HOST, Config.REDIS_PORT),
+) {
   private val defaultTtl = Config.CACHE_TTL_SEC
   private val lock = new java.util.concurrent.locks.ReentrantReadWriteLock()
 
@@ -17,7 +14,13 @@ class CacheWrapper(implicit val redisCache: Cache[String] = RedisCache(Config.RE
   ): Unit = {
     try {
       lock.writeLock().lock()
-      redisCache.put(cacheKey.key(args: _*))(value, ttl = Some(Duration(ttl, SECONDS)))
+      val jedis = pool.getResource
+      try {
+        val key = cacheKey.key(args*)
+        jedis.setex(key, ttl, value)
+      } finally {
+        jedis.close()
+      }
     } finally {
       lock.writeLock().unlock()
     }
@@ -26,11 +29,13 @@ class CacheWrapper(implicit val redisCache: Cache[String] = RedisCache(Config.RE
   def get(cacheKey: CacheKey, args: String*): Option[String] = {
     try {
       lock.readLock().lock()
-      val value = redisCache.get(cacheKey.key(args: _*))
-      if (value.isFailure || value.get.isEmpty) {
-        return None
+      val jedis = pool.getResource
+      try {
+        val value = jedis.get(cacheKey.key(args*))
+        Option(value)
+      } finally {
+        jedis.close()
       }
-      value.get
     } finally {
       lock.readLock().unlock()
     }
@@ -39,7 +44,12 @@ class CacheWrapper(implicit val redisCache: Cache[String] = RedisCache(Config.RE
   def remove(cacheKey: CacheKey, args: String*): Unit = {
     try {
       lock.writeLock().lock()
-      redisCache.remove(cacheKey.key(args: _*))
+      val jedis = pool.getResource
+      try {
+        jedis.del(cacheKey.key(args*))
+      } finally {
+        jedis.close()
+      }
     } finally {
       lock.writeLock().unlock()
     }
@@ -48,7 +58,12 @@ class CacheWrapper(implicit val redisCache: Cache[String] = RedisCache(Config.RE
   def removeAll(): Unit = {
     try {
       lock.writeLock().lock()
-      redisCache.removeAll()
+      val jedis = pool.getResource
+      try {
+        jedis.flushDB()
+      } finally {
+        jedis.close()
+      }
     } finally {
       lock.writeLock().unlock()
     }

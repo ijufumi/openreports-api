@@ -1,7 +1,6 @@
 package jp.ijufumi.openreports.presentation.request
 
-import com.wix.accord._
-import com.wix.accord.dsl._
+import jp.ijufumi.openreports.presentation.validation.Validator
 
 case class CreateReport(
     name: String,
@@ -11,10 +10,11 @@ case class CreateReport(
 )
 
 object CreateReport {
-  implicit val validate: Validator[CreateReport] = validator[CreateReport] { param =>
-    param.name is notEmpty
-    param.name.length is between(1, 20)
-
-    param.templateId is notEmpty
+  implicit val validate: Validator[CreateReport] = new Validator[CreateReport] {
+    def validate(param: CreateReport) = collectViolations(
+      notEmpty("name", param.name),
+      between("name", param.name.length, 1, 20),
+      notEmpty("templateId", param.templateId),
+    )
   }
 }

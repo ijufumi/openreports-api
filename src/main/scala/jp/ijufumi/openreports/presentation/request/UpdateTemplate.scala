@@ -1,13 +1,14 @@
 package jp.ijufumi.openreports.presentation.request
 
-import com.wix.accord.Validator
-import com.wix.accord.dsl._
+import jp.ijufumi.openreports.presentation.validation.Validator
 
 case class UpdateTemplate(name: String)
 
 object UpdateTemplate {
-  implicit val validate: Validator[UpdateTemplate] = validator[UpdateTemplate] { param =>
-    param.name is notEmpty
-    param.name.length is between(1, 255)
+  implicit val validate: Validator[UpdateTemplate] = new Validator[UpdateTemplate] {
+    def validate(param: UpdateTemplate) = collectViolations(
+      notEmpty("name", param.name),
+      between("name", param.name.length, 1, 255),
+    )
   }
 }

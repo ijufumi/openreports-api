@@ -59,11 +59,20 @@ object DataSourceConverter {
     import scala.language.implicitConversions
 
     implicit def fromDataSourceEntity(entity: DataSourceEntity): DataSourceModel = toDomain(entity)
-    implicit def fromDataSourceEntity2(entity: (DataSourceEntity, DriverTypeEntity)): DataSourceModel = toDomain(entity)
-    implicit def fromDataSourceEntityOpt(entity: Option[DataSourceEntity]): Option[DataSourceModel] = entity.map(toDomain)
-    implicit def fromDataSourceEntity2Opt(entity: Option[(DataSourceEntity, DriverTypeEntity)]): Option[DataSourceModel] = entity.map(toDomain)
-    implicit def fromDataSourceEntities(entity: Seq[DataSourceEntity]): Seq[DataSourceModel] = entity.map(toDomain)
-    implicit def fromDataSourceEntities2(entity: Seq[(DataSourceEntity, DriverTypeEntity)]): Seq[DataSourceModel] = entity.map(toDomain)
+    implicit def fromDataSourceEntity2(
+        entity: (DataSourceEntity, DriverTypeEntity),
+    ): DataSourceModel = toDomain(entity)
+    implicit def fromDataSourceEntityOpt(
+        entity: Option[DataSourceEntity],
+    ): Option[DataSourceModel] = entity.map(toDomain)
+    implicit def fromDataSourceEntity2Opt(
+        entity: Option[(DataSourceEntity, DriverTypeEntity)],
+    ): Option[DataSourceModel] = entity.map(toDomain)
+    implicit def fromDataSourceEntities(entity: Seq[DataSourceEntity]): Seq[DataSourceModel] =
+      entity.map(toDomain)
+    implicit def fromDataSourceEntities2(
+        entity: Seq[(DataSourceEntity, DriverTypeEntity)],
+    ): Seq[DataSourceModel] = entity.map(toDomain)
     implicit def toDataSourceEntity(model: DataSourceModel): DataSourceEntity = toEntity(model)
   }
 }

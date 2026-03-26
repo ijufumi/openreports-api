@@ -16,6 +16,7 @@ object DriverTypeConverter {
     import scala.language.implicitConversions
 
     implicit def fromDriverTypeEntity(entity: DriverTypeEntity): DriverTypeModel = toDomain(entity)
-    implicit def fromDriverTypeEntities(entity: Seq[DriverTypeEntity]): Seq[DriverTypeModel] = entity.map(toDomain)
+    implicit def fromDriverTypeEntities(entity: Seq[DriverTypeEntity]): Seq[DriverTypeModel] =
+      entity.map(toDomain)
   }
 }

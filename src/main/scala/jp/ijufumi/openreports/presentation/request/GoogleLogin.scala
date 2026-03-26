@@ -1,12 +1,13 @@
 package jp.ijufumi.openreports.presentation.request
 
-import com.wix.accord.Validator
-import com.wix.accord.dsl._
+import jp.ijufumi.openreports.presentation.validation.Validator
 
 case class GoogleLogin(code: String)
 
 object GoogleLogin {
-  implicit val validate: Validator[GoogleLogin] = validator[GoogleLogin] { param =>
-    param.code is notEmpty
+  implicit val validate: Validator[GoogleLogin] = new Validator[GoogleLogin] {
+    def validate(param: GoogleLogin) = collectViolations(
+      notEmpty("code", param.code),
+    )
   }
 }

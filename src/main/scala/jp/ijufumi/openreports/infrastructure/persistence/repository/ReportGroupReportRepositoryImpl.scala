@@ -37,7 +37,12 @@ class ReportGroupReportRepositoryImpl extends ReportGroupReportRepository {
   override def getByIds(db: Database, ids: Seq[String]): Seq[ReportGroupReport] = {
     val getById = reportGroupReportQuery
       .filter(_.id.inSet(ids))
-    Await.result(db.run(getById.result), queryTimeout).map(r => jp.ijufumi.openreports.infrastructure.persistence.converter.ReportGroupReportConverter.toDomain(r))
+    Await
+      .result(db.run(getById.result), queryTimeout)
+      .map(r =>
+        jp.ijufumi.openreports.infrastructure.persistence.converter.ReportGroupReportConverter
+          .toDomain(r),
+      )
   }
 
   override def register(db: Database, model: ReportGroupReport): Option[ReportGroupReport] = {
@@ -51,7 +56,8 @@ class ReportGroupReportRepositoryImpl extends ReportGroupReportRepository {
       db: Database,
       model: Seq[ReportGroupReport],
   ): Seq[ReportGroupReport] = {
-    val entities: Seq[jp.ijufumi.openreports.infrastructure.persistence.entity.ReportGroupReport] = model
+    val entities: Seq[jp.ijufumi.openreports.infrastructure.persistence.entity.ReportGroupReport] =
+      model
     val register = (reportGroupReportQuery ++= entities).withPinnedSession
     Await.result(db.run(register), queryTimeout)
     val ids = model.map(m => m.id)
@@ -60,7 +66,8 @@ class ReportGroupReportRepositoryImpl extends ReportGroupReportRepository {
 
   override def update(db: Database, model: ReportGroupReport): Unit = {
     val newModel = model.copy(updatedAt = Dates.currentTimestamp())
-    val entity: jp.ijufumi.openreports.infrastructure.persistence.entity.ReportGroupReport = newModel
+    val entity: jp.ijufumi.openreports.infrastructure.persistence.entity.ReportGroupReport =
+      newModel
     val updateQuery = reportGroupReportQuery.insertOrUpdate(entity).withPinnedSession
     Await.result(db.run(updateQuery), queryTimeout)
   }

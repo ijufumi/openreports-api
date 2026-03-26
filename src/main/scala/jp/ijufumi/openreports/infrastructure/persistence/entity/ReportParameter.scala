@@ -1,6 +1,6 @@
 package jp.ijufumi.openreports.infrastructure.persistence.entity
 
-import jp.ijufumi.openreports.domain.models.value.enums.{ParameterTypes, EmbeddedFunctionTypes}
+import jp.ijufumi.openreports.domain.models.value.enums.{EmbeddedFunctionTypes, ParameterTypes}
 import slick.jdbc.PostgresProfile.api._
 import jp.ijufumi.openreports.utils.Dates
 
@@ -23,7 +23,8 @@ class ReportParameters(tag: Tag)
   def id = column[String]("id", O.PrimaryKey)
   def workspaceId = column[String]("workspace_id")
   def parameterType = column[ParameterTypes.ParameterType]("parameter_type")
-  def embeddedFunctionType = column[Option[EmbeddedFunctionTypes.EmbeddedFunctionType]]("embedded_function_type")
+  def embeddedFunctionType =
+    column[Option[EmbeddedFunctionTypes.EmbeddedFunctionType]]("embedded_function_type")
   def value = column[Option[String]]("value")
 
   override def * =
@@ -36,5 +37,5 @@ class ReportParameters(tag: Tag)
       createdAt,
       updatedAt,
       versions,
-    ) <> (ReportParameter.tupled, ReportParameter.unapply)
+    ).mapTo[ReportParameter]
 }

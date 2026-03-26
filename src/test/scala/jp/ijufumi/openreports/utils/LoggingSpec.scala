@@ -166,11 +166,11 @@ class LoggingSpec extends AnyFlatSpec with Matchers {
   }
 
   it should "be usable in anonymous classes" in {
-    val anonymousLogger = new Logging {
+    class AnonymousLikeLogger extends Logging {
       def getLoggerName: String = logger.getName
     }
+    val anonymousLogger = new AnonymousLikeLogger()
 
-    // Anonymous classes will have generated names
     anonymousLogger.getLoggerName should include("LoggingSpec")
   }
 

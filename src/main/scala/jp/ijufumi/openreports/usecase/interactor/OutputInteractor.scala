@@ -12,7 +12,7 @@ import org.jxls.jdbc.DatabaseAccess
 import org.jxls.transform.poi.JxlsPoiTemplateFillerBuilder
 
 import java.io.File
-import java.nio.file.{FileSystems, Files, Path}
+import java.nio.file.{Files, FileSystems, Path}
 import java.time.LocalDateTime
 
 class OutputInteractor @Inject() (
@@ -102,7 +102,11 @@ class OutputInteractor @Inject() (
   ): Unit = {
     val inputFile = storageService.get(workspaceId, filePath, storageType)
     val inputResult = Using(Files.newInputStream(inputFile)) { inputs =>
-      JxlsPoiTemplateFillerBuilder.newInstance().withTemplate(inputs).build().fill(dataMap, new JxlsOutputFile(outputFile.toFile))
+      JxlsPoiTemplateFillerBuilder
+        .newInstance()
+        .withTemplate(inputs)
+        .build()
+        .fill(dataMap, new JxlsOutputFile(outputFile.toFile))
     }
     if (inputResult.isFailure) {
       logger.error(s"output error", inputResult.failed.get)
@@ -112,7 +116,17 @@ class OutputInteractor @Inject() (
 
   private def convertToPDF(src: Path, dstDir: Path): Unit = {
     val res = {
-      os.call(cmd = ("soffice", "--headless", "--convert-to", "pdf:writer_pdf_Export", "--outdir", dstDir.toString, src.toString))
+      os.call(cmd =
+        (
+          "soffice",
+          "--headless",
+          "--convert-to",
+          "pdf:writer_pdf_Export",
+          "--outdir",
+          dstDir.toString,
+          src.toString,
+        ),
+      )
     }
     logger.info(s"soffice command: ${res.command.mkString(" ")}")
     if (res.exitCode != 0) {

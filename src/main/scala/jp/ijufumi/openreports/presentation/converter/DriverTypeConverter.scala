@@ -11,7 +11,10 @@ object DriverTypeConverter {
   object conversions {
     import scala.language.implicitConversions
 
-    implicit def toDriverTypeResponse(model: DriverTypeModel): DriverTypeResponse = toResponse(model)
-    implicit def toDriverTypeResponses(model: Seq[DriverTypeModel]): Seq[DriverTypeResponse] = model.map(toResponse)
+    implicit def toDriverTypeResponse(model: DriverTypeModel): DriverTypeResponse = toResponse(
+      model,
+    )
+    implicit def toDriverTypeResponses(model: Seq[DriverTypeModel]): Seq[DriverTypeResponse] =
+      model.map(toResponse)
   }
 }

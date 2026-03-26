@@ -9,7 +9,7 @@ import org.json4s.jackson.Serialization.write
 import org.json4s.DefaultFormats
 
 class LoginServletSpec extends ScalatraFunSuite with MockFactory {
-  implicit val formats = DefaultFormats
+  implicit val formats: org.json4s.Formats = DefaultFormats
   val loginService = mock[LoginUseCase]
   addServlet(new LoginServlet(loginService), "/*")
 

@@ -12,7 +12,8 @@ object RoleConverter {
     import scala.language.implicitConversions
 
     implicit def fromRoleEntity(entity: RoleEntity): RoleModel = toDomain(entity)
-    implicit def fromRoleEntity2(entity: Option[RoleEntity]): Option[RoleModel] = entity.map(toDomain)
+    implicit def fromRoleEntity2(entity: Option[RoleEntity]): Option[RoleModel] =
+      entity.map(toDomain)
     implicit def fromRoleEntities(entity: Seq[RoleEntity]): Seq[RoleModel] = entity.map(toDomain)
   }
 }
