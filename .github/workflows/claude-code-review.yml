@@ -124,8 +124,8 @@ jobs:
 
             ## レビュー手順
             1. PRの差分を確認し、問題点を特定する
-            2. 各指摘について、該当するコード行にインラインレビューコメントを投稿する（GitHub MCP toolsの `create_pull_request_review` を使用）
-            3. すべての指摘をまとめたサマリコメントをPRに投稿する（GitHub MCP toolsの `create_or_update_comment` を使用）
+            2. 各指摘について、該当するコード行にインラインレビューコメントを投稿する（`mcp__github__create_pull_request_review` を使用）
+            3. すべての指摘をまとめたサマリコメントをPRに投稿する（`mcp__github_comment__update_claude_comment` を使用）
 
             ## 指摘の分類ルール
             すべての指摘を以下の3段階で分類し、コメントの先頭に必ずタグを付けてください：
@@ -141,7 +141,7 @@ jobs:
             ${{ env.PR_REVIEW_FOCUS != '' && format('このPRでは以下の観点を特に重点的にチェックしてください。該当する指摘にはPR固有観点である旨を明示してください。\n\n{0}', env.PR_REVIEW_FOCUS) || '（PR固有のレビュー観点は指定されていません）' }}
 
             ## インラインレビューコメント
-            問題のあるコード行に対して、GitHub MCP toolsを使ってインラインレビューコメントを投稿してください。
+            問題のあるコード行に対して、GitHub MCP tools（`mcp__github_inline_comment__create_inline_comment` または `mcp__github__create_pull_request_review`）を使ってインラインレビューコメントを投稿してください。
             各コメントには分類タグ（🔴/🟡/🟢）を付け、改善案がある場合は GitHub の suggestion ブロックで提案してください。
 
             ## レビュー後のサマリ
@@ -213,7 +213,7 @@ jobs:
           model: ${{ env.CLAUDE_MODEL }}
 
           claude_args: |
-            --max-turns 30 --allowedTools mcp:github Read Grep Glob Bash
+            --max-turns 30 --allowedTools "mcp__github__*,mcp__github_file_ops__*,mcp__github_comment__*,mcp__github_inline_comment__*,mcp__github_ci__*,Read,Grep,Glob,Bash"
 
           # スティッキーコメント: 同一PRで再実行時に前回のサマリを更新
           use_sticky_comment: true
