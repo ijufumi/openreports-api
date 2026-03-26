@@ -210,10 +210,10 @@ jobs:
             - MUST もしくは SHOULD の指摘がある場合は、サマリ投稿時の EVENT に REQUEST_CHANGES を指定してください。
             - 改善案がある場合は GitHub の suggestion ブロックで提案してください。
 
-          model: ${{ env.CLAUDE_MODEL }}
-
           claude_args: |
-            --max-turns 30 --allowedTools "mcp__github__*,mcp__github_file_ops__*,mcp__github_comment__*,mcp__github_inline_comment__*,mcp__github_ci__*,Read,Grep,Glob,Bash"
+            --max-turns 30
+            --allowedTools "mcp__github__*,mcp__github_file_ops__*,mcp__github_comment__*,mcp__github_inline_comment__*,mcp__github_ci__*,Read,Grep,Glob,Bash"
+            --model ${{ env.CLAUDE_MODEL }}
 
           # スティッキーコメント: 同一PRで再実行時に前回のサマリを更新
           use_sticky_comment: true
