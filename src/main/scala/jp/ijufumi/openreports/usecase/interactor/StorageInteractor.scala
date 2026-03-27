@@ -32,7 +32,7 @@ class StorageInteractor @Inject() (
       case StorageTypes.Local     => localFileRepository.get(workspaceId, key)
       case StorageTypes.LocalSeed => localSeedFileRepository.get(workspaceId, key)
       case StorageTypes.S3        => awsS3Repository.get(workspaceId, key)
-      case _                      => null
+      case _                      => throw new IllegalArgumentException(s"Unsupported storage type: $storageType")
     }
   }
 
