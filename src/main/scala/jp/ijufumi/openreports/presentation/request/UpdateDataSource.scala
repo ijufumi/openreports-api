@@ -14,7 +14,7 @@ object UpdateDataSource {
   implicit val validate: Validator[UpdateDataSource] = new Validator[UpdateDataSource] {
     def validate(param: UpdateDataSource) = collectViolations(
       notEmpty("name", param.name),
-      between("name", param.name.length, 1, 255),
+      lengthBetween("name", param.name, 1, 255),
       notEmpty("url", param.url),
       notEmpty("username", param.username),
       notEmpty("password", param.password),

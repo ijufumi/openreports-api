@@ -8,7 +8,7 @@ object CreateTemplate {
   implicit val validate: Validator[CreateTemplate] = new Validator[CreateTemplate] {
     def validate(param: CreateTemplate) = collectViolations(
       notEmpty("name", param.name),
-      between("name", param.name.length, 1, 255),
+      lengthBetween("name", param.name, 1, 255),
     )
   }
 }

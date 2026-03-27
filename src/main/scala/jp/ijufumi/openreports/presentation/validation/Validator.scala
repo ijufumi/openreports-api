@@ -17,6 +17,7 @@ trait Validator[T] {
   }
 
   protected def notEmpty(fieldName: String, value: String): Option[Violation] = {
+    // value can be null when deserialized from JSON via json4s Java interop
     check(value != null && value.nonEmpty, s"$fieldName must not be empty")
   }
 
@@ -26,7 +27,17 @@ trait Validator[T] {
       min: Int,
       max: Int,
   ): Option[Violation] = {
-    check(value >= min && value <= max, s"$fieldName length must be between $min and $max")
+    check(value >= min && value <= max, s"$fieldName must be between $min and $max")
+  }
+
+  protected def lengthBetween(
+      fieldName: String,
+      value: String,
+      min: Int,
+      max: Int,
+  ): Option[Violation] = {
+    val len = if (value == null) 0 else value.length
+    between(fieldName, len, min, max)
   }
 
   protected def collectViolations(checks: Option[Violation]*): ValidationResult = {

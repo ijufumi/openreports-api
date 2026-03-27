@@ -8,7 +8,7 @@ object CreateWorkspace {
   implicit val validate: Validator[CreateWorkspace] = new Validator[CreateWorkspace] {
     def validate(param: CreateWorkspace) = collectViolations(
       notEmpty("name", param.name),
-      between("name", param.name.length, 1, 255),
+      lengthBetween("name", param.name, 1, 255),
     )
   }
 }
