@@ -31,6 +31,9 @@ object Config {
   val REDIS_HOST: String = getEnvValue("REDIS_HOST", "localhost")
   val REDIS_PORT: Int = getEnvIntValue("REDIS_PORT", 6379)
   val CACHE_TTL_SEC: Long = getEnvIntValue("CACHE_TTL_SEC", 3600)
+  val REDIS_POOL_MAX_SIZE: Int = getEnvIntValue("REDIS_POOL_SIZE", 20)
+  val REDIS_POOL_MAX_IDLE: Int = getEnvIntValue("REDIS_POOL_MAX_IDLE", 10)
+  val REDIS_POOL_MIN_IDLE: Int = getEnvIntValue("REDIS_POOL_MIN_IDLE", 5)
   // for presigned url
   val PRESIGNED_URL_EXPIRATION: Long =
     getEnvIntValue("PRESIGNED_URL_EXPIRATION", 3600)

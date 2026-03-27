@@ -4,7 +4,14 @@ import jp.ijufumi.openreports.configs.Config
 import redis.clients.jedis.{JedisPool, JedisPoolConfig}
 
 class CacheWrapper(
-    pool: JedisPool = new JedisPool(new JedisPoolConfig(), Config.REDIS_HOST, Config.REDIS_PORT),
+                    pool: JedisPool = {
+                      val config = new JedisPoolConfig()
+                      config.setMaxTotal(Config.REDIS_POOL_MAX_SIZE)
+                      config.setMaxIdle(Config.REDIS_POOL_MAX_IDLE)
+                      config.setMinIdle(Config.REDIS_POOL_MIN_IDLE)
+                      config.setTestOnBorrow(true)
+                      new JedisPool(config, Config.REDIS_HOST, Config.REDIS_PORT, 3000)
+                    },
 ) {
   private val defaultTtl = Config.CACHE_TTL_SEC
   private val lock = new java.util.concurrent.locks.ReentrantReadWriteLock()
@@ -21,6 +28,10 @@ class CacheWrapper(
       } finally {
         jedis.close()
       }
+    } catch {
+      case e: Exception =>
+        // Redis unavailable — log and continue (cache miss is acceptable)
+        org.slf4j.LoggerFactory.getLogger(getClass).warn(s"Failed to put cache key: $cacheKey", e)
     } finally {
       lock.writeLock().unlock()
     }
@@ -36,6 +47,11 @@ class CacheWrapper(
       } finally {
         jedis.close()
       }
+    } catch {
+      case e: Exception =>
+        // Redis unavailable — log and continue (cache miss is acceptable)
+        org.slf4j.LoggerFactory.getLogger(getClass).warn(s"Failed to get cache key: $cacheKey", e)
+        None
     } finally {
       lock.readLock().unlock()
     }
@@ -50,6 +66,10 @@ class CacheWrapper(
       } finally {
         jedis.close()
       }
+    } catch {
+      case e: Exception =>
+        // Redis unavailable — log and continue (cache miss is acceptable)
+        org.slf4j.LoggerFactory.getLogger(getClass).warn(s"Failed to remove cache key: $cacheKey", e)
     } finally {
       lock.writeLock().unlock()
     }
@@ -64,6 +84,10 @@ class CacheWrapper(
       } finally {
         jedis.close()
       }
+    } catch {
+      case e: Exception =>
+        // Redis unavailable — log and continue (cache miss is acceptable)
+        org.slf4j.LoggerFactory.getLogger(getClass).warn(s"Failed to remove cache", e)
     } finally {
       lock.writeLock().unlock()
     }
