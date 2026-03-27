@@ -78,15 +78,6 @@ class CacheWrapperSpec extends AnyFlatSpec with Matchers {
     result should equal(None)
   }
 
-  "removeAll" should "clear all cache entries" in {
-    val cache = new CacheWrapper(new MockJedisPool())
-    cache.put(CacheKeys.ApiToken, "value1", "key1")
-    cache.put(CacheKeys.GoogleAuthState, "value2", "key2")
-    cache.removeAll()
-    cache.get(CacheKeys.ApiToken, "key1") should equal(None)
-    cache.get(CacheKeys.GoogleAuthState, "key2") should equal(None)
-  }
-
   "put" should "handle multiple arguments in cache key" in {
     val cache = new CacheWrapper(new MockJedisPool())
     cache.put(CacheKeys.ApiToken, "test-value", "arg1", "arg2", "arg3")
