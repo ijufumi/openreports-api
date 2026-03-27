@@ -16,6 +16,9 @@ class TestValidator extends Validator[String] {
   def testBetween(fieldName: String, value: Int, min: Int, max: Int): Option[Violation] =
     between(fieldName, value, min, max)
 
+  def testLengthBetween(fieldName: String, value: String, min: Int, max: Int): Option[Violation] =
+    lengthBetween(fieldName, value, min, max)
+
   def testCollectViolations(checks: Option[Violation]*): ValidationResult =
     collectViolations(checks: _*)
 }
@@ -64,14 +67,50 @@ class ValidatorSpec extends AnyFlatSpec with Matchers {
 
   it should "return Violation when value is below min" in {
     validator.testBetween("age", 0, 1, 10) should be(
-      Some(Violation("age length must be between 1 and 10")),
+      Some(Violation("age must be between 1 and 10")),
     )
   }
 
   it should "return Violation when value is above max" in {
     validator.testBetween("age", 11, 1, 10) should be(
-      Some(Violation("age length must be between 1 and 10")),
+      Some(Violation("age must be between 1 and 10")),
     )
+  }
+
+  // lengthBetween
+
+  "lengthBetween" should "return None when string length is within range" in {
+    validator.testLengthBetween("name", "abc", 1, 10) should be(None)
+  }
+
+  it should "return None when string length equals min" in {
+    validator.testLengthBetween("name", "a", 1, 10) should be(None)
+  }
+
+  it should "return None when string length equals max" in {
+    validator.testLengthBetween("name", "a" * 10, 1, 10) should be(None)
+  }
+
+  it should "return Violation when string length is below min" in {
+    validator.testLengthBetween("name", "", 1, 10) should be(
+      Some(Violation("name must be between 1 and 10")),
+    )
+  }
+
+  it should "return Violation when string length is above max" in {
+    validator.testLengthBetween("name", "a" * 11, 1, 10) should be(
+      Some(Violation("name must be between 1 and 10")),
+    )
+  }
+
+  it should "treat null as length 0" in {
+    validator.testLengthBetween("name", null, 1, 10) should be(
+      Some(Violation("name must be between 1 and 10")),
+    )
+  }
+
+  it should "return None when null and min is 0" in {
+    validator.testLengthBetween("name", null, 0, 10) should be(None)
   }
 
   // collectViolations

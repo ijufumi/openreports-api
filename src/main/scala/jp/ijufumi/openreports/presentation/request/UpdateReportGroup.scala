@@ -8,7 +8,7 @@ object UpdateReportGroup {
   implicit val validate: Validator[UpdateReportGroup] = new Validator[UpdateReportGroup] {
     def validate(param: UpdateReportGroup) = collectViolations(
       notEmpty("name", param.name),
-      between("name", param.name.length, 1, 255),
+      lengthBetween("name", param.name, 1, 255),
     )
   }
 }

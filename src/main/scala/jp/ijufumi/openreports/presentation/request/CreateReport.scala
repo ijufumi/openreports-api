@@ -13,7 +13,7 @@ object CreateReport {
   implicit val validate: Validator[CreateReport] = new Validator[CreateReport] {
     def validate(param: CreateReport) = collectViolations(
       notEmpty("name", param.name),
-      between("name", param.name.length, 1, 20),
+      lengthBetween("name", param.name, 1, 20),
       notEmpty("templateId", param.templateId),
     )
   }
