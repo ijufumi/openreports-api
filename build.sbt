@@ -4,7 +4,7 @@ val Scala3Version = "3.3.7"
 val ScalatraVersion = "3.1.2"
 val SlickVersion = "3.6.1"
 val SttpVersion = "4.0.9"
-val Json4sVersion = "4.1.0-M8"
+val Json4sVersion = "4.1.0-M8" // Scala 3対応のため
 val JedisVersion = "5.2.0"
 
 // for java libraries
