@@ -54,7 +54,6 @@ lazy val root = (project in file("."))
       "org.json4s" %% "json4s-jackson" % Json4sVersion,
       "org.json4s" %% "json4s-native" % Json4sVersion,
       "org.json4s" %% "json4s-ext" % Json4sVersion,
-      "org.scala-lang" %% "scala3-staging" % Scala3Version,
       "commons-codec" % "commons-codec" % "1.15",
       "com.auth0" % "auth0" % Auth0Version,
       "com.typesafe.slick" %% "slick" % SlickVersion,
