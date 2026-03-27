@@ -3,24 +3,24 @@ val Scala3Version = "3.3.7"
 // for scala libraries
 val ScalatraVersion = "3.1.2"
 val SlickVersion = "3.6.1"
-val SttpVersion = "4.0.9"
+val SttpVersion = "4.0.19"
 val Json4sVersion = "4.1.0-M8" // Scala 3対応のため
-val JedisVersion = "5.2.0"
+val JedisVersion = "7.4.0"
 
 // for java libraries
 val SLF4JVersion = "2.0.17"
-val LogbackVersion = "1.5.18"
-val FlywayVersion = "11.11.0"
-val AWSSDKVersion = "2.31.78"
-val jXlsVersion = "3.0.0"
-val Auth0Version = "2.22.0"
+val LogbackVersion = "1.5.32"
+val FlywayVersion = "12.2.0"
+val AWSSDKVersion = "2.42.22"
+val jXlsVersion = "3.1.0"
+val Auth0Version = "3.3.0"
 val GuiceVersion = "7.0.0"
 val GuiceExtensionVersion = "7.0.0"
 val DotEnvJavaVersion = "3.2.0"
-val JettyVersion = "12.0.23"
-val PostgresVersion = "42.7.7"
+val JettyVersion = "12.1.7"
+val PostgresVersion = "42.7.10"
 val ServletAPIVersion = "6.1.0"
-val H2Version = "2.3.232"
+val H2Version = "2.4.240"
 
 ThisBuild / scalaVersion := Scala3Version
 ThisBuild / organization := "jp.ijufumi"
@@ -54,7 +54,7 @@ lazy val root = (project in file("."))
       "org.json4s" %% "json4s-jackson" % Json4sVersion,
       "org.json4s" %% "json4s-native" % Json4sVersion,
       "org.json4s" %% "json4s-ext" % Json4sVersion,
-      "commons-codec" % "commons-codec" % "1.15",
+      "commons-codec" % "commons-codec" % "1.21.0",
       "com.auth0" % "auth0" % Auth0Version,
       "com.typesafe.slick" %% "slick" % SlickVersion,
       "com.typesafe.slick" %% "slick-hikaricp" % SlickVersion,
@@ -64,12 +64,12 @@ lazy val root = (project in file("."))
       "com.softwaremill.sttp.client4" %% "json4s" % SttpVersion,
       "software.amazon.awssdk" % "s3" % AWSSDKVersion,
       "io.github.cdimascio" % "dotenv-java" % DotEnvJavaVersion,
-      "com.github.f4b6a3" % "ulid-creator" % "5.2.3",
+      "com.github.f4b6a3" % "ulid-creator" % "5.2.4",
       "org.jxls" % "jxls" % jXlsVersion,
       "org.jxls" % "jxls-poi" % jXlsVersion,
       "ch.qos.logback" % "logback-classic" % LogbackVersion,
       "ch.qos.logback" % "logback-core" % LogbackVersion,
-      "com.lihaoyi" %% "os-lib" % "0.11.4",
+      "com.lihaoyi" %% "os-lib" % "0.11.8",
     ),
     assembly / assemblyJarName := "open-reports-api.jar",
     assembly / mainClass := Some("JettyLauncher"),
