@@ -74,22 +74,4 @@ class CacheWrapper(
       lock.writeLock().unlock()
     }
   }
-
-  def removeAll(): Unit = {
-    try {
-      lock.writeLock().lock()
-      val jedis = pool.getResource
-      try {
-        jedis.flushDB()
-      } finally {
-        jedis.close()
-      }
-    } catch {
-      case e: Exception =>
-        // Redis unavailable — log and continue (cache miss is acceptable)
-        org.slf4j.LoggerFactory.getLogger(getClass).warn(s"Failed to remove cache", e)
-    } finally {
-      lock.writeLock().unlock()
-    }
-  }
 }
