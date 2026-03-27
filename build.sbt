@@ -34,6 +34,7 @@ lazy val root = (project in file("."))
     name := "Open Report API",
     version := "0.1.0-SNAPSHOT",
     libraryDependencies ++= Seq(
+      "org.scala-lang" %% "scala3-staging" % Scala3Version,
       "org.scalatra" %% "scalatra-jakarta" % ScalatraVersion,
       "org.scalatra" %% "scalatra-json-jakarta" % ScalatraVersion,
       "org.scalatra" %% "scalatra-forms-jakarta" % ScalatraVersion,
