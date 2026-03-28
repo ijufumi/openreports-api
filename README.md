@@ -3,18 +3,21 @@
 
 | Name         | Version | Usage        |
 |--------------|---------|--------------|
-| Scala        | 2.12.20 | -            |
-| Scalatra     | 3.1.x   | All of them. |
+| Scala        | 3.3.7   | -            |
+| Scalatra     | 3.1.2   | All of them. |
+| Jetty        | 12.1.7  | Web Server   |
 | Servlet API  | 6.1.0   | Web API      |
-| slf4j        | 2.8.x   | Logging      |
-| logback      | 1.5.x   | Logging      |
-| Flyway       | 9.22.3  | Migration    |
-| Slick        | 3.6.x   | ORM          |
-| PostgresSQL  | 42.7.x  | DB           |
+| slf4j        | 2.0.17  | Logging      |
+| logback      | 1.5.32  | Logging      |
+| Flyway       | 12.2.0  | Migration    |
+| Slick        | 3.6.1   | ORM          |
+| PostgreSQL   | 42.7.10 | DB           |
 | Google Guice | 7.0.0   | DI           |
-| Scala Cache  | 0.28.0  | Cache        |
-| sttp client  | 4.0.9   | HTTP Client  |
-| jXls         | 3.0.0   | Reporting |
+| Jedis        | 7.4.0   | Cache(Redis) |
+| sttp client  | 4.0.19  | HTTP Client  |
+| jXls         | 3.1.0   | Reporting    |
+| AWS SDK      | 2.42.22 | Storage(S3)  |
+| Auth0        | 3.3.0   | JWT          |
 
 ## Features (including not implemented yet)
 - [ ] Output reporting.
