@@ -13,7 +13,11 @@ import slick.jdbc.PostgresProfile.api._
 import scala.concurrent.Await
 import scala.concurrent.duration._
 
-class RoleFunctionRepositoryImplSpec extends AnyFlatSpec with Matchers with BeforeAndAfterAll with BeforeAndAfterEach {
+class RoleFunctionRepositoryImplSpec
+    extends AnyFlatSpec
+    with Matchers
+    with BeforeAndAfterAll
+    with BeforeAndAfterEach {
 
   var db: Database = _
   val repository = new RoleFunctionRepositoryImpl()
@@ -38,7 +42,7 @@ class RoleFunctionRepositoryImplSpec extends AnyFlatSpec with Matchers with Befo
   def insertRoleFunction(
       id: String = IDs.ulid(),
       roleId: String = IDs.ulid(),
-      functionId: String = IDs.ulid()
+      functionId: String = IDs.ulid(),
   ): RoleFunctionEntity = {
     val entity = RoleFunctionEntity(
       id,
@@ -46,7 +50,7 @@ class RoleFunctionRepositoryImplSpec extends AnyFlatSpec with Matchers with Befo
       functionId,
       System.currentTimeMillis(),
       System.currentTimeMillis(),
-      1
+      1,
     )
     Await.result(db.run(roleFunctionQuery += entity), 10.seconds)
     entity

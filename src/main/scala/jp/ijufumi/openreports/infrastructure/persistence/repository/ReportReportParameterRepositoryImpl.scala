@@ -21,7 +21,12 @@ class ReportReportParameterRepositoryImpl extends ReportReportParameterRepositor
     if (limit > 0) {
       filtered = filtered.drop(offset).take(limit)
     }
-    (Await.result(db.run(filtered.result), queryTimeout).map(r => ReportReportParameterConverter.toDomain(r)), count)
+    (
+      Await
+        .result(db.run(filtered.result), queryTimeout)
+        .map(r => ReportReportParameterConverter.toDomain(r)),
+      count,
+    )
   }
 
   override def getById(db: Database, id: String): Option[ReportReportParameter] = {
@@ -37,14 +42,17 @@ class ReportReportParameterRepositoryImpl extends ReportReportParameterRepositor
   override def getByIds(db: Database, ids: Seq[String]): Seq[ReportReportParameter] = {
     val getById = reportReportParameterQuery
       .filter(_.id.inSet(ids))
-    Await.result(db.run(getById.result), queryTimeout).map(r => ReportReportParameterConverter.toDomain(r))
+    Await
+      .result(db.run(getById.result), queryTimeout)
+      .map(r => ReportReportParameterConverter.toDomain(r))
   }
 
   override def register(
       db: Database,
       model: ReportReportParameter,
   ): Option[ReportReportParameter] = {
-    val entity: jp.ijufumi.openreports.infrastructure.persistence.entity.ReportReportParameter = model
+    val entity: jp.ijufumi.openreports.infrastructure.persistence.entity.ReportReportParameter =
+      model
     val register = (reportReportParameterQuery += entity).withPinnedSession
     Await.result(db.run(register), queryTimeout)
     getById(db, model.id)
@@ -54,7 +62,9 @@ class ReportReportParameterRepositoryImpl extends ReportReportParameterRepositor
       db: Database,
       model: Seq[ReportReportParameter],
   ): Seq[ReportReportParameter] = {
-    val entities: Seq[jp.ijufumi.openreports.infrastructure.persistence.entity.ReportReportParameter] = model
+    val entities
+        : Seq[jp.ijufumi.openreports.infrastructure.persistence.entity.ReportReportParameter] =
+      model
     val register = (reportReportParameterQuery ++= entities).withPinnedSession
     Await.result(db.run(register), queryTimeout)
     val ids = model.map(m => m.id)
@@ -63,7 +73,8 @@ class ReportReportParameterRepositoryImpl extends ReportReportParameterRepositor
 
   override def update(db: Database, model: ReportReportParameter): Unit = {
     val newModel = model.copy(updatedAt = Dates.currentTimestamp())
-    val entity: jp.ijufumi.openreports.infrastructure.persistence.entity.ReportReportParameter = newModel
+    val entity: jp.ijufumi.openreports.infrastructure.persistence.entity.ReportReportParameter =
+      newModel
     val updateQuery = reportReportParameterQuery.insertOrUpdate(entity).withPinnedSession
     Await.result(db.run(updateQuery), queryTimeout)
   }

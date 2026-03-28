@@ -10,11 +10,11 @@ import jp.ijufumi.openreports.domain.repository.{
   ReportTemplateRepository,
 }
 import jp.ijufumi.openreports.usecase.port.input.param.{
-  CreateReportInput,
   CreateReportGroupInput,
+  CreateReportInput,
   CreateTemplateInput,
-  UpdateReportInput,
   UpdateReportGroupInput,
+  UpdateReportInput,
   UpdateTemplateInput,
 }
 import jp.ijufumi.openreports.domain.models.entity.{
@@ -63,7 +63,11 @@ class ReportInteractor @Inject() (
     reportRepository.getByIdWithTemplate(db, workspaceId, id)
   }
 
-  override def getTemplates(workspaceId: String, page: Int, limit: Int): Lists[ReportTemplateModel] = {
+  override def getTemplates(
+      workspaceId: String,
+      page: Int,
+      limit: Int,
+  ): Lists[ReportTemplateModel] = {
     val offset = List(page * limit, 0).max
     val (results, count) = templateRepository.gets(db, workspaceId, offset, limit)
     Lists(results, offset, limit, count)
@@ -118,7 +122,11 @@ class ReportInteractor @Inject() (
       }
     }
     val report = reportOpt.get
-    val newReport = report.copy(name = input.name, templateId = input.templateId, dataSourceId = input.dataSourceId)
+    val newReport = report.copy(
+      name = input.name,
+      templateId = input.templateId,
+      dataSourceId = input.dataSourceId,
+    )
     reportRepository.update(db, newReport)
     this.getReport(workspaceId, id)
   }

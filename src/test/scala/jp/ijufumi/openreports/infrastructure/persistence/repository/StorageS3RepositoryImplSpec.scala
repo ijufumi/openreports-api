@@ -9,7 +9,11 @@ import org.scalatest.matchers.should.Matchers
 import slick.jdbc.JdbcBackend.Database
 import slick.jdbc.PostgresProfile.api._
 
-class StorageS3RepositoryImplSpec extends AnyFlatSpec with Matchers with BeforeAndAfterAll with BeforeAndAfterEach {
+class StorageS3RepositoryImplSpec
+    extends AnyFlatSpec
+    with Matchers
+    with BeforeAndAfterAll
+    with BeforeAndAfterEach {
 
   var db: Database = _
   val repository = new StorageS3RepositoryImpl()
@@ -46,7 +50,7 @@ class StorageS3RepositoryImplSpec extends AnyFlatSpec with Matchers with BeforeA
       awsSecretAccessKey = "test-secret-key",
       awsRegion = "us-east-1",
       createdAt = System.currentTimeMillis(),
-      updatedAt = System.currentTimeMillis()
+      updatedAt = System.currentTimeMillis(),
     )
 
     repository.register(db, storage)
@@ -76,7 +80,7 @@ class StorageS3RepositoryImplSpec extends AnyFlatSpec with Matchers with BeforeA
       awsSecretAccessKey = "secret-key-1",
       awsRegion = "us-east-1",
       createdAt = System.currentTimeMillis(),
-      updatedAt = System.currentTimeMillis()
+      updatedAt = System.currentTimeMillis(),
     )
 
     val storage2 = StorageS3(
@@ -87,7 +91,7 @@ class StorageS3RepositoryImplSpec extends AnyFlatSpec with Matchers with BeforeA
       awsSecretAccessKey = "secret-key-2",
       awsRegion = "us-west-2",
       createdAt = System.currentTimeMillis(),
-      updatedAt = System.currentTimeMillis()
+      updatedAt = System.currentTimeMillis(),
     )
 
     repository.register(db, storage1)
@@ -114,7 +118,7 @@ class StorageS3RepositoryImplSpec extends AnyFlatSpec with Matchers with BeforeA
       awsSecretAccessKey = "new-secret-key",
       awsRegion = "ap-northeast-1",
       createdAt = System.currentTimeMillis(),
-      updatedAt = System.currentTimeMillis()
+      updatedAt = System.currentTimeMillis(),
     )
 
     val result = repository.register(db, storage)
@@ -133,7 +137,7 @@ class StorageS3RepositoryImplSpec extends AnyFlatSpec with Matchers with BeforeA
       awsSecretAccessKey = "old-secret-key",
       awsRegion = "us-east-1",
       createdAt = System.currentTimeMillis(),
-      updatedAt = System.currentTimeMillis()
+      updatedAt = System.currentTimeMillis(),
     )
 
     repository.register(db, storage)
@@ -141,7 +145,7 @@ class StorageS3RepositoryImplSpec extends AnyFlatSpec with Matchers with BeforeA
     val updatedStorage = storage.copy(
       s3BucketName = "updated-bucket",
       awsAccessKeyId = "updated-access-key",
-      awsRegion = "eu-west-1"
+      awsRegion = "eu-west-1",
     )
 
     repository.update(db, updatedStorage)

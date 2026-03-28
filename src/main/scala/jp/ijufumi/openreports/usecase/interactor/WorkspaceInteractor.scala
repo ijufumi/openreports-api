@@ -6,9 +6,9 @@ import jp.ijufumi.openreports.domain.models.value.enums.{RoleTypes, StorageTypes
 import jp.ijufumi.openreports.exceptions.NotFoundException
 import jp.ijufumi.openreports.domain.repository.{
   ReportRepository,
+  ReportTemplateRepository,
   RoleRepository,
   StorageS3Repository,
-  ReportTemplateRepository,
   WorkspaceMemberRepository,
   WorkspaceRepository,
 }
@@ -20,8 +20,8 @@ import jp.ijufumi.openreports.usecase.port.input.param.{
 import jp.ijufumi.openreports.domain.models.entity.{
   Lists,
   Report => ReportModel,
-  StorageS3 => StorageS3Model,
   ReportTemplate => ReportTemplateModel,
+  StorageS3 => StorageS3Model,
   Workspace => WorkspaceModel,
   WorkspaceMember => WorkspaceMemberModel,
 }

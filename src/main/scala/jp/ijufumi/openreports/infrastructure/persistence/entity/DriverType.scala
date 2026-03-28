@@ -30,5 +30,5 @@ class DriverTypes(tag: Tag)
       createdAt,
       updatedAt,
       versions,
-    ) <> (DriverType.tupled, DriverType.unapply)
+    ).mapTo[DriverType]
 }

@@ -2,22 +2,29 @@ package jp.ijufumi.openreports.presentation.converter
 
 import jp.ijufumi.openreports.domain.models.entity.{
   Report => ReportModel,
-  ReportTemplate => ReportTemplateModel,
   ReportGroup => ReportGroupModel,
+  ReportTemplate => ReportTemplateModel,
 }
 import jp.ijufumi.openreports.presentation.response.{
   Report => ReportResponse,
-  ReportTemplate => ReportTemplateResponse,
   ReportGroup => ReportGroupResponse,
+  ReportTemplate => ReportTemplateResponse,
 }
-import jp.ijufumi.openreports.presentation.request.{CreateReport, CreateTemplate, CreateReportGroup, UpdateReport, UpdateTemplate, UpdateReportGroup}
+import jp.ijufumi.openreports.presentation.request.{
+  CreateReport,
+  CreateReportGroup,
+  CreateTemplate,
+  UpdateReport,
+  UpdateReportGroup,
+  UpdateTemplate,
+}
 import jp.ijufumi.openreports.usecase.port.input.param.{
+  CreateReportGroupInput,
   CreateReportInput,
   CreateTemplateInput,
-  CreateReportGroupInput,
+  UpdateReportGroupInput,
   UpdateReportInput,
   UpdateTemplateInput,
-  UpdateReportGroupInput,
 }
 
 object ReportConverter {
@@ -81,14 +88,24 @@ object ReportConverter {
   object conversions {
     import scala.language.implicitConversions
 
-    implicit def toReportResponse(model: ReportModel): ReportResponse = ReportConverter.toResponse(model)
-    implicit def toReportResponse2(model: Option[ReportModel]): Option[ReportResponse] = model.map(ReportConverter.toResponse)
-    implicit def toReportResponses(model: Seq[ReportModel]): Seq[ReportResponse] = model.map(ReportConverter.toResponse)
-    implicit def toTemplateResp(model: ReportTemplateModel): ReportTemplateResponse = ReportConverter.toTemplateResponse(model)
-    implicit def toTemplateResp2(model: Option[ReportTemplateModel]): Option[ReportTemplateResponse] = model.map(ReportConverter.toTemplateResponse)
-    implicit def toTemplateResps(model: Seq[ReportTemplateModel]): Seq[ReportTemplateResponse] = model.map(ReportConverter.toTemplateResponse)
-    implicit def toGroupResp(model: ReportGroupModel): ReportGroupResponse = ReportConverter.toGroupResponse(model)
-    implicit def toGroupResp2(model: Option[ReportGroupModel]): Option[ReportGroupResponse] = model.map(ReportConverter.toGroupResponse)
-    implicit def toGroupResps(model: Seq[ReportGroupModel]): Seq[ReportGroupResponse] = model.map(ReportConverter.toGroupResponse)
+    implicit def toReportResponse(model: ReportModel): ReportResponse =
+      ReportConverter.toResponse(model)
+    implicit def toReportResponse2(model: Option[ReportModel]): Option[ReportResponse] =
+      model.map(ReportConverter.toResponse)
+    implicit def toReportResponses(model: Seq[ReportModel]): Seq[ReportResponse] =
+      model.map(ReportConverter.toResponse)
+    implicit def toTemplateResp(model: ReportTemplateModel): ReportTemplateResponse =
+      ReportConverter.toTemplateResponse(model)
+    implicit def toTemplateResp2(
+        model: Option[ReportTemplateModel],
+    ): Option[ReportTemplateResponse] = model.map(ReportConverter.toTemplateResponse)
+    implicit def toTemplateResps(model: Seq[ReportTemplateModel]): Seq[ReportTemplateResponse] =
+      model.map(ReportConverter.toTemplateResponse)
+    implicit def toGroupResp(model: ReportGroupModel): ReportGroupResponse =
+      ReportConverter.toGroupResponse(model)
+    implicit def toGroupResp2(model: Option[ReportGroupModel]): Option[ReportGroupResponse] =
+      model.map(ReportConverter.toGroupResponse)
+    implicit def toGroupResps(model: Seq[ReportGroupModel]): Seq[ReportGroupResponse] =
+      model.map(ReportConverter.toGroupResponse)
   }
 }

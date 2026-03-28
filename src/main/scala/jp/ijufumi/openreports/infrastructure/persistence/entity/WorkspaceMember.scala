@@ -31,5 +31,5 @@ class WorkspaceMembers(tag: Tag)
       createdAt,
       updatedAt,
       versions,
-    ) <> (WorkspaceMember.tupled, WorkspaceMember.unapply)
+    ).mapTo[WorkspaceMember]
 }

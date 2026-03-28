@@ -8,10 +8,14 @@ import jp.ijufumi.openreports.presentation.response.{
   Workspace => WorkspaceResponse,
   WorkspaceMember => WorkspaceMemberResponse,
 }
-import jp.ijufumi.openreports.presentation.request.{UpdateWorkspace, CreateWorkspaceMember, UpdateWorkspaceMember}
+import jp.ijufumi.openreports.presentation.request.{
+  CreateWorkspaceMember,
+  UpdateWorkspace,
+  UpdateWorkspaceMember,
+}
 import jp.ijufumi.openreports.usecase.port.input.param.{
-  UpdateWorkspaceInput,
   CreateWorkspaceMemberInput,
+  UpdateWorkspaceInput,
   UpdateWorkspaceMemberInput,
 }
 
@@ -45,10 +49,16 @@ object WorkspaceConverter {
     import scala.language.implicitConversions
 
     implicit def toWorkspaceResponse(model: WorkspaceModel): WorkspaceResponse = toResponse(model)
-    implicit def toWorkspaceResponse2(model: Option[WorkspaceModel]): Option[WorkspaceResponse] = model.map(toResponse)
-    implicit def toWorkspaceResponses(model: Seq[WorkspaceModel]): Seq[WorkspaceResponse] = model.map(toResponse)
-    implicit def toWMResponse(model: WorkspaceMemberModel): WorkspaceMemberResponse = toMemberResponse(model)
-    implicit def toWMResponse2(model: Option[WorkspaceMemberModel]): Option[WorkspaceMemberResponse] = model.map(toMemberResponse)
-    implicit def toWMResponses(model: Seq[WorkspaceMemberModel]): Seq[WorkspaceMemberResponse] = model.map(toMemberResponse)
+    implicit def toWorkspaceResponse2(model: Option[WorkspaceModel]): Option[WorkspaceResponse] =
+      model.map(toResponse)
+    implicit def toWorkspaceResponses(model: Seq[WorkspaceModel]): Seq[WorkspaceResponse] =
+      model.map(toResponse)
+    implicit def toWMResponse(model: WorkspaceMemberModel): WorkspaceMemberResponse =
+      toMemberResponse(model)
+    implicit def toWMResponse2(
+        model: Option[WorkspaceMemberModel],
+    ): Option[WorkspaceMemberResponse] = model.map(toMemberResponse)
+    implicit def toWMResponses(model: Seq[WorkspaceMemberModel]): Seq[WorkspaceMemberResponse] =
+      model.map(toMemberResponse)
   }
 }

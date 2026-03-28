@@ -14,7 +14,11 @@ import slick.jdbc.PostgresProfile.api._
 import scala.concurrent.Await
 import scala.concurrent.duration._
 
-class DriverTypeRepositoryImplSpec extends AnyFlatSpec with Matchers with BeforeAndAfterAll with BeforeAndAfterEach {
+class DriverTypeRepositoryImplSpec
+    extends AnyFlatSpec
+    with Matchers
+    with BeforeAndAfterAll
+    with BeforeAndAfterEach {
 
   var db: Database = _
   val repository = new DriverTypeRepositoryImpl()
@@ -39,7 +43,7 @@ class DriverTypeRepositoryImplSpec extends AnyFlatSpec with Matchers with Before
   def insertDriverType(
       id: String = IDs.ulid(),
       name: String = "PostgreSQL",
-      jdbcDriverClass: JdbcDriverClasses.JdbcDriverClass = JdbcDriverClasses.Postgres
+      jdbcDriverClass: JdbcDriverClasses.JdbcDriverClass = JdbcDriverClasses.Postgres,
   ): DriverTypeEntity = {
     val entity = DriverTypeEntity(id, name, jdbcDriverClass)
     Await.result(db.run(driverTypeQuery += entity), 10.seconds)

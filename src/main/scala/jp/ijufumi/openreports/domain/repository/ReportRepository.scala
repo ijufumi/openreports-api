@@ -6,7 +6,7 @@ import slick.jdbc.JdbcBackend.Database
 trait ReportRepository {
 
   def gets(
-            db: Database,
+      db: Database,
       workspaceId: String,
       offset: Int,
       limit: Int,
@@ -14,20 +14,20 @@ trait ReportRepository {
   ): (Seq[Report], Int)
 
   def getsWithTemplate(
-                        db: Database,
+      db: Database,
       workspaceId: String,
       offset: Int,
       limit: Int,
       templateId: String = "",
   ): (Seq[Report], Int)
 
-  def getById(db: Database,workspaceId: String, id: String): Option[Report]
+  def getById(db: Database, workspaceId: String, id: String): Option[Report]
 
-  def getByIdWithTemplate(db: Database,workspaceId: String, id: String): Option[Report]
+  def getByIdWithTemplate(db: Database, workspaceId: String, id: String): Option[Report]
 
-  def register(db: Database,model: Report): Option[Report]
+  def register(db: Database, model: Report): Option[Report]
 
-  def update(db: Database,model: Report): Unit
+  def update(db: Database, model: Report): Unit
 
-  def delete(db: Database,workspaceId: String, id: String): Unit
+  def delete(db: Database, workspaceId: String, id: String): Unit
 }

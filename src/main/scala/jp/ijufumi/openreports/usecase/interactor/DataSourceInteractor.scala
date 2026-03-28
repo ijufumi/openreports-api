@@ -4,7 +4,10 @@ import com.google.inject.Inject
 import jp.ijufumi.openreports.exceptions.NotFoundException
 import jp.ijufumi.openreports.domain.repository.DataSourceRepository
 import jp.ijufumi.openreports.usecase.port.input.DataSourceUseCase
-import jp.ijufumi.openreports.usecase.port.input.param.{CreateDataSourceInput, UpdateDataSourceInput}
+import jp.ijufumi.openreports.usecase.port.input.param.{
+  CreateDataSourceInput,
+  UpdateDataSourceInput,
+}
 import jp.ijufumi.openreports.utils.{IDs, Logging}
 import jp.ijufumi.openreports.domain.port.ConnectionPoolPort
 import jp.ijufumi.openreports.domain.models.entity.{DataSource => DataSourceModel, Lists}

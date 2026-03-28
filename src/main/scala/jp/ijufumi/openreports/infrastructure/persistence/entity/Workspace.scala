@@ -29,5 +29,5 @@ class Workspaces(tag: Tag)
       createdAt,
       updatedAt,
       versions,
-    ) <> (Workspace.tupled, Workspace.unapply)
+    ).mapTo[Workspace]
 }

@@ -4,14 +4,14 @@ import slick.jdbc.PostgresProfile.api._
 import jp.ijufumi.openreports.utils.Dates
 
 case class Report(
-                   id: String,
-                   name: String,
-                   reportTemplateId: String,
-                   dataSourceId: Option[String],
-                   workspaceId: String,
-                   createdAt: Long = Dates.currentTimestamp(),
-                   updatedAt: Long = Dates.currentTimestamp(),
-                   versions: Long = 1,
+    id: String,
+    name: String,
+    reportTemplateId: String,
+    dataSourceId: Option[String],
+    workspaceId: String,
+    createdAt: Long = Dates.currentTimestamp(),
+    updatedAt: Long = Dates.currentTimestamp(),
+    versions: Long = 1,
 )
 
 class Reports(tag: Tag)
@@ -35,5 +35,5 @@ class Reports(tag: Tag)
       createdAt,
       updatedAt,
       versions,
-    ) <> (Report.tupled, Report.unapply)
+    ).mapTo[Report]
 }

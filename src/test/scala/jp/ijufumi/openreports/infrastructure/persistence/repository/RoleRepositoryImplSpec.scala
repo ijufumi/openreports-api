@@ -14,7 +14,11 @@ import slick.jdbc.PostgresProfile.api._
 import scala.concurrent.Await
 import scala.concurrent.duration._
 
-class RoleRepositoryImplSpec extends AnyFlatSpec with Matchers with BeforeAndAfterAll with BeforeAndAfterEach {
+class RoleRepositoryImplSpec
+    extends AnyFlatSpec
+    with Matchers
+    with BeforeAndAfterAll
+    with BeforeAndAfterEach {
 
   var db: Database = _
   val repository = new RoleRepositoryImpl()
@@ -41,7 +45,7 @@ class RoleRepositoryImplSpec extends AnyFlatSpec with Matchers with BeforeAndAft
       roleType: RoleTypes.RoleType,
       createdAt: Long = System.currentTimeMillis(),
       updatedAt: Long = System.currentTimeMillis(),
-      versions: Long = 1
+      versions: Long = 1,
   ): RoleEntity = {
     val entity = RoleEntity(id, roleType, createdAt, updatedAt, versions)
     Await.result(db.run(roleQuery += entity), 10.seconds)
@@ -60,7 +64,9 @@ class RoleRepositoryImplSpec extends AnyFlatSpec with Matchers with BeforeAndAft
     val result = repository.getAll(db)
 
     result should have size 3
-    result.map(_.roleType) should contain allOf (RoleTypes.Admin, RoleTypes.Developer, RoleTypes.Viewer)
+    result.map(
+      _.roleType,
+    ) should contain allOf (RoleTypes.Admin, RoleTypes.Developer, RoleTypes.Viewer)
   }
 
   it should "return empty sequence when no roles exist" in {
@@ -146,7 +152,7 @@ class RoleRepositoryImplSpec extends AnyFlatSpec with Matchers with BeforeAndAft
       roleType = RoleTypes.Admin,
       createdAt = createdAt,
       updatedAt = updatedAt,
-      versions = 2
+      versions = 2,
     )
 
     val result = repository.getByType(db, RoleTypes.Admin)
@@ -185,7 +191,7 @@ class RoleRepositoryImplSpec extends AnyFlatSpec with Matchers with BeforeAndAft
     insertRole(
       roleType = RoleTypes.Admin,
       createdAt = oneHourAgo,
-      updatedAt = now
+      updatedAt = now,
     )
 
     val result = repository.getByType(db, RoleTypes.Admin)

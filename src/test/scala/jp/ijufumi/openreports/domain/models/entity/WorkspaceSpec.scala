@@ -12,7 +12,7 @@ class WorkspaceSpec extends AnyFlatSpec with Matchers {
       name = "Test Workspace",
       slug = "test-workspace",
       createdAt = System.currentTimeMillis(),
-      updatedAt = System.currentTimeMillis()
+      updatedAt = System.currentTimeMillis(),
     )
 
     workspace should not be null
@@ -26,7 +26,7 @@ class WorkspaceSpec extends AnyFlatSpec with Matchers {
       name = "Original Name",
       slug = "original-slug",
       createdAt = 1000L,
-      updatedAt = 1000L
+      updatedAt = 1000L,
     )
 
     val workspace2 = workspace1.copy(name = "Updated Name")
@@ -42,7 +42,7 @@ class WorkspaceSpec extends AnyFlatSpec with Matchers {
       "workspace-123",
       "my-team-workspace",
       "test",
-      "a-b-c-d-e-f"
+      "a-b-c-d-e-f",
     )
 
     slugs.foreach { slug =>
@@ -51,7 +51,7 @@ class WorkspaceSpec extends AnyFlatSpec with Matchers {
         name = "Test",
         slug = slug,
         createdAt = System.currentTimeMillis(),
-        updatedAt = System.currentTimeMillis()
+        updatedAt = System.currentTimeMillis(),
       )
 
       workspace.slug should equal(slug)
@@ -65,7 +65,7 @@ class WorkspaceSpec extends AnyFlatSpec with Matchers {
       name = specialName,
       slug = "special-workspace",
       createdAt = System.currentTimeMillis(),
-      updatedAt = System.currentTimeMillis()
+      updatedAt = System.currentTimeMillis(),
     )
 
     workspace.name should equal(specialName)
@@ -78,7 +78,7 @@ class WorkspaceSpec extends AnyFlatSpec with Matchers {
       name = unicodeName,
       slug = "japanese-workspace",
       createdAt = System.currentTimeMillis(),
-      updatedAt = System.currentTimeMillis()
+      updatedAt = System.currentTimeMillis(),
     )
 
     workspace.name should equal(unicodeName)
@@ -90,7 +90,7 @@ class WorkspaceSpec extends AnyFlatSpec with Matchers {
       name = "",
       slug = "empty-name",
       createdAt = System.currentTimeMillis(),
-      updatedAt = System.currentTimeMillis()
+      updatedAt = System.currentTimeMillis(),
     )
 
     workspace.name should equal("")
@@ -103,7 +103,7 @@ class WorkspaceSpec extends AnyFlatSpec with Matchers {
       name = longName,
       slug = "long-name-workspace",
       createdAt = System.currentTimeMillis(),
-      updatedAt = System.currentTimeMillis()
+      updatedAt = System.currentTimeMillis(),
     )
 
     workspace.name should have length 500
@@ -118,7 +118,7 @@ class WorkspaceSpec extends AnyFlatSpec with Matchers {
       name = "Test Workspace",
       slug = "test-workspace",
       createdAt = createdAt,
-      updatedAt = updatedAt
+      updatedAt = updatedAt,
     )
 
     workspace.createdAt should equal(createdAt)
@@ -132,13 +132,13 @@ class WorkspaceSpec extends AnyFlatSpec with Matchers {
       name = "Original Name",
       slug = "original-slug",
       createdAt = 1000L,
-      updatedAt = 1000L
+      updatedAt = 1000L,
     )
 
     val modified = original.copy(
       name = "Modified Name",
       slug = "modified-slug",
-      updatedAt = 2000L
+      updatedAt = 2000L,
     )
 
     modified.id should equal(original.id)
@@ -155,7 +155,7 @@ class WorkspaceSpec extends AnyFlatSpec with Matchers {
       slug = "test-workspace",
       createdAt = System.currentTimeMillis(),
       updatedAt = System.currentTimeMillis(),
-      versions = 5
+      versions = 5,
     )
 
     workspace.versions should equal(5)
@@ -167,7 +167,7 @@ class WorkspaceSpec extends AnyFlatSpec with Matchers {
       name = "Test",
       slug = "test",
       createdAt = 1000L,
-      updatedAt = 1000L
+      updatedAt = 1000L,
     )
 
     val workspace2 = Workspace(
@@ -175,7 +175,7 @@ class WorkspaceSpec extends AnyFlatSpec with Matchers {
       name = "Test",
       slug = "test",
       createdAt = 1000L,
-      updatedAt = 1000L
+      updatedAt = 1000L,
     )
 
     workspace1 should equal(workspace2)
@@ -187,7 +187,7 @@ class WorkspaceSpec extends AnyFlatSpec with Matchers {
       name = "Test",
       slug = "test",
       createdAt = 1000L,
-      updatedAt = 1000L
+      updatedAt = 1000L,
     )
 
     val workspace2 = Workspace(
@@ -195,7 +195,7 @@ class WorkspaceSpec extends AnyFlatSpec with Matchers {
       name = "Test",
       slug = "test",
       createdAt = 1000L,
-      updatedAt = 1000L
+      updatedAt = 1000L,
     )
 
     workspace1 should not equal workspace2
@@ -207,7 +207,7 @@ class WorkspaceSpec extends AnyFlatSpec with Matchers {
       name = "Test",
       slug = "slug-1",
       createdAt = 1000L,
-      updatedAt = 1000L
+      updatedAt = 1000L,
     )
 
     val workspace2 = Workspace(
@@ -215,7 +215,7 @@ class WorkspaceSpec extends AnyFlatSpec with Matchers {
       name = "Test",
       slug = "slug-2",
       createdAt = 1000L,
-      updatedAt = 1000L
+      updatedAt = 1000L,
     )
 
     workspace1 should not equal workspace2
@@ -227,7 +227,7 @@ class WorkspaceSpec extends AnyFlatSpec with Matchers {
       name = "My Team Workspace",
       slug = "my-team-workspace",
       createdAt = System.currentTimeMillis(),
-      updatedAt = System.currentTimeMillis()
+      updatedAt = System.currentTimeMillis(),
     )
 
     workspace.slug should fullyMatch regex "[a-z0-9-]+"
@@ -239,7 +239,7 @@ class WorkspaceSpec extends AnyFlatSpec with Matchers {
       name = "Workspace 123",
       slug = "workspace-123",
       createdAt = System.currentTimeMillis(),
-      updatedAt = System.currentTimeMillis()
+      updatedAt = System.currentTimeMillis(),
     )
 
     workspace.slug should equal("workspace-123")

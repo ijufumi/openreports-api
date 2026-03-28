@@ -9,7 +9,11 @@ import org.scalatest.matchers.should.Matchers
 import slick.jdbc.JdbcBackend.Database
 import slick.jdbc.PostgresProfile.api._
 
-class MemberRepositoryImplSpec extends AnyFlatSpec with Matchers with BeforeAndAfterAll with BeforeAndAfterEach {
+class MemberRepositoryImplSpec
+    extends AnyFlatSpec
+    with Matchers
+    with BeforeAndAfterAll
+    with BeforeAndAfterEach {
 
   var db: Database = _
   val repository = new MemberRepositoryImpl()
@@ -44,7 +48,7 @@ class MemberRepositoryImplSpec extends AnyFlatSpec with Matchers with BeforeAndA
       password = "hashed-password",
       name = "Test User",
       createdAt = System.currentTimeMillis(),
-      updatedAt = System.currentTimeMillis()
+      updatedAt = System.currentTimeMillis(),
     )
 
     repository.register(db, member)
@@ -74,7 +78,7 @@ class MemberRepositoryImplSpec extends AnyFlatSpec with Matchers with BeforeAndA
       password = "",
       name = "Google User",
       createdAt = System.currentTimeMillis(),
-      updatedAt = System.currentTimeMillis()
+      updatedAt = System.currentTimeMillis(),
     )
 
     repository.register(db, member)
@@ -102,7 +106,7 @@ class MemberRepositoryImplSpec extends AnyFlatSpec with Matchers with BeforeAndA
       password = "hashed-password",
       name = "Email User",
       createdAt = System.currentTimeMillis(),
-      updatedAt = System.currentTimeMillis()
+      updatedAt = System.currentTimeMillis(),
     )
 
     repository.register(db, member)
@@ -129,7 +133,7 @@ class MemberRepositoryImplSpec extends AnyFlatSpec with Matchers with BeforeAndA
       password = "hashed-password",
       name = "New User",
       createdAt = System.currentTimeMillis(),
-      updatedAt = System.currentTimeMillis()
+      updatedAt = System.currentTimeMillis(),
     )
 
     val result = repository.register(db, member)
@@ -149,7 +153,7 @@ class MemberRepositoryImplSpec extends AnyFlatSpec with Matchers with BeforeAndA
       password = "old-password",
       name = "Old Name",
       createdAt = System.currentTimeMillis(),
-      updatedAt = System.currentTimeMillis()
+      updatedAt = System.currentTimeMillis(),
     )
 
     repository.register(db, member)
@@ -157,7 +161,7 @@ class MemberRepositoryImplSpec extends AnyFlatSpec with Matchers with BeforeAndA
     val updatedMember = member.copy(
       name = "Updated Name",
       password = "new-password",
-      updatedAt = System.currentTimeMillis()
+      updatedAt = System.currentTimeMillis(),
     )
 
     repository.update(db, updatedMember)

@@ -1,12 +1,12 @@
 package jp.ijufumi.openreports.usecase.port.input
 
 import jp.ijufumi.openreports.usecase.port.input.param.{
+  CreateReportGroupInput,
   CreateReportInput,
   CreateTemplateInput,
-  CreateReportGroupInput,
+  UpdateReportGroupInput,
   UpdateReportInput,
   UpdateTemplateInput,
-  UpdateReportGroupInput,
 }
 import jp.ijufumi.openreports.domain.models.entity.{Lists, Report, ReportGroup, ReportTemplate}
 import org.scalatra.servlet.FileItem
@@ -30,9 +30,17 @@ trait ReportUseCase {
 
   def deleteReport(workspaceId: String, id: String): Unit
 
-  def createTemplate(workspaceId: String, req: CreateTemplateInput, fileItem: FileItem): Option[ReportTemplate]
+  def createTemplate(
+      workspaceId: String,
+      req: CreateTemplateInput,
+      fileItem: FileItem,
+  ): Option[ReportTemplate]
 
-  def updateTemplate(workspaceId: String, id: String, input: UpdateTemplateInput): Option[ReportTemplate]
+  def updateTemplate(
+      workspaceId: String,
+      id: String,
+      input: UpdateTemplateInput,
+  ): Option[ReportTemplate]
 
   def deleteTemplate(workspaceId: String, id: String): Unit
 
@@ -42,7 +50,11 @@ trait ReportUseCase {
 
   def createGroup(workspaceId: String, input: CreateReportGroupInput): Option[ReportGroup]
 
-  def updateGroup(workspaceId: String, id: String, input: UpdateReportGroupInput): Option[ReportGroup]
+  def updateGroup(
+      workspaceId: String,
+      id: String,
+      input: UpdateReportGroupInput,
+  ): Option[ReportGroup]
 
   def deleteGroup(workspaceId: String, id: String): Unit
 }

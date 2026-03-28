@@ -16,7 +16,7 @@ class ReportTemplateSpec extends AnyFlatSpec with Matchers {
       storageType = StorageTypes.Local,
       fileSize = 1024L,
       createdAt = System.currentTimeMillis(),
-      updatedAt = System.currentTimeMillis()
+      updatedAt = System.currentTimeMillis(),
     )
 
     template should not be null
@@ -33,7 +33,7 @@ class ReportTemplateSpec extends AnyFlatSpec with Matchers {
       storageType = StorageTypes.Local,
       fileSize = 1024L,
       createdAt = 1000L,
-      updatedAt = 1000L
+      updatedAt = 1000L,
     )
 
     val template2 = template1.copy(name = "Updated Name")
@@ -52,7 +52,7 @@ class ReportTemplateSpec extends AnyFlatSpec with Matchers {
       storageType = StorageTypes.Local,
       fileSize = 2048L,
       createdAt = System.currentTimeMillis(),
-      updatedAt = System.currentTimeMillis()
+      updatedAt = System.currentTimeMillis(),
     )
 
     template.storageType should equal(StorageTypes.Local)
@@ -67,7 +67,7 @@ class ReportTemplateSpec extends AnyFlatSpec with Matchers {
       storageType = StorageTypes.S3,
       fileSize = 2048L,
       createdAt = System.currentTimeMillis(),
-      updatedAt = System.currentTimeMillis()
+      updatedAt = System.currentTimeMillis(),
     )
 
     template.storageType should equal(StorageTypes.S3)
@@ -85,7 +85,7 @@ class ReportTemplateSpec extends AnyFlatSpec with Matchers {
         storageType = StorageTypes.Local,
         fileSize = 1024L,
         createdAt = System.currentTimeMillis(),
-        updatedAt = System.currentTimeMillis()
+        updatedAt = System.currentTimeMillis(),
       )
 
       template.filePath should endWith(ext)
@@ -102,7 +102,7 @@ class ReportTemplateSpec extends AnyFlatSpec with Matchers {
       storageType = StorageTypes.Local,
       fileSize = 1024L,
       createdAt = System.currentTimeMillis(),
-      updatedAt = System.currentTimeMillis()
+      updatedAt = System.currentTimeMillis(),
     )
 
     template.filePath should equal(specialPath)
@@ -118,7 +118,7 @@ class ReportTemplateSpec extends AnyFlatSpec with Matchers {
       storageType = StorageTypes.Local,
       fileSize = 1024L,
       createdAt = System.currentTimeMillis(),
-      updatedAt = System.currentTimeMillis()
+      updatedAt = System.currentTimeMillis(),
     )
 
     template.name should equal(unicodeName)
@@ -133,7 +133,7 @@ class ReportTemplateSpec extends AnyFlatSpec with Matchers {
       storageType = StorageTypes.Local,
       fileSize = 0L,
       createdAt = System.currentTimeMillis(),
-      updatedAt = System.currentTimeMillis()
+      updatedAt = System.currentTimeMillis(),
     )
 
     template.fileSize should equal(0L)
@@ -149,7 +149,7 @@ class ReportTemplateSpec extends AnyFlatSpec with Matchers {
       storageType = StorageTypes.Local,
       fileSize = largeSize,
       createdAt = System.currentTimeMillis(),
-      updatedAt = System.currentTimeMillis()
+      updatedAt = System.currentTimeMillis(),
     )
 
     template.fileSize should equal(largeSize)
@@ -167,7 +167,7 @@ class ReportTemplateSpec extends AnyFlatSpec with Matchers {
       storageType = StorageTypes.Local,
       fileSize = 1024L,
       createdAt = createdAt,
-      updatedAt = updatedAt
+      updatedAt = updatedAt,
     )
 
     template.createdAt should equal(createdAt)
@@ -184,7 +184,7 @@ class ReportTemplateSpec extends AnyFlatSpec with Matchers {
       storageType = StorageTypes.Local,
       fileSize = 1024L,
       createdAt = 1000L,
-      updatedAt = 1000L
+      updatedAt = 1000L,
     )
 
     val modified = original.copy(
@@ -192,7 +192,7 @@ class ReportTemplateSpec extends AnyFlatSpec with Matchers {
       filePath = "/modified/path.xlsx",
       storageType = StorageTypes.S3,
       fileSize = 2048L,
-      updatedAt = 2000L
+      updatedAt = 2000L,
     )
 
     modified.id should equal(original.id)
@@ -213,7 +213,7 @@ class ReportTemplateSpec extends AnyFlatSpec with Matchers {
       storageType = StorageTypes.Local,
       fileSize = 1024L,
       createdAt = 1000L,
-      updatedAt = 1000L
+      updatedAt = 1000L,
     )
 
     val template2 = ReportTemplate(
@@ -224,7 +224,7 @@ class ReportTemplateSpec extends AnyFlatSpec with Matchers {
       storageType = StorageTypes.Local,
       fileSize = 1024L,
       createdAt = 1000L,
-      updatedAt = 1000L
+      updatedAt = 1000L,
     )
 
     template1 should equal(template2)
@@ -239,7 +239,7 @@ class ReportTemplateSpec extends AnyFlatSpec with Matchers {
       storageType = StorageTypes.Local,
       fileSize = 1024L,
       createdAt = 1000L,
-      updatedAt = 1000L
+      updatedAt = 1000L,
     )
 
     val template2 = ReportTemplate(
@@ -250,7 +250,7 @@ class ReportTemplateSpec extends AnyFlatSpec with Matchers {
       storageType = StorageTypes.Local,
       fileSize = 1024L,
       createdAt = 1000L,
-      updatedAt = 1000L
+      updatedAt = 1000L,
     )
 
     template1 should not equal template2
@@ -265,7 +265,7 @@ class ReportTemplateSpec extends AnyFlatSpec with Matchers {
       storageType = StorageTypes.Local,
       fileSize = 1024L,
       createdAt = 1000L,
-      updatedAt = 1000L
+      updatedAt = 1000L,
     )
 
     val template2 = ReportTemplate(
@@ -276,7 +276,7 @@ class ReportTemplateSpec extends AnyFlatSpec with Matchers {
       storageType = StorageTypes.S3,
       fileSize = 1024L,
       createdAt = 1000L,
-      updatedAt = 1000L
+      updatedAt = 1000L,
     )
 
     template1 should not equal template2

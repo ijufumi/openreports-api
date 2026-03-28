@@ -1,7 +1,10 @@
 package jp.ijufumi.openreports.usecase.interactor
 
 import _root_.jp.ijufumi.openreports.domain.models.value.enums.StorageTypes
-import _root_.jp.ijufumi.openreports.infrastructure.storage.local.{LocalFileRepository, LocalSeedFileRepository}
+import _root_.jp.ijufumi.openreports.infrastructure.storage.local.{
+  LocalFileRepository,
+  LocalSeedFileRepository,
+}
 import _root_.jp.ijufumi.openreports.infrastructure.storage.s3.AwsS3Repository
 import org.mockito.Mockito._
 import org.scalatest.flatspec.AnyFlatSpec
@@ -17,7 +20,8 @@ class StorageInteractorSpec extends AnyFlatSpec with MockitoSugar {
     val localSeedFileRepository = mock[LocalSeedFileRepository]
     val awsS3Repository = mock[AwsS3Repository]
 
-    val storageService = new StorageInteractor(localFileRepository, localSeedFileRepository, awsS3Repository)
+    val storageService =
+      new StorageInteractor(localFileRepository, localSeedFileRepository, awsS3Repository)
 
     val workspaceId = "1"
     val key = "test.xlsx"
@@ -39,7 +43,8 @@ class StorageInteractorSpec extends AnyFlatSpec with MockitoSugar {
     val localSeedFileRepository = mock[LocalSeedFileRepository]
     val awsS3Repository = mock[AwsS3Repository]
 
-    val storageService = new StorageInteractor(localFileRepository, localSeedFileRepository, awsS3Repository)
+    val storageService =
+      new StorageInteractor(localFileRepository, localSeedFileRepository, awsS3Repository)
 
     val workspaceId = "1"
     val key = "test.xlsx"

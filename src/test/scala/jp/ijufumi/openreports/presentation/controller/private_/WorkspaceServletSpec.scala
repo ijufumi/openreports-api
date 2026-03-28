@@ -1,6 +1,10 @@
 package jp.ijufumi.openreports.presentation.controller.private_
 
-import jp.ijufumi.openreports.domain.models.entity.{Lists, Member => MemberModel, Workspace => WorkspaceModel}
+import jp.ijufumi.openreports.domain.models.entity.{
+  Lists,
+  Member => MemberModel,
+  Workspace => WorkspaceModel,
+}
 import jp.ijufumi.openreports.usecase.port.input.{LoginUseCase, WorkspaceUseCase}
 import org.scalamock.scalatest.MockFactory
 import org.scalatra.test.scalatest._
@@ -31,7 +35,10 @@ class WorkspaceServletSpec extends ScalatraFunSuite with MockFactory {
     (loginService.verifyWorkspaceId _).expects(member.id, "workspace-id").returns(true)
     (workspaceService.getWorkspace _).expects("workspace-id").returns(Some(workspace))
 
-    get("/workspace-id", headers = Map("Authorization" -> "api-token", "X-Workspace-Id" -> "workspace-id")) {
+    get(
+      "/workspace-id",
+      headers = Map("Authorization" -> "api-token", "X-Workspace-Id" -> "workspace-id"),
+    ) {
       status should equal(200)
       body should include("workspace-id")
       body should include("Test Workspace")
@@ -43,7 +50,10 @@ class WorkspaceServletSpec extends ScalatraFunSuite with MockFactory {
     (loginService.verifyWorkspaceId _).expects(member.id, "workspace-id").returns(true)
     (workspaceService.getWorkspace _).expects("nonexistent-id").returns(None)
 
-    get("/nonexistent-id", headers = Map("Authorization" -> "api-token", "X-Workspace-Id" -> "workspace-id")) {
+    get(
+      "/nonexistent-id",
+      headers = Map("Authorization" -> "api-token", "X-Workspace-Id" -> "workspace-id"),
+    ) {
       status should equal(404)
       body should include("workspace not found")
     }
@@ -54,15 +64,21 @@ class WorkspaceServletSpec extends ScalatraFunSuite with MockFactory {
 
     (loginService.verifyAuthorizationHeader _).expects("api-token").returns(Some(member))
     (loginService.verifyWorkspaceId _).expects(member.id, "workspace-id").returns(true)
-    (workspaceService.createAndRelevant _).expects(where { (createWorkspace: String, memberId: String) =>
-      memberId == member.id
-    }).returns(Some(workspace))
+    (workspaceService.createAndRelevant _)
+      .expects(where { (createWorkspace: String, memberId: String) =>
+        memberId == member.id
+      })
+      .returns(Some(workspace))
 
-    post("/", body = requestBody.getBytes, headers = Map(
-      "Authorization" -> "api-token",
-      "X-Workspace-Id" -> "workspace-id",
-      "Content-Type" -> "application/json"
-    )) {
+    post(
+      "/",
+      body = requestBody.getBytes,
+      headers = Map(
+        "Authorization" -> "api-token",
+        "X-Workspace-Id" -> "workspace-id",
+        "Content-Type" -> "application/json",
+      ),
+    ) {
       status should equal(200)
       body should include("workspace-id")
     }
@@ -75,11 +91,15 @@ class WorkspaceServletSpec extends ScalatraFunSuite with MockFactory {
     (loginService.verifyWorkspaceId _).expects(member.id, "workspace-id").returns(true)
     (workspaceService.createAndRelevant _).expects(*, *).returns(None)
 
-    post("/", body = requestBody.getBytes, headers = Map(
-      "Authorization" -> "api-token",
-      "X-Workspace-Id" -> "workspace-id",
-      "Content-Type" -> "application/json"
-    )) {
+    post(
+      "/",
+      body = requestBody.getBytes,
+      headers = Map(
+        "Authorization" -> "api-token",
+        "X-Workspace-Id" -> "workspace-id",
+        "Content-Type" -> "application/json",
+      ),
+    ) {
       status should equal(400)
       body should include("something wrong")
     }
@@ -90,15 +110,21 @@ class WorkspaceServletSpec extends ScalatraFunSuite with MockFactory {
 
     (loginService.verifyAuthorizationHeader _).expects("api-token").returns(Some(member))
     (loginService.verifyWorkspaceId _).expects(member.id, "workspace-id").returns(true)
-    (workspaceService.updateWorkspace _).expects(where { (workspaceId: String, updateWorkspace: Any) =>
-      workspaceId == "workspace-id"
-    }).returns(Some(workspace))
+    (workspaceService.updateWorkspace _)
+      .expects(where { (workspaceId: String, updateWorkspace: Any) =>
+        workspaceId == "workspace-id"
+      })
+      .returns(Some(workspace))
 
-    put("/workspace-id", body = requestBody.getBytes, headers = Map(
-      "Authorization" -> "api-token",
-      "X-Workspace-Id" -> "workspace-id",
-      "Content-Type" -> "application/json"
-    )) {
+    put(
+      "/workspace-id",
+      body = requestBody.getBytes,
+      headers = Map(
+        "Authorization" -> "api-token",
+        "X-Workspace-Id" -> "workspace-id",
+        "Content-Type" -> "application/json",
+      ),
+    ) {
       status should equal(200)
       body should include("workspace-id")
     }
@@ -111,11 +137,15 @@ class WorkspaceServletSpec extends ScalatraFunSuite with MockFactory {
     (loginService.verifyWorkspaceId _).expects(member.id, "workspace-id").returns(true)
     (workspaceService.updateWorkspace _).expects(*, *).returns(None)
 
-    put("/workspace-id", body = requestBody.getBytes, headers = Map(
-      "Authorization" -> "api-token",
-      "X-Workspace-Id" -> "workspace-id",
-      "Content-Type" -> "application/json"
-    )) {
+    put(
+      "/workspace-id",
+      body = requestBody.getBytes,
+      headers = Map(
+        "Authorization" -> "api-token",
+        "X-Workspace-Id" -> "workspace-id",
+        "Content-Type" -> "application/json",
+      ),
+    ) {
       status should equal(400)
       body should include("something wrong")
     }

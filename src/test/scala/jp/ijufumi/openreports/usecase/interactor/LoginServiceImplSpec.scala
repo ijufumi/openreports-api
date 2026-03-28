@@ -1,12 +1,8 @@
-
 package jp.ijufumi.openreports.usecase.interactor
 
 import jp.ijufumi.openreports.domain.models.entity.Member
 import jp.ijufumi.openreports.domain.port.{AppConfigPort, CachePort, GoogleAuthPort}
-import jp.ijufumi.openreports.domain.repository.{
-  MemberRepository,
-  WorkspaceRepository,
-}
+import jp.ijufumi.openreports.domain.repository.{MemberRepository, WorkspaceRepository}
 import jp.ijufumi.openreports.usecase.port.input.WorkspaceUseCase
 import jp.ijufumi.openreports.usecase.port.input.param.LoginInput
 import jp.ijufumi.openreports.utils.Hash
@@ -28,7 +24,15 @@ class LoginInteractorSpec extends AnyFlatSpec with MockitoSugar {
     val appConfig = mock[AppConfigPort]
 
     val loginService =
-      new LoginInteractor(db, memberRepository, workspaceRepository, googleAuthPort, workspaceService, cachePort, appConfig)
+      new LoginInteractor(
+        db,
+        memberRepository,
+        workspaceRepository,
+        googleAuthPort,
+        workspaceService,
+        cachePort,
+        appConfig,
+      )
 
     val email = "test@test.com"
     val password = "password"
@@ -65,7 +69,15 @@ class LoginInteractorSpec extends AnyFlatSpec with MockitoSugar {
     val appConfig = mock[AppConfigPort]
 
     val loginService =
-      new LoginInteractor(db, memberRepository, workspaceRepository, googleAuthPort, workspaceService, cachePort, appConfig)
+      new LoginInteractor(
+        db,
+        memberRepository,
+        workspaceRepository,
+        googleAuthPort,
+        workspaceService,
+        cachePort,
+        appConfig,
+      )
 
     val email = "test@test.com"
     val password = "password"
@@ -91,7 +103,15 @@ class LoginInteractorSpec extends AnyFlatSpec with MockitoSugar {
     val appConfig = mock[AppConfigPort]
 
     val loginService =
-      new LoginInteractor(db, memberRepository, workspaceRepository, googleAuthPort, workspaceService, cachePort, appConfig)
+      new LoginInteractor(
+        db,
+        memberRepository,
+        workspaceRepository,
+        googleAuthPort,
+        workspaceService,
+        cachePort,
+        appConfig,
+      )
 
     val email = "test@test.com"
     val password = "password"

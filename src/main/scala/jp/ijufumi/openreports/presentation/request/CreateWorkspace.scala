@@ -1,13 +1,14 @@
 package jp.ijufumi.openreports.presentation.request
 
-import com.wix.accord.Validator
-import com.wix.accord.dsl._
+import jp.ijufumi.openreports.presentation.validation.Validator
 
 case class CreateWorkspace(name: String)
 
 object CreateWorkspace {
-  implicit val validate: Validator[CreateWorkspace] = validator[CreateWorkspace] { param =>
-    param.name is notEmpty
-    param.name.length is between(1, 255)
+  implicit val validate: Validator[CreateWorkspace] = new Validator[CreateWorkspace] {
+    def validate(param: CreateWorkspace) = collectViolations(
+      notEmpty("name", param.name),
+      lengthBetween("name", param.name, 1, 255),
+    )
   }
 }

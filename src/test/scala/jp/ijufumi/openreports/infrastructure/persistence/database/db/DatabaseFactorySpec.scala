@@ -111,5 +111,5 @@ class DatabaseFactorySpec extends AnyFlatSpec with Matchers {
 
     database.close()
   }
-  */
+   */
 }

@@ -22,7 +22,8 @@ class DataSourceServlet @Inject() (
   post("/") {
     withWorkspace { _workspaceId =>
       validateBody[CreateDataSource] { requestVal =>
-        val result = dataSourceService.registerDataSource(_workspaceId, DSC.toCreateInput(requestVal))
+        val result =
+          dataSourceService.registerDataSource(_workspaceId, DSC.toCreateInput(requestVal))
         if (result.isEmpty) {
           badRequest("something wrong")
         } else {
@@ -36,7 +37,8 @@ class DataSourceServlet @Inject() (
     withWorkspace { _workspaceId =>
       validateBody[UpdateDataSource] { requestVal =>
         val id = params("id")
-        val result = dataSourceService.updateDataSource(_workspaceId, id, DSC.toUpdateInput(requestVal))
+        val result =
+          dataSourceService.updateDataSource(_workspaceId, id, DSC.toUpdateInput(requestVal))
         if (result.isEmpty) {
           badRequest("something wrong")
         } else {

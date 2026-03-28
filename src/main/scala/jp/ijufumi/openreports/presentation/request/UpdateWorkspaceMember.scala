@@ -1,12 +1,13 @@
 package jp.ijufumi.openreports.presentation.request
 
-import com.wix.accord.Validator
-import com.wix.accord.dsl._
+import jp.ijufumi.openreports.presentation.validation.Validator
 
 case class UpdateWorkspaceMember(roleId: String)
 
 object UpdateWorkspaceMember {
-  implicit val validate: Validator[UpdateWorkspaceMember] = validator[UpdateWorkspaceMember] { param =>
-    param.roleId is notEmpty
+  implicit val validate: Validator[UpdateWorkspaceMember] = new Validator[UpdateWorkspaceMember] {
+    def validate(param: UpdateWorkspaceMember) = collectViolations(
+      notEmpty("roleId", param.roleId),
+    )
   }
 }

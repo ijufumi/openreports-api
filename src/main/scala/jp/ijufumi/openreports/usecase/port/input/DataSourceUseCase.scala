@@ -1,6 +1,9 @@
 package jp.ijufumi.openreports.usecase.port.input
 
-import jp.ijufumi.openreports.usecase.port.input.param.{CreateDataSourceInput, UpdateDataSourceInput}
+import jp.ijufumi.openreports.usecase.port.input.param.{
+  CreateDataSourceInput,
+  UpdateDataSourceInput,
+}
 import jp.ijufumi.openreports.domain.models.entity.{DataSource, Lists}
 
 import java.sql.Connection
@@ -14,7 +17,11 @@ trait DataSourceUseCase {
 
   def registerDataSource(workspaceId: String, requestVal: CreateDataSourceInput): Option[DataSource]
 
-  def updateDataSource(workspaceId: String, id: String, updateDataSource: UpdateDataSourceInput): Option[DataSource]
+  def updateDataSource(
+      workspaceId: String,
+      id: String,
+      updateDataSource: UpdateDataSourceInput,
+  ): Option[DataSource]
 
   def deleteDataSource(workspaceId: String, id: String): Unit
 }

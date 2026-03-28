@@ -12,7 +12,7 @@ class RoleSpec extends AnyFlatSpec with Matchers {
       id = IDs.ulid(),
       roleType = RoleTypes.Admin,
       createdAt = System.currentTimeMillis(),
-      updatedAt = System.currentTimeMillis()
+      updatedAt = System.currentTimeMillis(),
     )
 
     role should not be null
@@ -24,7 +24,7 @@ class RoleSpec extends AnyFlatSpec with Matchers {
       id = "role-id",
       roleType = RoleTypes.Admin,
       createdAt = 1000L,
-      updatedAt = 1000L
+      updatedAt = 1000L,
     )
 
     val role2 = role1.copy(roleType = RoleTypes.Developer)
@@ -39,7 +39,7 @@ class RoleSpec extends AnyFlatSpec with Matchers {
       id = IDs.ulid(),
       roleType = RoleTypes.Admin,
       createdAt = System.currentTimeMillis(),
-      updatedAt = System.currentTimeMillis()
+      updatedAt = System.currentTimeMillis(),
     )
 
     role.roleType should equal(RoleTypes.Admin)
@@ -50,7 +50,7 @@ class RoleSpec extends AnyFlatSpec with Matchers {
       id = IDs.ulid(),
       roleType = RoleTypes.Developer,
       createdAt = System.currentTimeMillis(),
-      updatedAt = System.currentTimeMillis()
+      updatedAt = System.currentTimeMillis(),
     )
 
     role.roleType should equal(RoleTypes.Developer)
@@ -61,7 +61,7 @@ class RoleSpec extends AnyFlatSpec with Matchers {
       id = IDs.ulid(),
       roleType = RoleTypes.Viewer,
       createdAt = System.currentTimeMillis(),
-      updatedAt = System.currentTimeMillis()
+      updatedAt = System.currentTimeMillis(),
     )
 
     role.roleType should equal(RoleTypes.Viewer)
@@ -75,7 +75,7 @@ class RoleSpec extends AnyFlatSpec with Matchers {
       id = IDs.ulid(),
       roleType = RoleTypes.Admin,
       createdAt = createdAt,
-      updatedAt = updatedAt
+      updatedAt = updatedAt,
     )
 
     role.createdAt should equal(createdAt)
@@ -88,12 +88,12 @@ class RoleSpec extends AnyFlatSpec with Matchers {
       id = "role-id",
       roleType = RoleTypes.Admin,
       createdAt = 1000L,
-      updatedAt = 1000L
+      updatedAt = 1000L,
     )
 
     val modified = original.copy(
       roleType = RoleTypes.Viewer,
-      updatedAt = 2000L
+      updatedAt = 2000L,
     )
 
     modified.id should equal(original.id)
@@ -108,7 +108,7 @@ class RoleSpec extends AnyFlatSpec with Matchers {
       roleType = RoleTypes.Admin,
       createdAt = System.currentTimeMillis(),
       updatedAt = System.currentTimeMillis(),
-      versions = 5
+      versions = 5,
     )
 
     role.versions should equal(5)
@@ -119,14 +119,14 @@ class RoleSpec extends AnyFlatSpec with Matchers {
       id = "same-id",
       roleType = RoleTypes.Admin,
       createdAt = 1000L,
-      updatedAt = 1000L
+      updatedAt = 1000L,
     )
 
     val role2 = Role(
       id = "same-id",
       roleType = RoleTypes.Admin,
       createdAt = 1000L,
-      updatedAt = 1000L
+      updatedAt = 1000L,
     )
 
     role1 should equal(role2)
@@ -137,14 +137,14 @@ class RoleSpec extends AnyFlatSpec with Matchers {
       id = "id-1",
       roleType = RoleTypes.Admin,
       createdAt = 1000L,
-      updatedAt = 1000L
+      updatedAt = 1000L,
     )
 
     val role2 = Role(
       id = "id-2",
       roleType = RoleTypes.Admin,
       createdAt = 1000L,
-      updatedAt = 1000L
+      updatedAt = 1000L,
     )
 
     role1 should not equal role2
@@ -155,14 +155,14 @@ class RoleSpec extends AnyFlatSpec with Matchers {
       id = "same-id",
       roleType = RoleTypes.Admin,
       createdAt = 1000L,
-      updatedAt = 1000L
+      updatedAt = 1000L,
     )
 
     val role2 = Role(
       id = "same-id",
       roleType = RoleTypes.Developer,
       createdAt = 1000L,
-      updatedAt = 1000L
+      updatedAt = 1000L,
     )
 
     role1 should not equal role2
@@ -178,7 +178,7 @@ class RoleSpec extends AnyFlatSpec with Matchers {
     val roleStrings = Seq(
       RoleTypes.Admin.toString,
       RoleTypes.Developer.toString,
-      RoleTypes.Viewer.toString
+      RoleTypes.Viewer.toString,
     )
 
     roleStrings.distinct should have size 3

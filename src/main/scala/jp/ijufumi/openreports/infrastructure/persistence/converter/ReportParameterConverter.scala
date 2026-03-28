@@ -1,7 +1,9 @@
 package jp.ijufumi.openreports.infrastructure.persistence.converter
 
 import jp.ijufumi.openreports.domain.models.entity.{ReportParameter => ReportParameterModel}
-import jp.ijufumi.openreports.infrastructure.persistence.entity.{ReportParameter => ReportParameterEntity}
+import jp.ijufumi.openreports.infrastructure.persistence.entity.{
+  ReportParameter => ReportParameterEntity,
+}
 
 object ReportParameterConverter {
   def toDomain(entity: ReportParameterEntity): ReportParameterModel = {
@@ -32,9 +34,15 @@ object ReportParameterConverter {
   object conversions {
     import scala.language.implicitConversions
 
-    implicit def toReportParameterEntity(model: ReportParameterModel): ReportParameterEntity = toEntity(model)
-    implicit def fromReportParameterEntity(entity: ReportParameterEntity): ReportParameterModel = toDomain(entity)
-    implicit def fromReportParameterEntity2(entity: Option[ReportParameterEntity]): Option[ReportParameterModel] = entity.map(toDomain)
-    implicit def fromReportParameterEntities(entity: Seq[ReportParameterEntity]): Seq[ReportParameterModel] = entity.map(toDomain)
+    implicit def toReportParameterEntity(model: ReportParameterModel): ReportParameterEntity =
+      toEntity(model)
+    implicit def fromReportParameterEntity(entity: ReportParameterEntity): ReportParameterModel =
+      toDomain(entity)
+    implicit def fromReportParameterEntity2(
+        entity: Option[ReportParameterEntity],
+    ): Option[ReportParameterModel] = entity.map(toDomain)
+    implicit def fromReportParameterEntities(
+        entity: Seq[ReportParameterEntity],
+    ): Seq[ReportParameterModel] = entity.map(toDomain)
   }
 }

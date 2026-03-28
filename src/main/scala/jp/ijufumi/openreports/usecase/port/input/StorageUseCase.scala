@@ -8,7 +8,12 @@ trait StorageUseCase {
 
   def get(workspaceId: String, key: String, storageType: StorageTypes.StorageType): Path
 
-  def create(workspaceId: String, key: String, storageType: StorageTypes.StorageType, file: Path): Unit
+  def create(
+      workspaceId: String,
+      key: String,
+      storageType: StorageTypes.StorageType,
+      file: Path,
+  ): Unit
 
   def delete(workspaceId: String, key: String, storageType: StorageTypes.StorageType): Unit
 }

@@ -8,7 +8,7 @@ trait RoleFunctionRepository {
       db: Database,
   ): Seq[RoleFunction]
 
-  def getByRoleId(db: Database,roleId: String): Seq[RoleFunction]
+  def getByRoleId(db: Database, roleId: String): Seq[RoleFunction]
 
-  def getByFunctionId(db: Database,functionId: String): Seq[RoleFunction]
+  def getByFunctionId(db: Database, functionId: String): Seq[RoleFunction]
 }

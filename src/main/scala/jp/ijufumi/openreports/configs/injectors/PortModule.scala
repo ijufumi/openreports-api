@@ -1,6 +1,11 @@
 package jp.ijufumi.openreports.configs.injectors
 
-import jp.ijufumi.openreports.domain.port.{AppConfigPort, CachePort, ConnectionPoolPort, GoogleAuthPort}
+import jp.ijufumi.openreports.domain.port.{
+  AppConfigPort,
+  CachePort,
+  ConnectionPoolPort,
+  GoogleAuthPort,
+}
 import jp.ijufumi.openreports.infrastructure.cache.CacheAdapter
 import jp.ijufumi.openreports.infrastructure.config.AppConfigAdapter
 import jp.ijufumi.openreports.infrastructure.external.google.GoogleAuthAdapter

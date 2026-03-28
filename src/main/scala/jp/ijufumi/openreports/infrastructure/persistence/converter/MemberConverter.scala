@@ -48,8 +48,10 @@ object MemberConverter {
     import scala.language.implicitConversions
 
     implicit def fromMemberEntity(entity: MemberEntity): MemberModel = toDomain(entity)
-    implicit def fromMemberEntity2(entity: Option[MemberEntity]): Option[MemberModel] = entity.map(toDomain)
-    implicit def fromMemberEntities(entity: Seq[MemberEntity]): Seq[MemberModel] = entity.map(toDomain)
+    implicit def fromMemberEntity2(entity: Option[MemberEntity]): Option[MemberModel] =
+      entity.map(toDomain)
+    implicit def fromMemberEntities(entity: Seq[MemberEntity]): Seq[MemberModel] =
+      entity.map(toDomain)
     implicit def toMemberEntity(model: MemberModel): MemberEntity = toEntity(model)
   }
 }

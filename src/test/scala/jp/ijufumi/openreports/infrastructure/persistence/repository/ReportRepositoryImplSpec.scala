@@ -9,7 +9,11 @@ import org.scalatest.matchers.should.Matchers
 import slick.jdbc.JdbcBackend.Database
 import slick.jdbc.PostgresProfile.api._
 
-class ReportRepositoryImplSpec extends AnyFlatSpec with Matchers with BeforeAndAfterAll with BeforeAndAfterEach {
+class ReportRepositoryImplSpec
+    extends AnyFlatSpec
+    with Matchers
+    with BeforeAndAfterAll
+    with BeforeAndAfterEach {
 
   var db: Database = _
   val repository = new ReportRepositoryImpl()
@@ -44,7 +48,7 @@ class ReportRepositoryImplSpec extends AnyFlatSpec with Matchers with BeforeAndA
       dataSourceId = Some("datasource-1"),
       workspaceId = workspaceId,
       createdAt = System.currentTimeMillis(),
-      updatedAt = System.currentTimeMillis()
+      updatedAt = System.currentTimeMillis(),
     )
 
     val report2 = Report(
@@ -54,7 +58,7 @@ class ReportRepositoryImplSpec extends AnyFlatSpec with Matchers with BeforeAndA
       dataSourceId = Some("datasource-1"),
       workspaceId = workspaceId,
       createdAt = System.currentTimeMillis(),
-      updatedAt = System.currentTimeMillis()
+      updatedAt = System.currentTimeMillis(),
     )
 
     repository.register(db, report1)
@@ -77,7 +81,7 @@ class ReportRepositoryImplSpec extends AnyFlatSpec with Matchers with BeforeAndA
       dataSourceId = Some("datasource-1"),
       workspaceId = workspaceId,
       createdAt = System.currentTimeMillis(),
-      updatedAt = System.currentTimeMillis()
+      updatedAt = System.currentTimeMillis(),
     )
 
     val report2 = Report(
@@ -87,7 +91,7 @@ class ReportRepositoryImplSpec extends AnyFlatSpec with Matchers with BeforeAndA
       dataSourceId = Some("datasource-1"),
       workspaceId = workspaceId,
       createdAt = System.currentTimeMillis(),
-      updatedAt = System.currentTimeMillis()
+      updatedAt = System.currentTimeMillis(),
     )
 
     repository.register(db, report1)
@@ -112,7 +116,7 @@ class ReportRepositoryImplSpec extends AnyFlatSpec with Matchers with BeforeAndA
         dataSourceId = Some("datasource-1"),
         workspaceId = workspaceId,
         createdAt = System.currentTimeMillis(),
-        updatedAt = System.currentTimeMillis()
+        updatedAt = System.currentTimeMillis(),
       )
       repository.register(db, report)
     }
@@ -134,7 +138,7 @@ class ReportRepositoryImplSpec extends AnyFlatSpec with Matchers with BeforeAndA
       dataSourceId = Some("datasource-1"),
       workspaceId = workspaceId,
       createdAt = System.currentTimeMillis(),
-      updatedAt = System.currentTimeMillis()
+      updatedAt = System.currentTimeMillis(),
     )
 
     repository.register(db, report)
@@ -160,7 +164,7 @@ class ReportRepositoryImplSpec extends AnyFlatSpec with Matchers with BeforeAndA
       dataSourceId = Some("datasource-1"),
       workspaceId = IDs.ulid(),
       createdAt = System.currentTimeMillis(),
-      updatedAt = System.currentTimeMillis()
+      updatedAt = System.currentTimeMillis(),
     )
 
     val result = repository.register(db, report)
@@ -178,13 +182,13 @@ class ReportRepositoryImplSpec extends AnyFlatSpec with Matchers with BeforeAndA
       dataSourceId = Some("datasource-1"),
       workspaceId = IDs.ulid(),
       createdAt = System.currentTimeMillis(),
-      updatedAt = System.currentTimeMillis()
+      updatedAt = System.currentTimeMillis(),
     )
 
     repository.register(db, report)
 
     val updatedReport = report.copy(
-      name = "Updated Name"
+      name = "Updated Name",
     )
 
     repository.update(db, updatedReport)
@@ -205,7 +209,7 @@ class ReportRepositoryImplSpec extends AnyFlatSpec with Matchers with BeforeAndA
       dataSourceId = Some("datasource-1"),
       workspaceId = workspaceId,
       createdAt = System.currentTimeMillis(),
-      updatedAt = System.currentTimeMillis()
+      updatedAt = System.currentTimeMillis(),
     )
 
     repository.register(db, report)

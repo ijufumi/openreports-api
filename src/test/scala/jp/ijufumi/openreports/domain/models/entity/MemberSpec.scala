@@ -14,7 +14,7 @@ class MemberSpec extends AnyFlatSpec with Matchers {
       password = "hashed-password",
       name = "Test User",
       createdAt = System.currentTimeMillis(),
-      updatedAt = System.currentTimeMillis()
+      updatedAt = System.currentTimeMillis(),
     )
 
     member should not be null
@@ -30,7 +30,7 @@ class MemberSpec extends AnyFlatSpec with Matchers {
       password = "password",
       name = "Original Name",
       createdAt = 1000L,
-      updatedAt = 1000L
+      updatedAt = 1000L,
     )
 
     val member2 = member1.copy(name = "Updated Name")
@@ -48,7 +48,7 @@ class MemberSpec extends AnyFlatSpec with Matchers {
       password = "password",
       name = "Test User",
       createdAt = System.currentTimeMillis(),
-      updatedAt = System.currentTimeMillis()
+      updatedAt = System.currentTimeMillis(),
     )
 
     member.googleId should be(None)
@@ -62,7 +62,7 @@ class MemberSpec extends AnyFlatSpec with Matchers {
       password = "password",
       name = "Test User",
       createdAt = System.currentTimeMillis(),
-      updatedAt = System.currentTimeMillis()
+      updatedAt = System.currentTimeMillis(),
     )
 
     member.googleId should be(defined)
@@ -77,7 +77,7 @@ class MemberSpec extends AnyFlatSpec with Matchers {
       password = "password",
       name = "Test User",
       createdAt = System.currentTimeMillis(),
-      updatedAt = System.currentTimeMillis()
+      updatedAt = System.currentTimeMillis(),
     )
 
     member.workspaces should be(empty)
@@ -89,7 +89,7 @@ class MemberSpec extends AnyFlatSpec with Matchers {
       name = "Test Workspace",
       slug = "slug",
       createdAt = System.currentTimeMillis(),
-      updatedAt = System.currentTimeMillis()
+      updatedAt = System.currentTimeMillis(),
     )
 
     val member = Member(
@@ -100,7 +100,7 @@ class MemberSpec extends AnyFlatSpec with Matchers {
       name = "Test User",
       createdAt = System.currentTimeMillis(),
       updatedAt = System.currentTimeMillis(),
-      workspaces = Seq(workspace)
+      workspaces = Seq(workspace),
     )
 
     member.workspaces should have size 1
@@ -113,14 +113,14 @@ class MemberSpec extends AnyFlatSpec with Matchers {
       name = "Workspace 1",
       slug = "slug",
       createdAt = System.currentTimeMillis(),
-      updatedAt = System.currentTimeMillis()
+      updatedAt = System.currentTimeMillis(),
     )
     val workspace2 = Workspace(
       id = IDs.ulid(),
       name = "Workspace 2",
       slug = "slug",
       createdAt = System.currentTimeMillis(),
-      updatedAt = System.currentTimeMillis()
+      updatedAt = System.currentTimeMillis(),
     )
 
     val member = Member(
@@ -131,7 +131,7 @@ class MemberSpec extends AnyFlatSpec with Matchers {
       name = "Test User",
       createdAt = System.currentTimeMillis(),
       updatedAt = System.currentTimeMillis(),
-      workspaces = Seq(workspace1, workspace2)
+      workspaces = Seq(workspace1, workspace2),
     )
 
     member.workspaces should have size 2
@@ -143,7 +143,7 @@ class MemberSpec extends AnyFlatSpec with Matchers {
       "user.name@example.com",
       "user+tag@example.co.jp",
       "user_name@sub.example.com",
-      "123@example.com"
+      "123@example.com",
     )
 
     emails.foreach { email =>
@@ -154,7 +154,7 @@ class MemberSpec extends AnyFlatSpec with Matchers {
         password = "password",
         name = "Test User",
         createdAt = System.currentTimeMillis(),
-        updatedAt = System.currentTimeMillis()
+        updatedAt = System.currentTimeMillis(),
       )
 
       member.email should equal(email)
@@ -170,7 +170,7 @@ class MemberSpec extends AnyFlatSpec with Matchers {
       password = "password",
       name = specialName,
       createdAt = System.currentTimeMillis(),
-      updatedAt = System.currentTimeMillis()
+      updatedAt = System.currentTimeMillis(),
     )
 
     member.name should equal(specialName)
@@ -185,7 +185,7 @@ class MemberSpec extends AnyFlatSpec with Matchers {
       password = "password",
       name = unicodeName,
       createdAt = System.currentTimeMillis(),
-      updatedAt = System.currentTimeMillis()
+      updatedAt = System.currentTimeMillis(),
     )
 
     member.name should equal(unicodeName)
@@ -199,7 +199,7 @@ class MemberSpec extends AnyFlatSpec with Matchers {
       password = "password",
       name = "",
       createdAt = System.currentTimeMillis(),
-      updatedAt = System.currentTimeMillis()
+      updatedAt = System.currentTimeMillis(),
     )
 
     member.name should equal("")
@@ -214,7 +214,7 @@ class MemberSpec extends AnyFlatSpec with Matchers {
       password = "password",
       name = longName,
       createdAt = System.currentTimeMillis(),
-      updatedAt = System.currentTimeMillis()
+      updatedAt = System.currentTimeMillis(),
     )
 
     member.name should have length 500
@@ -229,7 +229,7 @@ class MemberSpec extends AnyFlatSpec with Matchers {
       password = hashedPassword,
       name = "Test User",
       createdAt = System.currentTimeMillis(),
-      updatedAt = System.currentTimeMillis()
+      updatedAt = System.currentTimeMillis(),
     )
 
     member.password should equal(hashedPassword)
@@ -246,7 +246,7 @@ class MemberSpec extends AnyFlatSpec with Matchers {
       password = "password",
       name = "Test User",
       createdAt = createdAt,
-      updatedAt = updatedAt
+      updatedAt = updatedAt,
     )
 
     member.createdAt should equal(createdAt)
@@ -262,13 +262,13 @@ class MemberSpec extends AnyFlatSpec with Matchers {
       password = "old-password",
       name = "Old Name",
       createdAt = 1000L,
-      updatedAt = 1000L
+      updatedAt = 1000L,
     )
 
     val modified = original.copy(
       email = "new@example.com",
       name = "New Name",
-      updatedAt = 2000L
+      updatedAt = 2000L,
     )
 
     modified.id should equal(original.id)
@@ -288,7 +288,7 @@ class MemberSpec extends AnyFlatSpec with Matchers {
       name = "Test User",
       createdAt = System.currentTimeMillis(),
       updatedAt = System.currentTimeMillis(),
-      versions = 5
+      versions = 5,
     )
 
     member.versions should equal(5)
@@ -302,7 +302,7 @@ class MemberSpec extends AnyFlatSpec with Matchers {
       password = "password",
       name = "Test User",
       createdAt = 1000L,
-      updatedAt = 1000L
+      updatedAt = 1000L,
     )
 
     val member2 = Member(
@@ -312,7 +312,7 @@ class MemberSpec extends AnyFlatSpec with Matchers {
       password = "password",
       name = "Test User",
       createdAt = 1000L,
-      updatedAt = 1000L
+      updatedAt = 1000L,
     )
 
     member1 should equal(member2)
@@ -326,7 +326,7 @@ class MemberSpec extends AnyFlatSpec with Matchers {
       password = "password",
       name = "Test User",
       createdAt = 1000L,
-      updatedAt = 1000L
+      updatedAt = 1000L,
     )
 
     val member2 = Member(
@@ -336,7 +336,7 @@ class MemberSpec extends AnyFlatSpec with Matchers {
       password = "password",
       name = "Test User",
       createdAt = 1000L,
-      updatedAt = 1000L
+      updatedAt = 1000L,
     )
 
     member1 should not equal member2
@@ -350,7 +350,7 @@ class MemberSpec extends AnyFlatSpec with Matchers {
       password = "password",
       name = "Test User",
       createdAt = 1000L,
-      updatedAt = 1000L
+      updatedAt = 1000L,
     )
 
     val member2 = Member(
@@ -360,7 +360,7 @@ class MemberSpec extends AnyFlatSpec with Matchers {
       password = "password",
       name = "Test User",
       createdAt = 1000L,
-      updatedAt = 1000L
+      updatedAt = 1000L,
     )
 
     member1 should not equal member2

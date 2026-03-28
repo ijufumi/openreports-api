@@ -14,7 +14,11 @@ import slick.jdbc.PostgresProfile.api._
 import scala.concurrent.Await
 import scala.concurrent.duration._
 
-class FunctionRepositoryImplSpec extends AnyFlatSpec with Matchers with BeforeAndAfterAll with BeforeAndAfterEach {
+class FunctionRepositoryImplSpec
+    extends AnyFlatSpec
+    with Matchers
+    with BeforeAndAfterAll
+    with BeforeAndAfterEach {
 
   var db: Database = _
   val repository = new FunctionRepositoryImpl()
@@ -39,7 +43,7 @@ class FunctionRepositoryImplSpec extends AnyFlatSpec with Matchers with BeforeAn
   def insertFunction(
       id: String = IDs.ulid(),
       resource: String = "reports",
-      action: ActionTypes.ActionType = ActionTypes.Reference
+      action: ActionTypes.ActionType = ActionTypes.Reference,
   ): FunctionEntity = {
     val entity = FunctionEntity(
       id,
@@ -47,7 +51,7 @@ class FunctionRepositoryImplSpec extends AnyFlatSpec with Matchers with BeforeAn
       action,
       System.currentTimeMillis(),
       System.currentTimeMillis(),
-      1
+      1,
     )
     Await.result(db.run(functionQuery += entity), 10.seconds)
     entity
@@ -179,7 +183,7 @@ class FunctionRepositoryImplSpec extends AnyFlatSpec with Matchers with BeforeAn
     insertFunction(
       id = id,
       resource = "reports",
-      action = ActionTypes.Reference
+      action = ActionTypes.Reference,
     )
 
     val result = repository.getAll(db)

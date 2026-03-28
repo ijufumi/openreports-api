@@ -1,6 +1,5 @@
 package jp.ijufumi.openreports.presentation.controller.base
 
-import com.wix.accord.Validator
 import org.scalatra.servlet.{FileUploadSupport, MultipartConfig}
 import jp.ijufumi.openreports.configs.Config
 import jp.ijufumi.openreports.domain.models.entity.{Member => MemberModel}
@@ -83,7 +82,7 @@ abstract class PrivateAPIServletBase(loginService: LoginUseCase)
   def withWorkspace(block: java.lang.String => Any): Any = {
     val _workspaceId = workspaceId()
     if (StringUtils.isEmpty(_workspaceId)) {
-      badRequest()
+      badRequest("")
     } else {
       block(_workspaceId)
     }

@@ -12,7 +12,7 @@ class ReportGroupSpec extends AnyFlatSpec with Matchers {
       name = "Test Group",
       workspaceId = "workspace-id",
       createdAt = System.currentTimeMillis(),
-      updatedAt = System.currentTimeMillis()
+      updatedAt = System.currentTimeMillis(),
     )
 
     group should not be null
@@ -26,7 +26,7 @@ class ReportGroupSpec extends AnyFlatSpec with Matchers {
       name = "Original Name",
       workspaceId = "workspace-id",
       createdAt = 1000L,
-      updatedAt = 1000L
+      updatedAt = 1000L,
     )
 
     val group2 = group1.copy(name = "Updated Name")
@@ -43,7 +43,7 @@ class ReportGroupSpec extends AnyFlatSpec with Matchers {
       name = specialName,
       workspaceId = "workspace-id",
       createdAt = System.currentTimeMillis(),
-      updatedAt = System.currentTimeMillis()
+      updatedAt = System.currentTimeMillis(),
     )
 
     group.name should equal(specialName)
@@ -56,7 +56,7 @@ class ReportGroupSpec extends AnyFlatSpec with Matchers {
       name = unicodeName,
       workspaceId = "workspace-id",
       createdAt = System.currentTimeMillis(),
-      updatedAt = System.currentTimeMillis()
+      updatedAt = System.currentTimeMillis(),
     )
 
     group.name should equal(unicodeName)
@@ -68,7 +68,7 @@ class ReportGroupSpec extends AnyFlatSpec with Matchers {
       name = "",
       workspaceId = "workspace-id",
       createdAt = System.currentTimeMillis(),
-      updatedAt = System.currentTimeMillis()
+      updatedAt = System.currentTimeMillis(),
     )
 
     group.name should equal("")
@@ -83,7 +83,7 @@ class ReportGroupSpec extends AnyFlatSpec with Matchers {
       name = "Test Group",
       workspaceId = "workspace-id",
       createdAt = createdAt,
-      updatedAt = updatedAt
+      updatedAt = updatedAt,
     )
 
     group.createdAt should equal(createdAt)
@@ -97,12 +97,12 @@ class ReportGroupSpec extends AnyFlatSpec with Matchers {
       name = "Original Name",
       workspaceId = "workspace-id",
       createdAt = 1000L,
-      updatedAt = 1000L
+      updatedAt = 1000L,
     )
 
     val modified = original.copy(
       name = "Modified Name",
-      updatedAt = 2000L
+      updatedAt = 2000L,
     )
 
     modified.id should equal(original.id)
@@ -117,7 +117,7 @@ class ReportGroupSpec extends AnyFlatSpec with Matchers {
       name = "Test",
       workspaceId = "workspace-id",
       createdAt = 1000L,
-      updatedAt = 1000L
+      updatedAt = 1000L,
     )
 
     val group2 = ReportGroup(
@@ -125,7 +125,7 @@ class ReportGroupSpec extends AnyFlatSpec with Matchers {
       name = "Test",
       workspaceId = "workspace-id",
       createdAt = 1000L,
-      updatedAt = 1000L
+      updatedAt = 1000L,
     )
 
     group1 should equal(group2)
@@ -137,7 +137,7 @@ class ReportGroupSpec extends AnyFlatSpec with Matchers {
       name = "Test",
       workspaceId = "workspace-id",
       createdAt = 1000L,
-      updatedAt = 1000L
+      updatedAt = 1000L,
     )
 
     val group2 = ReportGroup(
@@ -145,7 +145,7 @@ class ReportGroupSpec extends AnyFlatSpec with Matchers {
       name = "Test",
       workspaceId = "workspace-id",
       createdAt = 1000L,
-      updatedAt = 1000L
+      updatedAt = 1000L,
     )
 
     group1 should not equal group2
@@ -157,7 +157,7 @@ class ReportGroupSpec extends AnyFlatSpec with Matchers {
       name = "Test",
       workspaceId = "workspace-1",
       createdAt = 1000L,
-      updatedAt = 1000L
+      updatedAt = 1000L,
     )
 
     val group2 = ReportGroup(
@@ -165,7 +165,7 @@ class ReportGroupSpec extends AnyFlatSpec with Matchers {
       name = "Test",
       workspaceId = "workspace-2",
       createdAt = 1000L,
-      updatedAt = 1000L
+      updatedAt = 1000L,
     )
 
     group1 should not equal group2

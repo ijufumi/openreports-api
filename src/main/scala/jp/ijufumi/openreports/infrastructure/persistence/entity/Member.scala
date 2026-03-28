@@ -35,5 +35,5 @@ class Members(tag: Tag)
       createdAt,
       updatedAt,
       versions,
-    ) <> (Member.tupled, Member.unapply)
+    ).mapTo[Member]
 }

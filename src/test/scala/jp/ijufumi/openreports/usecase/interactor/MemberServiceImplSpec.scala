@@ -1,7 +1,13 @@
-
 package jp.ijufumi.openreports.usecase.interactor
 
-import jp.ijufumi.openreports.domain.models.entity.{Function, Member, Permission, RoleFunction, Workspace, WorkspaceMember}
+import jp.ijufumi.openreports.domain.models.entity.{
+  Function,
+  Member,
+  Permission,
+  RoleFunction,
+  Workspace,
+  WorkspaceMember,
+}
 import jp.ijufumi.openreports.domain.repository._
 import jp.ijufumi.openreports.utils.Hash
 import jp.ijufumi.openreports.utils.IDs
@@ -80,7 +86,13 @@ class MemberInteractorSpec extends AnyFlatSpec with MockitoSugar {
     val workspace = Workspace(workspaceId, "test", "", 0, 0)
     val workspaceMember = WorkspaceMember(workspaceId, memberId, roleId, 0, 0)
     val roleFunction = RoleFunction(IDs.ulid(), roleId, functionId)
-    val function = Function(functionId, "test", jp.ijufumi.openreports.domain.models.value.enums.ActionTypes.Reference, 0, 0)
+    val function = Function(
+      functionId,
+      "test",
+      jp.ijufumi.openreports.domain.models.value.enums.ActionTypes.Reference,
+      0,
+      0,
+    )
 
     when(workspaceRepository.getsByMemberId(db, memberId)).thenReturn(Seq(workspace))
     when(workspaceMemberRepository.getById(db, workspaceId, memberId))

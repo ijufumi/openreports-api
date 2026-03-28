@@ -29,5 +29,5 @@ class RefreshTokens(tag: Tag)
       createdAt,
       updatedAt,
       versions,
-    ) <> (RefreshToken.tupled, RefreshToken.unapply)
+    ).mapTo[RefreshToken]
 }

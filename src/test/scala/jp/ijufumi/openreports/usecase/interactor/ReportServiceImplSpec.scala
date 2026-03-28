@@ -1,9 +1,17 @@
 package jp.ijufumi.openreports.usecase.interactor
 
-import _root_.jp.ijufumi.openreports.domain.models.entity.{Lists, Report => ReportModel, ReportTemplate => ReportTemplateModel}
+import _root_.jp.ijufumi.openreports.domain.models.entity.{
+  Lists,
+  Report => ReportModel,
+  ReportTemplate => ReportTemplateModel,
+}
 import _root_.jp.ijufumi.openreports.domain.models.value.enums.StorageTypes
 import _root_.jp.ijufumi.openreports.domain.repository._
-import _root_.jp.ijufumi.openreports.usecase.port.input.{DataSourceUseCase, OutputUseCase, StorageUseCase}
+import _root_.jp.ijufumi.openreports.usecase.port.input.{
+  DataSourceUseCase,
+  OutputUseCase,
+  StorageUseCase,
+}
 import _root_.jp.ijufumi.openreports.usecase.port.input.param.CreateReportInput
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito._
@@ -39,8 +47,18 @@ class ReportInteractorSpec extends AnyFlatSpec with MockitoSugar {
     val page = 1
     val limit = 10
     val offset = page * limit
-    val entityTemplate = ReportTemplateModel("1", "test-template", "test.xlsx", workspaceId, StorageTypes.Local, 100L, 0L, 0L)
-    val entityReport = ReportModel("1", "test-report", "1", None, workspaceId, 0L, 0L).copy(reportTemplate = Some(entityTemplate))
+    val entityTemplate = ReportTemplateModel(
+      "1",
+      "test-template",
+      "test.xlsx",
+      workspaceId,
+      StorageTypes.Local,
+      100L,
+      0L,
+      0L,
+    )
+    val entityReport = ReportModel("1", "test-report", "1", None, workspaceId, 0L, 0L)
+      .copy(reportTemplate = Some(entityTemplate))
 
     val mockResult: (Seq[ReportModel], Int) = (Seq(entityReport), 1)
 
@@ -82,12 +100,43 @@ class ReportInteractorSpec extends AnyFlatSpec with MockitoSugar {
     val workspaceId = "1"
     val request = CreateReportInput("test", "1", None)
     val entityReport =
-      ReportModel("random-id", request.name, request.templateId, request.dataSourceId, workspaceId, 0L, 0L)
+      ReportModel(
+        "random-id",
+        request.name,
+        request.templateId,
+        request.dataSourceId,
+        workspaceId,
+        0L,
+        0L,
+      )
 
     when(reportRepository.register(any(classOf[Database]), any(classOf[ReportModel])))
       .thenReturn(Some(entityReport))
-    when(reportRepository.getByIdWithTemplate(any(classOf[Database]), any(classOf[String]), any[String]()))
-      .thenReturn(Some(entityReport.copy(reportTemplate = Some(ReportTemplateModel("1", "test-template", "test.xlsx", workspaceId, StorageTypes.Local, 100L, 0L, 0L)))))
+    when(
+      reportRepository.getByIdWithTemplate(
+        any(classOf[Database]),
+        any(classOf[String]),
+        any[String](),
+      ),
+    )
+      .thenReturn(
+        Some(
+          entityReport.copy(reportTemplate =
+            Some(
+              ReportTemplateModel(
+                "1",
+                "test-template",
+                "test.xlsx",
+                workspaceId,
+                StorageTypes.Local,
+                100L,
+                0L,
+                0L,
+              ),
+            ),
+          ),
+        ),
+      )
 
     // when
     val actual = reportService.createReport(workspaceId, request)

@@ -9,7 +9,11 @@ import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 import slick.jdbc.JdbcBackend.Database
 
-class ReportParameterRepositoryImplSpec extends AnyFlatSpec with Matchers with BeforeAndAfterAll with BeforeAndAfterEach {
+class ReportParameterRepositoryImplSpec
+    extends AnyFlatSpec
+    with Matchers
+    with BeforeAndAfterAll
+    with BeforeAndAfterEach {
 
   var db: Database = _
   val repository = new ReportParameterRepositoryImpl()
@@ -35,7 +39,7 @@ class ReportParameterRepositoryImplSpec extends AnyFlatSpec with Matchers with B
       workspaceId: String,
       parameterType: ParameterTypes.ParameterType = ParameterTypes.FixedValue,
       embeddedFunctionType: Option[EmbeddedFunctionTypes.EmbeddedFunctionType] = None,
-      value: Option[String] = Some("test-value")
+      value: Option[String] = Some("test-value"),
   ): ReportParameter = {
     ReportParameter(
       id = IDs.ulid(),
@@ -44,7 +48,7 @@ class ReportParameterRepositoryImplSpec extends AnyFlatSpec with Matchers with B
       embeddedFunctionType = embeddedFunctionType,
       value = value,
       createdAt = System.currentTimeMillis(),
-      updatedAt = System.currentTimeMillis()
+      updatedAt = System.currentTimeMillis(),
     )
   }
 
@@ -69,7 +73,7 @@ class ReportParameterRepositoryImplSpec extends AnyFlatSpec with Matchers with B
     val parameter = createTestReportParameter(
       workspaceId,
       parameterType = ParameterTypes.FixedValue,
-      value = Some("fixed-test-value")
+      value = Some("fixed-test-value"),
     )
 
     repository.register(db, parameter)
@@ -85,7 +89,7 @@ class ReportParameterRepositoryImplSpec extends AnyFlatSpec with Matchers with B
     val parameter = createTestReportParameter(
       workspaceId,
       parameterType = ParameterTypes.EmbeddedFunction,
-      embeddedFunctionType = Some(EmbeddedFunctionTypes.Today)
+      embeddedFunctionType = Some(EmbeddedFunctionTypes.Today),
     )
 
     repository.register(db, parameter)
@@ -212,12 +216,13 @@ class ReportParameterRepositoryImplSpec extends AnyFlatSpec with Matchers with B
 
   it should "update parameter type" in {
     val workspaceId = IDs.ulid()
-    val parameter = createTestReportParameter(workspaceId, parameterType = ParameterTypes.FixedValue)
+    val parameter =
+      createTestReportParameter(workspaceId, parameterType = ParameterTypes.FixedValue)
     repository.register(db, parameter)
 
     val updated = parameter.copy(
       parameterType = ParameterTypes.EmbeddedFunction,
-      embeddedFunctionType = Some(EmbeddedFunctionTypes.Today)
+      embeddedFunctionType = Some(EmbeddedFunctionTypes.Today),
     )
     repository.update(db, updated)
 
@@ -316,12 +321,12 @@ class ReportParameterRepositoryImplSpec extends AnyFlatSpec with Matchers with B
     val fixedParam = createTestReportParameter(
       workspaceId,
       parameterType = ParameterTypes.FixedValue,
-      value = Some("fixed")
+      value = Some("fixed"),
     )
     val embeddedParam = createTestReportParameter(
       workspaceId,
       parameterType = ParameterTypes.EmbeddedFunction,
-      embeddedFunctionType = Some(EmbeddedFunctionTypes.Today)
+      embeddedFunctionType = Some(EmbeddedFunctionTypes.Today),
     )
 
     repository.register(db, fixedParam)
@@ -330,6 +335,8 @@ class ReportParameterRepositoryImplSpec extends AnyFlatSpec with Matchers with B
     val (params, _) = repository.gets(db, workspaceId, 0, 10)
 
     params should have size 2
-    params.map(_.parameterType) should contain allOf (ParameterTypes.FixedValue, ParameterTypes.EmbeddedFunction)
+    params.map(
+      _.parameterType,
+    ) should contain allOf (ParameterTypes.FixedValue, ParameterTypes.EmbeddedFunction)
   }
 }

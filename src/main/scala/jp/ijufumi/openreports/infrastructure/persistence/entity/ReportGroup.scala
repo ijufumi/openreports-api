@@ -29,5 +29,5 @@ class ReportGroups(tag: Tag)
       createdAt,
       updatedAt,
       versions,
-    ) <> (ReportGroup.tupled, ReportGroup.unapply)
+    ).mapTo[ReportGroup]
 }

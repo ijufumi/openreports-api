@@ -167,5 +167,5 @@ class ConnectionPoolSpec extends AnyFlatSpec with Matchers {
       conn.isClosed should be(false)
     }
   }
-  */
+   */
 }

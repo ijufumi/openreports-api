@@ -1,6 +1,23 @@
 package jp.ijufumi.openreports.infrastructure.persistence
 
-import jp.ijufumi.openreports.infrastructure.persistence.entity.{DataSources, DriverTypes, Functions, Members, RefreshTokens, ReportGroupReports, ReportGroups, ReportParameters, ReportReportParameters, Reports, RoleFunctions, Roles, StorageS3s, ReportTemplates, WorkspaceMembers, Workspaces}
+import jp.ijufumi.openreports.infrastructure.persistence.entity.{
+  DataSources,
+  DriverTypes,
+  Functions,
+  Members,
+  RefreshTokens,
+  ReportGroupReports,
+  ReportGroups,
+  ReportParameters,
+  ReportReportParameters,
+  Reports,
+  ReportTemplates,
+  RoleFunctions,
+  Roles,
+  StorageS3s,
+  WorkspaceMembers,
+  Workspaces,
+}
 import slick.jdbc.PostgresProfile.api._
 
 import scala.concurrent.duration.Duration

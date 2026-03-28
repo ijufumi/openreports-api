@@ -42,7 +42,8 @@ class WorkspaceServlet @Inject() (
   put("/:id") {
     validateBody[UpdateWorkspace] { requestVal =>
       val _workspaceId = params("id")
-      val result = workspaceService.updateWorkspace(_workspaceId, WC.toUpdateWorkspaceInput(requestVal))
+      val result =
+        workspaceService.updateWorkspace(_workspaceId, WC.toUpdateWorkspaceInput(requestVal))
       if (result.isEmpty) {
         badRequest("something wrong...")
       } else {

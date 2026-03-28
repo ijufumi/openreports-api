@@ -1,8 +1,8 @@
 package jp.ijufumi.openreports.usecase.port.input
 
 import jp.ijufumi.openreports.usecase.port.input.param.{
-  UpdateWorkspaceInput,
   CreateWorkspaceMemberInput,
+  UpdateWorkspaceInput,
   UpdateWorkspaceMemberInput,
 }
 import jp.ijufumi.openreports.domain.models.entity.{Lists, Workspace, WorkspaceMember}
@@ -20,9 +20,16 @@ trait WorkspaceUseCase {
 
   def getWorkspaceMember(workspaceId: String, memberId: String): Option[WorkspaceMember]
 
-  def createWorkspaceMember(workspaceId: String, input: CreateWorkspaceMemberInput): Option[WorkspaceMember]
+  def createWorkspaceMember(
+      workspaceId: String,
+      input: CreateWorkspaceMemberInput,
+  ): Option[WorkspaceMember]
 
-  def updateWorkspaceMember(workspaceId: String, memberId: String, input: UpdateWorkspaceMemberInput): Option[WorkspaceMember]
+  def updateWorkspaceMember(
+      workspaceId: String,
+      memberId: String,
+      input: UpdateWorkspaceMemberInput,
+  ): Option[WorkspaceMember]
 
   def deleteWorkspaceMember(workspaceId: String, memberId: String): Unit
 }

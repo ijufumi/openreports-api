@@ -33,5 +33,5 @@ class StorageS3s(tag: Tag) extends EntityBase[StorageS3](tag, "storage_s3s") {
     createdAt,
     updatedAt,
     versions,
-  ) <> (StorageS3.tupled, StorageS3.unapply)
+  ).mapTo[StorageS3]
 }

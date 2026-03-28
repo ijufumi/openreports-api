@@ -208,7 +208,7 @@ class TemporaryFilesSpec extends AnyFlatSpec with Matchers {
       val tempFile = TemporaryFiles.createFile(fullDirPath)
 
       try {
-        val binaryData = Array[Byte](0x00, 0x01, 0x02, 0xFF.toByte, 0xFE.toByte)
+        val binaryData = Array[Byte](0x00, 0x01, 0x02, 0xff.toByte, 0xfe.toByte)
         tempFile.write(binaryData)
 
         val writtenData = Files.readAllBytes(tempFile.path())

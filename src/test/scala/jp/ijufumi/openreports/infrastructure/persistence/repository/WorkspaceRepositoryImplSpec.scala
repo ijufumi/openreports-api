@@ -13,7 +13,11 @@ import slick.jdbc.PostgresProfile.api._
 import scala.concurrent.Await
 import scala.concurrent.duration._
 
-class WorkspaceRepositoryImplSpec extends AnyFlatSpec with Matchers with BeforeAndAfterAll with BeforeAndAfterEach {
+class WorkspaceRepositoryImplSpec
+    extends AnyFlatSpec
+    with Matchers
+    with BeforeAndAfterAll
+    with BeforeAndAfterEach {
 
   var db: Database = _
   val repository = new WorkspaceRepositoryImpl()
@@ -46,7 +50,7 @@ class WorkspaceRepositoryImplSpec extends AnyFlatSpec with Matchers with BeforeA
       name = "Test Workspace",
       slug = "test-workspace",
       createdAt = System.currentTimeMillis(),
-      updatedAt = System.currentTimeMillis()
+      updatedAt = System.currentTimeMillis(),
     )
 
     repository.register(db, workspace)
@@ -75,7 +79,7 @@ class WorkspaceRepositoryImplSpec extends AnyFlatSpec with Matchers with BeforeA
       name = "Workspace 1",
       slug = "workspace-1",
       createdAt = System.currentTimeMillis(),
-      updatedAt = System.currentTimeMillis()
+      updatedAt = System.currentTimeMillis(),
     )
 
     val workspace2 = Workspace(
@@ -83,7 +87,7 @@ class WorkspaceRepositoryImplSpec extends AnyFlatSpec with Matchers with BeforeA
       name = "Workspace 2",
       slug = "workspace-2",
       createdAt = System.currentTimeMillis(),
-      updatedAt = System.currentTimeMillis()
+      updatedAt = System.currentTimeMillis(),
     )
 
     repository.register(db, workspace1)
@@ -95,7 +99,7 @@ class WorkspaceRepositoryImplSpec extends AnyFlatSpec with Matchers with BeforeA
       memberId = memberId,
       roleId = "role-id",
       createdAt = System.currentTimeMillis(),
-      updatedAt = System.currentTimeMillis()
+      updatedAt = System.currentTimeMillis(),
     )
 
     val workspaceMember2 = WorkspaceMember(
@@ -103,7 +107,7 @@ class WorkspaceRepositoryImplSpec extends AnyFlatSpec with Matchers with BeforeA
       memberId = memberId,
       roleId = "role-id",
       createdAt = System.currentTimeMillis(),
-      updatedAt = System.currentTimeMillis()
+      updatedAt = System.currentTimeMillis(),
     )
 
     Await.result(db.run(workspaceMemberQuery += workspaceMember1), 5.seconds)
@@ -131,7 +135,7 @@ class WorkspaceRepositoryImplSpec extends AnyFlatSpec with Matchers with BeforeA
       name = "New Workspace",
       slug = "new-workspace",
       createdAt = System.currentTimeMillis(),
-      updatedAt = System.currentTimeMillis()
+      updatedAt = System.currentTimeMillis(),
     )
 
     val result = repository.register(db, workspace)
@@ -149,7 +153,7 @@ class WorkspaceRepositoryImplSpec extends AnyFlatSpec with Matchers with BeforeA
       name = "Old Name",
       slug = "old-slug",
       createdAt = System.currentTimeMillis(),
-      updatedAt = System.currentTimeMillis()
+      updatedAt = System.currentTimeMillis(),
     )
 
     repository.register(db, workspace)
@@ -157,7 +161,7 @@ class WorkspaceRepositoryImplSpec extends AnyFlatSpec with Matchers with BeforeA
     val updatedWorkspace = workspace.copy(
       name = "Updated Name",
       slug = "updated-slug",
-      updatedAt = System.currentTimeMillis()
+      updatedAt = System.currentTimeMillis(),
     )
 
     val result = repository.update(db, updatedWorkspace)

@@ -44,10 +44,10 @@ class GoogleRepositoryImpl @Inject() (backend: WebSocketSyncBackend = HttpClient
 
     val body: Map[String, String] = Map(
       "client_id" -> Config.GOOGLE_CLIENT_ID,
-      "client_secret"-> Config.GOOGLE_CLIENT_ID,
-      "grant_type"-> "authorization_code",
-      "code"-> code,
-      "redirect_uri"-> REDIRECT_URL,
+      "client_secret" -> Config.GOOGLE_CLIENT_SECRET,
+      "grant_type" -> "authorization_code",
+      "code" -> code,
+      "redirect_uri" -> REDIRECT_URL,
     )
 
     val request = basicRequest

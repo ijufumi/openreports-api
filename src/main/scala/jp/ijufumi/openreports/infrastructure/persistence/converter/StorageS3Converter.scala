@@ -37,7 +37,9 @@ object StorageS3Converter {
 
     implicit def toStorageS3Entity(model: StorageS3Model): StorageS3Entity = toEntity(model)
     implicit def fromStorageS3Entity(entity: StorageS3Entity): StorageS3Model = toDomain(entity)
-    implicit def fromStorageS3Entity2(entity: Option[StorageS3Entity]): Option[StorageS3Model] = entity.map(toDomain)
-    implicit def fromStorageS3Entities(entity: Seq[StorageS3Entity]): Seq[StorageS3Model] = entity.map(toDomain)
+    implicit def fromStorageS3Entity2(entity: Option[StorageS3Entity]): Option[StorageS3Model] =
+      entity.map(toDomain)
+    implicit def fromStorageS3Entities(entity: Seq[StorageS3Entity]): Seq[StorageS3Model] =
+      entity.map(toDomain)
   }
 }

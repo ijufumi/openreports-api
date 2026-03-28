@@ -41,5 +41,5 @@ class DataSources(tag: Tag)
       createdAt,
       updatedAt,
       versions,
-    ) <> (DataSource.tupled, DataSource.unapply)
+    ).mapTo[DataSource]
 }

@@ -8,7 +8,11 @@ import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 import slick.jdbc.JdbcBackend.Database
 
-class ReportGroupRepositoryImplSpec extends AnyFlatSpec with Matchers with BeforeAndAfterAll with BeforeAndAfterEach {
+class ReportGroupRepositoryImplSpec
+    extends AnyFlatSpec
+    with Matchers
+    with BeforeAndAfterAll
+    with BeforeAndAfterEach {
 
   var db: Database = _
   val repository = new ReportGroupRepositoryImpl()
@@ -32,14 +36,14 @@ class ReportGroupRepositoryImplSpec extends AnyFlatSpec with Matchers with Befor
   // Helper method to create a test report group
   def createTestReportGroup(
       workspaceId: String,
-      name: String = "Test Group"
+      name: String = "Test Group",
   ): ReportGroup = {
     ReportGroup(
       id = IDs.ulid(),
       name = name,
       workspaceId = workspaceId,
       createdAt = Dates.currentTimestamp(),
-      updatedAt = Dates.currentTimestamp()
+      updatedAt = Dates.currentTimestamp(),
     )
   }
 
@@ -269,7 +273,7 @@ class ReportGroupRepositoryImplSpec extends AnyFlatSpec with Matchers with Befor
   "ReportGroupRepository" should "handle special characters in name" in {
     val workspaceId = IDs.ulid()
     val group = createTestReportGroup(workspaceId).copy(
-      name = "Group's \"Special\" Name! @#$%"
+      name = "Group's \"Special\" Name! @#$%",
     )
 
     val result = repository.register(db, group)
@@ -281,7 +285,7 @@ class ReportGroupRepositoryImplSpec extends AnyFlatSpec with Matchers with Befor
   it should "handle unicode characters in name" in {
     val workspaceId = IDs.ulid()
     val group = createTestReportGroup(workspaceId).copy(
-      name = "レポートグループ 日本語"
+      name = "レポートグループ 日本語",
     )
 
     val result = repository.register(db, group)
@@ -316,7 +320,7 @@ class ReportGroupRepositoryImplSpec extends AnyFlatSpec with Matchers with Befor
     val createdAt = System.currentTimeMillis()
     val group = createTestReportGroup(workspaceId).copy(
       createdAt = createdAt,
-      updatedAt = createdAt
+      updatedAt = createdAt,
     )
 
     repository.register(db, group)

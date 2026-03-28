@@ -2,61 +2,62 @@ package jp.ijufumi.openreports.infrastructure.cache
 
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
-import scalacache._
-import scalacache.logging.Logger
-import scalacache.modes.try_._
+import redis.clients.jedis.{Jedis, JedisPool}
 
-import scala.collection.mutable
-import scala.concurrent.duration._
-import scala.util.{Success, Try}
+import java.util.concurrent.ConcurrentHashMap
 
 class CacheWrapperSpec extends AnyFlatSpec with Matchers {
 
-  class MockCache extends AbstractCache[String] {
-    private val storage = mutable.Map[String, String]()
+  class MockJedis extends Jedis {
+    private val storage = new ConcurrentHashMap[String, String]()
 
-    override protected def doGet[F[_]](key: String)(implicit mode: Mode[F]): F[Option[String]] = mode.M.delay {
+    override def setex(key: String, seconds: Long, value: String): String = {
+      storage.put(key, value)
+      "OK"
+    }
+
+    override def get(key: String): String = {
       storage.get(key)
     }
 
-    override protected def doPut[F[_]](key: String, value: String, ttl: Option[Duration])(implicit mode: Mode[F]): F[Any] = mode.M.delay {
-      storage.put(key, value.asInstanceOf[String])
-      Success(())
+    override def del(key: String): Long = {
+      if (storage.remove(key) != null) 1L else 0L
     }
 
-    override protected def doRemove[F[_]](key: String)(implicit mode: Mode[F]): F[Any] = mode.M.delay {
-      storage.remove(key)
+    override def del(keys: String*): Long = {
+      var count = 0L
+      keys.foreach { key =>
+        if (storage.remove(key) != null) count += 1
+      }
+      count
     }
 
-    override protected def doRemoveAll[F[_]]()(implicit mode: Mode[F]): F[Any] = mode.M.delay {
+    override def flushDB(): String = {
       storage.clear()
+      "OK"
     }
 
-    override def config: CacheConfig = CacheConfig.defaultCacheConfig
+    override def close(): Unit = {}
+  }
 
-    override def close[F[_]]()(implicit mode: Mode[F]): F[Any] = mode.M.delay {
-      Success(())
-    }
-
-    override protected def logger: Logger = ???
+  class MockJedisPool extends JedisPool {
+    private val mockJedis = new MockJedis()
+    override def getResource: Jedis = mockJedis
   }
 
   "CacheWrapper" should "be instantiable" in {
-    implicit val mockCache: Cache[String] = new MockCache()
-    noException should be thrownBy new CacheWrapper()
+    noException should be thrownBy new CacheWrapper(new MockJedisPool())
   }
 
   "put" should "store value with default TTL" in {
-    implicit val mockCache: Cache[String] = new MockCache()
-    val cache = new CacheWrapper()
+    val cache = new CacheWrapper(new MockJedisPool())
     cache.put(CacheKeys.ApiToken, "test-value", "key1")
     val result = cache.get(CacheKeys.ApiToken, "key1")
     result should equal(Some("test-value"))
   }
 
   "put" should "store value with custom TTL" in {
-    implicit val mockCache: Cache[String] = new MockCache()
-    val cache = new CacheWrapper()
+    val cache = new CacheWrapper(new MockJedisPool())
     implicit val ttl: Long = 60
     cache.put(CacheKeys.ApiToken, "test-value", "key1")
     val result = cache.get(CacheKeys.ApiToken, "key1")
@@ -64,42 +65,28 @@ class CacheWrapperSpec extends AnyFlatSpec with Matchers {
   }
 
   "get" should "return None for non-existent key" in {
-    implicit val mockCache: Cache[String] = new MockCache()
-    val cache = new CacheWrapper()
+    val cache = new CacheWrapper(new MockJedisPool())
     val result = cache.get(CacheKeys.ApiToken, "non-existent-key")
     result should equal(None)
   }
 
   "remove" should "delete value from cache" in {
-    implicit val mockCache: Cache[String] = new MockCache()
-    val cache = new CacheWrapper()
+    val cache = new CacheWrapper(new MockJedisPool())
     cache.put(CacheKeys.ApiToken, "test-value", "key1")
     cache.remove(CacheKeys.ApiToken, "key1")
     val result = cache.get(CacheKeys.ApiToken, "key1")
     result should equal(None)
   }
 
-  "removeAll" should "clear all cache entries" in {
-    implicit val mockCache: Cache[String] = new MockCache()
-    val cache = new CacheWrapper()
-    cache.put(CacheKeys.ApiToken, "value1", "key1")
-    cache.put(CacheKeys.GoogleAuthState, "value2", "key2")
-    cache.removeAll()
-    cache.get(CacheKeys.ApiToken, "key1") should equal(None)
-    cache.get(CacheKeys.GoogleAuthState, "key2") should equal(None)
-  }
-
   "put" should "handle multiple arguments in cache key" in {
-    implicit val mockCache: Cache[String] = new MockCache()
-    val cache = new CacheWrapper()
+    val cache = new CacheWrapper(new MockJedisPool())
     cache.put(CacheKeys.ApiToken, "test-value", "arg1", "arg2", "arg3")
     val result = cache.get(CacheKeys.ApiToken, "arg1", "arg2", "arg3")
     result should equal(Some("test-value"))
   }
 
   "get" should "return None for different cache key arguments" in {
-    implicit val mockCache: Cache[String] = new MockCache()
-    val cache = new CacheWrapper()
+    val cache = new CacheWrapper(new MockJedisPool())
     cache.put(CacheKeys.ApiToken, "test-value", "key1")
     val result = cache.get(CacheKeys.ApiToken, "key2")
     result should equal(None)
