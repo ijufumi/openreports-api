@@ -1,54 +1,62 @@
 package jp.ijufumi.openreports.utils
 
-import javax.crypto.Mac
-import javax.crypto.spec.SecretKeySpec
-import org.apache.commons.codec.binary.Hex
+import at.favre.lib.crypto.bcrypt.BCrypt
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
-import com.auth0.jwt.exceptions.JWTDecodeException
-import com.auth0.jwt.interfaces.DecodedJWT
+import com.auth0.jwt.exceptions.JWTVerificationException
+import org.apache.commons.codec.binary.Hex
 
+import java.nio.charset.StandardCharsets
 import java.util.{Calendar, Date}
+import javax.crypto.Mac
+import javax.crypto.spec.SecretKeySpec
 import jp.ijufumi.openreports.configs.Config.HASH_KEY
 
 object Hash extends Logging {
+  private val ISSUER = "openreports"
+  private val BCRYPT_COST = 12
+
+  private lazy val jwtAlgorithm: Algorithm = Algorithm.HMAC512(HASH_KEY)
+  private lazy val jwtVerifier = JWT.require(jwtAlgorithm).withIssuer(ISSUER).build()
+
   def hmacSha256(value: String, salt: String = HASH_KEY): String = {
-    val spec = new SecretKeySpec(salt.getBytes, "HmacSHA256")
+    val spec = new SecretKeySpec(salt.getBytes(StandardCharsets.UTF_8), "HmacSHA256")
     val mac = Mac.getInstance("HmacSHA256")
     mac.init(spec)
-    val bytes = mac.doFinal(value.getBytes)
+    val bytes = mac.doFinal(value.getBytes(StandardCharsets.UTF_8))
 
     Hex.encodeHexString(bytes)
   }
+
+  def hashPassword(password: String): String = {
+    BCrypt.withDefaults().hashToString(BCRYPT_COST, password.toCharArray)
+  }
+
+  def verifyPassword(password: String, hashed: String): Boolean = {
+    if (password == null || hashed == null || hashed.isEmpty) return false
+    BCrypt.verifyer().verify(password.toCharArray, hashed).verified
+  }
+
   def generateJWT(id: String, expirationSeconds: Integer): String = {
-    val algorithm = Algorithm.HMAC512("secret")
     val cal = Calendar.getInstance()
     cal.add(Calendar.SECOND, expirationSeconds)
     JWT
       .create()
-      .withIssuer("openreports")
+      .withIssuer(ISSUER)
       .withExpiresAt(new Date(cal.getTimeInMillis))
       .withIssuedAt(new Date)
       .withClaim("id", id)
-      .sign(algorithm)
+      .sign(jwtAlgorithm)
   }
 
   def extractIdFromJWT(jwtString: String): String = {
     try {
-      val decoded = JWT.decode(jwtString)
-      if (isExpired(decoded)) {
-        return ""
-      }
+      val decoded = jwtVerifier.verify(jwtString)
       decoded.getClaim("id").asString()
     } catch {
-      case e: JWTDecodeException =>
-        logger.warn("Failed to extract id from JWT", e)
+      case e: JWTVerificationException =>
+        logger.warn("Failed to verify JWT", e)
         ""
     }
-  }
-
-  def isExpired(decoded: DecodedJWT): Boolean = {
-    val expiredAt = decoded.getExpiresAt
-    expiredAt.before(new Date())
   }
 }

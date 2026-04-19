@@ -71,11 +71,15 @@ lazy val root = (project in file("."))
       "ch.qos.logback" % "logback-classic" % LogbackVersion,
       "ch.qos.logback" % "logback-core" % LogbackVersion,
       "com.lihaoyi" %% "os-lib" % "0.11.8",
+      "at.favre.lib" % "bcrypt" % "0.10.2",
     ),
     assembly / assemblyJarName := "open-reports-api.jar",
     assembly / mainClass := Some("JettyLauncher"),
     Test / javaOptions += "-Dnet.bytebuddy.experimental=true",
     Test / fork := true,
+    Test / envVars := Map(
+      "HASH_KEY" -> "test",
+    ),
   )
 
 val dbHost = sys.env.getOrElse("DB_HOST", "localhost")

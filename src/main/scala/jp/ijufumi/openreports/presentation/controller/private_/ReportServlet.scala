@@ -13,8 +13,8 @@ class ReportServlet @Inject() (loginService: LoginUseCase, reportService: Report
   get("/") {
     withWorkspace { _workspaceId =>
       {
-        val page = params("page", "0").toInt
-        val limit = params("limit", "10").toInt
+        val page = intParam("page", 0)
+        val limit = intParam("limit", 10)
         val templateId = params("templateId", "")
         ok(reportService.getReports(_workspaceId, page, limit, templateId))
       }

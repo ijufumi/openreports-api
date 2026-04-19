@@ -97,6 +97,15 @@ abstract class APIServletBase
     params(request).getOrElse(key, default)
   }
 
+  def intParam(key: String, default: Int): Int = {
+    val raw = params(request).getOrElse(key, String.valueOf(default))
+    try raw.toInt
+    catch {
+      case _: NumberFormatException =>
+        halt(badRequest(s"parameter '$key' must be an integer"))
+    }
+  }
+
   private def hookResult(actionResult: ActionResult): ActionResult = {
     val servletPath = request.getRequestURI
     val queryString = request.getQueryString

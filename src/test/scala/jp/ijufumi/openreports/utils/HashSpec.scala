@@ -174,39 +174,10 @@ class HashSpec extends AnyFlatSpec with Matchers {
     result should equal(unicodeId)
   }
 
-  "isExpired" should "return false for non-expired token" in {
-    val token = Hash.generateJWT("test-id", 3600)
-    val decoded = JWT.decode(token)
+  it should "return id for token expiring in the future" in {
+    val token = Hash.generateJWT("test-id", 60)
 
-    Hash.isExpired(decoded) should be(false)
-  }
-
-  it should "return true for expired token" in {
-    val token = Hash.generateJWT("test-id", -3600) // Already expired
-    val decoded = JWT.decode(token)
-
-    Hash.isExpired(decoded) should be(true)
-  }
-
-  it should "return true for token expiring now" in {
-    // Create a token that expires immediately
-    val cal = Calendar.getInstance()
-    cal.add(Calendar.SECOND, -1) // 1 second ago
-
-    val token = Hash.generateJWT("test-id", -1)
-    val decoded = JWT.decode(token)
-
-    Hash.isExpired(decoded) should be(true)
-  }
-
-  it should "return false for token expiring in the future" in {
-    val token = Hash.generateJWT("test-id", 60) // 1 minute from now
-    val decoded = JWT.decode(token)
-
-    // Small delay to ensure time passes
-    Thread.sleep(10)
-
-    Hash.isExpired(decoded) should be(false)
+    Hash.extractIdFromJWT(token) should equal("test-id")
   }
 
   "Hash object" should "be consistent across multiple operations" in {

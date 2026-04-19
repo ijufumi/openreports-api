@@ -8,7 +8,7 @@ import jp.ijufumi.openreports.domain.models.value.enums.{
 }
 import org.flywaydb.core.api.migration.BaseJavaMigration
 import org.flywaydb.core.api.migration.Context
-import jp.ijufumi.openreports.utils.{Hash, IDs}
+import jp.ijufumi.openreports.utils.{Crypto, Hash, IDs}
 
 import scala.collection.mutable
 
@@ -96,7 +96,7 @@ class V000001_01__Create_data extends BaseJavaMigration {
   private def member(context: Context): String = {
     val id = IDs.ulid()
     val email = "root@ijufumi.jp"
-    val password = Hash.hmacSha256("password")
+    val password = Hash.hashPassword("password")
     val name = "Root User"
     val statement = {
       context.getConnection.prepareStatement(
@@ -191,7 +191,7 @@ class V000001_01__Create_data extends BaseJavaMigration {
     statement.setString(2, name)
     statement.setString(3, url)
     statement.setString(4, dbUser)
-    statement.setString(5, dbPassword)
+    statement.setString(5, Crypto.encrypt(dbPassword))
     statement.setString(6, driverTypeId)
     statement.setString(7, workspaceId)
     try statement.execute

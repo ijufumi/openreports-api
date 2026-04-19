@@ -23,30 +23,32 @@ class GoogleRepositoryImplSpec extends AnyFlatSpec with Matchers {
 
   "getAuthorizationUrl" should "return valid authorization URL" in {
     val repository = new GoogleRepositoryImpl()
-    val url = repository.getAuthorizationUrl()
+    val url = repository.getAuthorizationUrl("test-state-123")
 
     url should include("https://accounts.google.com/o/oauth2/auth")
     url should include("client_id")
     url should include("response_type=code")
-    url should include("state")
+    url should include("state=test-state-123")
     url should include("scope")
     url should include("redirect_uri")
   }
 
   it should "include required scopes in authorization URL" in {
     val repository = new GoogleRepositoryImpl()
-    val url = repository.getAuthorizationUrl()
+    val url = repository.getAuthorizationUrl("state")
 
     url should include("profile")
     url should include("email")
   }
 
-  it should "generate different states for each call" in {
+  it should "reflect the state argument in the URL" in {
     val repository = new GoogleRepositoryImpl()
-    val url1 = repository.getAuthorizationUrl()
-    val url2 = repository.getAuthorizationUrl()
+    val url1 = repository.getAuthorizationUrl("state-a")
+    val url2 = repository.getAuthorizationUrl("state-b")
 
     url1 should not equal url2
+    url1 should include("state=state-a")
+    url2 should include("state=state-b")
   }
 
   "fetchToken" should "return access token for valid code" in {

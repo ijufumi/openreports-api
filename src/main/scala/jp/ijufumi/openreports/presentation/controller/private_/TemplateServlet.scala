@@ -12,8 +12,8 @@ class TemplateServlet @Inject() (loginService: LoginUseCase, reportService: Repo
     extends PrivateAPIServletBase(loginService) {
   get("/") {
     withWorkspace { _workspaceId =>
-      val page = params("page").toInt
-      val limit = params("limit").toInt
+      val page = intParam("page", 0)
+      val limit = intParam("limit", 10)
       ok(reportService.getTemplates(_workspaceId, page, limit))
     }
   }

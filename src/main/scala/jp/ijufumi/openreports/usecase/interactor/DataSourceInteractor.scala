@@ -8,7 +8,7 @@ import jp.ijufumi.openreports.usecase.port.input.param.{
   CreateDataSourceInput,
   UpdateDataSourceInput,
 }
-import jp.ijufumi.openreports.utils.{IDs, Logging}
+import jp.ijufumi.openreports.utils.{Crypto, IDs, Logging}
 import jp.ijufumi.openreports.domain.port.ConnectionPoolPort
 import jp.ijufumi.openreports.domain.models.entity.{DataSource => DataSourceModel, Lists}
 import slick.jdbc.JdbcBackend.Database
@@ -31,7 +31,7 @@ class DataSourceInteractor @Inject() (
     connectionPoolPort.newConnection(
       dataSource.name,
       dataSource.username,
-      dataSource.password,
+      Crypto.decrypt(dataSource.password),
       dataSource.url,
       dataSource.driverType.get.jdbcDriverClass,
       dataSource.maxPoolSize,
@@ -61,7 +61,7 @@ class DataSourceInteractor @Inject() (
       requestVal.name,
       requestVal.url,
       requestVal.username,
-      requestVal.password,
+      Crypto.encrypt(requestVal.password),
       requestVal.driverTypeId,
       DataSourceModel.maxPoolSize,
       workspaceId,
@@ -79,7 +79,16 @@ class DataSourceInteractor @Inject() (
     if (dataSource.isEmpty) {
       return None
     }
-    val newDataSource = dataSource.get.copy(name = requestVal.name)
+    val newPassword =
+      if (requestVal.password.nonEmpty) Crypto.encrypt(requestVal.password)
+      else dataSource.get.password
+    val newDataSource = dataSource.get.copy(
+      name = requestVal.name,
+      url = requestVal.url,
+      username = requestVal.username,
+      password = newPassword,
+      driverTypeId = requestVal.driverTypeId,
+    )
     dataSourceRepository.update(db, newDataSource)
     getDataSource(workspaceId, newDataSource.id)
   }

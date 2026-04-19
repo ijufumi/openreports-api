@@ -4,7 +4,8 @@ import com.google.inject.Inject
 import jp.ijufumi.openreports.domain.port.{GoogleAuthPort, GoogleUserInfo}
 
 class GoogleAuthAdapter @Inject() (googleRepository: GoogleRepository) extends GoogleAuthPort {
-  override def getAuthorizationUrl(): String = googleRepository.getAuthorizationUrl()
+  override def getAuthorizationUrl(state: String): String =
+    googleRepository.getAuthorizationUrl(state)
 
   override def fetchToken(code: String): Option[String] = googleRepository.fetchToken(code)
 

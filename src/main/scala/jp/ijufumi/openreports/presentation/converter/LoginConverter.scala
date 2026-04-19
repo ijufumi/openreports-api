@@ -9,6 +9,6 @@ object LoginConverter {
   }
 
   def toGoogleLoginInput(request: GoogleLogin): GoogleLoginInput = {
-    GoogleLoginInput(request.code)
+    GoogleLoginInput(request.code, request.state)
   }
 }
