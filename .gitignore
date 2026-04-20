@@ -152,3 +152,6 @@ project/metals.sbt
 
 # paulp script
 /.lib/
+
+# Claude Code
+.claude/settings.local.json
