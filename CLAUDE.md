@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-OpenReports API is a Scala 2.12 REST API built with Scalatra 3.1.2, running on Jetty 12 (Jakarta EE). It generates reports from Excel templates (xls/xlsx) and outputs them as xls/xlsx/pdf. Uses PostgreSQL, Redis caching, AWS S3 storage, and Google OAuth.
+OpenReports API is a Scala 3.3.7 REST API built with Scalatra 3.1.2, running on Jetty 12 (Jakarta EE / ee10). It generates reports from Excel templates (xls/xlsx) and outputs them as xls/xlsx/pdf. Uses PostgreSQL, Redis caching, AWS S3 storage, and Google OAuth.
 
 ## Build & Development Commands
 
@@ -42,10 +42,10 @@ Clean Architecture with four layers. Dependency direction: presentation -> useca
 
 ### Layers
 
-- **`domain/`** - Pure business logic. Entities, value objects, repository traits (interfaces). No external dependencies.
+- **`domain/`** - Pure business logic. Entities (`models/entity/`), value objects (`models/value/`), repository traits in `repository/`, and outbound ports in `port/` (e.g. `AppConfigPort`, `CachePort`, `ConnectionPoolPort`, `GoogleAuthPort`). No external dependencies.
 - **`usecase/`** - Application logic. Use case interfaces in `port/input/`, implementations in `interactor/`. Input parameter DTOs in `port/input/param/`.
 - **`presentation/`** - HTTP layer. Scalatra servlets in `controller/`, split into `public_/` (no auth) and `private_/` (JWT auth required). Request/response DTOs and converters.
-- **`infrastructure/`** - External concerns. Repository implementations in `persistence/repository/`, Slick table mappings in `persistence/entity/`, S3/local storage, Redis cache, Google OAuth client.
+- **`infrastructure/`** - External concerns. Repository implementations in `persistence/repository/`, Slick table mappings in `persistence/entity/`, domain<->entity converters in `persistence/converter/`, plus `cache/` (Redis), `storage/` (S3/local), `external/` (Google OAuth), and `config/`.
 
 ### Key Patterns
 
@@ -62,7 +62,7 @@ Private: `/members`, `/reports`, `/report-groups`, `/templates`, `/data-sources`
 
 ### Entry Point
 
-`JettyLauncher` starts Jetty on port 8080 (configurable via `PORT` env var).
+`JettyLauncher` (in `src/main/scala/JettyLauncher.scala`, default package) starts Jetty on port 8080 (configurable via `PORT` env var). It wires `ScalatraListener`, the `GuiceFilter`, and CORS settings against an `ee10` `WebAppContext`.
 
 ## Testing
 
@@ -81,5 +81,5 @@ Environment variables loaded via dotenv-java (`.env` file or system env). Key va
 - Package root: `jp.ijufumi.openreports`
 - Interactors (use case implementations): `*Interactor.scala`
 - Repository implementations: `*RepositoryImpl.scala`
-- Scalafmt: scala213 dialect, import sorting via scalastyle
+- Scalafmt: scala3 dialect (scalafmt 3.3.0, maxColumn=100, trailing commas always), import sorting via scalastyle
 - Migrations: `src/main/resources/db/migration/V*.sql` (Flyway)
