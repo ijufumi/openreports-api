@@ -10,15 +10,16 @@ on:
 
 jobs:
   setup:
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
       - name: Install packages
         run: |
-          brew install plantuml
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends plantuml graphviz
       - name: Create image
         run: |
-          cat ./docs/db/diagram.puml | plantuml -tsvg -p > ./docs/db/diagram.svg
+          plantuml -tsvg -p < ./docs/db/diagram.puml > ./docs/db/diagram.svg
       - name: Commit image
         uses: EndBug/add-and-commit@v9
         with:
