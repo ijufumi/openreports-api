@@ -1,9 +1,12 @@
 .bsp
+.git
 .github
 .idea
 docker
 docs
 target
+project/target
+project/project
 
 .dockerignore
 .editorconfig
