@@ -2,7 +2,11 @@ package jp.ijufumi.openreports.infrastructure.persistence.repository
 
 import jp.ijufumi.openreports.domain.repository.ReportParameterRepository
 import jp.ijufumi.openreports.domain.models.entity.ReportParameter
+import jp.ijufumi.openreports.exceptions.OptimisticLockException
 import jp.ijufumi.openreports.infrastructure.persistence.converter.ReportParameterConverter.conversions._
+import jp.ijufumi.openreports.infrastructure.persistence.entity.{
+  ReportParameter => ReportParameterEntity,
+}
 import jp.ijufumi.openreports.utils.Dates
 import slick.jdbc.JdbcBackend.Database
 import slick.jdbc.PostgresProfile.api._
@@ -42,9 +46,15 @@ class ReportParameterRepositoryImpl extends ReportParameterRepository {
   }
 
   override def update(db: Database, model: ReportParameter): Unit = {
-    val newModel = model.copy(updatedAt = Dates.currentTimestamp())
-    val updateQuery = reportParameterQuery.insertOrUpdate(newModel).withPinnedSession
-    Await.result(db.run(updateQuery), queryTimeout)
+    val newEntity: ReportParameterEntity =
+      model.copy(updatedAt = Dates.currentTimestamp(), versions = model.versions + 1)
+    val q = reportParameterQuery.filter(_.id === model.id).filter(_.versions === model.versions)
+    val affected = Await.result(db.run(q.update(newEntity).withPinnedSession), queryTimeout)
+    if (affected == 0) {
+      throw new OptimisticLockException(
+        s"ReportParameter id=${model.id} was modified concurrently or does not exist",
+      )
+    }
   }
 
   override def delete(db: Database, workspaceId: String, id: String): Unit = {

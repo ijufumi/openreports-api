@@ -2,7 +2,12 @@ package jp.ijufumi.openreports.infrastructure.persistence.repository
 
 import jp.ijufumi.openreports.domain.repository.WorkspaceMemberRepository
 import jp.ijufumi.openreports.domain.models.entity.WorkspaceMember
+import jp.ijufumi.openreports.exceptions.OptimisticLockException
 import jp.ijufumi.openreports.infrastructure.persistence.converter.WorkspaceMemberConverter.conversions._
+import jp.ijufumi.openreports.infrastructure.persistence.entity.{
+  WorkspaceMember => WorkspaceMemberEntity,
+}
+import jp.ijufumi.openreports.utils.Dates
 import slick.jdbc.JdbcBackend.Database
 import slick.jdbc.PostgresProfile.api._
 
@@ -71,8 +76,21 @@ class WorkspaceMemberRepositoryImpl extends WorkspaceMemberRepository {
   }
 
   override def update(db: Database, workspaceMember: WorkspaceMember): Unit = {
-    val updateQuery = workspaceMemberQuery.insertOrUpdate(workspaceMember).withPinnedSession
-    Await.result(db.run(updateQuery), queryTimeout)
+    val newEntity: WorkspaceMemberEntity = workspaceMember.copy(
+      updatedAt = Dates.currentTimestamp(),
+      versions = workspaceMember.versions + 1,
+    )
+    val q = workspaceMemberQuery
+      .filter(_.workspaceId === workspaceMember.workspaceId)
+      .filter(_.memberId === workspaceMember.memberId)
+      .filter(_.versions === workspaceMember.versions)
+    val affected = Await.result(db.run(q.update(newEntity).withPinnedSession), queryTimeout)
+    if (affected == 0) {
+      throw new OptimisticLockException(
+        s"WorkspaceMember workspaceId=${workspaceMember.workspaceId} " +
+          s"memberId=${workspaceMember.memberId} was modified concurrently or does not exist",
+      )
+    }
   }
 
   override def delete(db: Database, workspaceId: String, memberId: String): Unit = {

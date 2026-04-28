@@ -5,6 +5,7 @@ import jp.ijufumi.openreports.infrastructure.persistence.entity.{
   DataSource => DataSourceEntity,
   DriverType => DriverTypeEntity,
 }
+import jp.ijufumi.openreports.utils.Crypto
 
 object DataSourceConverter {
   def toDomain(entity: DataSourceEntity): DataSourceModel = {
@@ -13,7 +14,7 @@ object DataSourceConverter {
       entity.name,
       entity.url,
       entity.username,
-      entity.password,
+      Crypto.decrypt(entity.password),
       entity.driverTypeId,
       DataSourceModel.maxPoolSize,
       entity.workspaceId,
@@ -29,7 +30,7 @@ object DataSourceConverter {
       entity._1.name,
       entity._1.url,
       entity._1.username,
-      entity._1.password,
+      Crypto.decrypt(entity._1.password),
       entity._1.driverTypeId,
       DataSourceModel.maxPoolSize,
       entity._1.workspaceId,
@@ -46,7 +47,7 @@ object DataSourceConverter {
       model.name,
       model.url,
       model.username,
-      model.password,
+      Crypto.encrypt(model.password),
       model.driverTypeId,
       model.workspaceId,
       model.createdAt,

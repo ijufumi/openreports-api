@@ -1,6 +1,7 @@
 package jp.ijufumi.openreports.infrastructure.persistence.repository
 
 import jp.ijufumi.openreports.domain.models.entity.{Member, WorkspaceMember}
+import jp.ijufumi.openreports.exceptions.OptimisticLockException
 import jp.ijufumi.openreports.infrastructure.persistence.H2DatabaseHelper
 import jp.ijufumi.openreports.utils.IDs
 import org.scalatest.{BeforeAndAfterAll, BeforeAndAfterEach}
@@ -205,6 +206,19 @@ class WorkspaceMemberRepositoryImplSpec
     val result = repository.getById(db, workspaceId, member.id)
     result should be(defined)
     result.get.roleId should equal("new-role")
+  }
+
+  it should "throw OptimisticLockException when versions do not match" in {
+    val workspaceId = IDs.ulid()
+    val member = createTestMember()
+    val workspaceMember = createTestWorkspaceMember(workspaceId, member.id, "old-role")
+    repository.register(db, workspaceMember)
+    val stale = repository.getById(db, workspaceId, member.id).get
+
+    repository.update(db, stale.copy(roleId = "first"))
+
+    an[OptimisticLockException] should be thrownBy
+      repository.update(db, stale.copy(roleId = "second"))
   }
 
   "delete" should "remove workspace member from database" in {

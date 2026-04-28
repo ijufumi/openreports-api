@@ -3,7 +3,9 @@ package jp.ijufumi.openreports.infrastructure.persistence.repository
 import slick.jdbc.PostgresProfile.api._
 import jp.ijufumi.openreports.domain.repository.StorageS3Repository
 import jp.ijufumi.openreports.domain.models.entity.StorageS3
+import jp.ijufumi.openreports.exceptions.OptimisticLockException
 import jp.ijufumi.openreports.infrastructure.persistence.converter.StorageS3Converter.conversions._
+import jp.ijufumi.openreports.infrastructure.persistence.entity.{StorageS3 => StorageS3Entity}
 import jp.ijufumi.openreports.utils.Dates
 import slick.jdbc.JdbcBackend.Database
 
@@ -35,8 +37,14 @@ class StorageS3RepositoryImpl extends StorageS3Repository {
   }
 
   override def update(db: Database, model: StorageS3): Unit = {
-    val newModel = model.copy(updatedAt = Dates.currentTimestamp())
-    val updateQuery = storageQuery.insertOrUpdate(newModel).withPinnedSession
-    Await.result(db.run(updateQuery), queryTimeout)
+    val newEntity: StorageS3Entity =
+      model.copy(updatedAt = Dates.currentTimestamp(), versions = model.versions + 1)
+    val q = storageQuery.filter(_.id === model.id).filter(_.versions === model.versions)
+    val affected = Await.result(db.run(q.update(newEntity).withPinnedSession), queryTimeout)
+    if (affected == 0) {
+      throw new OptimisticLockException(
+        s"StorageS3 id=${model.id} was modified concurrently or does not exist",
+      )
+    }
   }
 }
