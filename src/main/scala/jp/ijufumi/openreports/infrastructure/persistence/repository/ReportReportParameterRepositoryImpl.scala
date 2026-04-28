@@ -16,17 +16,14 @@ class ReportReportParameterRepositoryImpl extends ReportReportParameterRepositor
       offset: Int = 0,
       limit: Int = -1,
   ): (Seq[ReportReportParameter], Int) = {
-    var filtered = reportReportParameterQuery.drop(0)
-    val count = Await.result(db.run(filtered.length.result), queryTimeout)
-    if (limit > 0) {
-      filtered = filtered.drop(offset).take(limit)
-    }
-    (
-      Await
-        .result(db.run(filtered.result), queryTimeout)
-        .map(r => ReportReportParameterConverter.toDomain(r)),
-      count,
-    )
+    val count = Await.result(db.run(reportReportParameterQuery.length.result), queryTimeout)
+    val withOffset =
+      if (offset > 0) reportReportParameterQuery.drop(offset) else reportReportParameterQuery
+    val paged = if (limit > 0) withOffset.take(limit) else withOffset
+    val rows = Await
+      .result(db.run(paged.result), queryTimeout)
+      .map(ReportReportParameterConverter.toDomain)
+    (rows, count)
   }
 
   override def getById(db: Database, id: String): Option[ReportReportParameter] = {
@@ -82,18 +79,18 @@ class ReportReportParameterRepositoryImpl extends ReportReportParameterRepositor
   override def delete(db: Database, id: String): Unit = {
     val getById = reportReportParameterQuery
       .filter(_.id === id)
-    Await.result(db.run(getById.delete), queryTimeout)
+    Await.result(db.run(getById.delete.withPinnedSession), queryTimeout)
   }
 
   override def deleteByReportId(db: Database, id: String): Unit = {
     val getById = reportReportParameterQuery
       .filter(_.reportId === id)
-    Await.result(db.run(getById.delete), queryTimeout)
+    Await.result(db.run(getById.delete.withPinnedSession), queryTimeout)
   }
 
   override def deleteByReportParameterId(db: Database, id: String): Unit = {
     val getById = reportReportParameterQuery
       .filter(_.reportParameterId === id)
-    Await.result(db.run(getById.delete), queryTimeout)
+    Await.result(db.run(getById.delete.withPinnedSession), queryTimeout)
   }
 }

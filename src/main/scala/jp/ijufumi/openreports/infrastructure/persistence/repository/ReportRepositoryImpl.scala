@@ -17,15 +17,12 @@ class ReportRepositoryImpl extends ReportRepository {
       limit: Int = -1,
       templateId: String = "",
   ): (Seq[Report], Int) = {
-    var filtered = reportQuery.filter(_.workspaceId === workspaceId)
-    if (templateId.nonEmpty) {
-      filtered = filtered.filter(_.reportTemplateId === templateId)
-    }
+    val base = reportQuery.filter(_.workspaceId === workspaceId)
+    val filtered = if (templateId.nonEmpty) base.filter(_.reportTemplateId === templateId) else base
     val count = Await.result(db.run(filtered.length.result), queryTimeout)
-    if (limit > 0) {
-      filtered = filtered.drop(offset).take(limit)
-    }
-    val result = Await.result(db.run(filtered.result), queryTimeout)
+    val withOffset = if (offset > 0) filtered.drop(offset) else filtered
+    val paged = if (limit > 0) withOffset.take(limit) else withOffset
+    val result = Await.result(db.run(paged.result), queryTimeout)
     (result, count)
   }
 
@@ -36,24 +33,17 @@ class ReportRepositoryImpl extends ReportRepository {
       limit: Int = -1,
       templateId: String = "",
   ): (Seq[Report], Int) = {
-    var getById = reportQuery
+    val base = reportQuery
       .filter(_.workspaceId === workspaceId)
       .join(templateQuery)
       .on(_.reportTemplateId === _.id)
       .sortBy(_._1.id)
-
-    if (templateId.nonEmpty) {
-      getById = getById.filter(_._1.reportTemplateId === templateId)
-    }
-    val count = Await.result(db.run(getById.length.result), queryTimeout)
-    if (offset > 0) {
-      getById = getById.drop(offset)
-    }
-    if (limit > 0) {
-      getById = getById.take(limit)
-    }
-
-    val result = Await.result(db.run(getById.result), queryTimeout)
+    val filtered =
+      if (templateId.nonEmpty) base.filter(_._1.reportTemplateId === templateId) else base
+    val count = Await.result(db.run(filtered.length.result), queryTimeout)
+    val withOffset = if (offset > 0) filtered.drop(offset) else filtered
+    val paged = if (limit > 0) withOffset.take(limit) else withOffset
+    val result = Await.result(db.run(paged.result), queryTimeout)
     (result, count)
   }
 
@@ -100,6 +90,6 @@ class ReportRepositoryImpl extends ReportRepository {
     val getById = reportQuery
       .filter(_.workspaceId === workspaceId)
       .filter(_.id === id)
-    Await.result(db.run(getById.delete), queryTimeout)
+    Await.result(db.run(getById.delete.withPinnedSession), queryTimeout)
   }
 }

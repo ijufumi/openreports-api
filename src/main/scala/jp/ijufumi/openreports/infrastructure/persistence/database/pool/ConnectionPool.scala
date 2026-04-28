@@ -1,15 +1,15 @@
 package jp.ijufumi.openreports.infrastructure.persistence.database.pool
 
-import jp.ijufumi.openreports.exceptions.NotFoundException
-import jp.ijufumi.openreports.domain.models.value.enums.JdbcDriverClasses
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.pool.HikariPool
+import jp.ijufumi.openreports.domain.models.value.enums.JdbcDriverClasses
+import jp.ijufumi.openreports.exceptions.NotFoundException
 
 import java.sql.Connection
-import scala.collection.mutable
+import java.util.concurrent.ConcurrentHashMap
 
 object ConnectionPool {
-  private val pool = mutable.Map.empty[String, HikariPool]
+  private val pools = new ConcurrentHashMap[String, HikariPool]()
 
   def newConnection(
       name: String,
@@ -19,38 +19,35 @@ object ConnectionPool {
       jdbcDriverClass: JdbcDriverClasses.JdbcDriverClass,
       maxPoolSize: Integer,
   ): Connection = {
-    this.synchronized {
-      if (has(name)) {
-        return getConnection(name)
-      }
-      val config = new HikariConfig()
-      config.setUsername(username)
-      config.setPassword(password)
-      config.setJdbcUrl(url)
-      config.setAutoCommit(false)
-      config.setMaximumPoolSize(maxPoolSize)
-      config.setDriverClassName(jdbcDriverClass.toString)
-      pool += (name -> new HikariPool(config))
-
-      getConnection(name)
-    }
+    val pool = pools.computeIfAbsent(
+      name,
+      _ => buildPool(username, password, url, jdbcDriverClass, maxPoolSize),
+    )
+    pool.getConnection()
   }
 
   def newConnection(name: String): Connection = {
-    this.synchronized {
-      if (!has(name)) {
-        throw new NotFoundException
-      }
-
-      getConnection(name)
+    val pool = pools.get(name)
+    if (pool == null) {
+      throw new NotFoundException
     }
+    pool.getConnection()
   }
 
-  private def has(name: String): Boolean = {
-    pool.contains(name)
-  }
-
-  private def getConnection(name: String): Connection = {
-    pool(name).getConnection()
+  private def buildPool(
+      username: String,
+      password: String,
+      url: String,
+      jdbcDriverClass: JdbcDriverClasses.JdbcDriverClass,
+      maxPoolSize: Integer,
+  ): HikariPool = {
+    val config = new HikariConfig()
+    config.setUsername(username)
+    config.setPassword(password)
+    config.setJdbcUrl(url)
+    config.setAutoCommit(false)
+    config.setMaximumPoolSize(maxPoolSize)
+    config.setDriverClassName(jdbcDriverClass.toString)
+    new HikariPool(config)
   }
 }

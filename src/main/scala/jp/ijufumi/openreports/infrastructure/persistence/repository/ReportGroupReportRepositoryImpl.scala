@@ -15,12 +15,11 @@ class ReportGroupReportRepositoryImpl extends ReportGroupReportRepository {
       offset: Int = 0,
       limit: Int = -1,
   ): (Seq[ReportGroupReport], Int) = {
-    var filtered = reportGroupReportQuery.drop(0)
-    val count = Await.result(db.run(filtered.length.result), queryTimeout)
-    if (limit > 0) {
-      filtered = filtered.drop(offset).take(limit)
-    }
-    val result = Await.result(db.run(filtered.result), queryTimeout)
+    val count = Await.result(db.run(reportGroupReportQuery.length.result), queryTimeout)
+    val withOffset =
+      if (offset > 0) reportGroupReportQuery.drop(offset) else reportGroupReportQuery
+    val paged = if (limit > 0) withOffset.take(limit) else withOffset
+    val result = Await.result(db.run(paged.result), queryTimeout)
     (result, count)
   }
 
@@ -75,18 +74,18 @@ class ReportGroupReportRepositoryImpl extends ReportGroupReportRepository {
   override def delete(db: Database, id: String): Unit = {
     val getById = reportGroupReportQuery
       .filter(_.id === id)
-    Await.result(db.run(getById.delete), queryTimeout)
+    Await.result(db.run(getById.delete.withPinnedSession), queryTimeout)
   }
 
   override def deleteByReportId(db: Database, id: String): Unit = {
     val getById = reportGroupReportQuery
       .filter(_.reportId === id)
-    Await.result(db.run(getById.delete), queryTimeout)
+    Await.result(db.run(getById.delete.withPinnedSession), queryTimeout)
   }
 
   override def deleteByReportGroupId(db: Database, id: String): Unit = {
     val getById = reportGroupReportQuery
       .filter(_.reportGroupId === id)
-    Await.result(db.run(getById.delete), queryTimeout)
+    Await.result(db.run(getById.delete.withPinnedSession), queryTimeout)
   }
 }

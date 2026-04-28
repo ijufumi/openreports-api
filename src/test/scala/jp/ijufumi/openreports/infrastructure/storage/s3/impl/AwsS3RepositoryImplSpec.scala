@@ -81,7 +81,37 @@ class AwsS3RepositoryImplSpec extends AnyFlatSpec with Matchers with MockitoSuga
 
     verify(storageRepository).gets(db, workspaceId)
     verify(s3ClientFactory).createClient(storage)
-    verify(s3Client).close()
+  }
+
+  it should "reuse cached S3Client across multiple calls" in {
+    val db = mock[Database]
+    val storageRepository = mock[StorageS3Repository]
+    val s3ClientFactory = mock[S3ClientFactory]
+    val s3Client = mock[S3Client]
+
+    val workspaceId = "workspace-id"
+    val storage = StorageS3Model(
+      id = "storage-id",
+      workspaceId = workspaceId,
+      s3BucketName = "test-bucket",
+      awsAccessKeyId = "test-access-key",
+      awsSecretAccessKey = "test-secret-key",
+      awsRegion = "us-east-1",
+      createdAt = 0,
+      updatedAt = 0,
+    )
+
+    when(storageRepository.gets(db, workspaceId)).thenReturn(Seq(storage))
+    when(s3ClientFactory.createClient(storage)).thenReturn(s3Client)
+    when(s3Client.deleteObject(any[DeleteObjectRequest])).thenReturn(mock[DeleteObjectResponse])
+
+    val repository = new AwsS3RepositoryImpl(db, storageRepository, s3ClientFactory)
+
+    repository.delete(workspaceId, "a")
+    repository.delete(workspaceId, "b")
+    repository.delete(workspaceId, "c")
+
+    verify(s3ClientFactory, times(1)).createClient(storage)
   }
 
   "create" should "upload file to S3 bucket" in {

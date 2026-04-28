@@ -98,12 +98,21 @@ class ReportReportParameterRepositoryImplSpec
     count should equal(10)
   }
 
-  it should "ignore pagination when limit is -1" in {
+  it should "return all rows when offset=0 and limit=-1" in {
+    (1 to 10).foreach(_ => insertReportReportParameter())
+
+    val (result, count) = repository.gets(db, offset = 0, limit = -1)
+
+    result should have size 10
+    count should equal(10)
+  }
+
+  it should "apply offset even when limit is -1" in {
     (1 to 10).foreach(_ => insertReportReportParameter())
 
     val (result, count) = repository.gets(db, offset = 5, limit = -1)
 
-    result should have size 10
+    result should have size 5
     count should equal(10)
   }
 
