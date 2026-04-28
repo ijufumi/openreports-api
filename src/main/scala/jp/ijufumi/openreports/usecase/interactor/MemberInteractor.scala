@@ -32,7 +32,7 @@ class MemberInteractor @Inject() (
     }
     var newPassword = memberOpt.get.password
     if (password.nonEmpty) {
-      newPassword = Hash.hmacSha256(password)
+      newPassword = Hash.hashPassword(password)
     }
     val newMember = memberOpt.get.copy(name = newName, password = newPassword)
     memberRepository.update(db, newMember)

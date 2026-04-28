@@ -25,9 +25,7 @@ class GoogleRepositoryImpl @Inject() (backend: WebSocketSyncBackend = HttpClient
   private val REDIRECT_URL = s"${Config.FRONTEND_URL}/google/callback"
   private val SCOPES = Array("profile", "email")
 
-  override def getAuthorizationUrl(): String = {
-    val state = Strings.generateRandomString(10)()
-
+  override def getAuthorizationUrl(state: String): String = {
     val params = mutable.Map[String, String]()
     params += ("client_id" -> Config.GOOGLE_CLIENT_ID)
     params += ("response_type" -> "code")
@@ -77,7 +75,8 @@ class GoogleRepositoryImpl @Inject() (backend: WebSocketSyncBackend = HttpClient
   override def getUserInfo(accessToken: String): Option[UserInfo] = {
     val response =
       basicRequest
-        .get(uri"${USER_INFO_URL}?access_token=${accessToken}")
+        .get(uri"${USER_INFO_URL}")
+        .header("Authorization", s"Bearer ${accessToken}")
         .response(asJson[UserInfo])
         .send(backend)
 

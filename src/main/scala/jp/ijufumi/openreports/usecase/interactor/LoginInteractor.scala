@@ -2,12 +2,12 @@ package jp.ijufumi.openreports.usecase.interactor
 
 import jp.ijufumi.openreports.usecase.port.input.{LoginUseCase, WorkspaceUseCase}
 import com.google.inject.{Inject, Singleton}
+import jp.ijufumi.openreports.configs.Config
 import jp.ijufumi.openreports.domain.port.{AppConfigPort, CacheKeys, CachePort, GoogleAuthPort}
 import jp.ijufumi.openreports.utils.{Hash, IDs, Logging, Strings}
 import jp.ijufumi.openreports.domain.repository.{MemberRepository, WorkspaceRepository}
 import jp.ijufumi.openreports.usecase.port.input.param.{GoogleLoginInput, LoginInput}
 import jp.ijufumi.openreports.domain.models.entity.{Member => MemberModel}
-import slick.jdbc.PostgresProfile.api._
 import slick.jdbc.JdbcBackend.Database
 
 @Singleton
@@ -31,9 +31,8 @@ class LoginInteractor @Inject() (
       logger.info(s"$email does not exist")
       return None
     }
-    val hashedPassword = Hash.hmacSha256(password)
     val member = memberOpt.get
-    if (hashedPassword != member.password) {
+    if (!Hash.verifyPassword(password, member.password)) {
       logger.info(s"$email's password does not match")
       return None
     }
@@ -76,9 +75,26 @@ class LoginInteractor @Inject() (
     workspaceService.getWorkspaceMember(workspaceId, memberId).isDefined
   }
 
-  override def getAuthorizationUrl: String = googleAuthPort.getAuthorizationUrl()
+  override def getAuthorizationUrl: String = {
+    val state = Strings.generateRandomString(32)()
+    cachePort.put(CacheKeys.GoogleAuthState, state, state)(
+      Config.GOOGLE_AUTH_STATE_CACHE_TTL_SEC,
+    )
+    googleAuthPort.getAuthorizationUrl(state)
+  }
 
   override def loginWithGoogle(input: GoogleLoginInput): Option[MemberModel] = {
+    if (input.state == null || input.state.isEmpty) {
+      logger.info("OAuth state is missing")
+      return None
+    }
+    val cachedStateOpt = cachePort.get(CacheKeys.GoogleAuthState, input.state)
+    if (cachedStateOpt.isEmpty || cachedStateOpt.get != input.state) {
+      logger.warn("OAuth state verification failed")
+      return None
+    }
+    cachePort.remove(CacheKeys.GoogleAuthState, input.state)
+
     val tokenOpt = googleAuthPort.fetchToken(input.code)
     if (tokenOpt.isEmpty) {
       logger.info("Missing token")
@@ -113,14 +129,20 @@ class LoginInteractor @Inject() (
       name = userInfo.name,
     )
 
+    val newMemberOpt = memberRepository.register(db, member)
     try {
-      val newMemberOpt = memberRepository.register(db, member)
       val workspaceName = Strings.nameFromEmail(member.email) + "'s workspace"
       workspaceService.createAndRelevant(workspaceName, member.id)
       makeResponse(newMemberOpt.get)
     } catch {
       case e: Throwable =>
-        SimpleDBIO(_.connection.rollback()).withPinnedSession
+        logger.error(s"Failed to create workspace for member ${member.id}; rolling back member", e)
+        try {
+          memberRepository.delete(db, member.id)
+        } catch {
+          case cleanupError: Throwable =>
+            logger.error(s"Failed to roll back member ${member.id}", cleanupError)
+        }
         throw e
     }
   }

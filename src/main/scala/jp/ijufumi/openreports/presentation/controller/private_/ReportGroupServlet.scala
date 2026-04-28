@@ -18,8 +18,8 @@ class ReportGroupServlet @Inject() (loginService: LoginUseCase, reportService: R
     extends PrivateAPIServletBase(loginService) {
   get("/") {
     withWorkspace { _workspaceId =>
-      val page = params("page").toInt
-      val limit = params("limit").toInt
+      val page = intParam("page", 0)
+      val limit = intParam("limit", 10)
       ok(reportService.getGroups(_workspaceId, page, limit))
     }
   }

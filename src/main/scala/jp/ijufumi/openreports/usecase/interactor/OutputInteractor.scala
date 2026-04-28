@@ -30,7 +30,9 @@ class OutputInteractor @Inject() (
   ): Option[File] = {
     val inputFileName = new File(filePath).getName
     val dotIndex = inputFileName.lastIndexOf('.')
-    val suffix = if (dotIndex != -1) inputFileName.substring(dotIndex) else ""
+    val (baseName, suffix) =
+      if (dotIndex != -1) (inputFileName.substring(0, dotIndex), inputFileName.substring(dotIndex))
+      else (inputFileName, "")
     val timeStamp = Dates.format(LocalDateTime.now())
     val outputDir = FileSystems.getDefault.getPath(
       appConfig.outputFilePath,
@@ -39,11 +41,11 @@ class OutputInteractor @Inject() (
     )
     val outputFile = FileSystems.getDefault.getPath(
       outputDir.toString,
-      s"${inputFileName.substring(0, dotIndex)}_$timeStamp$suffix",
+      s"${baseName}_$timeStamp$suffix",
     )
     val outputPDFFile = FileSystems.getDefault.getPath(
       outputDir.toString,
-      s"${inputFileName.substring(0, dotIndex)}_$timeStamp.pdf",
+      s"${baseName}_$timeStamp.pdf",
     )
 
     val outputDirectory = outputFile.getParent

@@ -48,4 +48,9 @@ class MemberRepositoryImpl extends MemberRepository {
     val query = memberQuery.insertOrUpdate(member).withPinnedSession
     Await.result(db.run(query), queryTimeout)
   }
+
+  override def delete(db: Database, id: String): Unit = {
+    val query = memberQuery.filter(_.id === id).delete.withPinnedSession
+    Await.result(db.run(query), queryTimeout)
+  }
 }

@@ -3,7 +3,7 @@ package jp.ijufumi.openreports.configs
 import io.github.cdimascio.dotenv.DotenvBuilder
 
 object Config {
-  private val dotEnv = new DotenvBuilder().ignoreIfMissing().ignoreIfMissing().load()
+  private val dotEnv = new DotenvBuilder().ignoreIfMissing().load()
 
   private def getEnvValue(key: String, defaultValue: String = ""): String = {
     dotEnv.get(key, sys.env.getOrElse(key, defaultValue))
@@ -11,6 +11,17 @@ object Config {
 
   private def getEnvIntValue(key: String, defaultValue: Int = 0): Int = {
     Integer.parseInt(getEnvValue(key, String.valueOf(defaultValue)))
+  }
+
+  private def requireEnvValue(key: String): String = {
+    val value = getEnvValue(key)
+    if (value == null || value.isEmpty) {
+      throw new IllegalStateException(
+        s"Required environment variable '$key' is not set. " +
+          s"Set it via environment variable or .env file before starting the application.",
+      )
+    }
+    value
   }
 
   val FRONTEND_URL: String = getEnvValue("FRONTEND_URL", "http://localhost:3000")
@@ -22,7 +33,7 @@ object Config {
   val DB_PASSWORD: String = getEnvValue("DB_PASSWORD", "password")
   val DB_PORT: String = getEnvValue("DB_PORT", "5432")
   // for hash
-  val HASH_KEY: String = getEnvValue("HASH_KEY", "test")
+  val HASH_KEY: String = requireEnvValue("HASH_KEY")
   val ACCESS_TOKEN_EXPIRATION_SEC: Integer =
     getEnvIntValue("ACCESS_TOKEN_EXPIRATION_SEC", 600)
   val REFRESH_TOKEN_EXPIRATION_SEC: Integer =

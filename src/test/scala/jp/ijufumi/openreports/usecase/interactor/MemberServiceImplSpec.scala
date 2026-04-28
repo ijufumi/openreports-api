@@ -48,7 +48,7 @@ class MemberInteractorSpec extends AnyFlatSpec with MockitoSugar {
       createdAt = 0,
       updatedAt = 0,
     )
-    val newMember = member.copy(name = name, password = Hash.hmacSha256(password))
+    val newMember = member.copy(name = name, password = Hash.hashPassword(password))
 
     when(memberRepository.getById(db, memberId)).thenReturn(Some(member), Some(newMember))
     memberRepository.update(db, newMember)

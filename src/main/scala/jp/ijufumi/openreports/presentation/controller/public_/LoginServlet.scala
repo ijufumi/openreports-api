@@ -62,7 +62,9 @@ class LoginServlet @Inject() (loginService: LoginUseCase)
   }
 
   def generateAccessToken(refreshToken: String): Unit = {
-    val accessToken = loginService.generateAccessToken(refreshToken)
-    response.setHeader(Config.API_TOKEN_HEADER, accessToken.get)
+    loginService.generateAccessToken(refreshToken) match {
+      case Some(token) => response.setHeader(Config.API_TOKEN_HEADER, token)
+      case None        => logger.warn("Failed to generate access token from refresh token")
+    }
   }
 }

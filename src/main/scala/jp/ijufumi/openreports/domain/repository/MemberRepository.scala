@@ -13,4 +13,6 @@ trait MemberRepository {
   def register(db: Database, member: Member): Option[Member]
 
   def update(db: Database, member: Member): Unit
+
+  def delete(db: Database, id: String): Unit
 }
