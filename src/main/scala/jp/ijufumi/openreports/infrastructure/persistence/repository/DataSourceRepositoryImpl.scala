@@ -14,7 +14,7 @@ class DataSourceRepositoryImpl extends DataSourceRepository {
       .filter(_.id === id)
       .filter(_.workspaceId === workspaceId)
     val dataSources = Await.result(db.run(getDataSources.result), queryTimeout)
-    Some(dataSources.head)
+    dataSources.headOption
   }
 
   override def getAll(db: Database, workspaceId: String): Seq[DataSource] = {

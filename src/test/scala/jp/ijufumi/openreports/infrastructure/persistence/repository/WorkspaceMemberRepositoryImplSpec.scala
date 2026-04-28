@@ -232,6 +232,21 @@ class WorkspaceMemberRepositoryImplSpec
     repository.getById(db, workspaceId2, member.id) should be(defined)
   }
 
+  it should "only delete the specified member within a workspace" in {
+    val workspaceId = IDs.ulid()
+    val member1 = createTestMember()
+    val member2 = createTestMember()
+
+    repository.register(db, createTestWorkspaceMember(workspaceId, member1.id))
+    repository.register(db, createTestWorkspaceMember(workspaceId, member2.id))
+
+    repository.delete(db, workspaceId, member1.id)
+
+    repository.getById(db, workspaceId, member1.id) should be(None)
+    repository.getById(db, workspaceId, member2.id) should be(defined)
+    repository.gets(db, workspaceId) should have size 1
+  }
+
   "WorkspaceMemberRepository" should "handle multiple roles" in {
     val workspaceId = IDs.ulid()
     val member1 = createTestMember()

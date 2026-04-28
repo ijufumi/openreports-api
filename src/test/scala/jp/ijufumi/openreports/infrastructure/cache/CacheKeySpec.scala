@@ -19,7 +19,14 @@ class CacheKeySpec extends AnyFlatSpec with Matchers {
   it should "generate key with multiple arguments" in {
     val key = CacheKeys.GoogleAuthState.key("state1", "state2")
     key should include("jp.ijufumi.openreports.infrastructure.cache.CacheKeys$GoogleAuthState$")
-    key should include("state1state2")
+    key should include("state1:state2")
+  }
+
+  it should "generate distinct keys for argument sequences that share the same concatenation" in {
+    val key1 = CacheKeys.ApiToken.key("ab", "c")
+    val key2 = CacheKeys.ApiToken.key("a", "bc")
+
+    key1 should not equal key2
   }
 
   it should "generate unique keys for different cache types" in {

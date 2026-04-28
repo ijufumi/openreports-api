@@ -10,11 +10,11 @@ class LocalFileRepositoryImpl @Inject() (implicit
     templateRootPath: String = Config.TEMPLATE_ROOT_PATH,
 ) extends LocalFileRepository {
   override def get(workspaceId: String, key: String): Path = {
-    FileSystems.getDefault.getPath(templateRootPath, workspaceId, key)
+    resolveSafePath(workspaceId, key)
   }
 
   override def create(workspaceId: String, key: String, file: Path): Unit = {
-    val fullPath = FileSystems.getDefault.getPath(templateRootPath, workspaceId, key)
+    val fullPath = resolveSafePath(workspaceId, key)
     Files.createDirectories(fullPath.getParent)
     Files.copy(file, fullPath)
   }
@@ -22,4 +22,15 @@ class LocalFileRepositoryImpl @Inject() (implicit
   override def delete(workspaceId: String, key: String): Unit = ???
 
   override def url(workspaceId: String, key: String): String = ???
+
+  private def resolveSafePath(workspaceId: String, key: String): Path = {
+    val root = FileSystems.getDefault.getPath(templateRootPath).toAbsolutePath.normalize()
+    val resolved = root.resolve(workspaceId).resolve(key).normalize()
+    if (!resolved.startsWith(root)) {
+      throw new IllegalArgumentException(
+        s"path traversal detected: workspaceId=$workspaceId, key=$key",
+      )
+    }
+    resolved
+  }
 }

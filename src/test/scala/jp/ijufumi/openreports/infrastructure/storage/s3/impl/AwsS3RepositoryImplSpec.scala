@@ -70,15 +70,18 @@ class AwsS3RepositoryImplSpec extends AnyFlatSpec with Matchers with MockitoSuga
 
     val repository = new AwsS3RepositoryImpl(db, storageRepository, s3ClientFactory)
 
-    // The current implementation tries to copy from the response stream
-    // We need to handle the stream closing properly
-    assertThrows[Exception] {
-      // This will fail because we're mocking, but it tests that the method is called
-      repository.get(workspaceId, key)
+    val resultPath = repository.get(workspaceId, key)
+
+    try {
+      Files.exists(resultPath) should be(true)
+      new String(Files.readAllBytes(resultPath)) should equal(testContent)
+    } finally {
+      Files.deleteIfExists(resultPath)
     }
 
     verify(storageRepository).gets(db, workspaceId)
     verify(s3ClientFactory).createClient(storage)
+    verify(s3Client).close()
   }
 
   "create" should "upload file to S3 bucket" in {

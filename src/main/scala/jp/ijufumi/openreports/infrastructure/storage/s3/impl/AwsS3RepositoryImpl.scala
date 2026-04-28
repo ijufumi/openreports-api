@@ -54,10 +54,11 @@ class AwsS3RepositoryImpl @Inject() (
     val storage = this.getStorage(workspaceId)
     val request = GetObjectRequest.builder().bucket(storage.s3BucketName).key(key).build()
     val file = Files.createTempFile("", ".tmp")
-    val response = Using(s3ClientFactory.createClient(storage)) { client =>
-      client.getObject(request)
-    }.get
-    Files.copy(response, file)
+    Using.resource(s3ClientFactory.createClient(storage)) { client =>
+      Using.resource(client.getObject(request)) { response =>
+        Files.copy(response, file, java.nio.file.StandardCopyOption.REPLACE_EXISTING)
+      }
+    }
     file
   }
 

@@ -102,6 +102,36 @@ class LocalFileRepositoryImplSpec
     Files.deleteIfExists(sourceFile)
   }
 
+  "get" should "reject path traversal in key" in {
+    val templateRootPath = tempDir.toString
+    val repository = new LocalFileRepositoryImpl()(templateRootPath = templateRootPath)
+
+    an[IllegalArgumentException] should be thrownBy
+      repository.get(testWorkspaceId, "../../../etc/passwd")
+  }
+
+  it should "reject path traversal in workspaceId" in {
+    val templateRootPath = tempDir.toString
+    val repository = new LocalFileRepositoryImpl()(templateRootPath = templateRootPath)
+
+    an[IllegalArgumentException] should be thrownBy
+      repository.get("../escape", "file.txt")
+  }
+
+  "create" should "reject path traversal in key" in {
+    val templateRootPath = tempDir.toString
+    val repository = new LocalFileRepositoryImpl()(templateRootPath = templateRootPath)
+    val sourceFile = Files.createTempFile(tempDir, "src", ".txt")
+    Files.write(sourceFile, "x".getBytes)
+
+    try {
+      an[IllegalArgumentException] should be thrownBy
+        repository.create(testWorkspaceId, "../../escape.txt", sourceFile)
+    } finally {
+      Files.deleteIfExists(sourceFile)
+    }
+  }
+
   it should "overwrite existing file" in {
     val templateRootPath = tempDir.toString
 
