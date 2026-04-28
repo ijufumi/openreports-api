@@ -76,8 +76,9 @@ class WorkspaceMemberRepositoryImpl extends WorkspaceMemberRepository {
   }
 
   override def delete(db: Database, workspaceId: String, memberId: String): Unit = {
-    val getById = workspaceMemberQuery
+    val target = workspaceMemberQuery
       .filter(_.workspaceId === workspaceId)
-    Await.result(db.run(getById.delete.withPinnedSession), queryTimeout)
+      .filter(_.memberId === memberId)
+    Await.result(db.run(target.delete.withPinnedSession), queryTimeout)
   }
 }

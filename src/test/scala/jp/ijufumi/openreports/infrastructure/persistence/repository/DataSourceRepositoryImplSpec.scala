@@ -129,6 +129,12 @@ class DataSourceRepositoryImplSpec
     result.get.workspaceId should equal(workspaceId1)
   }
 
+  it should "return None when data source doesn't exist" in {
+    val result = repository.getById(db, IDs.ulid(), IDs.ulid())
+
+    result should be(None)
+  }
+
   "getAll" should "return all data sources for workspace" in {
     val workspaceId = IDs.ulid()
     val driverType = createTestDriverType()
