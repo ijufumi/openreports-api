@@ -1,6 +1,7 @@
 package jp.ijufumi.openreports.infrastructure.persistence.repository
 
 import jp.ijufumi.openreports.domain.models.entity.{DataSource, DriverType}
+import jp.ijufumi.openreports.exceptions.OptimisticLockException
 import jp.ijufumi.openreports.infrastructure.persistence.H2DatabaseHelper
 import jp.ijufumi.openreports.infrastructure.persistence.entity.{DriverType => DriverTypeEntity}
 import jp.ijufumi.openreports.utils.IDs
@@ -243,6 +244,41 @@ class DataSourceRepositoryImplSpec
     result should be(defined)
     result.get.name should equal("Updated Name")
     result.get.url should equal("jdbc:postgresql://newhost:5432/newdb")
+  }
+
+  it should "increment versions on each update" in {
+    val workspaceId = IDs.ulid()
+    val driverType = createTestDriverType()
+    val dataSource = createTestDataSource(workspaceId, driverType.id)
+    repository.register(db, dataSource)
+
+    val afterFirst = repository.getById(db, workspaceId, dataSource.id)
+    afterFirst.get.versions should equal(1)
+
+    repository.update(db, afterFirst.get.copy(name = "v2"))
+    val afterSecond = repository.getById(db, workspaceId, dataSource.id)
+    afterSecond.get.versions should equal(2)
+    afterSecond.get.name should equal("v2")
+  }
+
+  it should "throw OptimisticLockException when versions do not match" in {
+    val workspaceId = IDs.ulid()
+    val driverType = createTestDriverType()
+    val dataSource = createTestDataSource(workspaceId, driverType.id)
+    repository.register(db, dataSource)
+    val stale = repository.getById(db, workspaceId, dataSource.id).get
+
+    repository.update(db, stale.copy(name = "first"))
+
+    an[OptimisticLockException] should be thrownBy
+      repository.update(db, stale.copy(name = "second"))
+  }
+
+  it should "throw OptimisticLockException when target row does not exist" in {
+    val driverType = createTestDriverType()
+    val dataSource = createTestDataSource(IDs.ulid(), driverType.id)
+
+    an[OptimisticLockException] should be thrownBy repository.update(db, dataSource)
   }
 
   "delete" should "remove data source from database" in {

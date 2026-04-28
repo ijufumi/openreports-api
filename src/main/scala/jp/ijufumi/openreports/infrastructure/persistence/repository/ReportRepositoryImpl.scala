@@ -2,7 +2,9 @@ package jp.ijufumi.openreports.infrastructure.persistence.repository
 
 import jp.ijufumi.openreports.domain.repository.ReportRepository
 import jp.ijufumi.openreports.domain.models.entity.Report
+import jp.ijufumi.openreports.exceptions.OptimisticLockException
 import jp.ijufumi.openreports.infrastructure.persistence.converter.ReportConverter.conversions._
+import jp.ijufumi.openreports.infrastructure.persistence.entity.{Report => ReportEntity}
 import slick.jdbc.PostgresProfile.api._
 import jp.ijufumi.openreports.utils.Dates
 import slick.jdbc.JdbcBackend.Database
@@ -81,9 +83,15 @@ class ReportRepositoryImpl extends ReportRepository {
   }
 
   override def update(db: Database, model: Report): Unit = {
-    val newModel = model.copy(updatedAt = Dates.currentTimestamp())
-    val updateQuery = reportQuery.insertOrUpdate(newModel).withPinnedSession
-    Await.result(db.run(updateQuery), queryTimeout)
+    val newEntity: ReportEntity =
+      model.copy(updatedAt = Dates.currentTimestamp(), versions = model.versions + 1)
+    val q = reportQuery.filter(_.id === model.id).filter(_.versions === model.versions)
+    val affected = Await.result(db.run(q.update(newEntity).withPinnedSession), queryTimeout)
+    if (affected == 0) {
+      throw new OptimisticLockException(
+        s"Report id=${model.id} was modified concurrently or does not exist",
+      )
+    }
   }
 
   override def delete(db: Database, workspaceId: String, id: String): Unit = {

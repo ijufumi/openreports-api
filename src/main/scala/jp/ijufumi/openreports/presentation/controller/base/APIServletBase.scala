@@ -3,12 +3,14 @@ package jp.ijufumi.openreports.presentation.controller.base
 import jp.ijufumi.openreports.configs.Config
 import jp.ijufumi.openreports.domain.models.value.enums.{JdbcDriverClasses, RoleTypes, StorageTypes}
 import jp.ijufumi.openreports.domain.models.entity.{Member => MemberModel}
+import jp.ijufumi.openreports.exceptions.OptimisticLockException
 import jp.ijufumi.openreports.utils.Logging
 import org.json4s.{jvalue2extractable, jvalue2monadic, DefaultFormats, Formats}
 import org.json4s.ext.EnumNameSerializer
 import org.scalatra.{
   ActionResult,
   BadRequest,
+  Conflict,
   CorsSupport,
   Forbidden,
   InternalServerError,
@@ -88,6 +90,10 @@ abstract class APIServletBase
     hookResult(Forbidden(obj))
   }
 
+  def conflict(obj: Any): ActionResult = {
+    hookResult(Conflict(obj))
+  }
+
   // 5xx
   def internalServerError(obj: Any): ActionResult = {
     hookResult(InternalServerError(obj))
@@ -123,10 +129,12 @@ abstract class APIServletBase
   }
 
   error {
-    case t => {
+    case e: OptimisticLockException =>
+      logger.warn(e.getMessage, e)
+      conflict(Map("error" -> "resource was modified concurrently"))
+    case t =>
       logger.error(t.getMessage, t)
       internalServerError(t)
-    }
   }
 
   protected def extractBody[T: Manifest](): T = parse(request.body).extract[T]

@@ -2,7 +2,9 @@ package jp.ijufumi.openreports.infrastructure.persistence.repository
 
 import jp.ijufumi.openreports.domain.repository.WorkspaceRepository
 import jp.ijufumi.openreports.domain.models.entity.Workspace
+import jp.ijufumi.openreports.exceptions.OptimisticLockException
 import jp.ijufumi.openreports.infrastructure.persistence.converter.WorkspaceConverter.conversions._
+import jp.ijufumi.openreports.infrastructure.persistence.entity.{Workspace => WorkspaceEntity}
 import jp.ijufumi.openreports.utils.Dates
 import slick.jdbc.JdbcBackend.Database
 import slick.jdbc.PostgresProfile.api._
@@ -37,9 +39,15 @@ class WorkspaceRepositoryImpl extends WorkspaceRepository {
   }
 
   override def update(db: Database, workspace: Workspace): Option[Workspace] = {
-    val newModel = workspace.copy(updatedAt = Dates.currentTimestamp())
-    val updateQuery = workspaceQuery.insertOrUpdate(newModel).withPinnedSession
-    Await.result(db.run(updateQuery), queryTimeout)
+    val newEntity: WorkspaceEntity =
+      workspace.copy(updatedAt = Dates.currentTimestamp(), versions = workspace.versions + 1)
+    val q = workspaceQuery.filter(_.id === workspace.id).filter(_.versions === workspace.versions)
+    val affected = Await.result(db.run(q.update(newEntity).withPinnedSession), queryTimeout)
+    if (affected == 0) {
+      throw new OptimisticLockException(
+        s"Workspace id=${workspace.id} was modified concurrently or does not exist",
+      )
+    }
     getById(db, workspace.id)
   }
 }

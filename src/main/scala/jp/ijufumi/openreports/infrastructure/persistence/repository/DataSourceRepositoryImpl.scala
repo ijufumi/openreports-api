@@ -2,7 +2,10 @@ package jp.ijufumi.openreports.infrastructure.persistence.repository
 
 import jp.ijufumi.openreports.domain.repository.DataSourceRepository
 import jp.ijufumi.openreports.domain.models.entity.DataSource
+import jp.ijufumi.openreports.exceptions.OptimisticLockException
 import jp.ijufumi.openreports.infrastructure.persistence.converter.DataSourceConverter.conversions._
+import jp.ijufumi.openreports.infrastructure.persistence.entity.{DataSource => DataSourceEntity}
+import jp.ijufumi.openreports.utils.Dates
 import slick.jdbc.JdbcBackend.Database
 import slick.jdbc.PostgresProfile.api._
 
@@ -58,8 +61,17 @@ class DataSourceRepositoryImpl extends DataSourceRepository {
   }
 
   override def update(db: Database, dataSource: DataSource): Unit = {
-    val updateQuery = dataSourceQuery.insertOrUpdate(dataSource).withPinnedSession
-    Await.result(db.run(updateQuery), queryTimeout)
+    val newEntity: DataSourceEntity =
+      dataSource.copy(updatedAt = Dates.currentTimestamp(), versions = dataSource.versions + 1)
+    val q = dataSourceQuery
+      .filter(_.id === dataSource.id)
+      .filter(_.versions === dataSource.versions)
+    val affected = Await.result(db.run(q.update(newEntity).withPinnedSession), queryTimeout)
+    if (affected == 0) {
+      throw new OptimisticLockException(
+        s"DataSource id=${dataSource.id} was modified concurrently or does not exist",
+      )
+    }
   }
 
   override def delete(db: Database, workspaceId: String, id: String): Unit = {

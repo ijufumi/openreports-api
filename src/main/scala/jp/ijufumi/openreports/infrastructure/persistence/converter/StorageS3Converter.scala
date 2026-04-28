@@ -2,14 +2,15 @@ package jp.ijufumi.openreports.infrastructure.persistence.converter
 
 import jp.ijufumi.openreports.domain.models.entity.{StorageS3 => StorageS3Model}
 import jp.ijufumi.openreports.infrastructure.persistence.entity.{StorageS3 => StorageS3Entity}
+import jp.ijufumi.openreports.utils.Crypto
 
 object StorageS3Converter {
   def toDomain(entity: StorageS3Entity): StorageS3Model = {
     StorageS3Model(
       entity.id,
       entity.workspaceId,
-      entity.awsAccessKeyId,
-      entity.awsSecretAccessKey,
+      Crypto.decrypt(entity.awsAccessKeyId),
+      Crypto.decrypt(entity.awsSecretAccessKey),
       entity.awsRegion,
       entity.s3BucketName,
       entity.createdAt,
@@ -22,8 +23,8 @@ object StorageS3Converter {
     StorageS3Entity(
       model.id,
       model.workspaceId,
-      model.awsAccessKeyId,
-      model.awsSecretAccessKey,
+      Crypto.encrypt(model.awsAccessKeyId),
+      Crypto.encrypt(model.awsSecretAccessKey),
       model.awsRegion,
       model.s3BucketName,
       model.createdAt,
