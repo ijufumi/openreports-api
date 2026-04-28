@@ -15,12 +15,11 @@ class ReportTemplateRepositoryImpl extends ReportTemplateRepository {
       offset: Int,
       limit: Int,
   ): (Seq[ReportTemplate], Int) = {
-    var filtered = templateQuery.filter(_.workspaceId === workspaceId)
+    val filtered = templateQuery.filter(_.workspaceId === workspaceId)
     val count = Await.result(db.run(filtered.length.result), queryTimeout)
-    if (limit > 0) {
-      filtered = filtered.drop(offset).take(limit)
-    }
-    val result = Await.result(db.run(filtered.result), queryTimeout)
+    val withOffset = if (offset > 0) filtered.drop(offset) else filtered
+    val paged = if (limit > 0) withOffset.take(limit) else withOffset
+    val result = Await.result(db.run(paged.result), queryTimeout)
     (result, count)
   }
 

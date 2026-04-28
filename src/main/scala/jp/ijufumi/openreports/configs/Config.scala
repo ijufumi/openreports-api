@@ -32,6 +32,10 @@ object Config {
   val DB_USER: String = getEnvValue("DB_USER", "postgres")
   val DB_PASSWORD: String = getEnvValue("DB_PASSWORD", "password")
   val DB_PORT: String = getEnvValue("DB_PORT", "5432")
+  val DB_NUM_THREADS: Int = getEnvIntValue("DB_NUM_THREADS", 5)
+  val DB_POOL_SIZE: Int = getEnvIntValue("DB_POOL_SIZE", 20)
+  val DB_KEEP_ALIVE_CONNECTION: Boolean =
+    getEnvValue("DB_KEEP_ALIVE_CONNECTION", "false").toBoolean
   // for hash
   val HASH_KEY: String = requireEnvValue("HASH_KEY")
   val ACCESS_TOKEN_EXPIRATION_SEC: Integer =

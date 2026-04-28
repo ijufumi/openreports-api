@@ -16,6 +16,7 @@ import software.amazon.awssdk.services.s3.presigner.model._
 
 import java.nio.file.{Files, Path}
 import java.time.Duration
+import java.util.concurrent.ConcurrentHashMap
 import scala.util.Using
 
 trait S3ClientFactory {
@@ -50,14 +51,16 @@ class AwsS3RepositoryImpl @Inject() (
     storageRepository: StorageS3Repository,
     s3ClientFactory: S3ClientFactory = new DefaultS3ClientFactory(),
 ) extends AwsS3Repository {
+  // 認証情報のローテーション時に古いクライアントを破棄するため、認証情報も含めたキーでキャッシュする
+  private val clientCache = new ConcurrentHashMap[String, S3Client]()
+  private val presignerCache = new ConcurrentHashMap[String, S3Presigner]()
+
   override def get(workspaceId: String, key: String): Path = {
     val storage = this.getStorage(workspaceId)
     val request = GetObjectRequest.builder().bucket(storage.s3BucketName).key(key).build()
     val file = Files.createTempFile("", ".tmp")
-    Using.resource(s3ClientFactory.createClient(storage)) { client =>
-      Using.resource(client.getObject(request)) { response =>
-        Files.copy(response, file, java.nio.file.StandardCopyOption.REPLACE_EXISTING)
-      }
+    Using.resource(client(storage).getObject(request)) { response =>
+      Files.copy(response, file, java.nio.file.StandardCopyOption.REPLACE_EXISTING)
     }
     file
   }
@@ -65,17 +68,13 @@ class AwsS3RepositoryImpl @Inject() (
   override def create(workspaceId: String, key: String, file: Path): Unit = {
     val storage = this.getStorage(workspaceId)
     val request = PutObjectRequest.builder().bucket(storage.s3BucketName).key(key).build()
-    Using(s3ClientFactory.createClient(storage)) { client =>
-      client.putObject(request, file)
-    }
+    client(storage).putObject(request, file)
   }
 
   override def delete(workspaceId: String, key: String): Unit = {
     val storage = this.getStorage(workspaceId)
     val request = DeleteObjectRequest.builder().bucket(storage.s3BucketName).key(key).build()
-    Using(s3ClientFactory.createClient(storage)) { client =>
-      client.deleteObject(request)
-    }
+    client(storage).deleteObject(request)
   }
 
   override def url(workspaceId: String, key: String): String = {
@@ -86,10 +85,27 @@ class AwsS3RepositoryImpl @Inject() (
       .getObjectRequest(getObjectRequest)
       .signatureDuration(Duration.ofSeconds(Config.PRESIGNED_URL_EXPIRATION))
       .build()
-    Using(s3ClientFactory.createPresignerClient(storage)) { client =>
-      client.presignGetObject(request)
-    }.get.url().toString
+    presigner(storage).presignGetObject(request).url().toString
   }
+
+  def shutdown(): Unit = {
+    clientCache.values().forEach(c => Using(c)(_ => ()))
+    clientCache.clear()
+    presignerCache.values().forEach(p => Using(p)(_ => ()))
+    presignerCache.clear()
+  }
+
+  private def client(storage: StorageS3Model): S3Client =
+    clientCache.computeIfAbsent(cacheKey(storage), _ => s3ClientFactory.createClient(storage))
+
+  private def presigner(storage: StorageS3Model): S3Presigner =
+    presignerCache.computeIfAbsent(
+      cacheKey(storage),
+      _ => s3ClientFactory.createPresignerClient(storage),
+    )
+
+  private def cacheKey(storage: StorageS3Model): String =
+    s"${storage.id}:${storage.awsRegion}:${storage.awsAccessKeyId}"
 
   private def getStorage(workspaceId: String): StorageS3Model = {
     val storageList = storageRepository.gets(db, workspaceId)

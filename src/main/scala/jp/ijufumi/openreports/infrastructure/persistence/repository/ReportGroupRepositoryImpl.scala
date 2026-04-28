@@ -16,12 +16,11 @@ class ReportGroupRepositoryImpl extends ReportGroupRepository {
       offset: Int = 0,
       limit: Int = -1,
   ): (Seq[ReportGroup], Int) = {
-    var filtered = reportGroupQuery.filter(_.workspaceId === workspaceId)
+    val filtered = reportGroupQuery.filter(_.workspaceId === workspaceId)
     val count = Await.result(db.run(filtered.length.result), queryTimeout)
-    if (limit > 0) {
-      filtered = filtered.drop(offset).take(limit)
-    }
-    val result = Await.result(db.run(filtered.result), queryTimeout)
+    val withOffset = if (offset > 0) filtered.drop(offset) else filtered
+    val paged = if (limit > 0) withOffset.take(limit) else withOffset
+    val result = Await.result(db.run(paged.result), queryTimeout)
     (result, count)
   }
 
@@ -52,6 +51,6 @@ class ReportGroupRepositoryImpl extends ReportGroupRepository {
     val getById = reportGroupQuery
       .filter(_.workspaceId === workspaceId)
       .filter(_.id === id)
-    Await.result(db.run(getById.delete), queryTimeout)
+    Await.result(db.run(getById.delete.withPinnedSession), queryTimeout)
   }
 }

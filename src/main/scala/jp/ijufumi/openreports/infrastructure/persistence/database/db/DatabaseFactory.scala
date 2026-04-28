@@ -17,9 +17,9 @@ object DatabaseFactory {
         "username" -> DB_USER,
         "password" -> DB_PASSWORD,
         "connectionPool" -> "HikariCP",
-        "numThreads" -> 5,
-        "poolSize" -> 20,
-        "keepAliveConnection" -> true,
+        "numThreads" -> DB_NUM_THREADS,
+        "poolSize" -> DB_POOL_SIZE,
+        "keepAliveConnection" -> DB_KEEP_ALIVE_CONNECTION,
       ).asJava,
     ).asJava,
   )
