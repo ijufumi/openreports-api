@@ -12,7 +12,7 @@ jobs:
   setup:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
       - name: Install packages
         run: |
           sudo apt-get update
@@ -21,7 +21,7 @@ jobs:
         run: |
           plantuml -tsvg -p < ./docs/db/diagram.puml > ./docs/db/diagram.svg
       - name: Commit image
-        uses: EndBug/add-and-commit@v9
+        uses: EndBug/add-and-commit@290ea2c423ad77ca9c62ae0f5b224379612c0321 # v10.0.0
         with:
           author_name: Takafumi Iju
           author_email: ijufumi@gmail.com
