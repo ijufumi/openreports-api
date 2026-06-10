@@ -281,50 +281,28 @@ class LoginInteractorSpec extends AnyFlatSpec with MockitoSugar {
     verify(f.refreshTokenRepository).deleteByToken(f.db, hashedToken)
   }
 
-  "logout" should "delete only the refresh token of the session" in {
+  "logout" should "delete all refresh tokens of the session" in {
     val f = new Fixture
     val memberId = "member-1"
-    val member = Member(
-      id = memberId,
-      googleId = None,
-      email = "test@test.com",
-      password = "",
-      name = "test",
-      createdAt = 0,
-      updatedAt = 0,
-    )
-    val apiToken = Hash.generateJWT(memberId, 600)
-    val refreshToken = Hash.generateJWT(memberId, 3600)
-
-    when(f.memberRepository.getById(f.db, memberId)).thenReturn(Some(member))
+    // distinct expirations so the two JWTs are not identical
+    val headerToken = Hash.generateJWT(memberId, 3600)
+    val rotatedToken = Hash.generateJWT(memberId, 7200)
 
     // when
-    f.loginService.logout(s"Bearer $apiToken", refreshToken)
+    f.loginService.logout(memberId, Seq(headerToken, rotatedToken))
 
     // then
-    verify(f.refreshTokenRepository).deleteByToken(f.db, Hash.hmacSha256(refreshToken))
+    verify(f.refreshTokenRepository).deleteByToken(f.db, Hash.hmacSha256(headerToken))
+    verify(f.refreshTokenRepository).deleteByToken(f.db, Hash.hmacSha256(rotatedToken))
     verify(f.refreshTokenRepository, never()).deleteByMemberId(f.db, memberId)
   }
 
   it should "not delete refresh token if it belongs to another member" in {
     val f = new Fixture
-    val memberId = "member-1"
-    val member = Member(
-      id = memberId,
-      googleId = None,
-      email = "test@test.com",
-      password = "",
-      name = "test",
-      createdAt = 0,
-      updatedAt = 0,
-    )
-    val apiToken = Hash.generateJWT(memberId, 600)
     val refreshToken = Hash.generateJWT("member-2", 3600)
 
-    when(f.memberRepository.getById(f.db, memberId)).thenReturn(Some(member))
-
     // when
-    f.loginService.logout(s"Bearer $apiToken", refreshToken)
+    f.loginService.logout("member-1", Seq(refreshToken))
 
     // then
     verify(f.refreshTokenRepository, never()).deleteByToken(
@@ -333,24 +311,11 @@ class LoginInteractorSpec extends AnyFlatSpec with MockitoSugar {
     )
   }
 
-  it should "do nothing if refresh token is missing" in {
+  it should "do nothing if refresh tokens are empty" in {
     val f = new Fixture
-    val memberId = "member-1"
-    val member = Member(
-      id = memberId,
-      googleId = None,
-      email = "test@test.com",
-      password = "",
-      name = "test",
-      createdAt = 0,
-      updatedAt = 0,
-    )
-    val apiToken = Hash.generateJWT(memberId, 600)
-
-    when(f.memberRepository.getById(f.db, memberId)).thenReturn(Some(member))
 
     // when
-    f.loginService.logout(s"Bearer $apiToken", null)
+    f.loginService.logout("member-1", Seq.empty)
 
     // then
     verify(f.refreshTokenRepository, never()).deleteByToken(

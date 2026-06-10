@@ -20,8 +20,9 @@ class MemberServlet @Inject() (loginService: LoginUseCase, memberService: Member
   }
 
   get("/logout") {
-    val header = authorizationHeader()
-    loginService.logout(header, refreshTokenHeader())
+    val refreshTokens =
+      (Option(refreshTokenHeader()) ++ rotatedRefreshToken()).toSeq.filter(_.nonEmpty)
+    loginService.logout(memberId(), refreshTokens)
   }
 
   put("/update") {

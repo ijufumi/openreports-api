@@ -48,20 +48,17 @@ class LoginInteractor @Inject() (
     makeResponse(member)
   }
 
-  override def logout(authorizationHeader: String, refreshToken: String): Unit = {
-    val memberOpt = getMember(authorizationHeader)
-    if (memberOpt.isEmpty) {
-      return
+  override def logout(memberId: String, refreshTokens: Seq[String]): Unit = {
+    refreshTokens.foreach { refreshToken =>
+      if (refreshToken != null && refreshToken.nonEmpty) {
+        val tokenMemberId = Hash.extractIdFromJWT(refreshToken)
+        if (tokenMemberId == memberId) {
+          refreshTokenRepository.deleteByToken(db, Hash.hmacSha256(refreshToken))
+        } else {
+          logger.info("refresh token does not belong to the member")
+        }
+      }
     }
-    if (refreshToken == null || refreshToken.isEmpty) {
-      return
-    }
-    val tokenMemberId = Hash.extractIdFromJWT(refreshToken)
-    if (tokenMemberId != memberOpt.get.id) {
-      logger.info("refresh token does not belong to the member")
-      return
-    }
-    refreshTokenRepository.deleteByToken(db, Hash.hmacSha256(refreshToken))
   }
 
   override def verifyAuthorizationHeader(authorizationHeader: String): Option[MemberModel] = {
@@ -238,17 +235,5 @@ class LoginInteractor @Inject() (
       return None
     }
     Some(tokenMatcher.group(1))
-  }
-
-  private def getMember(authorizationHeader: String): Option[MemberModel] = {
-    val apiToken = getApiToken(authorizationHeader)
-    if (apiToken.isEmpty) {
-      return None
-    }
-    val memberId = Hash.extractIdFromJWT(apiToken.get)
-    if (memberId == "") {
-      return None
-    }
-    memberRepository.getById(db, memberId)
   }
 }

@@ -7,7 +7,7 @@ import jp.ijufumi.openreports.domain.models.value.AuthTokens
 trait LoginUseCase {
   def login(input: LoginInput): Option[MemberModel]
 
-  def logout(authorizationHeader: String, refreshToken: String): Unit
+  def logout(memberId: String, refreshTokens: Seq[String]): Unit
 
   def verifyAuthorizationHeader(authorizationHeader: String): Option[MemberModel]
 

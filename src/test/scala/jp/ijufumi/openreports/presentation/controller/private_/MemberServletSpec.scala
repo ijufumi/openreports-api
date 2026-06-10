@@ -56,7 +56,7 @@ class MemberServletSpec extends ScalatraFunSuite with MockFactory {
     val member = MemberModel("member-id", None, "test@example.com", "", "Test User", 0, 0)
     (loginService.verifyAuthorizationHeader _).expects("api-token").returns(Some(member))
     (loginService.verifyWorkspaceId _).expects(member.id, "workspace-id").returns(true)
-    (loginService.logout _).expects("api-token", "refresh-token").returns(())
+    (loginService.logout _).expects(member.id, Seq("refresh-token")).returns(())
 
     get(
       "/logout",

@@ -11,6 +11,8 @@ abstract class PrivateAPIServletBase(loginService: LoginUseCase)
     with FileUploadSupport {
   configureMultipartHandling(MultipartConfig(maxFileSize = Some(Config.UPLOAD_FILE_MAX_SIZE)))
 
+  private val ATTRIBUTE_KEY_ROTATED_REFRESH_TOKEN = "rotatedRefreshToken"
+
   before() {
     if (!isOptions && !skipAuthorization()) {
       val header = authorizationHeader()
@@ -31,7 +33,10 @@ abstract class PrivateAPIServletBase(loginService: LoginUseCase)
         }
         setMember(member.get)
         response.setHeader(Config.API_TOKEN_HEADER, tokens.accessToken)
-        tokens.refreshToken.foreach(response.setHeader(Config.REFRESH_TOKEN_HEADER, _))
+        tokens.refreshToken.foreach { token =>
+          response.setHeader(Config.REFRESH_TOKEN_HEADER, token)
+          request.setAttribute(ATTRIBUTE_KEY_ROTATED_REFRESH_TOKEN, token)
+        }
       } else {
         setMember(member.get)
       }
@@ -54,6 +59,10 @@ abstract class PrivateAPIServletBase(loginService: LoginUseCase)
 
   def refreshTokenHeader(): String = {
     request.getHeader(Config.REFRESH_TOKEN_HEADER)
+  }
+
+  def rotatedRefreshToken(): Option[String] = {
+    Option(request.getAttribute(ATTRIBUTE_KEY_ROTATED_REFRESH_TOKEN)).map(_.asInstanceOf[String])
   }
 
   def workspaceId(): String = {
