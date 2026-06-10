@@ -5,6 +5,7 @@ import jp.ijufumi.openreports.domain.repository.{
   DriverTypeRepository,
   FunctionRepository,
   MemberRepository,
+  RefreshTokenRepository,
   ReportGroupReportRepository,
   ReportGroupRepository,
   ReportParameterRepository,
@@ -22,6 +23,7 @@ import jp.ijufumi.openreports.infrastructure.persistence.repository.{
   DriverTypeRepositoryImpl,
   FunctionRepositoryImpl,
   MemberRepositoryImpl,
+  RefreshTokenRepositoryImpl,
   ReportGroupReportRepositoryImpl,
   ReportGroupRepositoryImpl,
   ReportParameterRepositoryImpl,
@@ -39,6 +41,7 @@ class RepositoryModule extends BaseModule {
   override def configure(): Unit = {
     super.configure()
     bindClass(classOf[MemberRepository], classOf[MemberRepositoryImpl])
+    bindClass(classOf[RefreshTokenRepository], classOf[RefreshTokenRepositoryImpl])
     bindClass(classOf[WorkspaceRepository], classOf[WorkspaceRepositoryImpl])
     bindClass(classOf[WorkspaceMemberRepository], classOf[WorkspaceMemberRepositoryImpl])
     bindClass(classOf[DataSourceRepository], classOf[DataSourceRepositoryImpl])

@@ -11,6 +11,8 @@ abstract class PrivateAPIServletBase(loginService: LoginUseCase)
     with FileUploadSupport {
   configureMultipartHandling(MultipartConfig(maxFileSize = Some(Config.UPLOAD_FILE_MAX_SIZE)))
 
+  private val ATTRIBUTE_KEY_ROTATED_REFRESH_TOKEN = "rotatedRefreshToken"
+
   before() {
     if (!isOptions && !skipAuthorization()) {
       val header = authorizationHeader()
@@ -19,21 +21,21 @@ abstract class PrivateAPIServletBase(loginService: LoginUseCase)
         val refreshToken = refreshTokenHeader()
         if (refreshToken == null || refreshToken.isEmpty) {
           halt(unauthorized("API Token is invalid"))
-        } else {
-          val accessToken = loginService.generateAccessToken(refreshToken)
-          if (accessToken.isEmpty) {
-            halt(unauthorized("API Token is invalid"))
-          } else {
-            response.setHeader(Config.API_TOKEN_HEADER, accessToken.get)
-            member = loginService.verifyApiToken(accessToken.get)
-            if (member.isEmpty) {
-              halt(unauthorized("API Token is invalid"))
-            } else {
-              setMember(member.get)
-              val refreshToken = loginService.generateRefreshToken(memberId())
-              response.setHeader(Config.REFRESH_TOKEN_HEADER, refreshToken)
-            }
-          }
+        }
+        val tokensOpt = loginService.refreshTokens(refreshToken)
+        if (tokensOpt.isEmpty) {
+          halt(unauthorized("API Token is invalid"))
+        }
+        val tokens = tokensOpt.get
+        member = loginService.verifyApiToken(tokens.accessToken)
+        if (member.isEmpty) {
+          halt(unauthorized("API Token is invalid"))
+        }
+        setMember(member.get)
+        response.setHeader(Config.API_TOKEN_HEADER, tokens.accessToken)
+        tokens.refreshToken.foreach { token =>
+          response.setHeader(Config.REFRESH_TOKEN_HEADER, token)
+          request.setAttribute(ATTRIBUTE_KEY_ROTATED_REFRESH_TOKEN, token)
         }
       } else {
         setMember(member.get)
@@ -57,6 +59,10 @@ abstract class PrivateAPIServletBase(loginService: LoginUseCase)
 
   def refreshTokenHeader(): String = {
     request.getHeader(Config.REFRESH_TOKEN_HEADER)
+  }
+
+  def rotatedRefreshToken(): Option[String] = {
+    Option(request.getAttribute(ATTRIBUTE_KEY_ROTATED_REFRESH_TOKEN)).map(_.asInstanceOf[String])
   }
 
   def workspaceId(): String = {

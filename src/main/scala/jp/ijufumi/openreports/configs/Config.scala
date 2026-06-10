@@ -42,6 +42,8 @@ object Config {
     getEnvIntValue("ACCESS_TOKEN_EXPIRATION_SEC", 600)
   val REFRESH_TOKEN_EXPIRATION_SEC: Integer =
     getEnvIntValue("REFRESH_TOKEN_EXPIRATION_SEC", 3600 * 4)
+  val REFRESH_TOKEN_GRACE_PERIOD_MILLIS: Long =
+    getEnvIntValue("REFRESH_TOKEN_GRACE_PERIOD_SEC", 5) * 1000L
   // for cache
   val REDIS_HOST: String = getEnvValue("REDIS_HOST", "localhost")
   val REDIS_PORT: Int = getEnvIntValue("REDIS_PORT", 6379)
