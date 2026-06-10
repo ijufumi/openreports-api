@@ -21,7 +21,7 @@ class MemberServlet @Inject() (loginService: LoginUseCase, memberService: Member
 
   get("/logout") {
     val header = authorizationHeader()
-    loginService.logout(header)
+    loginService.logout(header, refreshTokenHeader())
   }
 
   put("/update") {

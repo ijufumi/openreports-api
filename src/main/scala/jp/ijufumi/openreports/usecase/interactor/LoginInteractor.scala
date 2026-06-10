@@ -4,10 +4,18 @@ import jp.ijufumi.openreports.usecase.port.input.{LoginUseCase, WorkspaceUseCase
 import com.google.inject.{Inject, Singleton}
 import jp.ijufumi.openreports.configs.Config
 import jp.ijufumi.openreports.domain.port.{AppConfigPort, CacheKeys, CachePort, GoogleAuthPort}
-import jp.ijufumi.openreports.utils.{Hash, IDs, Logging, Strings}
-import jp.ijufumi.openreports.domain.repository.{MemberRepository, WorkspaceRepository}
+import jp.ijufumi.openreports.utils.{Dates, Hash, IDs, Logging, Strings}
+import jp.ijufumi.openreports.domain.repository.{
+  MemberRepository,
+  RefreshTokenRepository,
+  WorkspaceRepository,
+}
 import jp.ijufumi.openreports.usecase.port.input.param.{GoogleLoginInput, LoginInput}
-import jp.ijufumi.openreports.domain.models.entity.{Member => MemberModel}
+import jp.ijufumi.openreports.domain.models.entity.{
+  Member => MemberModel,
+  RefreshToken => RefreshTokenModel,
+}
+import jp.ijufumi.openreports.domain.models.value.AuthTokens
 import slick.jdbc.JdbcBackend.Database
 
 @Singleton
@@ -15,6 +23,7 @@ class LoginInteractor @Inject() (
     db: Database,
     memberRepository: MemberRepository,
     workspaceRepository: WorkspaceRepository,
+    refreshTokenRepository: RefreshTokenRepository,
     googleAuthPort: GoogleAuthPort,
     workspaceService: WorkspaceUseCase,
     cachePort: CachePort,
@@ -39,12 +48,20 @@ class LoginInteractor @Inject() (
     makeResponse(member)
   }
 
-  override def logout(authorizationHeader: String): Unit = {
+  override def logout(authorizationHeader: String, refreshToken: String): Unit = {
     val memberOpt = getMember(authorizationHeader)
     if (memberOpt.isEmpty) {
       return
     }
-    cachePort.remove(CacheKeys.ApiToken, memberOpt.get.id)
+    if (refreshToken == null || refreshToken.isEmpty) {
+      return
+    }
+    val tokenMemberId = Hash.extractIdFromJWT(refreshToken)
+    if (tokenMemberId != memberOpt.get.id) {
+      logger.info("refresh token does not belong to the member")
+      return
+    }
+    refreshTokenRepository.deleteByToken(db, Hash.hmacSha256(refreshToken))
   }
 
   override def verifyAuthorizationHeader(authorizationHeader: String): Option[MemberModel] = {
@@ -147,20 +164,61 @@ class LoginInteractor @Inject() (
     }
   }
 
-  def generateAccessToken(token: String): Option[String] = {
-    val memberIdOpt = cachePort.get(CacheKeys.ApiToken, token)
-    if (memberIdOpt.isEmpty) {
+  override def generateTokens(memberId: String): AuthTokens = {
+    val accessToken = Hash.generateJWT(memberId, appConfig.accessTokenExpirationSec)
+    val refreshToken = Hash.generateJWT(memberId, appConfig.refreshTokenExpirationSec)
+    val now = Dates.currentTimestamp()
+    refreshTokenRepository.deleteExpired(db, now)
+    refreshTokenRepository.register(
+      db,
+      RefreshTokenModel(
+        id = IDs.ulid(),
+        memberId = memberId,
+        refreshToken = Hash.hmacSha256(refreshToken),
+        expiredAt = now + appConfig.refreshTokenExpirationSec.toLong * 1000,
+      ),
+    )
+    AuthTokens(accessToken, Some(refreshToken))
+  }
+
+  override def refreshTokens(refreshToken: String): Option[AuthTokens] = {
+    val memberId = Hash.extractIdFromJWT(refreshToken)
+    if (memberId == null || memberId.isEmpty) {
+      logger.info("refresh token is invalid")
       return None
     }
 
-    val apiToken = Hash.generateJWT(memberIdOpt.get, appConfig.accessTokenExpirationSec)
-    Some(apiToken)
-  }
+    val hashedToken = Hash.hmacSha256(refreshToken)
+    val storedTokenOpt = refreshTokenRepository.getByToken(db, hashedToken)
+    if (storedTokenOpt.isEmpty) {
+      logger.info("refresh token is not registered")
+      return None
+    }
 
-  override def generateRefreshToken(memberId: String): String = {
-    val token = Hash.generateJWT(memberId, appConfig.refreshTokenExpirationSec)
-    cachePort.put(CacheKeys.ApiToken, memberId, token)(appConfig.refreshTokenExpirationSec.toLong)
-    token
+    val storedToken = storedTokenOpt.get
+    val now = Dates.currentTimestamp()
+    if (storedToken.memberId != memberId || storedToken.expiredAt < now) {
+      refreshTokenRepository.deleteByToken(db, hashedToken)
+      logger.info("refresh token is expired or member does not match")
+      return None
+    }
+
+    // rotate: only the request that marks the token as used can issue a new refresh token,
+    // so concurrent refreshes with the same token produce at most one new pair
+    val claimed = refreshTokenRepository.markUsed(db, hashedToken, now)
+    if (claimed > 0) {
+      return Some(generateTokens(memberId))
+    }
+
+    // late concurrent request: reissue only an access token within the grace period
+    val usedTokenOpt = refreshTokenRepository.getByToken(db, hashedToken)
+    val withinGracePeriod =
+      usedTokenOpt.flatMap(_.usedAt).exists(now - _ <= Config.REFRESH_TOKEN_GRACE_PERIOD_MILLIS)
+    if (!withinGracePeriod) {
+      logger.info("refresh token was already used")
+      return None
+    }
+    Some(AuthTokens(Hash.generateJWT(memberId, appConfig.accessTokenExpirationSec), None))
   }
 
   private def makeResponse(member: MemberModel): Option[MemberModel] = {

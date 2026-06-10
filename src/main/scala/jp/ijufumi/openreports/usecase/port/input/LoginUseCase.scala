@@ -2,11 +2,12 @@ package jp.ijufumi.openreports.usecase.port.input
 
 import jp.ijufumi.openreports.usecase.port.input.param.{GoogleLoginInput, LoginInput}
 import jp.ijufumi.openreports.domain.models.entity.{Member => MemberModel}
+import jp.ijufumi.openreports.domain.models.value.AuthTokens
 
 trait LoginUseCase {
   def login(input: LoginInput): Option[MemberModel]
 
-  def logout(apiToken: String): Unit
+  def logout(authorizationHeader: String, refreshToken: String): Unit
 
   def verifyAuthorizationHeader(authorizationHeader: String): Option[MemberModel]
 
@@ -18,7 +19,7 @@ trait LoginUseCase {
 
   def loginWithGoogle(input: GoogleLoginInput): Option[MemberModel]
 
-  def generateAccessToken(refreshToken: String): Option[String]
+  def generateTokens(memberId: String): AuthTokens
 
-  def generateRefreshToken(memberId: String): String
+  def refreshTokens(refreshToken: String): Option[AuthTokens]
 }
